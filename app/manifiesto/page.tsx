@@ -32,7 +32,7 @@ export default function ManifiestoPage() {
               Manifiesto
             </h1>
             <p className="text-xl text-gray-600 italic">
-              "Periodismo crudo para sensibilidades frágiles"
+              &quot;Periodismo crudo para sensibilidades frágiles&quot;
             </p>
           </div>
 
