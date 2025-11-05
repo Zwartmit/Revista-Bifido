@@ -10,7 +10,7 @@ export default function Footer() {
           <div>
             <h3 className="font-display text-2xl text-white mb-4">BÍFIDO</h3>
             <p className="text-bifido-lightgray text-sm italic">
-              "Periodismo crudo para sensibilidades frágiles"
+              &quot;Periodismo crudo para sensibilidades frágiles&quot;
             </p>
             <p className="text-bifido-lightgray text-sm mt-4">
               Revista digital, cultural, alternativa e independiente.

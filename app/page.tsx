@@ -113,7 +113,7 @@ export default function Home() {
             ref={subtitleRef}
             className="text-xl md:text-2xl text-gray-600 italic"
           >
-            "Periodismo crudo para sensibilidades frágiles"
+            &quot;Periodismo crudo para sensibilidades frágiles&quot;
           </p>
         </div>
 
