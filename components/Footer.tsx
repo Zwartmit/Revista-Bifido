@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Mail } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, Youtube } from 'lucide-react';
+import { RiTiktokLine } from "react-icons/ri";
 
 export default function Footer() {
   return (
@@ -53,7 +54,7 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Síguenos</h4>
             <div className="flex space-x-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/revistabifido/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-bifido-lightgray hover:text-white transition-colors"
@@ -62,16 +63,7 @@ export default function Footer() {
                 <Facebook size={20} />
               </a>
               <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-bifido-lightgray hover:text-white transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/revistabifido/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-bifido-lightgray hover:text-white transition-colors"
@@ -80,11 +72,38 @@ export default function Footer() {
                 <Instagram size={20} />
               </a>
               <a
-                href="mailto:contacto@bifido.com"
+                href="https://x.com/revistabifido"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-bifido-lightgray hover:text-white transition-colors"
+                aria-label="Twitter"
+              >
+                <Twitter size={20} />
+              </a>
+              <a
+                href="mailto:bifidomedio@gmail.com"
                 className="text-bifido-lightgray hover:text-white transition-colors"
                 aria-label="Email"
               >
                 <Mail size={20} />
+              </a>
+              <a
+                href="https://www.youtube.com/@revistabifido"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-bifido-lightgray hover:text-white transition-colors"
+                aria-label="YouTube"
+              >
+                <Youtube size={20} />
+              </a>
+              <a
+                href="https://www.tiktok.com/@revistabifido"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-bifido-lightgray hover:text-white transition-colors"
+                aria-label="Tiktok"
+              >
+                <RiTiktokLine size={20} />
               </a>
             </div>
           </div>

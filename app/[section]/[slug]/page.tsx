@@ -123,7 +123,7 @@ export default function ArticlePage() {
           {/* Share Buttons */}
           <div className="flex items-center space-x-3">
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
+              href={`https://www.facebook.com/revistabifido/`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
@@ -132,7 +132,7 @@ export default function ArticlePage() {
               <Facebook size={20} />
             </a>
             <a
-              href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${article.title}`}
+              href={`https://x.com/revistabifido`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"

@@ -182,10 +182,10 @@ export default function BuzonPage() {
               También puedes escribirnos directamente a:
             </p>
             <a
-              href="mailto:contacto@bifido.com"
+              href="mailto:bifidomedio@gmail.com"
               className="text-bifido-black font-semibold hover:underline"
             >
-              contacto@bifido.com
+              bifidomedio@gmail.com
             </a>
           </div>
         </div>
