@@ -101,30 +101,24 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section ref={heroRef} className="container mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h1
-            ref={titleRef}
-            className="font-display text-5xl md:text-7xl mb-4 text-white"
-          >
-            REVISTA BÍFIDO
-          </h1>
+      <section ref={heroRef} className="container mx-auto px-4 py-16">
+        {/* <div className="text-center mb-12">
           <p
             ref={subtitleRef}
             className="text-xl md:text-2xl text-bifido-lightgray italic"
           >
             &quot;Periodismo crudo para sensibilidades frágiles&quot;
           </p>
-        </div>
+        </div> */}
 
         {/* Escena 3D Interactiva */}
-        <div className="mb-12">
+        <div className="mt-4 mb-12">
           <div className="text-center">
+          <InteractiveScene />
             <p className="text-bifido-lightgray">
               Selecciona uno de nuestros personajes para explorar su parche
             </p>
           </div>
-          <InteractiveScene />
         </div>
 
       </section>

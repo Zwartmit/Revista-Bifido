@@ -9,12 +9,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand Section */}
           <div className="text-center">
-            <h3 className="font-display text-6xl sm:text-7xl text-white">REVISTA BÍFIDO</h3>
+            <h3 className="font-display text-6xl text-white">REVISTA BÍFIDO</h3>
             <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, #FCD116 33.33%, #003893 33.33%, #003893 66.66%, #CE1126 66.66%)' }} />
-            <p className="text-bifido-lightgray text-sm sm:text-lg mt-2">
+            <p className="text-bifido-lightgray text-sm mt-2">
               Revista digital, cultural, alternativa e independiente
             </p>
-            <p className="text-bifido-lightgray text-sm sm:text-lg italic mt-4">
+            <p className="text-bifido-lightgray text-sm italic mt-4">
               &quot;Periodismo crudo para sensibilidades frágiles&quot;
             </p>
           </div>

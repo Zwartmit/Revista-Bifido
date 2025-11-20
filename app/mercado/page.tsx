@@ -67,7 +67,7 @@ export default function MercadoPage() {
         : products;
 
     return (
-        <div className="min-h-screen py-12 bg-bifido-black">
+        <div className="min-h-screen py-20 sm:py-20 bg-bifido-black">
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="text-center mb-12">
@@ -122,13 +122,13 @@ export default function MercadoPage() {
                                 </div>
                                 {/* Actual Image */}
                                 {/* Uncomment when real images are available
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                */}
+                                <Image
+                                src={product.image}
+                                alt={product.name}
+                                fill
+                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                                */}
                                 <div className="absolute top-4 right-4 bg-black/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-white shadow-sm flex items-center gap-1">
                                     <Tag size={12} />
                                     {product.category}

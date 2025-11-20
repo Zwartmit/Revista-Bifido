@@ -25,7 +25,7 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen py-20 sm:py-20">
       <div className="container mx-auto px-4 max-w-4xl">
         <div ref={contentRef} className="flex flex-col items-center">
           {/* Header */}
