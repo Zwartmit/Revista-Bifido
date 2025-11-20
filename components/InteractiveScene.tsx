@@ -89,7 +89,7 @@ function MascotHotspot({ mascot, position, onHover, onClick }: MascotHotspotProp
 function Scene() {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [hoveredMascot, setHoveredMascot] = useState<string | null>(null);
+  // const [hoveredMascot, setHoveredMascot] = useState<string | null>(null);
   const { viewport } = useThree();
   const isMobile = viewport.width < 7; // Threshold for mobile layout in 3D units
 
@@ -132,7 +132,7 @@ function Scene() {
             key={mascot.id}
             mascot={mascot}
             position={position}
-            onHover={(hovered) => setHoveredMascot(hovered ? mascot.id : null)}
+            onHover={() => { }}
             onClick={() => handleMascotClick(mascot.slug)}
           />
         );
