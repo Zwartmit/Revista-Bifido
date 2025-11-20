@@ -4,12 +4,12 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
 });
 
-const bebas = Bebas_Neue({ 
+const bebas = Bebas_Neue({
   weight: '400',
   subsets: ['latin'],
   variable: '--font-bebas',
@@ -28,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${inter.variable} ${bebas.variable}`}>
-      <body className="bg-white text-bifido-black font-sans antialiased">
+      <body className="bg-bifido-black text-white font-sans antialiased">
         <Header />
         <main className="min-h-screen pt-20">
           {children}

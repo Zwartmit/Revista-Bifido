@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { mascots } from '@/lib/mascots';
-import { X } from 'lucide-react';
+import { X, PawPrint } from 'lucide-react';
 import gsap from 'gsap';
 
-export default function ParchePage() {
+export default function LaManadaPage() {
   const [selectedMascot, setSelectedMascot] = useState<typeof mascots[0] | null>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -38,11 +38,14 @@ export default function ParchePage() {
     <div className="min-h-screen py-12">
       {/* Header */}
       <div className="container mx-auto px-4 mb-12 text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-bifido-gray rounded-full mb-4">
+          <PawPrint className="text-white" size={32} />
+        </div>
         <h1 ref={titleRef} className="font-display text-5xl md:text-6xl mb-4">
-          El Parche
+          La Manada
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Conoce a las mascotas que representan cada sección de Bífido. 
+        <p className="text-xl text-bifido-lightgray max-w-2xl mx-auto">
+          Conoce a los personajes que representan cada sección de Bífido.
           Cada una tiene su propia personalidad y visión del mundo.
         </p>
       </div>
@@ -87,13 +90,13 @@ export default function ParchePage() {
           onClick={() => setSelectedMascot(null)}
         >
           <div
-            className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
+            className="bg-bifido-gray rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
               onClick={() => setSelectedMascot(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-white/90 hover:bg-white shadow-lg z-10"
+              className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black shadow-lg z-10"
               aria-label="Cerrar"
             >
               <X size={24} />
@@ -133,30 +136,30 @@ export default function ParchePage() {
 
                 <div className="space-y-4 mt-6">
                   <div>
-                    <h3 className="font-semibold text-gray-700 mb-1">Biografía</h3>
-                    <p className="text-gray-600">{selectedMascot.description}</p>
+                    <h3 className="font-semibold text-gray-300 mb-1">Biografía</h3>
+                    <p className="text-gray-400">{selectedMascot.description}</p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h3 className="font-semibold text-gray-700 mb-1">Religión</h3>
-                      <p className="text-gray-600">{selectedMascot.religion}</p>
+                      <h3 className="font-semibold text-gray-300 mb-1">Religión</h3>
+                      <p className="text-gray-400">{selectedMascot.religion}</p>
                     </div>
 
                     <div>
-                      <h3 className="font-semibold text-gray-700 mb-1">Edad</h3>
-                      <p className="text-gray-600">{selectedMascot.age}</p>
+                      <h3 className="font-semibold text-gray-300 mb-1">Edad</h3>
+                      <p className="text-gray-400">{selectedMascot.age}</p>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-700 mb-1">Color Favorito</h3>
+                    <h3 className="font-semibold text-gray-300 mb-1">Color Favorito</h3>
                     <div className="flex items-center space-x-2">
                       <div
-                        className="w-6 h-6 rounded-full border-2 border-gray-300"
+                        className="w-6 h-6 rounded-full border-2 border-gray-600"
                         style={{ backgroundColor: selectedMascot.color.primary }}
                       />
-                      <p className="text-gray-600">{selectedMascot.favoriteColor}</p>
+                      <p className="text-gray-400">{selectedMascot.favoriteColor}</p>
                     </div>
                   </div>
                 </div>

@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Colores de las mascotas
+        // Colores de los personajes
         punkibri: {
           primary: '#4CAF50',
           secondary: '#81C784',

@@ -66,7 +66,7 @@ export async function getArticlesBySection(sectionSlug: string) {
 }
 
 /**
- * Obtener todas las mascotas
+ * Obtener todas los personajes
  */
 export async function getMascots() {
   const data = await fetchAPI('/mascots?populate=*');
@@ -74,7 +74,7 @@ export async function getMascots() {
 }
 
 /**
- * Obtener una mascota por su slug
+ * Obtener un personaje por su slug
  */
 export async function getMascotBySlug(slug: string) {
   const data = await fetchAPI(`/mascots?filters[slug][$eq]=${slug}&populate=*`);

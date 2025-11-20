@@ -103,15 +103,15 @@ export default function Home() {
       {/* Hero Section */}
       <section ref={heroRef} className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 
+          <h1
             ref={titleRef}
-            className="font-display text-5xl md:text-7xl mb-4 text-bifido-black"
+            className="font-display text-5xl md:text-7xl mb-4 text-white"
           >
-            BÍFIDO
+            REVISTA BÍFIDO
           </h1>
-          <p 
+          <p
             ref={subtitleRef}
-            className="text-xl md:text-2xl text-gray-600 italic"
+            className="text-xl md:text-2xl text-bifido-lightgray italic"
           >
             &quot;Periodismo crudo para sensibilidades frágiles&quot;
           </p>
@@ -119,20 +119,20 @@ export default function Home() {
 
         {/* Escena 3D Interactiva */}
         <div className="mb-12">
+          <div className="text-center">
+            <p className="text-bifido-lightgray">
+              Selecciona uno de nuestros personajes para explorar su parche
+            </p>
+          </div>
           <InteractiveScene />
         </div>
 
-        <div className="text-center">
-          <p className="text-gray-600">
-            Haz click en una mascota para explorar su sección
-          </p>
-        </div>
       </section>
 
       {/* Featured Articles Section */}
       <section className="container mx-auto px-4 py-12">
         <h2 className="font-display text-4xl mb-8 text-center">
-          Artículos Destacados
+          Lo más fresquito...
         </h2>
 
         <div className="articles-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -145,7 +145,7 @@ export default function Home() {
       </section>
 
       {/* Call to Action */}
-      <section className="bg-bifido-black text-white py-16 mt-20">
+      <section className="bg-bifido-gray text-white py-16 mt-20">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-display text-4xl mb-4">
             Únete a la conversación
@@ -154,7 +154,7 @@ export default function Home() {
             Periodismo independiente, crítico y sin censura
           </p>
           <a
-            href="/buzon"
+            href="/contactanos"
             className="inline-block bg-white text-bifido-black px-8 py-3 rounded-full font-semibold hover:bg-bifido-lightgray transition-colors"
           >
             Contáctanos

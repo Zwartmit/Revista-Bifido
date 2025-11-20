@@ -5,7 +5,7 @@
 ### 🎨 Diseño y UX
 
 - **Diseño Responsivo Completo**: Optimizado para móviles, tablets y escritorio
-- **Identidad Visual Única**: Cada sección tiene su propia paleta de colores basada en su mascota
+- **Identidad Visual Única**: Cada sección tiene su propia paleta de colores basada en el personaje
 - **Animaciones Fluidas**: Implementadas con GSAP para transiciones suaves y profesionales
 - **Tipografía Personalizada**: Uso de Google Fonts (Inter para texto, Bebas Neue para títulos)
 - **Dark Mode Ready**: Estructura preparada para implementar modo oscuro
@@ -13,9 +13,9 @@
 ### 🎭 Experiencia 3D Interactiva
 
 - **Escena 3D en Homepage**: Implementada con React Three Fiber
-- **5 Mascotas Interactivas**: Cada una representa una sección de la revista
-- **Hover Effects**: Las mascotas reaccionan al pasar el mouse
-- **Click Navigation**: Clic en mascota navega a su sección
+- **5 Personajes Interactivas**: Cada una representa una sección de la revista
+- **Hover Effects**: Los personajes reaccionan al pasar el mouse
+- **Click Navigation**: Clic en personaje navega a su sección
 - **Optimización de Performance**: Lazy loading del componente 3D
 - **Fallback para Dispositivos Lentos**: Experiencia alternativa en caso de bajo rendimiento
 
@@ -34,9 +34,9 @@
 
 ### 🎪 Páginas Especiales
 
-- **El Parche**: Galería interactiva de las 5 mascotas con biografías completas
+- **La manada**: Galería interactiva de los 5 personajes con biografías completas
 - **Manifiesto**: Página institucional con la filosofía de Bífido
-- **Buzón**: Formulario de contacto funcional
+- **Contáctanos**: Formulario de contacto funcional
 - **404 y Error Pages**: Preparadas para personalización
 
 ### 🚀 Performance y SEO
@@ -174,7 +174,7 @@
 
 Todos los colores, tipografías y estilos están centralizados en:
 - `tailwind.config.ts` - Configuración de diseño
-- `lib/mascots.ts` - Datos de mascotas y colores
+- `lib/mascots.ts` - Datos de personajes y colores
 - `app/globals.css` - Estilos globales
 
 ## 📱 Compatibilidad

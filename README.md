@@ -6,7 +6,7 @@ Plataforma web inmersiva para la Revista Bífido, una revista digital, cultural,
 
 ## 🚀 Características
 
-- **Experiencia 3D Interactiva**: Escena 3D con las 5 mascotas de Bífido usando React Three Fiber
+- **Experiencia 3D Interactiva**: Escena 3D con los 5 personajes de Bífido usando React Three Fiber
 - **Animaciones Fluidas**: Implementadas con GSAP para transiciones suaves
 - **Diseño Responsivo**: Optimizado para todos los dispositivos
 - **SEO Optimizado**: Renderizado del lado del servidor con Next.js
@@ -51,9 +51,9 @@ npm start
 bifido-web/
 ├── app/                    # Páginas de Next.js (App Router)
 │   ├── [section]/         # Páginas dinámicas de secciones
-│   ├── parche/            # Página de mascotas
+│   ├── lamanada/            # Página de personajes
 │   ├── manifiesto/        # Página de manifiesto
-│   ├── buzon/             # Página de contacto
+│   ├── contáctanos/             # Página de contacto
 │   ├── layout.tsx         # Layout principal
 │   ├── page.tsx           # Página de inicio
 │   └── globals.css        # Estilos globales
@@ -68,7 +68,7 @@ bifido-web/
 ├── types/                 # Definiciones de TypeScript
 │   └── index.ts
 └── public/               # Archivos estáticos
-    └── images/           # Imágenes de mascotas
+    └── images/           # Imágenes de personajes
 ```
 
 ## 🔗 Integración con CMS
@@ -82,7 +82,7 @@ Los datos de ejemplo en el código deben ser reemplazados por llamadas a la API 
 - `GET /api/articles` - Obtener todos los artículos
 - `GET /api/articles/:slug` - Obtener un artículo específico
 - `GET /api/articles/section/:section` - Obtener artículos por sección
-- `GET /api/mascots` - Obtener información de mascotas
+- `GET /api/mascots` - Obtener información de personajes
 
 ## 🎯 Próximos Pasos
 

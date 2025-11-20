@@ -20,13 +20,13 @@ bifido-web/
 ├── app/                    # Páginas (Next.js App Router)
 │   ├── page.tsx           # 🏠 Página de inicio
 │   ├── [section]/         # 📰 Páginas de secciones
-│   ├── parche/            # 🎭 Página de mascotas
+│   ├── lamanada/            # 🎭 Página de personaje
 │   ├── manifiesto/        # 📜 Página de manifiesto
-│   └── buzon/             # 📧 Página de contacto
+│   └── contáctanos/             # 📧 Página de contacto
 ├── components/            # Componentes reutilizables
 ├── lib/                   # Utilidades y datos
 ├── types/                 # Tipos TypeScript
-├── public/images/         # Imágenes (incluye mascotas)
+├── public/images/         # Imágenes (incluye personajes)
 └── docs/                  # Documentación
 ```
 
@@ -40,19 +40,19 @@ Navega a estas URLs en tu navegador:
 - **Cultura**: `http://localhost:3000/cultura`
 - **Reducción de Riesgos**: `http://localhost:3000/reduccion-de-riesgos`
 - **Diversidad**: `http://localhost:3000/diversidad`
-- **El Parche**: `http://localhost:3000/parche`
+- **La manada**: `http://localhost:3000/lamanada`
 - **Manifiesto**: `http://localhost:3000/manifiesto`
-- **Buzón**: `http://localhost:3000/buzon`
+- **Contáctanos**: `http://localhost:3000/contáctanos`
 
 ### 4. Características Principales
 
 #### 🎨 Escena 3D Interactiva
-- Pasa el mouse sobre las mascotas en la página de inicio
-- Haz clic en una mascota para ir a su sección
+- Pasa el mouse sobre los personajes en la página de inicio
+- Haz clic en un personaje para ir a su sección
 - La escena usa React Three Fiber y GSAP
 
-#### 🎭 Las 5 Mascotas
-Cada mascota representa una sección:
+#### 🎭 Los 5 personajes
+Cada personaje representa una sección:
 1. **Punkibrí** (Verde) - Ecorebeldia
 2. **Mordáz** (Rojo) - Opinión
 3. **Malandra** (Púrpura) - Cultura
@@ -71,7 +71,7 @@ El proyecto actualmente usa datos de ejemplo hardcodeados. Puedes:
 
 1. **Modificar contenido de ejemplo**:
    - Edita `app/page.tsx` para cambiar artículos destacados
-   - Edita `lib/mascots.ts` para modificar información de mascotas
+   - Edita `lib/mascots.ts` para modificar información de personajes
 
 2. **Añadir más artículos de ejemplo**:
    - Crea nuevos objetos en los arrays de artículos
@@ -133,7 +133,7 @@ gsap.fromTo(
 
 ### Añadir Nueva Sección
 
-1. Añade la mascota en `lib/mascots.ts`
+1. Añade el personaje en `lib/mascots.ts`
 2. Crea la ruta en `app/[section]/page.tsx` (ya existe, es dinámica)
 3. Actualiza el Header si es necesario
 
@@ -204,7 +204,7 @@ Si tienes preguntas o encuentras problemas:
 - [ ] Navegación entre secciones funciona
 - [ ] Formulario de contacto muestra feedback
 - [ ] Diseño responsivo en móvil
-- [ ] Imágenes de mascotas se muestran
+- [ ] Imágenes de personajes se muestran
 
 ## Siguiente Nivel
 

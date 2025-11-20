@@ -31,14 +31,14 @@ Campos necesarios:
 #### Collection Type: Mascot
 
 Campos necesarios:
-- `name` (Text) - Nombre de la mascota
+- `name` (Text) - Nombre del personaje
 - `section` (Text) - Nombre de la sección
 - `slug` (UID) - URL amigable
 - `description` (Text) - Descripción
 - `religion` (Text) - Religión
 - `age` (Text) - Edad
 - `favoriteColor` (Text) - Color favorito
-- `image` (Media) - Imagen de la mascota
+- `image` (Media) - Imagen del personaje
 - `colorPrimary` (Text) - Color primario (hex)
 - `colorSecondary` (Text) - Color secundario (hex)
 - `colorDark` (Text) - Color oscuro (hex)
