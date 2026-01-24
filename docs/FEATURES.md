@@ -34,8 +34,7 @@
 
 ### 🎪 Páginas Especiales
 
-- **La manada**: Galería interactiva de los 5 personajes con biografías completas
-- **Manifiesto**: Página institucional con la filosofía de Bífido
+- **El Parche**: Galería interactiva de los 5 personajes con biografías completas
 - **Contáctanos**: Formulario de contacto funcional
 - **404 y Error Pages**: Preparadas para personalización
 

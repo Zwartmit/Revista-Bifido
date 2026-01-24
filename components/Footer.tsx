@@ -25,28 +25,20 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/lamanada"
+                  href="/elparche"
                   className="text-bifido-lightgray hover:text-white text-sm transition-colors"
                 >
-                  La manada
+                  El Parche
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/mercado"
                   className="text-bifido-lightgray hover:text-white text-sm transition-colors"
                 >
                   Mercado
                 </Link>
-              </li>
-              <li>
-                <Link
-                  href="/manifiesto"
-                  className="text-bifido-lightgray hover:text-white text-sm transition-colors"
-                >
-                  Manifiesto
-                </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/contactanos"

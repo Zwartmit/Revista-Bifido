@@ -30,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${inter.variable} ${bebas.variable}`}>
-      <body className="bg-bifido-black text-white font-sans antialiased">
+      <body className="bg-bifido-black text-white font-sans antialiased pt-12">
         <Header />
         <main className="min-h-screen pt-14 sm:pt-28">
           {children}

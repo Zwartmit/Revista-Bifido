@@ -27,6 +27,7 @@ export interface Article {
   featuredImage: string;
   section: string;
   mascotId: string;
+  featured?: boolean;
 }
 
 export interface Section {

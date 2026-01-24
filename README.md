@@ -51,8 +51,7 @@ npm start
 bifido-web/
 ├── app/                    # Páginas de Next.js (App Router)
 │   ├── [section]/         # Páginas dinámicas de secciones
-│   ├── lamanada/            # Página de personajes
-│   ├── manifiesto/        # Página de manifiesto
+│   ├── elparche/            # Página de personajes
 │   ├── contáctanos/             # Página de contacto
 │   ├── layout.tsx         # Layout principal
 │   ├── page.tsx           # Página de inicio

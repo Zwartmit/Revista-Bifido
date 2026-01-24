@@ -47,7 +47,7 @@ export default function ArticlePage() {
   const params = useParams();
   const section = params.section as string;
   const slug = params.slug as string;
-  
+
   const article = getArticle(section, slug);
   const mascot = getMascotBySlug(section);
   const contentRef = useRef<HTMLDivElement>(null);

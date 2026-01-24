@@ -10,7 +10,7 @@ export const mascots: Mascot[] = [
     religion: 'Animismo',
     age: '127 años (en años de colibrí)',
     favoriteColor: 'Verde musgo',
-    image: '/images/Punkibrí.jpg',
+    image: '/personajes/Punkibrí.png',
     color: {
       primary: '#4CAF50',
       secondary: '#81C784',
@@ -27,7 +27,7 @@ export const mascots: Mascot[] = [
     religion: 'Escepticismo militante',
     age: '42 años',
     favoriteColor: 'Rojo sangre',
-    image: '/images/Mordáz.jpg',
+    image: '/personajes/Mordáz.png',
     color: {
       primary: '#FF6B6B',
       secondary: '#FF8E8E',
@@ -44,7 +44,7 @@ export const mascots: Mascot[] = [
     religion: 'Culto a la creatividad',
     age: '33 años',
     favoriteColor: 'Púrpura oscuro',
-    image: '/images/Malandra.jpg',
+    image: '/personajes/Malandra.png',
     color: {
       primary: '#9C27B0',
       secondary: '#BA68C8',
@@ -61,7 +61,7 @@ export const mascots: Mascot[] = [
     religion: 'Pragmatismo compasivo',
     age: '28 años',
     favoriteColor: 'Turquesa',
-    image: '/images/Anika.jpg',
+    image: '/personajes/Anika.png',
     color: {
       primary: '#00BCD4',
       secondary: '#4DD0E1',
@@ -78,7 +78,7 @@ export const mascots: Mascot[] = [
     religion: 'Interseccionalidad',
     age: '31 años',
     favoriteColor: 'Naranja fuego',
-    image: '/images/Incendia.jpg',
+    image: '/personajes/Incendia.png',
     color: {
       primary: '#FF9800',
       secondary: '#FFB74D',

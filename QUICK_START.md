@@ -20,8 +20,7 @@ bifido-web/
 ├── app/                    # Páginas (Next.js App Router)
 │   ├── page.tsx           # 🏠 Página de inicio
 │   ├── [section]/         # 📰 Páginas de secciones
-│   ├── lamanada/            # 🎭 Página de personaje
-│   ├── manifiesto/        # 📜 Página de manifiesto
+│   ├── elparche/            # 🎭 Página de personaje
 │   └── contáctanos/             # 📧 Página de contacto
 ├── components/            # Componentes reutilizables
 ├── lib/                   # Utilidades y datos
@@ -40,8 +39,7 @@ Navega a estas URLs en tu navegador:
 - **Cultura**: `http://localhost:3000/cultura`
 - **Reducción de Riesgos**: `http://localhost:3000/reduccion-de-riesgos`
 - **Diversidad**: `http://localhost:3000/diversidad`
-- **La manada**: `http://localhost:3000/lamanada`
-- **Manifiesto**: `http://localhost:3000/manifiesto`
+- **El parche**: `http://localhost:3000/elparche`
 - **Contáctanos**: `http://localhost:3000/contáctanos`
 
 ### 4. Características Principales
