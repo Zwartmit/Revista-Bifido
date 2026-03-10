@@ -1,39 +1,40 @@
-// API Service para integración con CMS Headless
-// Este archivo contiene funciones para consumir la API del CMS
+// API Service para integración con Payload CMS
+import qs from 'qs';
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-const API_TOKEN = process.env.STRAPI_API_TOKEN;
+const PAYLOAD_URL = process.env.NEXT_PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
 
 /**
- * Función genérica para hacer llamadas a la API del CMS
+ * Función genérica para construir URLs de Payload
  */
-async function fetchAPI(endpoint: string, options: RequestInit = {}) {
-  const defaultOptions: RequestInit = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(API_TOKEN && { Authorization: `Bearer ${API_TOKEN}` }),
-    },
-  };
+function getPayloadURL(path: string = '') {
+  return `${PAYLOAD_URL}${path}`;
+}
 
-  const mergedOptions = {
-    ...defaultOptions,
-    ...options,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers,
-    },
-  };
+/**
+ * Función genérica para hacer llamadas a la API de Payload
+ */
+async function fetchPayload(collection: string, params: any = {}, options: RequestInit = {}) {
+  const stringifiedParams = qs.stringify(params, { addQueryPrefix: true });
+  const url = `${getPayloadURL(`/api/${collection}`)}${stringifiedParams}`;
 
   try {
-    const res = await fetch(`${STRAPI_URL}/api${endpoint}`, mergedOptions);
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      cache: 'no-store', // Para Next.js: siempre obtener datos frescos en dev
+    });
 
     if (!res.ok) {
-      throw new Error(`API call failed: ${res.status} ${res.statusText}`);
+      throw new Error(`Payload API call failed: ${res.status} ${res.statusText}`);
     }
 
-    return res.json();
+    const data = await res.json();
+    return data;
   } catch (error) {
-    console.error('API Error:', error);
+    console.error(`Error fetching ${collection}:`, error);
     throw error;
   }
 }
@@ -42,113 +43,226 @@ async function fetchAPI(endpoint: string, options: RequestInit = {}) {
  * Obtener todos los artículos
  */
 export async function getArticles(limit?: number) {
-  const limitQuery = limit ? `&pagination[limit]=${limit}` : '';
-  const data = await fetchAPI(`/articles?populate=*&sort=publishedAt:desc${limitQuery}`);
-  return data.data;
+  const params = {
+    sort: '-publishedAt', // Descending
+    limit: limit || 10,
+    where: {
+      status: {
+        equals: 'published',
+      },
+    }
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs.map(transformPayloadArticle);
 }
 
 /**
  * Obtener un artículo por su slug
  */
 export async function getArticleBySlug(slug: string) {
-  const data = await fetchAPI(`/articles?filters[slug][$eq]=${slug}&populate=*`);
-  return data.data[0];
+  const params = {
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    limit: 1,
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs[0] ? transformPayloadArticle(data.docs[0]) : null;
 }
 
 /**
  * Obtener artículos por sección
  */
 export async function getArticlesBySection(sectionSlug: string) {
-  const data = await fetchAPI(
-    `/articles?filters[section][slug][$eq]=${sectionSlug}&populate=*&sort=publishedAt:desc`
-  );
-  return data.data;
+  const params = {
+    where: {
+      'section.slug': {
+        equals: sectionSlug,
+      },
+      status: {
+        equals: 'published',
+      },
+    },
+    sort: '-publishedAt',
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs.map(transformPayloadArticle);
 }
 
 /**
  * Obtener todas los personajes
  */
 export async function getMascots() {
-  const data = await fetchAPI('/mascots?populate=*');
-  return data.data;
+  const data = await fetchPayload('mascots');
+  return data.docs.map(transformPayloadMascot);
 }
 
 /**
  * Obtener un personaje por su slug
  */
 export async function getMascotBySlug(slug: string) {
-  const data = await fetchAPI(`/mascots?filters[slug][$eq]=${slug}&populate=*`);
-  return data.data[0];
+  const params = {
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    limit: 1,
+  };
+  const data = await fetchPayload('mascots', params);
+  return data.docs[0] ? transformPayloadMascot(data.docs[0]) : null;
 }
 
 /**
  * Obtener todas las secciones
  */
 export async function getSections() {
-  const data = await fetchAPI('/sections?populate=*');
-  return data.data;
+  const data = await fetchPayload('sections');
+  return data.docs;
 }
 
 /**
  * Buscar artículos
  */
 export async function searchArticles(query: string) {
-  const data = await fetchAPI(
-    `/articles?filters[$or][0][title][$containsi]=${query}&filters[$or][1][excerpt][$containsi]=${query}&populate=*`
-  );
-  return data.data;
+  const params = {
+    where: {
+      or: [
+        {
+          title: {
+            like: query,
+          },
+        },
+        {
+          excerpt: {
+            like: query,
+          },
+        },
+      ],
+      status: {
+        equals: 'published',
+      },
+    },
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs.map(transformPayloadArticle);
 }
 
 /**
- * Enviar formulario de contacto
+ * Obtener todos los eventos
  */
-export async function submitContactForm(formData: {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}) {
-  // Esta función dependerá de cómo configures el endpoint de contacto
-  // Puede ser un plugin de Strapi o un endpoint personalizado
-  const data = await fetchAPI('/contact-submissions', {
-    method: 'POST',
-    body: JSON.stringify({ data: formData }),
-  });
-  return data;
+export async function getEvents() {
+  const params = {
+    sort: 'date', // Ascending (nearest first)
+    limit: 50,
+    depth: 1,
+  };
+  const data = await fetchPayload('events', params);
+  return data.docs.map(transformPayloadEvent);
 }
 
-// Tipos de transformación para Strapi
-export function transformStrapiArticle(strapiArticle: any) {
+/**
+ * Obtener un evento por su slug
+ */
+export async function getEventBySlug(slug: string) {
+  const params = {
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    limit: 1,
+    depth: 1,
+  };
+  const data = await fetchPayload('events', params);
+  return data.docs[0] ? transformPayloadEvent(data.docs[0]) : null;
+}
+
+/**
+ * Obtener todos los autores (equipo)
+ */
+export async function getAuthors() {
+  const data = await fetchPayload('authors');
+  return data.docs.map(transformPayloadAuthor);
+}
+
+// Transformadores de datos (Payload -> Frontend Interface)
+
+export function transformPayloadArticle(doc: any) {
   return {
-    id: strapiArticle.id,
-    slug: strapiArticle.attributes.slug,
-    title: strapiArticle.attributes.title,
-    excerpt: strapiArticle.attributes.excerpt,
-    content: strapiArticle.attributes.content,
-    author: strapiArticle.attributes.author,
-    publishedAt: strapiArticle.attributes.publishedAt,
-    featuredImage: strapiArticle.attributes.featuredImage?.data?.attributes?.url || '/images/placeholder-article.jpg',
-    section: strapiArticle.attributes.section?.data?.attributes?.slug || '',
-    mascotId: strapiArticle.attributes.mascot?.data?.attributes?.slug || '',
+    id: doc.id,
+    slug: doc.slug,
+    title: doc.title,
+    excerpt: doc.excerpt,
+    content: doc.content, // RichText JSON
+    author: doc.author ? doc.author.name : 'Revista Bífido',
+    publishedAt: doc.publishedAt,
+    // Prioritize constructed URL because staticURL config might be missing/broken in Media collection
+    featuredImage: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
+    section: doc.section?.slug || 'general',
+    // mascotId can be derived if sections are related to mascots
+    mascotId: doc.section?.mascot?.slug || '',
   };
 }
 
-export function transformStrapiMascot(strapiMascot: any) {
+export function transformPayloadMascot(doc: any) {
   return {
-    id: strapiMascot.attributes.slug,
-    name: strapiMascot.attributes.name,
-    section: strapiMascot.attributes.section,
-    slug: strapiMascot.attributes.slug,
-    description: strapiMascot.attributes.description,
-    religion: strapiMascot.attributes.religion,
-    age: strapiMascot.attributes.age,
-    favoriteColor: strapiMascot.attributes.favoriteColor,
-    image: strapiMascot.attributes.image?.data?.attributes?.url || '/images/placeholder.png',
+    id: doc.slug,
+    name: doc.name,
+    section: doc.slug, // Assuming mascot slug matches section slug usually
+    slug: doc.slug,
+    description: doc.description,
+    religion: doc.religion,
+    age: doc.age,
+    favoriteColor: doc.favoriteColor,
+    image: doc.image?.filename ? `/media/${doc.image.filename}` : (doc.image?.url || '/images/placeholder.png'),
     color: {
-      primary: strapiMascot.attributes.colorPrimary,
-      secondary: strapiMascot.attributes.colorSecondary,
-      dark: strapiMascot.attributes.colorDark,
+      // Mocked colors or accessed if added to schema
+      primary: doc.colorPrimary || '#000000',
+      secondary: doc.colorSecondary || '#ffffff',
+      dark: doc.colorDark || '#000000',
     },
-    position: [0, 0, 0] as [number, number, number], // Esto se puede configurar en el CMS
+    position: [0, 0, 0] as [number, number, number],
+  };
+}
+
+export function transformPayloadEvent(doc: any) {
+  return {
+    id: doc.id,
+    slug: doc.slug,
+    title: doc.name,
+    date: doc.date,
+    time: doc.date ? new Date(doc.date).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) : '',
+    location: doc.location?.type === 'virtual' ? 'Virtual' : (doc.location?.type === 'hybrid' ? 'Híbrido' : (doc.location?.city || 'Presencial')),
+    address: doc.location?.address || '',
+    virtualLink: doc.location?.virtualLink,
+    shortDescription: doc.shortDescription || '',
+    description: doc.description,
+    category: doc.category ? (doc.category === 'workshop' ? 'Taller' : doc.category === 'concert' ? 'Concierto' : 'Evento') : 'Evento',
+    price: doc.price,
+    ticketLink: doc.ticketLink,
+    organizer: doc.organizer,
+    status: doc.status || 'upcoming',
+    // Prioritize constructed URL
+    image: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
+    gallery: doc.gallery?.map((item: any) => ({
+      id: item.id,
+      url: item.image?.filename ? `/media/${item.image.filename}` : (item.image?.url || ''),
+      alt: item.image?.alt || ''
+    })) || [],
+  };
+}
+
+export function transformPayloadAuthor(doc: any) {
+  return {
+    id: doc.id,
+    name: doc.name,
+    slug: doc.slug,
+    biography: doc.biography,
+    profileImage: doc.profileImage?.filename ? `/media/${doc.profileImage.filename}` : (doc.profileImage?.url || '/images/placeholder-author.jpg'),
+    email: doc.email,
+    socialMedia: doc.socialMedia || {},
   };
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 
 export default function ScrollToTop() {
     const [isVisible, setIsVisible] = useState(false);
@@ -35,10 +35,10 @@ export default function ScrollToTop() {
             {isVisible && (
                 <button
                     onClick={scrollToTop}
-                    className="fixed bottom-8 right-8 z-50 p-4 bg-white text-bifido-black rounded-full shadow-lg hover:bg-gray-200 transition-all duration-300 transform hover:scale-110 group"
+                    className="fixed bottom-8 right-8 z-50 w-[50px] h-[50px] rounded-2xl border border-bifido-neon flex items-center justify-center text-bifido-neon bg-black hover:bg-bifido-neon hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(204,253,41,0.3)] group"
                     aria-label="Volver arriba"
                 >
-                    <ArrowUp size={24} className="group-hover:-translate-y-1 transition-transform duration-200" />
+                    <ChevronUp size={36} className="stroke-[3px] group-hover:-translate-y-1 transition-transform duration-200" />
                 </button>
             )}
         </>

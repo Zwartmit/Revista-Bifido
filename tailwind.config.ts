@@ -39,6 +39,10 @@ const config: Config = {
           black: '#1a1a1a',
           gray: '#2a2a2a',
           lightgray: '#e0e0e0',
+          neon: '#CCFD29',
+          orange: '#FF5E1E',
+          teal: '#25A69A',
+          olive: '#3e4a3b',
         }
       },
       fontFamily: {
@@ -49,6 +53,7 @@ const config: Config = {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
         'float': 'float 3s ease-in-out infinite',
+        'marquee': 'marquee 30s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -62,6 +67,10 @@ const config: Config = {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
       },
     },

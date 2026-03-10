@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 0 0% 3.9%;
+    }
+}
+
+@layer components {
+
+    /* Estilos base para la revista */
+    body {
+        @apply bg-bifido-black text-white decoration-amber-50;
+    }
+}
+
+/* Custom Fonts */
+@font-face {
+    font-family: 'Bebas Neue';
+    src: url('/fonts/BebasNeue-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

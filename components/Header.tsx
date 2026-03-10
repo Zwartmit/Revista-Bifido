@@ -3,196 +3,185 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { mascots } from '@/lib/mascots';
 import { useRef } from 'react';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const subtitleRef = useRef<HTMLParagraphElement>(null);
+    const [isMascotMenuOpen, setIsMascotMenuOpen] = useState(false);
     const pathname = usePathname();
 
     // Find active mascot based on pathname
     const activeMascot = mascots.find(m => pathname === `/${m.slug}`);
-    const headerBgColor = '#000000';
-
-    const headerStyle = {
-        backgroundColor: headerBgColor,
-        // backgroundImage: `url('${activeMascot?.image}')`,
-        backgroundSize: 'contain',
-        backgroundPosition: 'center',
-    };
-
-    // CSS for flag wave animation
-    const flagWaveStyle = `
-        @keyframes flagWave {
-            0%, 100% {
-                transform: translateX(0) skewX(0deg);
-            }
-            25% {
-                transform: translateX(1px) skewX(0.5deg);
-            }
-            75% {
-                transform: translateX(-4px) skewX(-0.5deg);
-            }
-        }
-        .flag-stripe {
-            animation: flagWave 4s ease-in-out infinite;
-        }
-        .flag-stripe-1 {
-            animation-delay: 0s;
-        }
-        .flag-stripe-2 {
-            animation-delay: 0.3s;
-        }
-        .flag-stripe-3 {
-            animation-delay: 0.6s;
-        }
-    `;
-
     return (
         <>
-            <style>{flagWaveStyle}</style>
             <header
-                className="fixed top-0 left-0 right-0 z-50 border-b border-bifido-gray transition-colors duration-500"
-                style={headerStyle}
+                className="fixed top-0 left-0 right-0 z-50 border-b-2 border-bifido-neon bg-black transition-colors duration-500"
             >
-                <nav className="container mx-auto px-4 py-6">
+                <nav className="container mx-auto px-4 py-4">
                     {/* Mobile Layout - Logo and Menu Button side by side */}
-                    <div className="flex md:hidden items-center justify-between mb-4">
+                    <div className="flex md:hidden items-center justify-between">
                         <Link href="/" className="flex items-center">
-                            <div className="flex flex-col relative group overflow-visible px-4 py-2">
-                                <h1 className="font-display text-3xl text-white tracking-wider relative z-10">
-                                    REVISTA BÍFIDO
-                                </h1>
-                                <div className="absolute inset-0 z-0 opacity-90 scale-110 pointer-events-none">
-                                    <div className="flag-stripe flag-stripe-1 absolute -top-[5%] -left-[10%] w-[120%] h-[60%] bg-[#FCD116] -rotate-2 rounded-sm opacity-95" style={{ boxShadow: '0 0 10px rgba(252, 209, 22, 0.3)' }}></div>
-                                    <div className="flag-stripe flag-stripe-2 absolute top-[45%] -left-[5%] w-[110%] h-[48%] bg-[#003893] rotate-1 opacity-95" style={{ boxShadow: '0 0 10px rgba(0, 56, 147, 0.3)' }}></div>
-                                    <div className="flag-stripe flag-stripe-3 absolute bottom-[-15%] -left-[8%] w-[115%] h-[35%] bg-[#CE1126] -rotate-1 opacity-95" style={{ boxShadow: '0 0 10px rgba(206, 17, 38, 0.3)' }}></div>
-                                </div>
-                                <p className="text-sm text-white italic mt-1 relative z-10">
-                                    Periodismo crudo para sensibilidades frágiles
-                                </p>
-                            </div>
+                            <Image
+                                src="/logo-white.png"
+                                alt="Revista Bífido"
+                                width={150}
+                                height={40}
+                                priority
+                                className="object-contain"
+                            />
                         </Link>
 
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="text-white p-2"
+                            className="text-bifido-neon p-2"
                             aria-label="Toggle menu"
                         >
-                            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
                         </button>
                     </div>
 
-                    {/* Desktop Layout - Logo centered on top */}
-                    <div className="hidden md:flex justify-center mb-6">
-                        <Link href="/" className="flex items-center">
-                            <div className="flex flex-col items-center text-center px-12 py-6 rounded-full backdrop-blur-md bg-black/40 relative group overflow-visible">
-
-                                {/* Stencil Hard Background - Proportions Adjusted */}
-                                <div className="absolute inset-0 z-0 opacity-90 scale-110 pointer-events-none transition-all duration-500">
-                                    {/* Yellow: Top ~50% */}
-                                    <div className="flag-stripe flag-stripe-1 absolute -top-[5%] -left-[10%] w-[120%] h-[60%] bg-[#FCD116] -rotate-2 rounded-sm opacity-95" style={{ boxShadow: '0 0 10px rgba(252, 209, 22, 0.3)' }}></div>
-
-                                    {/* Blue: Middle ~45% (Updated for text) */}
-                                    <div className="flag-stripe flag-stripe-2 absolute top-[45%] -left-[5%] w-[110%] h-[45%] bg-[#003893] rotate-1 opacity-95" style={{ boxShadow: '0 0 1px rgba(0, 56, 147, 0.3)' }}></div>
-
-                                    {/* Red: Bottom ~25% - Adjusted */}
-                                    <div className="flag-stripe flag-stripe-3 absolute bottom-[-14%] -left-[8%] w-[115%] h-[30%] bg-[#CE1126] -rotate-1 opacity-95" style={{ boxShadow: '0 0 10px rgba(206, 17, 38, 0.3)' }}></div>
-                                </div>
-
-                                <h1 className="font-display text-4xl text-black tracking-wider relative z-10 drop-shadow-md">
-                                    REVISTA BÍFIDO
-                                </h1>
-                                <p
-                                    ref={subtitleRef}
-                                    className="text-lg text-white italic mt-2 relative z-10"
-                                >
-                                    Periodismo crudo para sensibilidades frágiles
-                                </p>
-                            </div>
+                    {/* Desktop Layout - Logo left, Links center/right */}
+                    <div className="hidden md:flex items-center justify-between">
+                        <Link href="/" className="flex items-center flex-shrink-0">
+                            <Image
+                                src="/logo-white.png"
+                                alt="Revista Bífido"
+                                width={180}
+                                height={50}
+                                priority
+                                className="object-contain"
+                            />
                         </Link>
-                    </div>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center justify-center">
-                        <div className="flex items-center gap-2 mt-6">
-                            {/* Secciones */}
-                            {[...mascots].sort((a, b) => a.section.localeCompare(b.section)).map((mascot) => (
-                                <MascotNavLink key={mascot.id} mascot={mascot} />
-                            ))}
-                            <div className="h-6 w-1 bg-white mx-3" />
+                        {/* Desktop Navigation */}
+                        <div className="flex items-center gap-2 lg:gap-4">
+                            <Link href="/" className="flex items-center gap-2 text-bifido-neon font-display tracking-wider text-lg transition-colors uppercase">
+                                <Image src="/icons/Home.png" alt="Inicio" width={20} height={20} className="object-contain" />
+                                INICIO
+                            </Link>
 
-                            <StaticNavLink href="/elparche" label="El Parche" />
-                            {/* <StaticNavLink href="/mercado" label="Mercado" /> */}
-                            <StaticNavLink href="/eventos" label="Eventos" />
-                            <StaticNavLink href="/contactanos" label="Contáctanos" />
+                            <div className="h-4 w-[2px] bg-bifido-neon mx-1 lg:mx-2" />
+
+                            {/* Mascot buttons Dropdown */}
+                            <div className="relative">
+                                <button
+                                    onClick={() => setIsMascotMenuOpen(!isMascotMenuOpen)}
+                                    className="flex items-center gap-1 text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase"
+                                >
+                                    LA MANADA
+                                    <ChevronDown size={18} className={`transform transition-transform duration-200 ${isMascotMenuOpen ? 'rotate-180' : ''}`} />
+                                </button>
+
+                                {isMascotMenuOpen && (
+                                    <>
+                                        <div className="fixed inset-0 z-40 cursor-pointer" onClick={() => setIsMascotMenuOpen(false)}></div>
+                                        {/* Horizontal Mascot Menu centered on viewport */}
+                                        <div className="fixed top-[100px] left-1/2 -translate-x-1/2 w-max max-w-[95vw] overflow-x-auto bg-black border border-bifido-neon rounded-full py-4 px-6 lg:px-8 shadow-[0_0_15px_rgba(204,253,41,0.2)] flex flex-row items-center gap-4 lg:gap-8 justify-center z-50">
+                                            {[...mascots].sort((a, b) => a.section.localeCompare(b.section)).map((mascot) => (
+                                                <div key={mascot.id} onClick={() => setIsMascotMenuOpen(false)}>
+                                                    <MascotNavLink mascot={mascot} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            <div className="h-4 w-[2px] bg-bifido-neon mx-1 lg:mx-2" />
+
+                            <StaticNavLink href="/elparche" label="EL PARCHE" className="font-display tracking-wider text-lg hover:!text-bifido-neon" />
+
+                            <div className="h-4 w-[2px] bg-bifido-neon mx-1 lg:mx-2" />
+
+                            <StaticNavLink href="/eventos" label="EVENTOS" className="font-display tracking-wider text-lg hover:!text-bifido-neon" />
+
+                            <div className="h-4 w-[2px] bg-bifido-neon mx-1 lg:mx-2" />
+
+                            <StaticNavLink href="/contactanos" label="CONTÁCTANOS" className="font-display tracking-wider text-lg hover:!text-bifido-neon" />
                         </div>
                     </div>
 
                     {/* Mobile Navigation */}
                     {isMenuOpen && (
-                        <div className="md:hidden mt-4 pb-4 space-y-3">
-                            {/* Secciones en móvil */}
-                            <div className="border-b border-white/20 pb-3 mb-3">
-                                {[...mascots].sort((a, b) => a.section.localeCompare(b.section)).map((mascot) => {
-                                    const isActiveMobile = pathname === `/${mascot.slug}`;
-                                    return (
-                                        <Link
-                                            key={mascot.id}
-                                            href={`/${mascot.slug}`}
-                                            className={`block text-sm font-medium transition-colors py-2 px-2 rounded ${isActiveMobile
-                                                ? 'bg-white/90 text-black font-bold'
-                                                : activeMascot
-                                                    ? 'text-white hover:bg-white/10'
-                                                    : 'text-bifido-lightgray hover:text-white hover:bg-bifido-gray'
-                                                }`}
-                                            onClick={() => setIsMenuOpen(false)}
-                                            style={{
-                                                borderLeft: isActiveMobile ? '3px solid #000000' : `3px solid ${mascot.color.primary}`,
-                                                paddingLeft: '12px'
-                                            }}
-                                        >
-                                            {mascot.section}
-                                        </Link>
-                                    );
-                                })}
+                        <div className="md:hidden mt-4 pb-4 space-y-4">
+                            <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 text-bifido-neon font-display tracking-wider text-xl hover:text-white transition-colors px-2">
+                                <Image src="/icons/Home.png" alt="Home" width={24} height={24} className="object-contain" />
+                                Inicio
+                            </Link>
+
+                            {/* Mascot Mobile Dropdown */}
+                            <div className="border-b border-bifido-neon/20 pb-4 mb-4">
+                                <button
+                                    onClick={() => setIsMascotMenuOpen(!isMascotMenuOpen)}
+                                    className="flex w-full items-center justify-between font-display tracking-wider text-xl px-2 text-white hover:text-bifido-neon transition-colors uppercase"
+                                >
+                                    LA MANADA
+                                    <ChevronDown size={24} className={`transform transition-transform duration-200 ${isMascotMenuOpen ? 'rotate-180' : ''}`} />
+                                </button>
+
+                                <div className={`overflow-hidden transition-all duration-300 ${isMascotMenuOpen ? 'max-h-[500px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    <div className="space-y-3 px-4 border-l-2 border-bifido-neon/30 ml-2">
+                                        {[...mascots].sort((a, b) => a.section.localeCompare(b.section)).map((mascot) => (
+                                            <div key={mascot.id} className="px-2">
+                                                <MascotNavLink mascot={mascot} isMobile onClick={() => { setIsMenuOpen(false); setIsMascotMenuOpen(false); }} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
 
                             <StaticNavLink
                                 href="/elparche"
                                 label="El Parche"
                                 onClick={() => setIsMenuOpen(false)}
-                                className="block py-2 px-2"
+                                className="block font-display tracking-wider text-xl px-2"
                             />
-                            {/* <StaticNavLink
-                            href="/mercado"
-                            label="Mercado"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="block py-2 px-2"
-                        /> */}
                             <StaticNavLink
                                 href="/eventos"
                                 label="Eventos"
                                 onClick={() => setIsMenuOpen(false)}
-                                className="block py-2 px-2"
+                                className="block font-display tracking-wider text-xl px-2"
                             />
                             <StaticNavLink
                                 href="/contactanos"
                                 label="Contáctanos"
                                 onClick={() => setIsMenuOpen(false)}
-                                className="block py-2 px-2"
+                                className="block font-display tracking-wider text-xl px-2"
                             />
                         </div>
                     )}
                 </nav>
+
+                {/* Scrolling Marquee Tape */}
+                <div className="w-full bg-bifido-neon overflow-hidden py-1 border-b border-black">
+                    <div className="whitespace-nowrap animate-marquee flex items-center gap-6 text-black font-display tracking-widest text-lg py-2">
+                        {/* First set of items */}
+                        {Array(5).fill(null).map((_, i) => (
+                            <div key={`first-${i}`} className="flex items-center gap-12">
+                                <span>PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES</span>
+                                <span>•</span>
+                            </div>
+                        ))}
+                        {/* Duplicated set for seamless loop */}
+                        {Array(5).fill(null).map((_, i) => (
+                            <div key={`second-${i}`} className="flex items-center gap-12">
+                                <span>PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES</span>
+                                <span>•</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </header>
+            {/* Adds padding to prevent content from hiding under fixed header */}
+            <div className="h-[120px]"></div>
         </>
     );
 }
 
-function MascotNavLink({ mascot }: { mascot: typeof mascots[0] }) {
+function MascotNavLink({ mascot, isMobile, onClick }: { mascot: typeof mascots[0], isMobile?: boolean, onClick?: () => void }) {
     const [isHovered, setIsHovered] = useState(false);
     const pathname = usePathname();
     const isActive = pathname === `/${mascot.slug}`;
@@ -210,6 +199,25 @@ function MascotNavLink({ mascot }: { mascot: typeof mascots[0] }) {
         textColor = isOnSectionPage ? '#E5E7EB' : '#9CA3AF'; // Light gray on section pages, normal gray otherwise
     }
 
+    if (isMobile) {
+        return (
+            <Link
+                href={`/${mascot.slug}`}
+                className={`block text-xl font-display tracking-wider transition-colors py-2 rounded ${isActive
+                    ? 'bg-bifido-neon text-black font-bold'
+                    : 'text-white hover:bg-white/10'
+                    }`}
+                onClick={onClick}
+                style={{
+                    borderLeft: isActive ? '4px solid #000000' : `4px solid ${mascot.color.primary}`,
+                    paddingLeft: '12px'
+                }}
+            >
+                {mascot.section}
+            </Link>
+        );
+    }
+
     return (
         <Link
             href={`/${mascot.slug}`}
@@ -220,6 +228,7 @@ function MascotNavLink({ mascot }: { mascot: typeof mascots[0] }) {
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onClick={onClick}
         >
             <span
                 className="w-2 h-2 rounded-full transition-transform duration-200"

@@ -10,7 +10,7 @@ export const mascots: Mascot[] = [
     religion: 'Animismo',
     age: '127 años (en años de colibrí)',
     favoriteColor: 'Verde musgo',
-    image: '/personajes/Punkibrí.png',
+    image: '/personajes/Punkibri.png',
     color: {
       primary: '#4CAF50',
       secondary: '#81C784',
@@ -27,7 +27,7 @@ export const mascots: Mascot[] = [
     religion: 'Escepticismo militante',
     age: '42 años',
     favoriteColor: 'Rojo sangre',
-    image: '/personajes/Mordáz.png',
+    image: '/personajes/Mordaz.png',
     color: {
       primary: '#FF6B6B',
       secondary: '#FF8E8E',
