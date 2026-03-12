@@ -1,184 +1,246 @@
 'use server';
 
 // API Service para integración con Payload CMS usando Server Actions
-import { getPayload } from 'payload';
+import { getPayload, type Payload } from 'payload';
 import configPromise from '@/payload/payload.config';
 
 /**
- * Obtener instancia de Payload (Internal)
+ * Singleton para la instancia de Payload para evitar múltiples inicializaciones
  */
-async function getPayloadClient() {
-  return await getPayload({
-    config: configPromise,
-  });
+let cachedPayload: Payload | null = null;
+let payloadPromise: Promise<Payload> | null = null;
+
+async function getPayloadClient(): Promise<Payload> {
+  if (cachedPayload) return cachedPayload;
+
+  if (!payloadPromise) {
+    payloadPromise = getPayload({
+      config: configPromise,
+    }).then((payload) => {
+      cachedPayload = payload;
+      return payload;
+    });
+  }
+
+  return payloadPromise;
 }
 
 /**
  * Obtener todos los artículos
  */
 export async function getArticles(limit?: number) {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'articles',
-    sort: '-publishedAt',
-    limit: limit || 10,
-    where: {
-      status: {
-        equals: 'published',
-      },
-    }
-  });
-  return data.docs.map(transformPayloadArticle);
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'articles',
+      sort: '-publishedAt',
+      limit: limit || 10,
+      where: {
+        status: {
+          equals: 'published',
+        },
+      }
+    });
+    return data.docs.map(transformPayloadArticle);
+  } catch (error) {
+    console.error('Error in getArticles:', error);
+    return [];
+  }
 }
 
 /**
  * Obtener un artículo por su slug
  */
 export async function getArticleBySlug(slug: string) {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'articles',
-    where: {
-      slug: {
-        equals: slug,
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'articles',
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-    limit: 1,
-  });
-  return data.docs[0] ? transformPayloadArticle(data.docs[0]) : null;
+      limit: 1,
+    });
+    return data.docs[0] ? transformPayloadArticle(data.docs[0]) : null;
+  } catch (error) {
+    console.error('Error in getArticleBySlug:', error);
+    return null;
+  }
 }
 
 /**
  * Obtener artículos por sección
  */
 export async function getArticlesBySection(sectionSlug: string) {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'articles',
-    where: {
-      'section.slug': {
-        equals: sectionSlug,
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'articles',
+      where: {
+        'section.slug': {
+          equals: sectionSlug,
+        },
+        status: {
+          equals: 'published',
+        },
       },
-      status: {
-        equals: 'published',
-      },
-    },
-    sort: '-publishedAt',
-  });
-  return data.docs.map(transformPayloadArticle);
+      sort: '-publishedAt',
+    });
+    return data.docs.map(transformPayloadArticle);
+  } catch (error) {
+    console.error('Error in getArticlesBySection:', error);
+    return [];
+  }
 }
 
 /**
  * Obtener todas los personajes
  */
 export async function getMascots() {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'mascots',
-    limit: 100,
-  });
-  return data.docs.map(transformPayloadMascot);
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'mascots',
+      limit: 100,
+    });
+    return data.docs.map(transformPayloadMascot);
+  } catch (error) {
+    console.error('Error in getMascots:', error);
+    return [];
+  }
 }
 
 /**
  * Obtener un personaje por su slug
  */
 export async function getMascotBySlug(slug: string) {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'mascots',
-    where: {
-      slug: {
-        equals: slug,
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'mascots',
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-    limit: 1,
-  });
-  return data.docs[0] ? transformPayloadMascot(data.docs[0]) : null;
+      limit: 1,
+    });
+    return data.docs[0] ? transformPayloadMascot(data.docs[0]) : null;
+  } catch (error) {
+    console.error('Error in getMascotBySlug:', error);
+    return null;
+  }
 }
 
 /**
  * Obtener todas las secciones
  */
 export async function getSections() {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'sections',
-    limit: 100,
-  });
-  return data.docs;
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'sections',
+      limit: 100,
+    });
+    return data.docs;
+  } catch (error) {
+    console.error('Error in getSections:', error);
+    return [];
+  }
 }
 
 /**
  * Buscar artículos
  */
 export async function searchArticles(query: string) {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'articles',
-    where: {
-      or: [
-        {
-          title: {
-            like: query,
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'articles',
+      where: {
+        or: [
+          {
+            title: {
+              like: query,
+            },
           },
-        },
-        {
-          excerpt: {
-            like: query,
+          {
+            excerpt: {
+              like: query,
+            },
           },
+        ],
+        status: {
+          equals: 'published',
         },
-      ],
-      status: {
-        equals: 'published',
       },
-    },
-  });
-  return data.docs.map(transformPayloadArticle);
+    });
+    return data.docs.map(transformPayloadArticle);
+  } catch (error) {
+    console.error('Error in searchArticles:', error);
+    return [];
+  }
 }
 
 /**
  * Obtener todos los eventos
  */
 export async function getEvents() {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'events',
-    sort: 'date',
-    limit: 50,
-    depth: 1,
-  });
-  return data.docs.map(transformPayloadEvent);
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'events',
+      sort: 'date',
+      limit: 50,
+      depth: 1,
+    });
+    return data.docs.map(transformPayloadEvent);
+  } catch (error) {
+    console.error('Error in getEvents:', error);
+    return [];
+  }
 }
 
 /**
  * Obtener un evento por su slug
  */
 export async function getEventBySlug(slug: string) {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'events',
-    where: {
-      slug: {
-        equals: slug,
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'events',
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-    limit: 1,
-    depth: 1,
-  });
-  return data.docs[0] ? transformPayloadEvent(data.docs[0]) : null;
+      limit: 1,
+      depth: 1,
+    });
+    return data.docs[0] ? transformPayloadEvent(data.docs[0]) : null;
+  } catch (error) {
+    console.error('Error in getEventBySlug:', error);
+    return null;
+  }
 }
 
 /**
  * Obtener todos los autores (equipo)
  */
 export async function getAuthors() {
-  const payload = await getPayloadClient();
-  const data = await payload.find({
-    collection: 'authors',
-    limit: 100,
-  });
-  return data.docs.map(transformPayloadAuthor);
+  try {
+    const payload = await getPayloadClient();
+    const data = await payload.find({
+      collection: 'authors',
+      limit: 100,
+    });
+    return data.docs.map(transformPayloadAuthor);
+  } catch (error) {
+    console.error('Error in getAuthors:', error);
+    return [];
+  }
 }
 
 // Transformadores de datos (Payload -> Frontend Interface)
