@@ -40,7 +40,7 @@ const renderRichText = (content: any, mascotColor: string) => {
                 );
 
             case 'heading':
-                const Tag = node.tag as keyof JSX.IntrinsicElements; // h1, h2, h3...
+                const Tag = node.tag as keyof React.JSX.IntrinsicElements; // h1, h2, h3...
                 return (
                     <Tag key={index} className="font-display font-bold mt-8 mb-4">
                         {node.children?.map((child: any, i: number) => renderNode(child, i))}
