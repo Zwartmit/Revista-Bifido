@@ -1,58 +1,33 @@
-// API Service para integración con Payload CMS
-import qs from 'qs';
+'use server';
 
-const PAYLOAD_URL = process.env.NEXT_PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
-
-/**
- * Función genérica para construir URLs de Payload
- */
-function getPayloadURL(path: string = '') {
-  return `${PAYLOAD_URL}${path}`;
-}
+// API Service para integración con Payload CMS usando Server Actions
+import { getPayload } from 'payload';
+import configPromise from '@/payload/payload.config';
 
 /**
- * Función genérica para hacer llamadas a la API de Payload
+ * Obtener instancia de Payload (Internal)
  */
-async function fetchPayload(collection: string, params: any = {}, options: RequestInit = {}) {
-  const stringifiedParams = qs.stringify(params, { addQueryPrefix: true });
-  const url = `${getPayloadURL(`/api/${collection}`)}${stringifiedParams}`;
-
-  try {
-    const res = await fetch(url, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      cache: 'no-store', // Para Next.js: siempre obtener datos frescos en dev
-    });
-
-    if (!res.ok) {
-      throw new Error(`Payload API call failed: ${res.status} ${res.statusText}`);
-    }
-
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error(`Error fetching ${collection}:`, error);
-    throw error;
-  }
+async function getPayloadClient() {
+  return await getPayload({
+    config: configPromise,
+  });
 }
 
 /**
  * Obtener todos los artículos
  */
 export async function getArticles(limit?: number) {
-  const params = {
-    sort: '-publishedAt', // Descending
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'articles',
+    sort: '-publishedAt',
     limit: limit || 10,
     where: {
       status: {
         equals: 'published',
       },
     }
-  };
-  const data = await fetchPayload('articles', params);
+  });
   return data.docs.map(transformPayloadArticle);
 }
 
@@ -60,15 +35,16 @@ export async function getArticles(limit?: number) {
  * Obtener un artículo por su slug
  */
 export async function getArticleBySlug(slug: string) {
-  const params = {
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'articles',
     where: {
       slug: {
         equals: slug,
       },
     },
     limit: 1,
-  };
-  const data = await fetchPayload('articles', params);
+  });
   return data.docs[0] ? transformPayloadArticle(data.docs[0]) : null;
 }
 
@@ -76,7 +52,9 @@ export async function getArticleBySlug(slug: string) {
  * Obtener artículos por sección
  */
 export async function getArticlesBySection(sectionSlug: string) {
-  const params = {
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'articles',
     where: {
       'section.slug': {
         equals: sectionSlug,
@@ -86,8 +64,7 @@ export async function getArticlesBySection(sectionSlug: string) {
       },
     },
     sort: '-publishedAt',
-  };
-  const data = await fetchPayload('articles', params);
+  });
   return data.docs.map(transformPayloadArticle);
 }
 
@@ -95,7 +72,11 @@ export async function getArticlesBySection(sectionSlug: string) {
  * Obtener todas los personajes
  */
 export async function getMascots() {
-  const data = await fetchPayload('mascots');
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'mascots',
+    limit: 100,
+  });
   return data.docs.map(transformPayloadMascot);
 }
 
@@ -103,15 +84,16 @@ export async function getMascots() {
  * Obtener un personaje por su slug
  */
 export async function getMascotBySlug(slug: string) {
-  const params = {
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'mascots',
     where: {
       slug: {
         equals: slug,
       },
     },
     limit: 1,
-  };
-  const data = await fetchPayload('mascots', params);
+  });
   return data.docs[0] ? transformPayloadMascot(data.docs[0]) : null;
 }
 
@@ -119,7 +101,11 @@ export async function getMascotBySlug(slug: string) {
  * Obtener todas las secciones
  */
 export async function getSections() {
-  const data = await fetchPayload('sections');
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'sections',
+    limit: 100,
+  });
   return data.docs;
 }
 
@@ -127,7 +113,9 @@ export async function getSections() {
  * Buscar artículos
  */
 export async function searchArticles(query: string) {
-  const params = {
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'articles',
     where: {
       or: [
         {
@@ -145,8 +133,7 @@ export async function searchArticles(query: string) {
         equals: 'published',
       },
     },
-  };
-  const data = await fetchPayload('articles', params);
+  });
   return data.docs.map(transformPayloadArticle);
 }
 
@@ -154,12 +141,13 @@ export async function searchArticles(query: string) {
  * Obtener todos los eventos
  */
 export async function getEvents() {
-  const params = {
-    sort: 'date', // Ascending (nearest first)
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'events',
+    sort: 'date',
     limit: 50,
     depth: 1,
-  };
-  const data = await fetchPayload('events', params);
+  });
   return data.docs.map(transformPayloadEvent);
 }
 
@@ -167,7 +155,9 @@ export async function getEvents() {
  * Obtener un evento por su slug
  */
 export async function getEventBySlug(slug: string) {
-  const params = {
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'events',
     where: {
       slug: {
         equals: slug,
@@ -175,8 +165,7 @@ export async function getEventBySlug(slug: string) {
     },
     limit: 1,
     depth: 1,
-  };
-  const data = await fetchPayload('events', params);
+  });
   return data.docs[0] ? transformPayloadEvent(data.docs[0]) : null;
 }
 
@@ -184,34 +173,36 @@ export async function getEventBySlug(slug: string) {
  * Obtener todos los autores (equipo)
  */
 export async function getAuthors() {
-  const data = await fetchPayload('authors');
+  const payload = await getPayloadClient();
+  const data = await payload.find({
+    collection: 'authors',
+    limit: 100,
+  });
   return data.docs.map(transformPayloadAuthor);
 }
 
 // Transformadores de datos (Payload -> Frontend Interface)
 
-export function transformPayloadArticle(doc: any) {
+function transformPayloadArticle(doc: any) {
   return {
     id: doc.id,
     slug: doc.slug,
     title: doc.title,
     excerpt: doc.excerpt,
     content: doc.content, // RichText JSON
-    author: doc.author ? doc.author.name : 'Revista Bífido',
+    author: doc.author ? (typeof doc.author === 'object' ? doc.author.name : 'Revista Bífido') : 'Revista Bífido',
     publishedAt: doc.publishedAt,
-    // Prioritize constructed URL because staticURL config might be missing/broken in Media collection
     featuredImage: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
     section: doc.section?.slug || 'general',
-    // mascotId can be derived if sections are related to mascots
     mascotId: doc.section?.mascot?.slug || '',
   };
 }
 
-export function transformPayloadMascot(doc: any) {
+function transformPayloadMascot(doc: any) {
   return {
     id: doc.slug,
     name: doc.name,
-    section: doc.slug, // Assuming mascot slug matches section slug usually
+    section: doc.slug,
     slug: doc.slug,
     description: doc.description,
     religion: doc.religion,
@@ -219,7 +210,6 @@ export function transformPayloadMascot(doc: any) {
     favoriteColor: doc.favoriteColor,
     image: doc.image?.filename ? `/media/${doc.image.filename}` : (doc.image?.url || '/images/placeholder.png'),
     color: {
-      // Mocked colors or accessed if added to schema
       primary: doc.colorPrimary || '#000000',
       secondary: doc.colorSecondary || '#ffffff',
       dark: doc.colorDark || '#000000',
@@ -228,7 +218,7 @@ export function transformPayloadMascot(doc: any) {
   };
 }
 
-export function transformPayloadEvent(doc: any) {
+function transformPayloadEvent(doc: any) {
   return {
     id: doc.id,
     slug: doc.slug,
@@ -245,7 +235,6 @@ export function transformPayloadEvent(doc: any) {
     ticketLink: doc.ticketLink,
     organizer: doc.organizer,
     status: doc.status || 'upcoming',
-    // Prioritize constructed URL
     image: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
     gallery: doc.gallery?.map((item: any) => ({
       id: item.id,
@@ -255,7 +244,7 @@ export function transformPayloadEvent(doc: any) {
   };
 }
 
-export function transformPayloadAuthor(doc: any) {
+function transformPayloadAuthor(doc: any) {
   return {
     id: doc.id,
     name: doc.name,
