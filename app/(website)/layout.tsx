@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Bebas_Neue } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -17,6 +18,12 @@ const bebas = Bebas_Neue({
   variable: '--font-bebas',
 });
 
+const jackInput = localFont({
+  src: '../../app/fonts/JackInput.woff2',
+  variable: '--font-jack',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: 'Revista Bífido - Periodismo crudo para sensibilidades frágiles',
   description: 'Revista digital, cultural, alternativa e independiente',
@@ -29,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${bebas.variable}`}>
+    <html lang="es" className={`${inter.variable} ${bebas.variable} ${jackInput.variable}`}>
       <body className="bg-bifido-black text-white font-sans antialiased">
         <Header />
         <main className="min-h-screen">

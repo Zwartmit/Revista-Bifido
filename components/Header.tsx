@@ -2,16 +2,33 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { mascots } from '@/lib/mascots';
-import { useRef } from 'react';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMascotMenuOpen, setIsMascotMenuOpen] = useState(false);
     const pathname = usePathname();
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    // Close menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsMascotMenuOpen(false);
+            }
+        };
+
+        if (isMascotMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isMascotMenuOpen]);
 
     // Find active mascot based on pathname
     const activeMascot = mascots.find(m => pathname === `/${m.slug}`);
@@ -23,14 +40,13 @@ export default function Header() {
                 <nav className="container mx-auto px-4 py-4">
                     {/* Mobile Layout - Logo and Menu Button side by side */}
                     <div className="flex md:hidden items-center justify-between">
-                        <Link href="/" className="flex items-center">
+                        <Link href="/" className="relative h-12 w-48 lg:h-14 lg:w-56" onClick={() => setIsMenuOpen(false)}>
                             <Image
-                                src="/logo-white.png"
+                                src="/logos/bifido.svg"
                                 alt="Revista Bífido"
-                                width={150}
-                                height={40}
-                                priority
+                                fill
                                 className="object-contain"
+                                priority
                             />
                         </Link>
 
@@ -47,7 +63,7 @@ export default function Header() {
                     <div className="hidden md:flex items-center justify-between">
                         <Link href="/" className="flex items-center flex-shrink-0">
                             <Image
-                                src="/logo-white.png"
+                                src="/logos/bifido.svg"
                                 alt="Revista Bífido"
                                 width={180}
                                 height={50}
@@ -59,14 +75,14 @@ export default function Header() {
                         {/* Desktop Navigation */}
                         <div className="flex items-center gap-2 lg:gap-4">
                             <Link href="/" className="flex items-center gap-2 text-bifido-neon font-display tracking-wider text-lg transition-colors uppercase">
-                                <Image src="/icons/Home.png" alt="Inicio" width={20} height={20} className="object-contain" />
+                                <Image src="/icons/home.svg" alt="Inicio" width={20} height={20} className="object-contain" />
                                 INICIO
                             </Link>
 
                             <div className="h-4 w-[2px] bg-bifido-neon mx-1 lg:mx-2" />
 
                             {/* Mascot buttons Dropdown */}
-                            <div className="relative">
+                            <div className="relative" ref={menuRef}>
                                 <button
                                     onClick={() => setIsMascotMenuOpen(!isMascotMenuOpen)}
                                     className="flex items-center gap-1 text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase"
@@ -76,17 +92,13 @@ export default function Header() {
                                 </button>
 
                                 {isMascotMenuOpen && (
-                                    <>
-                                        <div className="fixed inset-0 z-40 cursor-pointer" onClick={() => setIsMascotMenuOpen(false)}></div>
-                                        {/* Horizontal Mascot Menu centered on viewport */}
-                                        <div className="fixed top-[100px] left-1/2 -translate-x-1/2 w-max max-w-[95vw] overflow-x-auto bg-black border border-bifido-neon rounded-full py-4 px-6 lg:px-8 shadow-[0_0_15px_rgba(204,253,41,0.2)] flex flex-row items-center gap-4 lg:gap-8 justify-center z-50">
-                                            {[...mascots].sort((a, b) => a.section.localeCompare(b.section)).map((mascot) => (
-                                                <div key={mascot.id} onClick={() => setIsMascotMenuOpen(false)}>
-                                                    <MascotNavLink mascot={mascot} />
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </>
+                                    <div className="fixed top-[100px] left-1/2 -translate-x-1/2 w-max max-w-[95vw] overflow-x-auto bg-black border border-bifido-neon rounded-full py-4 px-6 lg:px-8 shadow-[0_0_15px_rgba(204,253,41,0.2)] flex flex-row items-center gap-4 lg:gap-8 justify-center z-50">
+                                        {[...mascots].sort((a, b) => a.section.localeCompare(b.section)).map((mascot) => (
+                                            <div key={mascot.id} onClick={() => setIsMascotMenuOpen(false)}>
+                                                <MascotNavLink mascot={mascot} />
+                                            </div>
+                                        ))}
+                                    </div>
                                 )}
                             </div>
 
@@ -108,7 +120,7 @@ export default function Header() {
                     {isMenuOpen && (
                         <div className="md:hidden mt-4 pb-4 space-y-4">
                             <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 text-bifido-neon font-display tracking-wider text-xl hover:text-white transition-colors px-2">
-                                <Image src="/icons/Home.png" alt="Home" width={24} height={24} className="object-contain" />
+                                <Image src="/icons/home.svg" alt="Home" width={24} height={24} className="object-contain" />
                                 Inicio
                             </Link>
 
@@ -156,22 +168,30 @@ export default function Header() {
                 </nav>
 
                 {/* Scrolling Marquee Tape */}
-                <div className="w-full bg-bifido-neon overflow-hidden py-1 border-b border-black">
-                    <div className="whitespace-nowrap animate-marquee flex items-center gap-6 text-black font-display tracking-widest text-lg py-2">
-                        {/* First set of items */}
-                        {Array(5).fill(null).map((_, i) => (
-                            <div key={`first-${i}`} className="flex items-center gap-12">
-                                <span>PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES</span>
-                                <span>•</span>
-                            </div>
-                        ))}
-                        {/* Duplicated set for seamless loop */}
-                        {Array(5).fill(null).map((_, i) => (
-                            <div key={`second-${i}`} className="flex items-center gap-12">
-                                <span>PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES</span>
-                                <span>•</span>
-                            </div>
-                        ))}
+                <div className="w-full bg-bifido-neon overflow-hidden flex">
+                    <div className="whitespace-nowrap animate-marquee flex w-max py-[6px]">
+                        {/* First exact half */}
+                        <div className="flex items-center justify-around flex-shrink-0">
+                            {Array(5).fill(null).map((_, i) => (
+                                <div key={`first-${i}`} className="flex items-center justify-center">
+                                    <span style={{ fontFamily: 'var(--font-jack, "JackInput", monospace)' }} className="text-black text-sm md:text-base tracking-[0.25em] px-8 pt-[2px]">
+                                        PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES
+                                    </span>
+                                    <Image src="/icons/arrow.svg" alt="separator" width={14} height={14} className="w-5 h-5 object-contain opacity-90" />
+                                </div>
+                            ))}
+                        </div>
+                        {/* Second exact half for seamless loop */}
+                        <div className="flex items-center justify-around flex-shrink-0">
+                            {Array(5).fill(null).map((_, i) => (
+                                <div key={`second-${i}`} className="flex items-center justify-center">
+                                    <span style={{ fontFamily: 'var(--font-jack, "JackInput", monospace)' }} className="text-black text-sm md:text-base tracking-[0.25em] px-8 pt-[2px]">
+                                        PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES
+                                    </span>
+                                    <Image src="/icons/arrow.svg" alt="separator" width={14} height={14} className="w-5 h-5 object-contain opacity-90" />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </header>

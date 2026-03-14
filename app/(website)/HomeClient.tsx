@@ -70,8 +70,9 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="flex justify-center mb-16">
                         <div className="inline-block relative">
-                            <h2 className="font-display text-4xl text-white tracking-widest bg-gradient-to-r from-transparent to-black/50 px-8 py-2 rounded">
-                                LA MANADA <span className="text-bifido-orange">{'>'}</span>
+                            <h2 className="font-display text-4xl text-white tracking-widest bg-gradient-to-r from-transparent to-black/50 px-8 py-2 rounded flex items-center gap-4">
+                                LA MANADA 
+                                <Image src="/icons/arrow_o.svg" alt="arrow" width={24} height={20} className="object-contain" />
                             </h2>
                         </div>
                     </div>

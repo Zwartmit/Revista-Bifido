@@ -48,12 +48,13 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         display: ['var(--font-bebas)', 'sans-serif'],
+        jack: ['var(--font-jack)', 'monospace'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
         'float': 'float 3s ease-in-out infinite',
-        'marquee': 'marquee 30s linear infinite',
+        'marquee': 'marquee 60s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -69,8 +70,8 @@ const config: Config = {
           '50%': { transform: 'translateY(-10px)' },
         },
         marquee: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
         },
       },
     },
