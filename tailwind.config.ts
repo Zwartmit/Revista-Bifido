@@ -49,6 +49,8 @@ const config: Config = {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         display: ['var(--font-bebas)', 'sans-serif'],
         jack: ['var(--font-jack)', 'monospace'],
+        anton: ['var(--font-anton)', 'sans-serif'],
+        googlesans: ['var(--font-googlesans)', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

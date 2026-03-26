@@ -48,11 +48,20 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
         <div className="min-h-screen bg-black">
             {/* Hero Section */}
             <section className="relative w-full h-screen overflow-hidden mt-0">
+                {/* Desktop Hero */}
                 <Image
-                    src="/hero/Hero.png"
+                    src="/hero/desk.png"
                     alt="La Manada Bífido"
                     fill
-                    className="object-cover object-bottom pt-10"
+                    className="hidden lg:block object-cover object-bottom pt-10"
+                    priority
+                />
+                {/* Mobile/Tablet Hero */}
+                <Image
+                    src="/hero/movil.png"
+                    alt="La Manada Bífido"
+                    fill
+                    className="block lg:hidden object-cover object-center"
                     priority
                 />
             </section>
@@ -61,7 +70,7 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
             <div className="w-full h-32 bg-gradient-to-b from-transparent to-black" style={{ marginTop: '-8rem', position: 'relative', zIndex: 10 }} />
 
             {/* La Manada Section */}
-            <section id="la-manada" className="py-20 relative bg-black">
+            <section id="la-manada" className="pb-20 relative bg-black">
                 {/* Background Green Element */}
                 <div className="absolute top-0 right-0 w-full h-full opacity-30 pointer-events-none overflow-hidden flex justify-end">
                     <div className="w-[800px] h-[800px] bg-[url('/gradiente-verde.png')] bg-contain bg-right bg-no-repeat mix-blend-screen opacity-50 translate-x-1/4" />
@@ -70,10 +79,12 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="flex justify-center mb-16">
                         <div className="inline-block relative">
-                            <h2 className="font-display text-4xl text-white tracking-widest bg-gradient-to-r from-transparent to-black/50 px-8 py-2 rounded flex items-center gap-4">
-                                LA MANADA 
-                                <Image src="/icons/arrow_o.svg" alt="arrow" width={24} height={20} className="object-contain" />
-                            </h2>
+                            <a href="/elparche">
+                                <h2 className="font-display hover:scale-110 transition-transform duration-300 text-4xl text-white tracking-widest bg-gradient-to-r from-transparent to-black/50 px-8 py-2 rounded flex items-center gap-4">
+                                    EXPLORA EL PARCHE 
+                                    <Image src="/icons/arrow_o.svg" alt="arrow" width={24} height={20} className="object-contain animate-float" />
+                                </h2>
+                            </a>
                         </div>
                     </div>
 
@@ -145,7 +156,7 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                 <div className="container mx-auto px-4">
                     <div className="flex items-center gap-4 mb-12 justify-center">
                         <Clock className="text-bifido-orange" size={32} />
-                        <h2 className="font-display text-4xl text-white tracking-widest">LO ÚLTIMO</h2>
+                        <h2 className="font-display text-4xl text-white tracking-widest">LO MÁS FRESQUITO</h2>
                     </div>
 
                     <div ref={recentRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

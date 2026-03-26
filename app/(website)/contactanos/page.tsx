@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Mail, Facebook, Instagram, Youtube } from 'lucide-react';
-import { RiTwitterXLine, RiTiktokLine } from "react-icons/ri";
+import Image from 'next/image';
+import { Mail } from 'lucide-react';
+import { RiFacebookFill, RiWhatsappFill, RiInstagramFill, RiYoutubeFill } from "react-icons/ri";
 import gsap from 'gsap';
 
 export default function ContactPage() {
@@ -16,8 +17,8 @@ export default function ContactPage() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
-          stagger: 0.1,
+          duration: 0.8,
+          stagger: 0.2,
           ease: 'power3.out',
         }
       );
@@ -25,88 +26,94 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-24 md:pt-52">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div ref={contentRef} className="flex flex-col items-center">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-bifido-gray rounded-full mb-4">
-              <Mail className="text-white" size={32} />
-            </div>
-            <h1 className="font-display text-5xl md:text-6xl mb-4">
-              Contáctanos
+    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/backgrounds/contact_bg.png"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/45"></div>
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10 py-12">
+        <div ref={contentRef} className="flex flex-col items-center gap-12 md:gap-14">
+          
+          {/* Heading Section */}
+          <div className="text-center">
+            <h1 className="font-googlesans font-bold text-[60px] md:text-[120px] leading-none text-bifido-neon tracking-tighter uppercase">
+              CONTÁCTANOS
             </h1>
-            <p className="text-xl text-bifido-lightgray max-w-2xl mx-auto">
-              ¿Tienes una historia que contar? ¿Quieres colaborar con nosotros?
-              Estamos aquí para escucharte.
-            </p>
           </div>
 
-          {/* Contact Info Cards */}
-          <div className="w-full grid md:grid-cols-2 gap-8 mb-12">
-            {/* Email Card */}
-            <div className="bg-bifido-gray rounded-2xl p-8 text-center hover:bg-bifido-gray/80 transition-colors group flex flex-col items-center justify-center min-h-[250px]">
-              <h2 className="font-display text-3xl mb-6 text-white">Escríbenos</h2>
-              <a
-                href="mailto:bifidomedio@gmail.com"
-                className="text-xl md:text-2xl text-bifido-lightgray group-hover:text-white transition-colors break-all"
-              >
-                bifidomedio@gmail.com
-              </a>
+          {/* Top Section: Email | Logo | Socials */}
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center justify-items-center gap-8 md:gap-0 w-full max-w-6xl">
+            
+            {/* Left: Email Pill (Justified right on desktop) */}
+            <div className="flex justify-center md:justify-end w-full">
+              <div className="bg-white rounded-full px-6 py-3 flex items-center gap-3 shadow-2xl hover:scale-105 transition-transform duration-300">
+                <div className="bg-black rounded-full p-1.5">
+                  <Mail className="text-white" size={20} />
+                </div>
+                <span className="font-anton text-black text-xl tracking-wider">bifidomedio@gmail.com</span>
+              </div>
             </div>
 
-            {/* Social Media Card */}
-            <div className="bg-bifido-gray rounded-2xl p-8 text-center flex flex-col items-center justify-center min-h-[250px]">
-              <h2 className="font-display text-3xl mb-6 text-white">Síguenos</h2>
-              <div className="flex flex-wrap justify-center gap-6">
-                <a
-                  href="https://www.facebook.com/revistabifido/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-bifido-black rounded-full text-bifido-lightgray hover:text-white hover:scale-110 transition-all"
-                  aria-label="Facebook"
-                >
-                  <Facebook size={24} />
-                </a>
-                <a
-                  href="https://www.instagram.com/revistabifido/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-bifido-black rounded-full text-bifido-lightgray hover:text-white hover:scale-110 transition-all"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={24} />
-                </a>
-                <a
-                  href="https://x.com/revistabifido"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-bifido-black rounded-full text-bifido-lightgray hover:text-white hover:scale-110 transition-all"
-                  aria-label="Twitter"
-                >
-                  <RiTwitterXLine size={24} />
-                </a>
-                <a
-                  href="https://www.youtube.com/@revistabifido"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-bifido-black rounded-full text-bifido-lightgray hover:text-white hover:scale-110 transition-all"
-                  aria-label="YouTube"
-                >
-                  <Youtube size={24} />
-                </a>
-                <a
-                  href="https://www.tiktok.com/@revistabifido"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-bifido-black rounded-full text-bifido-lightgray hover:text-white hover:scale-110 transition-all"
-                  aria-label="Tiktok"
-                >
-                  <RiTiktokLine size={24} />
-                </a>
+            {/* Center: Official Circular Logo */}
+            <div className="relative w-40 h-40 md:w-56 md:h-56 flex items-center justify-center group">
+              <Image 
+                src="/logos/bifido_contact.svg" 
+                alt="Bífido Logo" 
+                width={224} 
+                height={224} 
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            {/* Right: Social Pill (Justified left on desktop) */}
+            <div className="flex justify-center md:justify-start w-full">
+              <div className="bg-white rounded-full px-8 py-3 flex items-center gap-4 shadow-2xl hover:scale-105 transition-transform duration-300">
+                {[
+                  { Icon: RiFacebookFill, href: "https://www.facebook.com/revistabifido/" },
+                  { Icon: RiWhatsappFill, href: "https://wa.me/" },
+                  { Icon: RiInstagramFill, href: "https://www.instagram.com/revistabifido/" },
+                  { Icon: RiYoutubeFill, href: "https://www.youtube.com/@revistabifido" },
+                ].map(({ Icon, href }, idx) => (
+                  <a
+                    key={idx}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative overflow-hidden w-9 h-9 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
+                  >
+                    {/* Long Shadow Effect using flattened opacity stacking context */}
+                    <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                      {Array.from({ length: 15 }).map((_, i) => (
+                        <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
+                          <Icon size={20} />
+                        </div>
+                      ))}
+                    </div>
+                    {/* Main Icon */}
+                    <div className="relative z-10 text-black flex items-center justify-center">
+                      <Icon size={20} />
+                    </div>
+                  </a>
+                ))}
               </div>
             </div>
           </div>
+
+          {/* Bottom Message Pill */}
+          <div className="bg-[#1a2e05]/90 backdrop-blur-sm border border-bifido-neon/20 rounded-full px-10 py-4 max-w-6xl w-full text-center shadow-2xl hover:border-bifido-neon transition-colors">
+            <p className="text-white font-googlesans font-medium text-lg md:text-xl tracking-wide">
+              ¿Tienes una historia que contar?, ¿Quieres colaborar con nosotros?, Estamos aquí para escucharte.
+            </p>
+          </div>
+
         </div>
       </div>
     </div>

@@ -41,7 +41,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-10 mb-16">
           {/* Síguenos */}
           <div className="flex items-center gap-4 md:w-1/3">
-            <span className="text-white font-display text-xl tracking-wider">Síguenos</span>
+            <span className="text-white font-display text-xl tracking-wider">Síguenos:</span>
             <div className="flex items-center gap-3">
               {[
                 { Icon: RiFacebookFill, href: "https://www.facebook.com/revistabifido/" },
@@ -88,19 +88,19 @@ export default function Footer() {
             <Image src="/icons/arrow_g.svg" alt="arrow" width={24} height={40} className="object-contain" />
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 lg:gap-4 md:w-2/4">
-            <Link href="/" className="flex items-center gap-2 text-bifido-neon font-display tracking-wider text-lg transition-colors uppercase">
+          <div className="hidden md:flex flex-wrap items-center justify-center gap-4 lg:gap-6 md:w-3/4 mx-auto" ref={menuRef}>
+            <Link href="/" className="flex items-center gap-2 text-bifido-neon font-display tracking-wider text-lg transition-colors uppercase px-2">
               <Image src="/icons/home.svg" alt="Inicio" width={20} height={20} className="object-contain" />
               INICIO
             </Link>
 
-            <div className="h-4 w-[2px] bg-bifido-neon mx-1" />
+            <div className="h-4 w-[2px] bg-bifido-neon" />
 
             {/* Mascot buttons Dropdown */}
-            <div className="relative" ref={menuRef}>
+            <div className="relative">
               <button
                 onClick={() => setIsMascotMenuOpen(!isMascotMenuOpen)}
-                className="flex items-center gap-1 text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase"
+                className="flex items-center gap-1 text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase px-2"
               >
                 LA MANADA
                 <ChevronDown size={18} className={`transform transition-transform duration-200 ${isMascotMenuOpen ? 'rotate-180' : ''}`} />
@@ -108,7 +108,7 @@ export default function Footer() {
 
               {isMascotMenuOpen && (
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-6 bg-black border border-bifido-neon rounded-full py-4 px-6 lg:px-8 shadow-[0_0_15px_rgba(204,253,41,0.2)] flex flex-row items-center gap-4 lg:gap-8 justify-center w-max max-w-[95vw] overflow-x-auto z-[60]">
-                  {[...mascots].sort((a, b) => a.section.localeCompare(b.section)).map((mascot) => (
+                  {mascots.map((mascot) => (
                     <Link
                       key={mascot.id}
                       href={`/${mascot.slug}`}
@@ -126,17 +126,17 @@ export default function Footer() {
               )}
             </div>
 
-            <div className="h-4 w-[2px] bg-bifido-neon mx-1" />
+            <div className="h-4 w-[2px] bg-bifido-neon" />
 
-            <Link href="/elparche" className="text-white font-display text-lg tracking-wider hover:text-bifido-neon transition-colors uppercase">EL PARCHE</Link>
+            <Link href="/elparche" className="text-white font-display text-lg tracking-wider hover:text-bifido-neon transition-colors uppercase px-2">EL PARCHE</Link>
 
-            <div className="h-4 w-[2px] bg-bifido-neon mx-1" />
+            <div className="h-4 w-[2px] bg-bifido-neon" />
 
-            <Link href="/eventos" className="text-white font-display text-lg tracking-wider hover:text-bifido-neon transition-colors uppercase">EVENTOS</Link>
+            <Link href="/eventos" className="text-white font-display text-lg tracking-wider hover:text-bifido-neon transition-colors uppercase px-2">EVENTOS</Link>
 
-            <div className="h-4 w-[2px] bg-bifido-neon mx-1" />
+            <div className="h-4 w-[2px] bg-bifido-neon" />
 
-            <Link href="/contactanos" className="text-white font-display text-lg tracking-wider hover:text-bifido-neon transition-colors uppercase">CONTÁCTANOS</Link>
+            <Link href="/contactanos" className="text-white font-display text-lg tracking-wider hover:text-bifido-neon transition-colors uppercase px-2">CONTÁCTANOS</Link>
           </div>
 
           {/* Empty spacer to maintain layout balance where the scroll button used to be */}

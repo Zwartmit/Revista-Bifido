@@ -35,7 +35,7 @@ export default function ScrollToTop() {
             {isVisible && (
                 <button
                     onClick={scrollToTop}
-                    className="fixed bottom-8 right-8 z-50 w-[50px] h-[50px] flex items-center justify-center hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(204,253,41,0.3)] group"
+                    className="fixed bottom-8 bg-black rounded-2xl right-8 z-50 w-[50px] h-[50px] flex items-center justify-center hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(204,253,41,0.3)] group"
                     aria-label="Volver arriba"
                 >
                     <Image 
