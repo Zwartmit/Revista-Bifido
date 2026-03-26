@@ -110,10 +110,11 @@ export default function EventsClient({ events }: EventsClientProps) {
                         >
                             {/* Image */}
                             <div className="relative h-48 w-full group-hover:scale-105 transition-transform duration-500">
-                                <img
+                                <Image
                                     src={event.image || '/images/placeholder-article.jpg'}
                                     alt={event.title}
-                                    className="object-cover w-full h-full"
+                                    fill
+                                    className="object-cover"
                                 />
                             </div>
 

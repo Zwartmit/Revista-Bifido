@@ -40,10 +40,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
                 {/* Hero */}
                 <div className="relative h-[400px] w-full rounded-2xl overflow-hidden mb-8 shadow-2xl">
-                    <img
+                    <Image
                         src={event.image || '/images/placeholder-article.jpg'}
                         alt={event.title}
-                        className="object-cover w-full h-full"
+                        fill
+                        className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-bifido-black/90 to-transparent" />
                     <div className="absolute bottom-0 left-0 p-8">
@@ -142,10 +143,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {event.gallery.map((item: any) => (
                                 <div key={item.id} className="relative h-64 rounded-xl overflow-hidden border-2 border-transparent hover:border-bifido-red transition-all duration-300 group">
-                                    <img
+                                    <Image
                                         src={item.url}
                                         alt={item.alt || 'Imagen de galería'}
-                                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                                        fill
+                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
                                 </div>
                             ))}

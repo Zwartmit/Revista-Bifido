@@ -79,12 +79,12 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="flex justify-center mb-16">
                         <div className="inline-block relative">
-                            <a href="/elparche">
+                            <Link href="/elparche">
                                 <h2 className="font-display hover:scale-110 transition-transform duration-300 text-4xl text-white tracking-widest bg-gradient-to-r from-transparent to-black/50 px-8 py-2 rounded flex items-center gap-4">
                                     EXPLORA EL PARCHE 
                                     <Image src="/icons/arrow_o.svg" alt="arrow" width={24} height={20} className="object-contain animate-float" />
                                 </h2>
-                            </a>
+                            </Link>
                         </div>
                     </div>
 
