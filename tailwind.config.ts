@@ -36,7 +36,7 @@ const config: Config = {
           dark: '#F57C00',
         },
         bifido: {
-          black: '#1a1a1a',
+          black: '#000000',
           gray: '#2a2a2a',
           lightgray: '#e0e0e0',
           neon: '#CCFD29',
@@ -57,6 +57,8 @@ const config: Config = {
         'slide-up': 'slideUp 0.5s ease-out',
         'float': 'float 3s ease-in-out infinite',
         'marquee': 'marquee 60s linear infinite',
+        'smoke': 'smoke 20s ease-in-out infinite alternate',
+        'smoke-reverse': 'smokeReverse 25s ease-in-out infinite alternate',
       },
       keyframes: {
         fadeIn: {
@@ -74,6 +76,16 @@ const config: Config = {
         marquee: {
           '0%': { transform: 'translateX(-50%)' },
           '100%': { transform: 'translateX(0%)' },
+        },
+        smoke: {
+          '0%': { transform: 'scale(1.1) translate(0, 0) rotate(0deg)' },
+          '50%': { transform: 'scale(1.3) translate(-8%, -8%) rotate(3deg)' },
+          '100%': { transform: 'scale(1.2) translate(8%, 8%) rotate(-3deg)' },
+        },
+        smokeReverse: {
+          '0%': { transform: 'scale(1.1) translate(8%, 8%) rotate(-3deg)' },
+          '50%': { transform: 'scale(1.3) translate(-8%, -8%) rotate(3deg)' },
+          '100%': { transform: 'scale(1.2) translate(0, 0) rotate(0deg)' },
         },
       },
     },

@@ -39,7 +39,7 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-black/45"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 py-12">
+      <div className="container mx-auto px-4 relative z-10">
         <div ref={contentRef} className="flex flex-col items-center gap-12 md:gap-14">
           
           {/* Heading Section */}
@@ -55,8 +55,16 @@ export default function ContactPage() {
             {/* Left: Email Pill (Justified right on desktop) */}
             <div className="flex justify-center md:justify-end w-full">
               <div className="bg-white rounded-full px-6 py-3 flex items-center gap-3 shadow-2xl hover:scale-105 transition-transform duration-300">
-                <div className="bg-black rounded-full p-1.5">
-                  <Mail className="text-white" size={20} />
+                <div className="relative overflow-hidden w-9 h-9 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group">
+                    {/* Long Shadow Effect using flattened opacity stacking context */}
+                    <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                      {Array.from({ length: 15 }).map((_, i) => (
+                        <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
+                          <Mail className="text-black" size={20} />
+                        </div>
+                      ))}
+                    </div>
+                    <Mail className="text-black" size={20} />
                 </div>
                 <span className="font-anton text-black text-xl tracking-wider">bifidomedio@gmail.com</span>
               </div>
@@ -116,6 +124,9 @@ export default function ContactPage() {
 
         </div>
       </div>
+
+      {/* Shadow Gradient at the Bottom of Hero */}
+      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
     </div>
   );
 }

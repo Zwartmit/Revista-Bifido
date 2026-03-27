@@ -47,13 +47,13 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
     return (
         <div className="min-h-screen bg-black">
             {/* Hero Section */}
-            <section className="relative w-full h-screen overflow-hidden mt-0">
+            <section className="relative w-full h-screen overflow-hidden mt-0 group">
                 {/* Desktop Hero */}
                 <Image
                     src="/hero/desk.png"
                     alt="La Manada Bífido"
                     fill
-                    className="hidden lg:block object-cover object-bottom pt-10"
+                    className="hidden lg:block object-cover object-bottom"
                     priority
                 />
                 {/* Mobile/Tablet Hero */}
@@ -64,10 +64,27 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                     className="block lg:hidden object-cover object-center"
                     priority
                 />
-            </section>
 
-            {/* Separator Gradient */}
-            <div className="w-full h-32 bg-gradient-to-b from-transparent to-black" style={{ marginTop: '-8rem', position: 'relative', zIndex: 10 }} />
+                {/* Explora el Parche Button - Inside Hero */}
+                <div className="absolute bottom-6 md:bottom-2 left-1/2 -translate-x-1/2 z-20 w-fit">
+                    <Link href="/elparche" className="group/btn relative inline-block">
+                        <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover/btn:opacity-100 transition duration-1000 group-hover/btn:duration-200"></div>
+                        <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#fe5e00] rounded-full font-display text-xl md:text-3xl text-white tracking-[0.1em] md:tracking-[0.2em] transition-all duration-300 group-hover/btn:border-[#fe5e00] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
+                            VENGA, PARCHESE 
+                            <Image 
+                                src="/icons/arrow_o.svg" 
+                                alt="arrow" 
+                                width={28} 
+                                height={24} 
+                                className="object-contain md:w-[32px] md:h-[28px] transition-transform duration-300 group-hover/btn:translate-x-2 animate-pulse" 
+                            />
+                        </div>
+                    </Link>
+                </div>
+
+                {/* Shadow Gradient at the Bottom of Hero */}
+                <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
+            </section>
 
             {/* La Manada Section */}
             <section id="la-manada" className="pb-20 relative bg-black">
@@ -77,79 +94,21 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                 </div>
 
                 <div className="container mx-auto px-4 relative z-10">
-                    <div className="flex justify-center mb-16">
-                        <div className="inline-block relative">
-                            <Link href="/elparche">
-                                <h2 className="font-display hover:scale-110 transition-transform duration-300 text-4xl text-white tracking-widest bg-gradient-to-r from-transparent to-black/50 px-8 py-2 rounded flex items-center gap-4">
-                                    EXPLORA EL PARCHE 
-                                    <Image src="/icons/arrow_o.svg" alt="arrow" width={24} height={20} className="object-contain animate-float" />
-                                </h2>
-                            </Link>
-                        </div>
-                    </div>
-
+                    {/* Mascots Section - Hidden for now */}
+{/*                     
                     <div className="flex justify-center flex-wrap gap-x-8 gap-y-12 items-end">
                         {mascots.map((mascot: any, index: number) => {
-                            // Select background aura image
-                            const bgImage = mascot.slug === 'ecorebeldia' ? '/gradiente-verde.png' : '/gradiente-amarillo.png';
-                            // Apply hue rotation to yellow gradient for other mascots based on their primary colors to approximate the visual
-                            let hueRotate = '0deg';
-                            if (mascot.slug === 'malandra' || mascot.slug === 'anika' || mascot.slug === 'punkibri' || mascot.slug === 'mordaz') {
-                                // Since we don't know the exact color required for all, we can fallback to CSS hue-rotate,
-                                // or just rely on the primary color as an underlay glow.
-                                // The image has purple for someone, let's use a subtle drop-shadow trick below instead.
-                            }
-
-                            return (
-                                <Link
-                                    key={mascot.id}
-                                    href={`/${mascot.slug}`}
-                                    className="group relative flex flex-col items-center animate-float hover:z-20"
-                                    style={{ animationDelay: `${index * 0.2}s` }}
-                                >
-                                    <div className="relative w-40 h-56 md:w-56 md:h-72 transition-transform duration-300 group-hover:scale-110">
-                                        {/* Colored underlay glow to tint the aura slightly */}
-                                        <div
-                                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 rounded-full opacity-60 blur-3xl transition-opacity duration-300 group-hover:opacity-100"
-                                            style={{ backgroundColor: mascot.color?.primary }}
-                                        />
-
-                                        {/* Image-based Aura (Swirl) */}
-                                        <div
-                                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] mix-blend-screen opacity-70 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                                            style={{
-                                                backgroundImage: `url('${bgImage}')`,
-                                                backgroundSize: 'contain',
-                                                backgroundPosition: 'center',
-                                                backgroundRepeat: 'no-repeat',
-                                                ...(mascot.slug === 'anika' ? { filter: 'hue-rotate(240deg)' } : {}),
-                                                ...(mascot.slug === 'punkibri' ? { filter: 'hue-rotate(50deg)' } : {}),
-                                                ...(mascot.slug === 'malandra' ? { filter: 'hue-rotate(320deg)' } : {})
-                                            }}
-                                        />
-
-                                        {/* 3D Mascot Image */}
-                                        {mascot.image && (
-                                            <Image
-                                                src={mascot.image}
-                                                alt={mascot.name}
-                                                fill
-                                                className="object-contain relative z-10 drop-shadow-[0_15px_25px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,1)]"
-                                            />
-                                        )}
-                                    </div>
-                                    <h3
-                                        className="absolute -bottom-8 font-display text-xl text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-y-2 pointer-events-none"
-                                        style={{ color: mascot.color?.primary || 'white', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}
-                                    >
-                                        {mascot.name}
-                                    </h3>
-                                </Link>
-                            );
+                            ...
                         })}
                     </div>
+                    */}
                 </div>
             </section>
+
+            {/* Separator */}
+            <div className="w-full flex justify-center py-6 bg-black relative z-10">
+                <div className="w-[90%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/20 to-transparent blur-[0.5px]"></div>
+            </div>
 
             {/* Recent Articles Section (Kept from existing) */}
             <section className="py-20 bg-black relative z-10">
@@ -180,7 +139,7 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                                             />
                                         )}
                                         <div
-                                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold text-black shadow-lg"
+                                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold text-black shadow-lg text-white"
                                             style={{ backgroundColor: color }}
                                         >
                                             {mascot?.name || article.section}
@@ -196,8 +155,8 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                                         <h3 className="font-display text-xl mb-3 text-white flex-1 group-hover:text-bifido-neon transition-colors">{article.title}</h3>
 
                                         <div className="flex items-center gap-2 text-sm font-bold mt-4" style={{ color }}>
-                                            <span>Leer artículo</span>
-                                            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                            <span className='text-white'>Leer artículo</span>
+                                            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform text-white" />
                                         </div>
                                     </div>
                                 </Link>
@@ -208,6 +167,29 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                     {recentArticles.length === 0 && (
                         <p className="text-center text-gray-500 mt-8">No hay artículos recientes.</p>
                     )}
+                </div>
+            </section>
+
+            {/* Separator */}
+            <div className="w-full flex justify-center py-10 bg-black">
+                <div className="w-[80%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/30 to-transparent blur-[0.5px]"></div>
+            </div>
+
+            {/* Contact CTA Section */}
+            <section className="pb-32 pt-10 bg-black relative overflow-hidden">
+                <div className="container mx-auto px-4 text-center relative z-10">
+                    <h2 className="font-display text-4xl md:text-7xl text-white mb-8">
+                        ¿TIENES ALGO QUE <span className="text-bifido-neon">CONTAR</span>?
+                    </h2>
+                    <p className="text-gray-400 max-w-2xl mx-auto mb-14 text-lg md:text-2xl font-googlesans leading-relaxed px-4">
+                        Estamos siempre buscando nuevas voces y parches para visibilizar lo que pasa en la calle. No te quedes con las ganas.
+                    </p>
+                    <Link href="/contactanos" className="group relative inline-block">
+                        <div className="relative flex items-center gap-6 px-8 py-3 bg-bifido-neon text-black rounded-full font-display text-2xl tracking-[0.2em] transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap">
+                            CONTÁCTANOS
+                            <ArrowRight size={32} className="group-hover:translate-x-2 transition-transform" />
+                        </div>
+                    </Link>
                 </div>
             </section>
         </div>

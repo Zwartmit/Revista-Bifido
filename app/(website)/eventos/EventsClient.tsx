@@ -67,7 +67,7 @@ export default function EventsClient({ events }: EventsClientProps) {
     };
 
     return (
-        <div className="min-h-screen bg-bifido-black pt-24 md:pt-52">
+        <div className="min-h-screen bg-black pt-24 md:pt-52">
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="text-center mb-8">
@@ -136,7 +136,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                                         'Pasado'}
                                         </span>
 
-                                        <span className="bg-bifido-black/50 text-gray-300 px-3 py-1 rounded-full text-xs font-bold border border-gray-700">
+                                        <span className="bg-black/50 text-gray-300 px-3 py-1 rounded-full text-xs font-bold border border-gray-700">
                                             {event.category}
                                         </span>
                                     </div>

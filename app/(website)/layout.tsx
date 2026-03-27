@@ -5,7 +5,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
-import BackToHome from '@/components/BackToHome';
+// import BackToHome from '@/components/BackToHome';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -48,14 +48,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${inter.variable} ${bebas.variable} ${jackInput.variable} ${anton.variable} ${outfit.variable}`}>
-      <body className="bg-bifido-black text-white font-sans antialiased">
+      <body className="bg-black text-white font-sans antialiased">
         <Header />
         <main className="min-h-screen">
           {children}
         </main>
         <Footer />
         <ScrollToTop />
-        <BackToHome />
+        {/* <BackToHome /> */}
       </body>
     </html>
   );

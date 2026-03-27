@@ -27,7 +27,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
     }
 
     return (
-        <div className="min-h-screen bg-bifido-black pt-24 md:pt-56 pb-20">
+        <div className="min-h-screen bg-black pt-24 md:pt-56 pb-20">
             <div className="container mx-auto px-4 max-w-4xl">
                 {/* Back Button */}
                 <Link

@@ -15,7 +15,7 @@ Plataforma web inmersiva para la Revista Bífido, una revista digital, cultural,
 ## 🎨 Secciones
 
 1. **Ecorebeldia** (Punkibrí) - Ambiente y activismo ecológico
-2. **Lxs compas de Mordáz** (Mordáz) - Opinión y crítica social
+2. **Lxs compas de Mordaz** (Mordaz) - Opinión y crítica social
 3. **Mala Fama** (Malandra) - Cultura underground
 4. **Muda de Piel** (Anika) - Reducción de riesgos y daños
 5. **Fuegos Diversos** (Incendia) - Género, diversidad y equidad
@@ -72,7 +72,7 @@ bifido-web/
 
 ## 🔗 Integración con CMS
 
-La plataforma está preparada para integrarse con un CMS Headless (Strapi, Sanity, Contentful, etc.). 
+La plataforma está preparada para integrarse con un CMS Headless (Strapi, Sanity, Contentful, etc.).
 
 Los datos de ejemplo en el código deben ser reemplazados por llamadas a la API del CMS.
 

@@ -30,10 +30,21 @@ export default function Footer() {
   }, [isMascotMenuOpen]);
 
   return (
-    <footer className="bg-black pt-16 pb-8 mt-20 relative">
+    <footer className="bg-black pb-8 pt-10 relative overflow-hidden">
+      {/* Background Image / Overlay */}
+      <div className="absolute inset-0 pointer-events-none">
+        <Image
+          src="/backgrounds/manada_bg.jpg"
+          alt="Manada Background"
+          fill
+          className="object-cover opacity-30 grayscale transition-opacity duration-1000"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/80" />
+      </div>
+
       {/* Background radial glow wrapper */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl" style={{ background: 'radial-gradient(circle, #CCFD29 0%, transparent 70%)', transform: 'translate(20%, 50%)' }} />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full opacity-10 blur-3xl" style={{ background: 'radial-gradient(circle, #CCFD29 0%, transparent 70%)', transform: 'translate(20%, 50%)' }} />
       </div>
 
       <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col">

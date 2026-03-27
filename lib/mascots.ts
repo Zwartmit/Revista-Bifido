@@ -37,10 +37,10 @@ export const mascots: Mascot[] = [
   },
   {
     id: 'mordaz',
-    name: 'Mordáz',
-    section: 'Lxs compas de Mordáz',
+    name: 'Mordaz',
+    section: 'Lxs compas de Mordaz',
     slug: 'mordaz',
-    description: 'Crítico implacable y portavoz de las verdades incómodas. Mordáz no se muerde la lengua y expone las contradicciones del sistema con humor ácido.',
+    description: 'Crítico implacable y portavoz de las verdades incómodas. Mordaz no se muerde la lengua y expone las contradicciones del sistema con humor ácido.',
     religion: 'Escepticismo militante',
     age: '42 años',
     favoriteColor: 'Rojo sangre',

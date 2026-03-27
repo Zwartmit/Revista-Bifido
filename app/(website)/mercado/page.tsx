@@ -67,7 +67,7 @@ export default function MercadoPage() {
         : products;
 
     return (
-        <div className="min-h-screen bg-bifido-black pt-24 md:pt-52 pb-20">
+        <div className="min-h-screen bg-black pt-24 md:pt-52 pb-20">
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="text-center mb-12">

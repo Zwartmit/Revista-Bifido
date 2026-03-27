@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opciones de diseño</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+        .font-display {
+            font-family: 'Anton', sans-serif;
+        }
+
+        /* Option 1: Diagonal Slices */
+        .clip-diag-1 {
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+        }
+
+        .clip-diag-2 {
+            clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%);
+            margin-top: -20%;
+        }
+
+        .clip-diag-3 {
+            clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%);
+            margin-top: -20%;
+        }
+
+        .clip-diag-4 {
+            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
+            margin-top: -20%;
+        }
+
+        /* General */
+        body {
+            background-color: #000;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body class="p-8 pb-32">
+    <!-- ROW 2 OF OPTIONS -->
+    <div class="flex flex-col lg:flex-row gap-8 min-h-[700px] w-full max-w-7xl mx-auto mt-16">
+
+        <!-- OPTION 1: FANZINE RECORTES -->
+        <div class="flex-1 flex flex-col gap-4">
+            <div class="text-center">
+                <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">1. RECORTES FANZINE</h3>
+            </div>
+            <div
+                class="flex-1 border border-[#333] flex flex-col bg-[#111] relative rounded-lg p-6 py-12 gap-6 justify-center overflow-hidden">
+                <!-- Item 1 -->
+                <div
+                    class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#4CAF50]/50 -rotate-2 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#4CAF50] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
+                    <span
+                        class="font-display text-2xl text-white group-hover:text-[#4CAF50] transition-colors z-10 shadow-black drop-shadow-md">PUNKIBRÍ</span>
+                    <img src="/personajes/Punkibri.png"
+                        class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
+                </div>
+                <!-- Item 2 -->
+                <div
+                    class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#FF6B6B]/50 rotate-3 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#FF6B6B] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
+                    <span
+                        class="font-display text-2xl text-white group-hover:text-[#FF6B6B] transition-colors z-10 shadow-black drop-shadow-md">MORDAZ</span>
+                    <img src="/personajes/Mordaz.png"
+                        class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
+                </div>
+                <!-- Item 3 -->
+                <div
+                    class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#FF9800]/50 -rotate-1 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#FF9800] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
+                    <span
+                        class="font-display text-2xl text-white group-hover:text-[#FF9800] transition-colors z-10 shadow-black drop-shadow-md">INCENDIA</span>
+                    <img src="/personajes/Incendia.png"
+                        class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
+                </div>
+                <!-- Item 4 -->
+                <div
+                    class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#00BCD4]/50 rotate-2 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#00BCD4] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
+                    <span
+                        class="font-display text-2xl text-white group-hover:text-[#00BCD4] transition-colors z-10 shadow-black drop-shadow-md">ANIKA</span>
+                    <img src="/personajes/Anika.png"
+                        class="absolute -right-4 -top-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
+                </div>
+            </div>
+        </div>
+
+        <!-- OPTION 2: ACORDEON VERTICAL -->
+        <div class="flex-1 flex flex-col gap-4">
+            <div class="text-center">
+                <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">2. ACORDEÓN VERTICAL</h3>
+            </div>
+            <div class="flex-1 border border-[#333] flex flex-col overflow-hidden bg-black relative rounded-lg group">
+                <!-- Accordion Items -->
+                <div
+                    class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#111]">
+                    <div
+                        class="absolute inset-0 bg-[#4CAF50]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <img src="/personajes/Punkibri.png"
+                        class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
+                    <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
+                        <span
+                            class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#4CAF50]">PUNKIBRÍ</span>
+                    </div>
+                </div>
+                <div
+                    class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#1a1a1a]">
+                    <div
+                        class="absolute inset-0 bg-[#FF6B6B]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <img src="/personajes/Mordaz.png"
+                        class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
+                    <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
+                        <span
+                            class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#FF6B6B]">MORDAZ</span>
+                    </div>
+                </div>
+                <div
+                    class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#111]">
+                    <div
+                        class="absolute inset-0 bg-[#FF9800]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <img src="/personajes/Incendia.png"
+                        class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
+                    <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
+                        <span
+                            class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#FF9800]">INCENDIA</span>
+                    </div>
+                </div>
+                <div
+                    class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#1a1a1a]">
+                    <div
+                        class="absolute inset-0 bg-[#00BCD4]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <img src="/personajes/Anika.png"
+                        class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
+                    <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
+                        <span
+                            class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#00BCD4]">ANIKA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OPTION 3: NEO BRUTALISMO -->
+        <div class="flex-1 flex flex-col gap-4">
+            <div class="text-center">
+                <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">3. CASILLAS BRUTALISTAS</h3>
+            </div>
+            <div
+                class="flex-1 border border-[#333] flex flex-col overflow-hidden bg-black relative rounded-xl p-6 flex flex-col justify-center">
+                <div class="grid grid-cols-2 grid-rows-2 h-full gap-8">
+                    <!-- Item 1 -->
+                    <div
+                        class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#4CAF50] hover:shadow-[0px_0px_0px_#4CAF50] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
+                        <img src="/personajes/Punkibri.png"
+                            class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
+                        <span
+                            class="font-display text-[#4CAF50] text-sm mt-3 px-2 border-2 border-dashed border-[#4CAF50] bg-black">PUNKIBRÍ</span>
+                    </div>
+                    <!-- Item 2 -->
+                    <div
+                        class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#FF6B6B] hover:shadow-[0px_0px_0px_#FF6B6B] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
+                        <img src="/personajes/Mordaz.png"
+                            class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
+                        <span
+                            class="font-display text-[#FF6B6B] text-sm mt-3 px-2 border-2 border-dashed border-[#FF6B6B] bg-black">MORDAZ</span>
+                    </div>
+                    <!-- Item 3 -->
+                    <div
+                        class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#FF9800] hover:shadow-[0px_0px_0px_#FF9800] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
+                        <img src="/personajes/Incendia.png"
+                            class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
+                        <span
+                            class="font-display text-[#FF9800] text-sm mt-3 px-2 border-2 border-dashed border-[#FF9800] bg-black">INCENDIA</span>
+                    </div>
+                    <!-- Item 4 -->
+                    <div
+                        class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#00BCD4] hover:shadow-[0px_0px_0px_#00BCD4] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
+                        <img src="/personajes/Anika.png"
+                            class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
+                        <span
+                            class="font-display text-[#00BCD4] text-sm mt-3 px-2 border-2 border-dashed border-[#00BCD4] bg-black">ANIKA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
