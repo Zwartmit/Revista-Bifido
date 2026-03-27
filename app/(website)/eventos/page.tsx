@@ -1,5 +1,10 @@
 import { getEvents } from '@/lib/api';
 import EventsClient from './EventsClient';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Eventos',
+};
 
 export const dynamic = 'force-dynamic';
 

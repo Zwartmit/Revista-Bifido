@@ -86,7 +86,7 @@ export default function ElParchePage() {
                                     <div
                                         className="absolute inset-0 opacity-20 group-hover/item:opacity-40 transition-opacity duration-500 pointer-events-none"
                                         style={{
-                                            background: `radial-gradient(ellipse at 50% 20%, ${m.color?.primary}80 0%, transparent 70%)`
+                                            background: `radial-gradient(ellipse at 50% 20%, ${m.color?.primary}80 0%, ${m.color?.primary}00 70%)`
                                         }}
                                     ></div>
                                     
@@ -311,11 +311,8 @@ export default function ElParchePage() {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-20 bg-bifido-gray/30 rounded-2xl border border-dashed border-gray-700">
-                            <p className="text-gray-500 mb-4">Aún no se han añadido integrantes al equipo.</p>
-                            <Link href="/contactanos" className="text-bifido-neon hover:underline font-bold">
-                                ¡Únete al parche!
-                            </Link>
+                        <div className="text-center py-20">
+                            <p className="text-gray-500 text-2xl font-display tracking-widest uppercase">Silencio... Estamos mutando.</p>
                         </div>
                     )}
                 </section>

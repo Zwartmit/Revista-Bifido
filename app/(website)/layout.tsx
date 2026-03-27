@@ -36,7 +36,10 @@ const jackInput = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Revista Bífido - Periodismo crudo para sensibilidades frágiles',
+  title: {
+    template: '%s | Revista Bífido',
+    default: 'Revista Bífido - Periodismo crudo para sensibilidades frágiles',
+  },
   description: 'Revista digital, cultural, alternativa e independiente',
   keywords: ['periodismo', 'cultura', 'activismo', 'medio ambiente', 'diversidad', 'género'],
 };

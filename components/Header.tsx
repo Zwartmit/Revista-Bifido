@@ -73,7 +73,7 @@ export default function Header() {
                         </Link>
                         {/* Desktop Navigation */}
                         <div className="flex items-center gap-4 lg:gap-6 h-10">
-                            <Link href="/" className="flex items-center gap-2 text-bifido-neon font-display tracking-wider text-lg transition-colors uppercase hover:text-white px-2">
+                            <Link href="/" className={`flex items-center gap-2 font-display tracking-wider text-lg transition-colors uppercase px-2 ${pathname === '/' ? 'text-bifido-neon' : 'text-white hover:text-bifido-neon'}`}>
                                 <Image src="/icons/home.svg" alt="Inicio" width={20} height={20} className="object-contain" />
                                 INICIO
                             </Link>
@@ -103,22 +103,22 @@ export default function Header() {
 
                             <div className="h-4 w-[2px] bg-bifido-neon" />
 
-                            <StaticNavLink href="/elparche" label="EL PARCHE" className="font-display tracking-wider text-lg hover:!text-bifido-neon uppercase px-2" />
+                            <StaticNavLink href="/elparche" label="EL PARCHE" className="font-display tracking-wider text-lg uppercase" />
 
                             <div className="h-4 w-[2px] bg-bifido-neon" />
 
-                            <StaticNavLink href="/eventos" label="EVENTOS" className="font-display tracking-wider text-lg hover:!text-bifido-neon uppercase px-2" />
+                            <StaticNavLink href="/eventos" label="EVENTOS" className="font-display tracking-wider text-lg uppercase" />
 
                             <div className="h-4 w-[2px] bg-bifido-neon" />
 
-                            <StaticNavLink href="/contactanos" label="CONTÁCTANOS" className="font-display tracking-wider text-lg hover:!text-bifido-neon uppercase px-2" />
+                            <StaticNavLink href="/contactanos" label="CONTÁCTANOS" className="font-display tracking-wider text-lg uppercase" />
                         </div>
                     </div>
 
                     {/* Mobile Navigation */}
                     {isMenuOpen && (
                         <div className="lg:hidden mt-4 pb-4 space-y-4">
-                            <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 text-bifido-neon font-display tracking-wider text-lg hover:text-white transition-colors px-2">
+                            <Link href="/" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-2 font-display tracking-wider text-lg transition-colors px-2 ${pathname === '/' ? 'text-bifido-neon' : 'text-white hover:text-bifido-neon'}`}>
                                 <Image src="/icons/home.svg" alt="Home" width={20} height={20} className="object-contain" />
                                 Inicio
                             </Link>
@@ -271,10 +271,7 @@ function StaticNavLink({ href, label, onClick, className }: { href: string; labe
     return (
         <Link
             href={href}
-            className={`${className || ''} transition-all duration-200 ${isActive
-                ? 'text-bifido-neon font-bold'
-                : isOnSectionPage ? 'text-gray-200 hover:text-white' : 'text-bifido-lightgray hover:text-white'
-                } px-2 py-1`}
+            className={`transition-all duration-200 px-2 py-1 ${isActive ? 'text-bifido-neon' : 'text-white hover:text-bifido-neon'} ${className || ''}`}
             onClick={onClick}
         >
             {label}
