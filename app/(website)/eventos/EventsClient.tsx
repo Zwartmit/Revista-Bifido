@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Calendar, MapPin, Clock, ExternalLink } from 'lucide-react';
 import gsap from 'gsap';
 
@@ -45,8 +44,8 @@ export default function EventsClient({ events }: EventsClientProps) {
         if (contentRef.current && contentRef.current.children.length > 0) {
             gsap.fromTo(
                 contentRef.current.children,
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out' }
+                { opacity: 0, scale: 0.95, y: 30 },
+                { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' }
             );
         }
     }, [filter]);
@@ -55,9 +54,22 @@ export default function EventsClient({ events }: EventsClientProps) {
         ? events
         : events.filter(event => event.status === filter);
 
+    const featuredEvent = filteredEvents.length > 0 ? filteredEvents[0] : null;
+    const gridEvents = filteredEvents.length > 1 ? filteredEvents.slice(1) : [];
+
+    const formatDayMonth = (dateString: string) => {
+        if (!dateString) return { day: '00', month: '---' };
+        // Assuming strict ISO 'YYYY-MM-DD' ignoring timezone
+        const date = new Date(dateString + 'T12:00:00Z');
+        return {
+            day: date.getDate().toString().padStart(2, '0'),
+            month: date.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase().replace('.', '')
+        };
+    };
+    
     const formatDate = (dateString: string) => {
         if (!dateString) return '';
-        const date = new Date(dateString);
+        const date = new Date(dateString + 'T12:00:00Z');
         return date.toLocaleDateString('es-ES', {
             weekday: 'long',
             year: 'numeric',
@@ -66,31 +78,74 @@ export default function EventsClient({ events }: EventsClientProps) {
         });
     };
 
+    const getRotation = (index: number) => {
+        const rots = [ -4, 5, -2, 3, -5, 2 ];
+        return rots[index % rots.length];
+    };
+
+    const getColors = (index: number) => {
+        const colors = [
+            { bg: '#CCFD29', text: '#000' }, // Neon
+            { bg: '#E63946', text: '#fff' }, // Red
+            { bg: '#22c55e', text: '#000' }, // Green
+            { bg: '#00BCD4', text: '#000' }  // Cyan
+        ];
+        return colors[index % colors.length];
+    };
+
+    const getClipPaths = (index: number) => {
+        const clips = [
+            'polygon(4% 0%, 96% 3%, 100% 92%, 91% 100%, 7% 96%, 0% 8%)',
+            'polygon(7% 3%, 98% 0%, 93% 90%, 88% 100%, 0% 96%, 4% 12%)',
+            'polygon(0% 4%, 93% 8%, 100% 96%, 95% 100%, 8% 90%, 3% 0%)',
+            'polygon(3% 5%, 95% 2%, 98% 98%, 91% 94%, 5% 99%, 1% 7%)'
+        ];
+        return clips[index % clips.length];
+    };
+
     return (
-        <div className="min-h-screen bg-black pt-24 md:pt-52">
-            <div className="container mx-auto px-4">
-                {/* Header */}
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-bifido-red rounded-full mb-4">
-                        <Calendar className="text-white" size={32} />
-                    </div>
-                    <h1 className="font-display text-5xl md:text-6xl mb-4 text-white">
-                        Eventos
+        <div className="min-h-screen pt-12 relative" style={{
+            background: "#030303 url('data:image/svg+xml,%3Csvg width=\\'80\\' height=\\'80\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'n\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'.75\\' numOctaves=\\'3\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23n)\\' opacity=\\'.07\\'/%3E%3C/svg%3E') repeat"
+        }}>
+            <style dangerouslySetInnerHTML={{ __html: `
+                @keyframes glitch { 0%,100%{ clip-path:inset(0 0 95% 0); transform:translate(-2px,0); } 20%{ clip-path:inset(30% 0 60% 0); transform:translate(2px,0); } 40%{ clip-path:inset(60% 0 20% 0); transform:translate(-1px,0); } 60%{ clip-path:inset(5% 0 75% 0); transform:translate(3px,0); } 80%{ clip-path:inset(80% 0 5% 0); transform:translate(-2px,0); } }
+                .glitch-title { position:relative; display:inline-block; }
+                .glitch-title::after { content:attr(data-text); position:absolute; inset:0; color:#CCFD29; animation:glitch 4s infinite; opacity:.7; pointer-events:none; }
+                
+                .rasgado-card { width:100%; max-width:340px; aspect-ratio:3/4.2; position:relative; cursor:pointer; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin:0 auto; }
+                .rasgado-card:hover { transform:scale(1.08) rotate(2deg) !important; z-index:10; }
+                
+                .r-layer1 { position:absolute; inset:0; transition:all .3s; }
+                .rasgado-card:hover .r-layer1 { transform:translate(-8px,8px); }
+                .r-layer2 { position:absolute; inset:6px; background:#0a0a0a; clip-path:polygon(0% 4%, 100% 0%, 96% 96%, 4% 100%); transition:background .3s; }
+                .rasgado-card:hover .r-layer2 { background:#111; }
+                .r-layer3 { position:absolute; inset:0; background-position:center; background-size:cover; mix-blend-mode:luminosity; opacity:.4; clip-path:polygon(0% 18%, 100% 12%, 100% 82%, 0% 88%); filter:contrast(1.2); transition:opacity .3s; }
+                .rasgado-card:hover .r-layer3 { opacity:.7; }
+                
+                .r-content { position:absolute; inset:0; padding:2rem; display:flex; flex-direction:column; justify-content:center; filter:drop-shadow(3px 4px 0px rgba(0,0,0,1)); pointer-events:none; }
+            `}} />
+
+            <div className="container mx-auto px-4 max-w-[1200px]">
+                {/* Header (La Señal Style) */}
+                <div className="mb-12">
+                    <h1 className="font-display text-[clamp(4rem,10vw,8rem)] leading-[0.85] text-[#f5f5f5] tracking-wide glitch-title uppercase" data-text="EVENTOS">
+                        EVENTOS
                     </h1>
-                    <p className="text-xl text-bifido-lightgray italic max-w-2xl mx-auto">
-                        Espacios de encuentro, diálogo y resistencia colectiva
+                    <div className="w-48 md:w-64 h-[2px] bg-gradient-to-r from-[#CCFD29] to-transparent mt-3 md:mt-4"></div>
+                    <p className="mt-6 font-mono text-xs md:text-base text-gray-400 tracking-widest uppercase">
+                        Espacios de encuentro, diálogo y resistencia
                     </p>
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-wrap justify-center gap-4 mb-8">
+                <div className="flex flex-wrap gap-2 md:gap-4 mb-12 border-b border-white/10 pb-6">
                     {filters.map((f) => (
                         <button
                             key={f.id}
                             onClick={() => setFilter(f.id)}
-                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${filter === f.id
-                                ? 'bg-white text-bifido-black'
-                                : 'bg-bifido-gray text-gray-300 hover:bg-gray-700'
+                            className={`px-5 py-2 text-xs md:text-sm font-mono tracking-widest uppercase transition-all ${filter === f.id
+                                ? 'bg-[#CCFD29] text-black font-bold shadow-[2px_2px_0px_#fff]'
+                                : 'bg-transparent text-gray-400 border border-white/20 hover:border-white/50 hover:text-white'
                                 }`}
                         >
                             {f.label}
@@ -98,125 +153,108 @@ export default function EventsClient({ events }: EventsClientProps) {
                     ))}
                 </div>
 
-                {/* Events Grid */}
-                <div ref={contentRef} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {filteredEvents.map((event) => (
-                        <div
-                            key={event.id}
-                            className={`bg-bifido-gray rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border-2 ${event.status === 'upcoming'
-                                ? 'border-bifido-red hover:border-white'
-                                : 'border-gray-700 opacity-75'
-                                }`}
-                        >
-                            {/* Image */}
-                            <div className="relative h-48 w-full group-hover:scale-105 transition-transform duration-500">
-                                <Image
-                                    src={event.image || '/images/placeholder-article.jpg'}
-                                    alt={event.title}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-
-                            {/* Header */}
-                            <div className={`p-6 ${event.status === 'upcoming' ? 'bg-bifido-red' : 'bg-gray-700'}`}>
-                                <div className="flex justify-between items-start gap-4">
-                                    <h2 className="font-display text-2xl md:text-3xl text-white leading-tight">
-                                        {event.title}
-                                    </h2>
-                                    <div className="flex flex-col items-end gap-2 shrink-0">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${event.status === 'upcoming' ? 'bg-white text-bifido-black' :
-                                            event.status === 'ongoing' ? 'bg-green-500 text-white' :
-                                                event.status === 'cancelled' ? 'bg-red-500 text-white' :
-                                                    'bg-gray-700 text-gray-300'
-                                            }`}>
-                                            {event.status === 'upcoming' ? 'Próximo' :
-                                                event.status === 'ongoing' ? 'En Curso' :
-                                                    event.status === 'cancelled' ? 'Cancelado' :
-                                                        'Pasado'}
-                                        </span>
-
-                                        <span className="bg-black/50 text-gray-300 px-3 py-1 rounded-full text-xs font-bold border border-gray-700">
-                                            {event.category}
-                                        </span>
+                <div ref={contentRef}>
+                    {/* Featured Event */}
+                    {featuredEvent && (
+                        <div className="mb-16 relative">
+                            <Link href={`/eventos/${featuredEvent.slug || '#'}`} className="block relative group overflow-hidden bg-[#080808] border border-white/10 hover:border-[#CCFD29] transition-all duration-300">
+                                <div className="flex flex-col md:flex-row h-full">
+                                    {/* Image Section */}
+                                    <div className="relative w-full md:w-3/5 min-h-[400px] overflow-hidden">
+                                        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\\'40\\' height=\\'40\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z\\' fill=\\'%23111\\' fill-opacity=\\'0.4\\' fill-rule=\\'evenodd\\'/%3E%3C/svg%3E')] z-10 opacity-30 pointer-events-none mix-blend-overlay" />
+                                        <img
+                                            src={featuredEvent.image || '/images/placeholder-article.jpg'}
+                                            alt={featuredEvent.title}
+                                            className="w-full h-full object-cover filter grayscale-[100%] brightness-75 contrast-125 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 pointer-events-none relative z-0"
+                                        />
+                                        {/* Overlay gradient to blend img and content */}
+                                        <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#080808] to-transparent z-10"></div>
                                     </div>
-                                </div>
-                            </div>
+                                    
+                                    {/* Content Section */}
+                                    <div className="p-8 md:p-12 w-full md:w-2/5 flex flex-col justify-center relative z-20">
+                                        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/10 to-transparent"></div>
+                                        
+                                        <div className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] mb-6 shadow-sm truncate max-w-full">
+                                            <span className="w-2 h-2 shrink-0 rounded-full bg-[#E63946] animate-pulse"></span>
+                                            <span className="text-[#CCFD29] truncate">EVENTO DESTACADO</span>
+                                        </div>
+                                        
+                                        <h2 className="font-display text-4xl lg:text-5xl text-white uppercase leading-[0.9] mb-6 glitch-title break-words" data-text={featuredEvent.title}>
+                                            {featuredEvent.title}
+                                        </h2>
+                                        
+                                        <div className="font-mono text-sm text-gray-400 space-y-2 mb-8 border-l-2 border-[#E63946] pl-4 py-1">
+                                            <p className="text-white font-bold">{formatDate(featuredEvent.date).toUpperCase()}</p>
+                                            <p className="truncate">{featuredEvent.location} · {featuredEvent.time}</p>
+                                            <p>{featuredEvent.price?.isFree ? 'ENTRADA LIBRE' : (featuredEvent.price?.amount ? '$' + featuredEvent.price.amount : 'ENTRADA PAGA')}</p>
+                                        </div>
 
-                            {/* Content */}
-                            <div className="p-6">
-                                {/* Description */}
-                                <div className="text-gray-300 mb-6 leading-relaxed line-clamp-3 whitespace-pre-wrap">
-                                    {event.shortDescription || 'Este evento no tiene descripción corta.'}
-                                </div>
-
-                                {/* Event Details */}
-                                <div className="space-y-3 mb-6">
-                                    <div className="flex items-start gap-3 text-sm">
-                                        <Calendar className="text-bifido-red flex-shrink-0 mt-0.5" size={18} />
-                                        <div>
-                                            <p className="text-white font-semibold">
-                                                {formatDate(event.date)}
-                                            </p>
+                                        <div className="mt-auto">
+                                            <button className="font-mono text-sm font-bold bg-white text-black px-6 py-3 uppercase tracking-widest group-hover:bg-[#CCFD29] transition-colors w-full md:w-auto text-center md:text-left">
+                                                VER DETALLES →
+                                            </button>
                                         </div>
                                     </div>
-
-                                    <div className="flex items-start gap-3 text-sm">
-                                        <Clock className="text-bifido-red flex-shrink-0 mt-0.5" size={18} />
-                                        <p className="text-gray-300">{event.time}</p>
-                                    </div>
-
-                                    <div className="flex items-start gap-3 text-sm">
-                                        <MapPin className="text-bifido-red flex-shrink-0 mt-0.5" size={18} />
-                                        <div>
-                                            <p className="text-white font-semibold">{event.location}</p>
-                                            <p className="text-gray-400 text-xs">{event.address}</p>
-                                        </div>
-                                    </div>
-                                    {/* Price & Organizer */}
-                                    <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-                                        <div className="flex items-center gap-2 text-sm">
-                                            <span className={`px-2 py-0.5 rounded text-xs font-bold ${event.price?.isFree ? 'bg-green-900 text-green-100' : 'bg-yellow-900 text-yellow-100'}`}>
-                                                {event.price?.isFree ? 'Gratis' : `$${event.price?.amount?.toLocaleString() || ''}`}
-                                            </span>
-                                        </div>
-                                        {event.organizer && (
-                                            <div className="text-xs text-bifido-lightgray text-right">
-                                                Organiza: <span className="text-white">{event.organizer}</span>
-                                            </div>
-                                        )}
-                                    </div>
-
-
                                 </div>
-
-                                {/* CTA */}
-                                {event.status === 'upcoming' && (
-                                    <Link
-                                        href={`/eventos/${event.slug || '#'}`}
-                                        className="w-full bg-white text-bifido-black px-6 py-3 rounded-lg font-bold hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
-                                    >
-                                        Más información
-                                        <ExternalLink size={16} />
-                                    </Link>
-                                )}
-                            </div>
+                            </Link>
                         </div>
-                    ))}
-                </div>
+                    )}
 
-                {/* Empty State */}
-                {filteredEvents.length === 0 && (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">No hay eventos en esta categoría.</p>
-                        <button
-                            onClick={() => setFilter('all')}
-                            className="mt-4 text-bifido-red hover:underline font-medium"
-                        >
-                            Ver todos los eventos
-                        </button>
-                    </div>
-                )}
+                    {/* Grid Events (Papel Rasgado Collage) */}
+                    {gridEvents.length > 0 && (
+                        <div className="flex flex-wrap justify-center gap-x-12 gap-y-16 pt-8">
+                            {gridEvents.map((event, i) => {
+                                const { day, month } = formatDayMonth(event.date);
+                                const rotation = getRotation(i);
+                                const theme = getColors(i);
+                                const clip = getClipPaths(i);
+
+                                return (
+                                    <Link key={event.id} href={`/eventos/${event.slug || '#'}`} className="block">
+                                        <div 
+                                            className="rasgado-card group mx-auto" 
+                                            style={{ transform: `rotate(${rotation}deg)` }}
+                                        >
+                                            <div className="r-layer1" style={{ background: theme.bg, clipPath: clip }} />
+                                            <div className="r-layer2" />
+                                            <div 
+                                                className="r-layer3" 
+                                                style={{ backgroundImage: `url('${event.image || '/images/placeholder-article.jpg'}')` }}
+                                            />
+                                            
+                                            <div className="r-content">
+                                                <div className="font-display text-[5rem] leading-[0.8] mb-8 drop-shadow-[3px_4px_0_rgba(0,0,0,1)]" style={{ color: theme.bg, transform: `rotate(${-rotation}deg)` }}>
+                                                    {day}<br/>{month}
+                                                </div>
+                                                
+                                                <div className="font-primary font-black text-[2.4rem] leading-none text-white uppercase break-words drop-shadow-[2px_2px_0_rgba(0,0,0,1)] relative z-10" style={{ transform: `rotate(${rotation/2}deg)` }}>
+                                                    {event.title}
+                                                </div>
+                                                
+                                                <div className="mt-8 self-start max-w-full">
+                                                    <span 
+                                                        className="font-mono text-xs font-bold px-3 py-1.5 uppercase shadow-[2px_2px_0_rgba(0,0,0,1)] inline-block truncate max-w-full"
+                                                        style={{ background: theme.bg, color: theme.text, transform: `rotate(${-rotation}deg)` }}
+                                                    >
+                                                        {event.location}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    {/* Empty State */}
+                    {filteredEvents.length === 0 && (
+                        <div className="text-center py-24 border-2 border-dashed border-white/20 max-w-2xl mx-auto">
+                            <p className="text-white font-display text-3xl md:text-5xl opacity-50">PRONTO VERÁS TODOS LOS PARCHES</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

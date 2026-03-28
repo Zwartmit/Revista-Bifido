@@ -1,199 +1,783 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opciones de diseño</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opciones de Diseño · Revista Bífido</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,900;1,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --neon: #CCFD29;
+      --black: #0a0a0a;
+      --gray: #1a1a1a;
+      --white: #f5f5f5;
+      --red: #E63946;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; color: #fff; font-family: sans-serif; min-height: 100vh; }
 
-        .font-display {
-            font-family: 'Anton', sans-serif;
-        }
+    /* FONT HELPERS */
+    .font-display { font-family: 'Anton', sans-serif; }
+    .font-bebas { font-family: 'Bebas Neue', sans-serif; }
+    .font-mono { font-family: 'Space Mono', monospace; }
+    .font-playfair { font-family: 'Playfair Display', serif; }
 
-        /* Option 1: Diagonal Slices */
-        .clip-diag-1 {
-            clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-        }
+    /* ── TOP SWITCHER ─────────────────── */
+    .top-switcher {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(0,0,0,.96);
+      border-bottom: 1px solid rgba(204,253,41,.15);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 2rem;
+      gap: 1rem;
+    }
+    .brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: #CCFD29; letter-spacing: .15em; }
+    .mode-btns { display: flex; gap: .5rem; }
+    .mode-btn {
+      padding: .4rem 1.2rem;
+      border: 1px solid rgba(204,253,41,.35);
+      background: transparent;
+      color: rgba(245,245,245,.5);
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all .2s;
+    }
+    .mode-btn.active {
+      background: #CCFD29;
+      color: #000;
+      border-color: #CCFD29;
+      font-weight: 700;
+    }
+    .mode-btn:hover:not(.active) { color: #fff; border-color: rgba(204,253,41,.7); }
 
-        .clip-diag-2 {
-            clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%);
-            margin-top: -20%;
-        }
+    /* ── SECTION WRAPPER ──────────────── */
+    .mode-section { display: none; padding-top: 62px; min-height: 100vh; }
+    .mode-section.visible { display: block; animation: fadeUp .35s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-        .clip-diag-3 {
-            clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%);
-            margin-top: -20%;
-        }
+    /* ── SUBNAV (Eventos tabs) ────────── */
+    .subnav {
+      position: sticky; top: 62px; z-index: 100;
+      background: rgba(10,10,10,.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(204,253,41,.12);
+      display: flex; align-items: center; gap: .4rem;
+      padding: .6rem 2rem;
+    }
+    .sub-tab {
+      padding: .38rem 1rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: rgba(245,245,245,.4);
+      font-family: 'Space Mono', monospace;
+      font-size: .7rem;
+      letter-spacing: .06em;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .sub-tab:hover { color: #fff; border-color: rgba(204,253,41,.3); }
+    .sub-tab.active { background: #CCFD29; color: #000; border-color: #CCFD29; font-weight: 700; }
 
-        .clip-diag-4 {
-            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
-            margin-top: -20%;
-        }
+    /* ── OPTION PANELS ────────────────── */
+    .opt-panel { display: none; animation: fadeUp .3s ease; }
+    .opt-panel.visible { display: block; }
 
-        /* General */
-        body {
-            background-color: #000;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            font-family: sans-serif;
-        }
-    </style>
+    /* ═══════════════════════════════════
+       DISEÑO — old content styles
+    ═══════════════════════════════════ */
+    .clip-diag-1 { clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%); }
+    .clip-diag-2 { clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%); margin-top: -20%; }
+    .clip-diag-3 { clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%); margin-top: -20%; }
+    .clip-diag-4 { clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%); margin-top: -20%; }
+
+    /* ═══════════════════════════════════
+       EVENTOS — shared vars
+    ═══════════════════════════════════ */
+    /* OPT1 – El Tablón */
+    .neon-bar { height:5px; background:#CCFD29; width:180px; margin:.5rem auto 1.2rem; border-radius:3px; box-shadow:0 0 18px rgba(204,253,41,.5); }
+    .sticker { padding:.45rem 1.2rem; border:2px solid #CCFD29; background:transparent; color:#CCFD29; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.1em; cursor:pointer; transform:rotate(-1deg); transition:all .2s; }
+    .sticker:nth-child(even){ transform:rotate(1deg); }
+    .sticker.active,.sticker:hover{ background:#CCFD29; color:#000; transform:rotate(0) scale(1.05); }
+    .cartel { break-inside:avoid; margin-bottom:1.4rem; background:#1a1a1a; overflow:hidden; border:1px solid rgba(255,255,255,.07); cursor:pointer; position:relative; transition:transform .3s,box-shadow .3s; }
+    .cartel:hover { transform:translateY(-5px) rotate(.25deg); box-shadow:0 16px 50px rgba(204,253,41,.1); }
+    .cartel-img { width:100%; aspect-ratio:3/2; object-fit:cover; display:block; filter:grayscale(30%); transition:filter .3s; }
+    .cartel:hover .cartel-img{ filter:grayscale(0); }
+    .cartel.tall .cartel-img{ aspect-ratio:2/3; }
+    .cartel-date-band { background:#CCFD29; color:#000; font-family:'Bebas Neue',sans-serif; font-size:.88rem; letter-spacing:.12em; padding:.22rem .9rem; text-align:center; }
+    .cartel-body { padding:.9rem 1.1rem 1.2rem; }
+    .cartel-title { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; line-height:1; letter-spacing:.04em; color:#f5f5f5; margin-bottom:.4rem; }
+    .cartel-meta { font-size:.76rem; color:rgba(245,245,245,.4); letter-spacing:.05em; }
+    .cartel-tag { display:inline-block; font-size:.68rem; font-weight:700; padding:.18rem .55rem; border-radius:3px; margin-top:.5rem; text-transform:uppercase; }
+    .cartel.past .cartel-img{ filter:grayscale(100%); }
+    .cartel.past::after { content:'PASADO'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-20deg); font-family:'Bebas Neue',sans-serif; font-size:2.4rem; color:rgba(230,57,70,.8); border:3px solid rgba(230,57,70,.65); padding:.15rem .8rem; pointer-events:none; letter-spacing:.15em; }
+    .cartel.featured { display:flex; border:2px solid #CCFD29; margin-bottom:1.4rem; }
+    .cartel.featured .cartel-img{ width:52%; aspect-ratio:16/7; flex-shrink:0; }
+    .cartel.featured .cartel-body{ display:flex; flex-direction:column; justify-content:center; padding:1.5rem; }
+    .cartel.featured .cartel-title{ font-size:2.2rem; margin-bottom:.8rem; }
+    .countdown { display:flex; gap:1rem; margin-top:1rem; }
+    .cd-block{ text-align:center; }
+    .cd-num { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:#CCFD29; display:block; line-height:1; }
+    .cd-label { font-size:.6rem; color:rgba(245,245,245,.35); letter-spacing:.1em; text-transform:uppercase; }
+    .btn-neon { display:inline-block; margin-top:1.2rem; padding:.6rem 1.6rem; background:#CCFD29; color:#000; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.12em; border:none; cursor:pointer; transition:all .2s; text-decoration:none; }
+    .btn-neon:hover{ background:#f5f5f5; }
+    .tag-green{ background:rgba(34,197,94,.15); color:#22c55e; }
+    .tag-red{ background:rgba(230,57,70,.15); color:#E63946; }
+    .tag-neon{ background:rgba(204,253,41,.12); color:#CCFD29; }
+
+    /* OPT3 – El Periódico */
+    .col-rule { height:1px; background:rgba(255,255,255,.1); margin:.7rem 0; }
+    .typewriter { overflow:hidden; border-right:2px solid #CCFD29; white-space:nowrap; animation:typing 3.5s steps(38) infinite, blink .75s step-end infinite; max-width:max-content; }
+    @keyframes typing { 0%,100%{ width:0 } 40%,70%{ width:100% } }
+    @keyframes blink { from,to{ border-color:transparent } 50%{ border-color:#CCFD29 } }
+
+    /* OPT6 – La Señal */
+    @keyframes scanline { 0%{ background-position:0 0; } 100%{ background-position:0 100%; } }
+    @keyframes glitch { 0%,100%{ clip-path:inset(0 0 95% 0); transform:translate(-2px,0); } 20%{ clip-path:inset(30% 0 60% 0); transform:translate(2px,0); } 40%{ clip-path:inset(60% 0 20% 0); transform:translate(-1px,0); } 60%{ clip-path:inset(5% 0 75% 0); transform:translate(3px,0); } 80%{ clip-path:inset(80% 0 5% 0); transform:translate(-2px,0); } }
+    @keyframes flicker { 0%,19%,21%,23%,25%,54%,56%,100%{ opacity:1; } 20%,24%,55%{ opacity:.4; } }
+    .signal-card { position:relative; background:#050505; border:1px solid rgba(204,253,41,.08); overflow:hidden; cursor:pointer; transition:all .25s; }
+    .signal-card::after { content:''; position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.15) 2px,rgba(0,0,0,.15) 4px); pointer-events:none; z-index:2; }
+    .signal-card:hover { border-color:rgba(204,253,41,.3); box-shadow:0 0 30px rgba(204,253,41,.06); }
+    .signal-card img { width:100%; display:block; filter:grayscale(100%) brightness(.7) contrast(1.2); transition:filter .4s; }
+    .signal-card:hover img { filter:grayscale(50%) brightness(.85) contrast(1.1); }
+    .signal-body { padding:1.1rem 1.3rem 1.4rem; }
+    .signal-freq { font-family:'Space Mono',monospace; font-size:.62rem; color:#CCFD29; letter-spacing:.15em; margin-bottom:.5rem; opacity:.7; }
+    .signal-title { font-family:'Bebas Neue',sans-serif; font-size:1.45rem; color:#f5f5f5; letter-spacing:.04em; line-height:1.1; }
+    .signal-meta { font-family:'Space Mono',monospace; font-size:.65rem; color:rgba(245,245,245,.3); margin-top:.5rem; letter-spacing:.04em; }
+    .signal-live { display:inline-flex; align-items:center; gap:.4rem; font-family:'Space Mono',monospace; font-size:.6rem; letter-spacing:.12em; color:#22c55e; margin-top:.6rem; }
+    .live-dot { width:7px; height:7px; border-radius:50%; background:#22c55e; animation:flicker 2s infinite; }
+    .signal-featured { display:grid; grid-template-columns:1.1fr 1fr; border:1px solid rgba(204,253,41,.12); margin-bottom:1px; }
+    .signal-featured img { height:280px; object-fit:cover; display:block; filter:grayscale(100%) brightness(.65) contrast(1.2); }
+    .glitch-title { position:relative; font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:#f5f5f5; line-height:1; letter-spacing:.03em; }
+    .glitch-title::after { content:attr(data-text); position:absolute; inset:0; color:#CCFD29; animation:glitch 4s infinite; opacity:.7; }
+
+    /* OPT7 – El Ticket Underground */
+    .ticket-grid { display:flex; gap:2.5rem; overflow-x:auto; padding:2rem 3rem 4rem; justify-content:center; }
+    .ticket { flex:0 0 320px; background:#f4f4f0; color:#000; padding:2.5rem 2rem; position:relative; box-shadow:6px 6px 0px rgba(204,253,41,.5); cursor:pointer; transition:transform .3s, box-shadow .3s; }
+    .ticket:hover { transform:translateY(-8px); box-shadow:10px 14px 0px #CCFD29; }
+    .ticket::before, .ticket::after { content:''; position:absolute; left:0; width:100%; height:12px; background:repeating-linear-gradient(45deg, transparent, transparent 10px, #f4f4f0 10px, #f4f4f0 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, #f4f4f0 10px, #f4f4f0 20px); background-size:16px 16px; }
+    .ticket::before { top:-12px; background-position:bottom; }
+    .ticket::after { bottom:-12px; background-position:top; }
+    .tck-head { text-align:center; font-family:'Space Mono',monospace; font-size:.78rem; border-bottom:2px dashed #999; padding-bottom:1.5rem; margin-bottom:1.5rem; line-height:1.6; }
+    .tck-body { font-family:'Space Mono',monospace; }
+    .tck-title { font-family:'Space Mono',monospace; font-size:1.5rem; font-weight:700; text-transform:uppercase; line-height:1.1; margin-bottom:1.5rem; letter-spacing:-.02em; }
+    .tck-row { display:flex; justify-content:space-between; font-size:.7rem; margin-bottom:.7rem; border-bottom:1px dotted #ccc; padding-bottom:.2rem; }
+    .tck-barcode { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:4px; text-align:center; margin-top:2.5rem; transform:scaleY(2.5); overflow:hidden; white-space:nowrap; opacity:.85; }
+    .tck-footer { text-align:center; font-family:'Space Mono',monospace; font-size:.6rem; margin-top:2.5rem; letter-spacing:.1em; }
+
+    /* OPT9 – Papel Rasgado */
+    .rasgado-bg { background:#030303 url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'.75\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'.07\'/%3E%3C/svg%3E') repeat; }
+    .rasgado-wrap { padding:4rem 3rem; display:flex; flex-wrap:wrap; gap:3rem; justify-content:center; max-width:1200px; margin:0 auto; }
+    .rasgado-card { width:320px; aspect-ratio:3/4; position:relative; cursor:pointer; transition:transform .4s cubic-bezier(.175,.885,.32,1.275); }
+    .rasgado-card:hover { transform:scale(1.08) rotate(2deg); z-index:10; }
+    .r-layer1 { position:absolute; inset:0; background:#CCFD29; clip-path:polygon(4% 0%, 96% 3%, 100% 92%, 91% 100%, 7% 96%, 0% 8%); transition:all .3s; }
+    .rasgado-card:hover .r-layer1 { transform:translate(-8px,8px); }
+    .r-layer2 { position:absolute; inset:6px; background:#0a0a0a; clip-path:polygon(0% 4%, 100% 0%, 96% 96%, 4% 100%); }
+    .r-layer3 { position:absolute; inset:0; background-position:center; background-size:cover; mix-blend-mode:luminosity; opacity:.4; clip-path:polygon(0% 18%, 100% 12%, 100% 82%, 0% 88%); filter:contrast(1.2); }
+    .rasgado-card:hover .r-layer3 { opacity:.7; }
+    .r-content { position:absolute; inset:0; padding:2rem; display:flex; flex-direction:column; justify-content:center; filter:drop-shadow(3px 4px 0px rgba(0,0,0,1)); }
+    .r-date { font-family:'Bebas Neue',sans-serif; font-size:4.5rem; color:#CCFD29; line-height:.8; transform:rotate(-4deg); margin-bottom:1.5rem; text-shadow:2px 2px 0 #000; }
+    .r-title { font-family:'Anton',sans-serif; font-size:2.8rem; line-height:1; color:#f5f5f5; text-transform:uppercase; z-index:2; text-shadow:2px 2px 0 #000; }
+    .r-meta { background:#CCFD29; color:#000; font-family:'Space Mono',monospace; font-size:.65rem; padding:.3rem .6rem; display:inline-block; transform:rotate(2deg); margin-top:1.5rem; font-weight:700; box-shadow:2px 2px 0 #000; }
+
+
+    /* OPT10 – EL SELLO */
+    .sello-wrap { background:#0a0a0a; min-height:calc(100vh - 110px); padding:4rem 3rem; display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:2.5rem; }
+    .sello-card { border:6px solid #fff; padding:2rem; cursor:pointer; position:relative; overflow:hidden; transition:all .2s; }
+    .sello-card:hover { background:#fff; color:#000; transform:scale(1.03); border-color:#CCFD29; box-shadow:0 0 40px rgba(204,253,41,.2); }
+    .sello-card * { color:#fff; transition:color .2s; }
+    .sello-card:hover * { color:#000; }
+    .st-title { font-family:'Anton',sans-serif; font-size:3.5rem; line-height:.95; text-transform:uppercase; mix-blend-mode:difference; margin-bottom:1rem; }
+    .st-date { font-family:'Space Mono',monospace; font-size:1.1rem; font-weight:700; background:#CCFD29; color:#000; display:table; padding:.1rem .6rem; margin-bottom:1.5rem; transform:rotate(-2deg); }
+    .sello-card:hover .st-date { background:#000; color:#CCFD29; }
+    .st-loc { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:.05em; opacity:.8; }
+    .st-stamp { position:absolute; right:1rem; bottom:1rem; font-family:'Anton',sans-serif; font-size:2.5rem; color:transparent; -webkit-text-stroke:2px #E63946; transform:rotate(-15deg); opacity:0; transition:opacity .3s; pointer-events:none; }
+    .sello-card:hover .st-stamp { opacity:.8; }
+
+    /* OPT11 – CCTV */
+    .cctv-wrap { background:#000; min-height:calc(100vh - 110px); padding:2rem; display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:400px; gap:1.5rem; }
+    .cam-feed { position:relative; border:2px solid #333; overflow:hidden; border-radius:12px; cursor:pointer; background:#111; }
+    .cam-feed::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.3) 2px,rgba(0,0,0,.3) 4px); z-index:2; pointer-events:none; }
+    .cam-feed:hover { border-color:#22c55e; box-shadow:0 0 20px rgba(34,197,94,.2); }
+    .cam-bg { position:absolute; inset:0; background-size:cover; background-position:center; filter:grayscale(100%) sepia(100%) hue-rotate(60deg) saturate(300%) contrast(1.5); opacity:.6; transition:opacity .3s, transform 2s; }
+    .cam-feed:hover .cam-bg { opacity:1; transform:scale(1.05); }
+    .cam-ui { position:absolute; inset:0; padding:1.5rem; z-index:3; display:flex; flex-direction:column; justify-content:space-between; font-family:'Space Mono',monospace; color:#22c55e; text-shadow:0 0 5px #22c55e; }
+    .cam-top { display:flex; justify-content:space-between; font-size:.8rem; }
+    .cam-rec { display:flex; align-items:center; gap:.5rem; }
+    .cam-dot { width:10px; height:10px; background:#E63946; border-radius:50%; box-shadow:0 0 8px #E63946; animation:flicker 1.5s infinite; }
+    .cam-title { font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:.05em; line-height:1; max-width:80%; }
+    .cam-date { font-size:.7rem; margin-top:.5rem; }
+
+    /* OPT12 – FANZINE DESPLEGABLE */
+    .zine-wrap { background:#e8e8e8; min-height:calc(100vh - 110px); padding:4rem; }
+    .zine-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; background:#f4f4f4; box-shadow:0 20px 50px rgba(0,0,0,.3); max-width:1200px; margin:0 auto; transform:rotate(1deg); }
+    .zine-cell { border:1px solid #ddd; padding:2rem; position:relative; overflow:hidden; cursor:pointer; }
+    .zine-cell::before { content:''; position:absolute; top:0; bottom:0; left:-1px; width:2px; background:linear-gradient(to bottom, transparent, rgba(0,0,0,.05), transparent); }
+    .zine-cell:hover { background:#fff; z-index:10; transform:scale(1.02) rotate(-1deg); box-shadow:0 10px 30px rgba(0,0,0,.15); }
+    .zine-hero { grid-column:1 / 4; border-bottom:3px solid #111; padding:3rem; background:#fff; }
+    .z-tag { font-family:'Space Mono',monospace; font-size:.6rem; background:#111; color:#fff; padding:.2rem .5rem; display:inline-block; margin-bottom:1rem; transform:rotate(-3deg); }
+    .z-title { font-family:'Playfair Display',serif; font-size:3.5rem; font-weight:900; line-height:1; color:#111; letter-spacing:-.02em; margin-bottom:1rem; }
+    .z-meta { font-family:'Space Mono',monospace; font-size:.8rem; color:#666; }
+    .z-img { width:100%; aspect-ratio:4/3; object-fit:cover; filter:grayscale(100%) contrast(1.4); margin-bottom:1.5rem; mix-blend-mode:multiply; }
+
+  </style>
 </head>
+<body>
 
-<body class="p-8 pb-32">
-    <!-- ROW 2 OF OPTIONS -->
-    <div class="flex flex-col lg:flex-row gap-8 min-h-[700px] w-full max-w-7xl mx-auto mt-16">
+<!-- ══ TOP SWITCHER ══════════════════════════════ -->
+<div class="top-switcher">
+  <div class="brand">BIFIDO · LAB</div>
+  <div class="mode-btns">
+    <button class="mode-btn active" onclick="switchMode('design')">🎨 Opciones de Diseño</button>
+    <button class="mode-btn" onclick="switchMode('eventos')">🎟️ Opciones Eventos</button>
+  </div>
+</div>
 
-        <!-- OPTION 1: FANZINE RECORTES -->
-        <div class="flex-1 flex flex-col gap-4">
-            <div class="text-center">
-                <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">1. RECORTES FANZINE</h3>
-            </div>
-            <div
-                class="flex-1 border border-[#333] flex flex-col bg-[#111] relative rounded-lg p-6 py-12 gap-6 justify-center overflow-hidden">
-                <!-- Item 1 -->
-                <div
-                    class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#4CAF50]/50 -rotate-2 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#4CAF50] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
-                    <span
-                        class="font-display text-2xl text-white group-hover:text-[#4CAF50] transition-colors z-10 shadow-black drop-shadow-md">PUNKIBRÍ</span>
-                    <img src="/personajes/Punkibri.png"
-                        class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
-                </div>
-                <!-- Item 2 -->
-                <div
-                    class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#FF6B6B]/50 rotate-3 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#FF6B6B] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
-                    <span
-                        class="font-display text-2xl text-white group-hover:text-[#FF6B6B] transition-colors z-10 shadow-black drop-shadow-md">MORDAZ</span>
-                    <img src="/personajes/Mordaz.png"
-                        class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
-                </div>
-                <!-- Item 3 -->
-                <div
-                    class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#FF9800]/50 -rotate-1 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#FF9800] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
-                    <span
-                        class="font-display text-2xl text-white group-hover:text-[#FF9800] transition-colors z-10 shadow-black drop-shadow-md">INCENDIA</span>
-                    <img src="/personajes/Incendia.png"
-                        class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
-                </div>
-                <!-- Item 4 -->
-                <div
-                    class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#00BCD4]/50 rotate-2 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#00BCD4] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
-                    <span
-                        class="font-display text-2xl text-white group-hover:text-[#00BCD4] transition-colors z-10 shadow-black drop-shadow-md">ANIKA</span>
-                    <img src="/personajes/Anika.png"
-                        class="absolute -right-4 -top-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
-                </div>
-            </div>
+
+<!-- ══ MODO: DISEÑO (contenido anterior) ═════════ -->
+<div id="mode-design" class="mode-section visible">
+  <div class="flex flex-col lg:flex-row gap-8 min-h-[700px] w-full max-w-7xl mx-auto p-8 pt-12">
+
+    <!-- OPTION 1: FANZINE RECORTES -->
+    <div class="flex-1 flex flex-col gap-4">
+      <div class="text-center">
+        <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">1. RECORTES FANZINE</h3>
+      </div>
+      <div class="flex-1 border border-[#333] flex flex-col bg-[#111] relative rounded-lg p-6 py-12 gap-6 justify-center overflow-hidden">
+        <div class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#4CAF50]/50 -rotate-2 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#4CAF50] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
+          <span class="font-display text-2xl text-white group-hover:text-[#4CAF50] transition-colors z-10 shadow-black drop-shadow-md">PUNKIBRÍ</span>
+          <img src="/personajes/Punkibri.png" class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
         </div>
-
-        <!-- OPTION 2: ACORDEON VERTICAL -->
-        <div class="flex-1 flex flex-col gap-4">
-            <div class="text-center">
-                <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">2. ACORDEÓN VERTICAL</h3>
-            </div>
-            <div class="flex-1 border border-[#333] flex flex-col overflow-hidden bg-black relative rounded-lg group">
-                <!-- Accordion Items -->
-                <div
-                    class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#111]">
-                    <div
-                        class="absolute inset-0 bg-[#4CAF50]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500">
-                    </div>
-                    <img src="/personajes/Punkibri.png"
-                        class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
-                    <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
-                        <span
-                            class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#4CAF50]">PUNKIBRÍ</span>
-                    </div>
-                </div>
-                <div
-                    class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#1a1a1a]">
-                    <div
-                        class="absolute inset-0 bg-[#FF6B6B]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500">
-                    </div>
-                    <img src="/personajes/Mordaz.png"
-                        class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
-                    <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
-                        <span
-                            class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#FF6B6B]">MORDAZ</span>
-                    </div>
-                </div>
-                <div
-                    class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#111]">
-                    <div
-                        class="absolute inset-0 bg-[#FF9800]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500">
-                    </div>
-                    <img src="/personajes/Incendia.png"
-                        class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
-                    <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
-                        <span
-                            class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#FF9800]">INCENDIA</span>
-                    </div>
-                </div>
-                <div
-                    class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#1a1a1a]">
-                    <div
-                        class="absolute inset-0 bg-[#00BCD4]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500">
-                    </div>
-                    <img src="/personajes/Anika.png"
-                        class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
-                    <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
-                        <span
-                            class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#00BCD4]">ANIKA</span>
-                    </div>
-                </div>
-            </div>
+        <div class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#FF6B6B]/50 rotate-3 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#FF6B6B] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
+          <span class="font-display text-2xl text-white group-hover:text-[#FF6B6B] transition-colors z-10 shadow-black drop-shadow-md">MORDAZ</span>
+          <img src="/personajes/Mordaz.png" class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
         </div>
-
-        <!-- OPTION 3: NEO BRUTALISMO -->
-        <div class="flex-1 flex flex-col gap-4">
-            <div class="text-center">
-                <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">3. CASILLAS BRUTALISTAS</h3>
-            </div>
-            <div
-                class="flex-1 border border-[#333] flex flex-col overflow-hidden bg-black relative rounded-xl p-6 flex flex-col justify-center">
-                <div class="grid grid-cols-2 grid-rows-2 h-full gap-8">
-                    <!-- Item 1 -->
-                    <div
-                        class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#4CAF50] hover:shadow-[0px_0px_0px_#4CAF50] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
-                        <img src="/personajes/Punkibri.png"
-                            class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
-                        <span
-                            class="font-display text-[#4CAF50] text-sm mt-3 px-2 border-2 border-dashed border-[#4CAF50] bg-black">PUNKIBRÍ</span>
-                    </div>
-                    <!-- Item 2 -->
-                    <div
-                        class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#FF6B6B] hover:shadow-[0px_0px_0px_#FF6B6B] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
-                        <img src="/personajes/Mordaz.png"
-                            class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
-                        <span
-                            class="font-display text-[#FF6B6B] text-sm mt-3 px-2 border-2 border-dashed border-[#FF6B6B] bg-black">MORDAZ</span>
-                    </div>
-                    <!-- Item 3 -->
-                    <div
-                        class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#FF9800] hover:shadow-[0px_0px_0px_#FF9800] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
-                        <img src="/personajes/Incendia.png"
-                            class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
-                        <span
-                            class="font-display text-[#FF9800] text-sm mt-3 px-2 border-2 border-dashed border-[#FF9800] bg-black">INCENDIA</span>
-                    </div>
-                    <!-- Item 4 -->
-                    <div
-                        class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#00BCD4] hover:shadow-[0px_0px_0px_#00BCD4] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
-                        <img src="/personajes/Anika.png"
-                            class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
-                        <span
-                            class="font-display text-[#00BCD4] text-sm mt-3 px-2 border-2 border-dashed border-[#00BCD4] bg-black">ANIKA</span>
-                    </div>
-                </div>
-            </div>
+        <div class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#FF9800]/50 -rotate-1 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#FF9800] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
+          <span class="font-display text-2xl text-white group-hover:text-[#FF9800] transition-colors z-10 shadow-black drop-shadow-md">INCENDIA</span>
+          <img src="/personajes/Incendia.png" class="absolute -right-4 -bottom-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
         </div>
-
+        <div class="relative h-1/4 bg-[#1a1a1a] border-2 border-dashed border-[#00BCD4]/50 rotate-2 hover:rotate-0 hover:scale-110 hover:z-20 hover:border-solid hover:border-[#00BCD4] transition-all duration-300 rounded cursor-pointer group flex items-center px-6 overflow-visible shadow-lg">
+          <span class="font-display text-2xl text-white group-hover:text-[#00BCD4] transition-colors z-10 shadow-black drop-shadow-md">ANIKA</span>
+          <img src="/personajes/Anika.png" class="absolute -right-4 -top-6 h-[180%] object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)] filter grayscale group-hover:grayscale-0 transition-all duration-300">
+        </div>
+      </div>
     </div>
-</body>
 
+    <!-- OPTION 2: ACORDEÓN VERTICAL -->
+    <div class="flex-1 flex flex-col gap-4">
+      <div class="text-center">
+        <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">2. ACORDEÓN VERTICAL</h3>
+      </div>
+      <div class="flex-1 border border-[#333] flex flex-col overflow-hidden bg-black relative rounded-lg group">
+        <div class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#111]">
+          <div class="absolute inset-0 bg-[#4CAF50]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500"></div>
+          <img src="/personajes/Punkibri.png" class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
+          <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
+            <span class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#4CAF50]">PUNKIBRÍ</span>
+          </div>
+        </div>
+        <div class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#1a1a1a]">
+          <div class="absolute inset-0 bg-[#FF6B6B]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500"></div>
+          <img src="/personajes/Mordaz.png" class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
+          <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
+            <span class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#FF6B6B]">MORDAZ</span>
+          </div>
+        </div>
+        <div class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#111]">
+          <div class="absolute inset-0 bg-[#FF9800]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500"></div>
+          <img src="/personajes/Incendia.png" class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
+          <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
+            <span class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#FF9800]">INCENDIA</span>
+          </div>
+        </div>
+        <div class="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative bg-[#1a1a1a]">
+          <div class="absolute inset-0 bg-[#00BCD4]/10 opacity-0 group-hover/item:opacity-100 transition-opacity duration-500"></div>
+          <img src="/personajes/Anika.png" class="absolute -right-8 bottom-0 h-[120%] object-contain grayscale group-hover/item:grayscale-0 transition-all duration-500 scale-150 group-hover/item:scale-100 opacity-20 group-hover/item:opacity-100 transform origin-bottom">
+          <div class="absolute inset-0 p-4 transition-all duration-500 flex items-center">
+            <span class="font-display text-2xl group-hover/item:text-5xl tracking-widest text-white transition-all duration-500 opacity-50 group-hover/item:opacity-100 [writing-mode:vertical-rl] group-hover/item:[writing-mode:horizontal-tb] rotate-180 group-hover/item:rotate-0 text-[#00BCD4]">ANIKA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION 3: CASILLAS BRUTALISTAS -->
+    <div class="flex-1 flex flex-col gap-4">
+      <div class="text-center">
+        <h3 class="font-display text-2xl tracking-widest text-[#CCFD29]">3. CASILLAS BRUTALISTAS</h3>
+      </div>
+      <div class="flex-1 border border-[#333] flex flex-col overflow-hidden bg-black relative rounded-xl p-6 flex flex-col justify-center">
+        <div class="grid grid-cols-2 grid-rows-2 h-full gap-8">
+          <div class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#4CAF50] hover:shadow-[0px_0px_0px_#4CAF50] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
+            <img src="/personajes/Punkibri.png" class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
+            <span class="font-display text-[#4CAF50] text-sm mt-3 px-2 border-2 border-dashed border-[#4CAF50] bg-black">PUNKIBRÍ</span>
+          </div>
+          <div class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#FF6B6B] hover:shadow-[0px_0px_0px_#FF6B6B] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
+            <img src="/personajes/Mordaz.png" class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
+            <span class="font-display text-[#FF6B6B] text-sm mt-3 px-2 border-2 border-dashed border-[#FF6B6B] bg-black">MORDAZ</span>
+          </div>
+          <div class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#FF9800] hover:shadow-[0px_0px_0px_#FF9800] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
+            <img src="/personajes/Incendia.png" class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
+            <span class="font-display text-[#FF9800] text-sm mt-3 px-2 border-2 border-dashed border-[#FF9800] bg-black">INCENDIA</span>
+          </div>
+          <div class="border-4 border-white bg-black relative shadow-[8px_8px_0px_#00BCD4] hover:shadow-[0px_0px_0px_#00BCD4] hover:translate-x-[8px] hover:translate-y-[8px] transition-all duration-200 cursor-pointer group flex flex-col items-center justify-end pb-2 overflow-hidden">
+            <img src="/personajes/Anika.png" class="h-[75%] object-contain relative z-10 group-hover:scale-110 transition-transform">
+            <span class="font-display text-[#00BCD4] text-sm mt-3 px-2 border-2 border-dashed border-[#00BCD4] bg-black">ANIKA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══ MODO: EVENTOS ══════════════════════════════ -->
+<div id="mode-eventos" class="mode-section">
+
+  <!-- subnav -->
+  <div class="subnav">
+    <span style="font-family:'Space Mono',monospace;font-size:.65rem;color:rgba(245,245,245,.3);letter-spacing:.1em;margin-right:.5rem;">VER:</span>
+    <button class="sub-tab active" onclick="showOpt('opt1')">1. El Tablón</button>
+    <button class="sub-tab" onclick="showOpt('opt3')">2. El Periódico</button>
+    <button class="sub-tab" onclick="showOpt('opt6')">3. La Señal</button>
+    <button class="sub-tab" onclick="showOpt('opt7')">4. El Ticket</button>
+    <button class="sub-tab" onclick="showOpt('opt9')">5. Papel Rasgado</button>
+    <button class="sub-tab" onclick="showOpt('opt10')">6. El Sello (Stencil)</button>
+    <button class="sub-tab" onclick="showOpt('opt11')">7. CCTV (Cámaras)</button>
+    <button class="sub-tab" onclick="showOpt('opt12')">8. Fanzine Desplegable</button>
+  </div>
+
+  <!-- ── OPT 1: EL TABLÓN ─────────────────────── -->
+  <div id="opt1" class="opt-panel visible" style="background:#111;min-height:calc(100vh - 110px);">
+    <div style="text-align:center;padding:3.5rem 2rem 1.5rem;">
+      <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,14vw,10rem);line-height:.9;color:#f5f5f5;letter-spacing:.04em;">EVENTOS</h1>
+      <div class="neon-bar"></div>
+      <p style="color:rgba(245,245,245,.45);font-size:.95rem;letter-spacing:.05em;font-style:italic;">Espacios de encuentro, diálogo y resistencia colectiva</p>
+    </div>
+    <div style="display:flex;gap:1rem;justify-content:center;padding:.5rem 2rem 1.5rem;flex-wrap:wrap;">
+      <button class="sticker active">Todos</button>
+      <button class="sticker">Próximos</button>
+      <button class="sticker">En Curso</button>
+      <button class="sticker">Pasados</button>
+    </div>
+    <!-- Featured -->
+    <div style="max-width:900px;margin:0 auto;padding:0 2rem 1rem;">
+      <div class="cartel featured">
+        <img src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=800&q=70" alt="" class="cartel-img" />
+        <div class="cartel-body">
+          <div class="cartel-date-band" style="display:inline-block;padding:.25rem .9rem;margin-bottom:.8rem;">SÁB 12 ABR · 7PM</div>
+          <div class="cartel-title" style="font-size:2rem;">Noche de Micrófono Abierto</div>
+          <div class="cartel-meta">La Caverna · Bogotá</div>
+          <div class="countdown">
+            <div class="cd-block"><span class="cd-num" id="d1">08</span><span class="cd-label">Días</span></div>
+            <div class="cd-block"><span class="cd-num" id="h1">14</span><span class="cd-label">Hrs</span></div>
+            <div class="cd-block"><span class="cd-num" id="m1">32</span><span class="cd-label">Min</span></div>
+            <div class="cd-block"><span class="cd-num" id="s1">00</span><span class="cd-label">Seg</span></div>
+          </div>
+          <a class="btn-neon" href="#">VER DETALLES →</a>
+        </div>
+      </div>
+    </div>
+    <!-- Grid -->
+    <div style="column-count:3;column-gap:1.2rem;padding:0 2.5rem 3rem;max-width:1100px;margin:0 auto;">
+      <div class="cartel">
+        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=70" alt="" class="cartel-img" />
+        <div class="cartel-date-band">JUE 3 ABR · 8PM</div>
+        <div class="cartel-body"><div class="cartel-title">Conversatorio: Medios Alternativos</div><div class="cartel-meta">📍 Biblioteca Pública · Gratis</div><span class="cartel-tag tag-neon">Próximo</span></div>
+      </div>
+      <div class="cartel tall">
+        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600&q=70" alt="" class="cartel-img" />
+        <div class="cartel-date-band">LUN 17 MAR</div>
+        <div class="cartel-body"><div class="cartel-title">Exposición: Foto Documental</div><div class="cartel-meta">📍 Galería Subte · Medellín</div><span class="cartel-tag tag-red">Pasado</span></div>
+      </div>
+      <div class="cartel past">
+        <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=600&q=70" alt="" class="cartel-img" />
+        <div class="cartel-date-band">VIE 7 MAR</div>
+        <div class="cartel-body"><div class="cartel-title">Festival Sonidos del Margen</div><div class="cartel-meta">📍 Parque Nacional · Gratis</div><span class="cartel-tag tag-red">Pasado</span></div>
+      </div>
+      <div class="cartel">
+        <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=600&q=70" alt="" class="cartel-img" />
+        <div class="cartel-date-band">DOM 20 ABR · 4PM</div>
+        <div class="cartel-body"><div class="cartel-title">Taller de Escritura Crítica</div><div class="cartel-meta">📍 Café El Origen · Cali</div><span class="cartel-tag tag-neon">Próximo</span></div>
+      </div>
+      <div class="cartel">
+        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=70" alt="" class="cartel-img" />
+        <div class="cartel-date-band">MIÉ 25 ABR · 6PM</div>
+        <div class="cartel-body"><div class="cartel-title">Lanzamiento Editorial Vol. 3</div><div class="cartel-meta">📍 Librería Común · Bogotá</div><span class="cartel-tag tag-green">En Curso</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPT 3: EL PERIÓDICO ──────────────────── -->
+  <div id="opt3" class="opt-panel" style="background:#080808;min-height:calc(100vh - 110px);">
+    <div style="border-bottom:2px solid #f5f5f5;padding:1.2rem 3rem .7rem;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+      <div style="font-family:'Playfair Display',serif;font-size:2.8rem;font-style:italic;font-weight:900;color:#f5f5f5;">Revista Bífido — Eventos</div>
+      <div style="font-family:'Space Mono',monospace;font-size:.68rem;color:rgba(245,245,245,.35);letter-spacing:.08em;text-align:right;">ED. DIGITAL · ABR 2026<br/><span style="color:#CCFD29;font-weight:700;">5 EVENTOS ACTIVOS</span></div>
+    </div>
+    <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.1);padding:0 3rem;overflow-x:auto;">
+      <button class="sub-tab active" style="border-radius:0;">EDICIÓN HOY</button>
+      <button class="sub-tab" style="border-radius:0;">PRÓXIMOS</button>
+      <button class="sub-tab" style="border-radius:0;">EN CURSO</button>
+      <button class="sub-tab" style="border-radius:0;">ARCHIVO</button>
+    </div>
+    <div style="padding:2rem 3rem 4rem;max-width:1050px;margin:0 auto;">
+      <!-- Headline -->
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;border:1px solid rgba(255,255,255,.08);border-bottom:none;">
+        <div style="position:relative;overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=900&q=70" style="width:100%;height:300px;object-fit:cover;display:block;filter:grayscale(100%) contrast(1.1);" />
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(204,253,41,.15) 0%,transparent 60%);"></div>
+        </div>
+        <div style="padding:2rem;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid rgba(255,255,255,.08);">
+          <div>
+            <div style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.18em;color:#CCFD29;border-left:3px solid #CCFD29;padding-left:.5rem;margin-bottom:.8rem;">Evento Principal · 12 ABR 2026</div>
+            <div class="typewriter" style="font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;line-height:1.1;color:#f5f5f5;margin-bottom:.8rem;">Noche de Micrófono Abierto</div>
+            <div style="font-size:.82rem;line-height:1.7;color:rgba(245,245,245,.45);">La Caverna abre sus puertas para una noche de voces sin filtro. Músicos, poetas y narradores irrumpen con sus historias más crudas.</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1.2rem;">
+            <div style="display:flex;gap:.9rem;">
+              <div style="text-align:center;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#CCFD29;display:block;line-height:1;" id="cd2d">08</span><span style="font-family:'Space Mono',monospace;font-size:.52rem;color:rgba(245,245,245,.3);letter-spacing:.1em;">DÍAS</span></div>
+              <div style="text-align:center;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#CCFD29;display:block;line-height:1;" id="cd2h">14</span><span style="font-family:'Space Mono',monospace;font-size:.52rem;color:rgba(245,245,245,.3);letter-spacing:.1em;">HRS</span></div>
+              <div style="text-align:center;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#CCFD29;display:block;line-height:1;" id="cd2m">32</span><span style="font-family:'Space Mono',monospace;font-size:.52rem;color:rgba(245,245,245,.3);letter-spacing:.1em;">MIN</span></div>
+            </div>
+            <a class="btn-neon" style="margin-top:0;font-size:.82rem;padding:.45rem 1.1rem;">VER →</a>
+          </div>
+        </div>
+      </div>
+      <!-- 3 cols -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(255,255,255,.08);border-top:none;">
+        <div style="padding:1.3rem;border-right:1px solid rgba(255,255,255,.08);">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:#CCFD29;text-transform:uppercase;margin-bottom:.4rem;">Próximo · Jue 3 Abr</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;line-height:1.2;color:#f5f5f5;margin-bottom:.5rem;">Conversatorio: Medios Alternativos</div>
+          <div class="col-rule"></div>
+          <div style="font-family:'Space Mono',monospace;font-size:.65rem;color:rgba(245,245,245,.32);line-height:1.7;">Biblioteca Pública · Bogotá<br/>8:00 PM · Entrada libre</div>
+        </div>
+        <div style="padding:1.3rem;border-right:1px solid rgba(255,255,255,.08);">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:#CCFD29;text-transform:uppercase;margin-bottom:.4rem;">En Curso · Hasta 25 Abr</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;line-height:1.2;color:#f5f5f5;margin-bottom:.5rem;">Lanzamiento Editorial Vol. 3</div>
+          <div class="col-rule"></div>
+          <div style="font-family:'Space Mono',monospace;font-size:.65rem;color:rgba(245,245,245,.32);line-height:1.7;">Librería Común · Bogotá<br/>6:00 PM · Acceso libre</div>
+        </div>
+        <div style="padding:1.3rem;">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:#CCFD29;text-transform:uppercase;margin-bottom:.4rem;">Próximo · Dom 20 Abr</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;line-height:1.2;color:#f5f5f5;margin-bottom:.5rem;">Taller de Escritura Crítica</div>
+          <div class="col-rule"></div>
+          <div style="font-family:'Space Mono',monospace;font-size:.65rem;color:rgba(245,245,245,.32);line-height:1.7;">Café El Origen · Cali<br/>4:00 PM · Cupos limitados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPT 6: LA SEÑAL ────────────────────── -->
+  <div id="opt6" class="opt-panel" style="background:#030303;min-height:calc(100vh - 110px);">
+    <div style="padding:3rem 3rem 1.5rem;">
+      <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,12vw,9rem);line-height:.88;color:#f5f5f5;letter-spacing:.04em;" class="glitch-title" data-text="EVENTOS">EVENTOS</h1>
+      <div style="width:200px;height:2px;background:linear-gradient(90deg,#CCFD29,transparent);margin-top:.8rem;"></div>
+    </div>
+    <div style="padding:0 3rem 3rem;max-width:1100px;margin:0 auto;">
+      <!-- Featured -->
+      <div class="signal-featured">
+        <div style="position:relative;overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=800&q=70" style="height:300px;object-fit:cover;width:100%;display:block;filter:grayscale(100%) brightness(.65) contrast(1.2);" />
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.2) 2px,rgba(0,0,0,.2) 4px);z-index:2;"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(204,253,41,.12) 0%,transparent 50%);z-index:3;"></div>
+        </div>
+        <div style="padding:2rem;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid rgba(204,253,41,.1);">
+          <div>
+            <div style="display:inline-flex;align-items:center;gap:.4rem;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:#22c55e;margin-bottom:.8rem;"><span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;animation:flicker 2s infinite;"></span>AL AIRE · EN 8 DÍAS</div>
+            <div class="glitch-title" data-text="Noche de Micrófono Abierto" style="font-size:1.9rem;margin-bottom:.7rem;">Noche de Micrófono Abierto</div>
+            <div style="font-family:'Space Mono',monospace;font-size:.73rem;color:rgba(245,245,245,.35);line-height:1.8;">La Caverna · Bogotá<br/>SÁB 12 ABR · 7PM · Entrada libre</div>
+          </div>
+          <div style="display:flex;gap:.8rem;margin-top:1.2rem;">
+            <div style="text-align:center;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#CCFD29;display:block;line-height:1;" id="s6d">08</span><span style="font-family:'Space Mono',monospace;font-size:.5rem;color:rgba(245,245,245,.25);letter-spacing:.1em;">DÍAS</span></div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(255,255,255,.15);">:</div>
+            <div style="text-align:center;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#CCFD29;display:block;line-height:1;" id="s6h">14</span><span style="font-family:'Space Mono',monospace;font-size:.5rem;color:rgba(245,245,245,.25);letter-spacing:.1em;">HRS</span></div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(255,255,255,.15);">:</div>
+            <div style="text-align:center;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#CCFD29;display:block;line-height:1;" id="s6m">32</span><span style="font-family:'Space Mono',monospace;font-size:.5rem;color:rgba(245,245,245,.25);letter-spacing:.1em;">MIN</span></div>
+          </div>
+          <a class="btn-neon" href="#" style="margin-top:1rem;display:inline-block;">SINTONIZAR →</a>
+        </div>
+      </div>
+      <!-- Grid 3 cols -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:1px;">
+        <div class="signal-card">
+          <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=70" style="aspect-ratio:16/9;object-fit:cover;" />
+          <div class="signal-body">
+            <div class="signal-freq">FREQ-002 · JUE 3 ABR</div>
+            <div class="signal-title">Conversatorio: Medios Alternativos</div>
+            <div class="signal-meta">Biblioteca Pública · Bogotá · 8PM · Gratis</div>
+            <div class="signal-live"><span class="live-dot"></span>PRÓXIMO</div>
+          </div>
+        </div>
+        <div class="signal-card">
+          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=70" style="aspect-ratio:16/9;object-fit:cover;" />
+          <div class="signal-body">
+            <div class="signal-freq">FREQ-003 · MIÉ 25 ABR</div>
+            <div class="signal-title">Lanzamiento Editorial Vol. 3</div>
+            <div class="signal-meta">Librería Común · Bogotá · 6PM</div>
+            <div class="signal-live" style="color:#22c55e;"><span class="live-dot" style="background:#22c55e;"></span>EN CURSO</div>
+          </div>
+        </div>
+        <div class="signal-card" style="opacity:.35;">
+          <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=600&q=70" style="aspect-ratio:16/9;object-fit:cover;" />
+          <div class="signal-body">
+            <div class="signal-freq">FREQ-004 · VIE 7 MAR · <span style="color:#E63946;">SEÑAL PERDIDA</span></div>
+            <div class="signal-title">Festival Sonidos del Margen</div>
+            <div class="signal-meta">Parque Nacional · Bogotá · Gratis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPT 7: EL TICKET UNDERGROUND ─────────── -->
+  <div id="opt7" class="opt-panel" style="background:#0a0a0a;min-height:calc(100vh - 110px);">
+    <div style="padding:2rem 3rem 1rem;">
+      <div style="font-family:'Space Mono',monospace;font-size:.8rem;color:#CCFD29;text-transform:uppercase;">> SYSTEM_LOG: EVENT_QUEUE</div>
+    </div>
+    <div class="ticket-grid">
+      <!-- TICKET 1 -->
+      <div class="ticket">
+        <div class="tck-head">
+          <span>* REVISTA BÍFIDO *</span><br/>
+          <span>TKT ID: 90210-A</span><br/>
+          <span>12.ABR.2026 / 19:00H</span>
+        </div>
+        <div class="tck-body">
+          <div class="tck-title">Noche de Micrófono Abierto</div>
+          <div class="tck-row"><span>LOC</span><span>[La Caverna]</span></div>
+          <div class="tck-row"><span>CITY</span><span>[Bogotá]</span></div>
+          <div class="tck-row"><span>FEE</span><span>[Entrada Libre]</span></div>
+          <div class="tck-row" style="border-bottom:none;margin-top:1.5rem;"><span>STAT</span><span style="background:#CCFD29;padding:.2rem .5rem;font-weight:700;">[PRÓXIMO]</span></div>
+        </div>
+        <div class="tck-barcode">|| | ||| | || | ||| ||</div>
+        <div class="tck-footer">010101-VOZIPERDIDA-BIFIDO</div>
+      </div>
+      <!-- TICKET 2 -->
+      <div class="ticket">
+        <div class="tck-head">
+          <span>* REVISTA BÍFIDO *</span><br/>
+          <span>TKT ID: 90211-B</span><br/>
+          <span>03.ABR.2026 / 20:00H</span>
+        </div>
+        <div class="tck-body">
+          <div class="tck-title">Medios Alternativos</div>
+          <div class="tck-row"><span>LOC</span><span>[Biblio. Pública]</span></div>
+          <div class="tck-row"><span>CITY</span><span>[Bogotá]</span></div>
+          <div class="tck-row"><span>FEE</span><span>[Gratis]</span></div>
+          <div class="tck-row" style="border-bottom:none;margin-top:1.5rem;"><span>STAT</span><span style="background:#CCFD29;padding:.2rem .5rem;font-weight:700;">[PRÓXIMO]</span></div>
+        </div>
+        <div class="tck-barcode">| ||| | || || | | |||</div>
+        <div class="tck-footer">011010-PENSAMIENTO-LIBRE</div>
+      </div>
+      <!-- TICKET 3 -->
+      <div class="ticket">
+        <div class="tck-head">
+          <span>* REVISTA BÍFIDO *</span><br/>
+          <span>TKT ID: 90212-C</span><br/>
+          <span>25.ABR.2026 / 18:00H</span>
+        </div>
+        <div class="tck-body">
+          <div class="tck-title" style="font-size:1.35rem;">Lanzamiento Editorial Vol 3</div>
+          <div class="tck-row"><span>LOC</span><span>[Librería Común]</span></div>
+          <div class="tck-row"><span>CITY</span><span>[Bogotá]</span></div>
+          <div class="tck-row"><span>FEE</span><span>[Acceso Libre]</span></div>
+          <div class="tck-row" style="border-bottom:none;margin-top:1.5rem;"><span>STAT</span><span style="background:#22c55e;color:#fff;padding:.2rem .5rem;font-weight:700;">[EN CURSO]</span></div>
+        </div>
+        <div class="tck-barcode">||| || | | ||| || | ||</div>
+        <div class="tck-footer">110111-TEXTO-BIFIDO-V3</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPT 9: PAPEL RASGADO (COLLAGE) ────────── -->
+  <div id="opt9" class="opt-panel rasgado-bg" style="min-height:calc(100vh - 110px);">
+    <div class="rasgado-wrap">
+      <!-- CARD 1 -->
+      <div class="rasgado-card">
+        <div class="r-layer1"></div>
+        <div class="r-layer2"></div>
+        <div class="r-layer3" style="background-image:url('https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=500&q=70');"></div>
+        <div class="r-content">
+          <div class="r-date">12<br/>ABR</div>
+          <div class="r-title">Noche de Micrófono<br/>Abierto</div>
+          <div style="text-align:right;"><span class="r-meta">LA CAVERNA · BOGOTÁ</span></div>
+        </div>
+      </div>
+      <!-- CARD 2 -->
+      <div class="rasgado-card">
+        <div class="r-layer1" style="background:#E63946;clip-path:polygon(7% 3%, 98% 0%, 93% 90%, 88% 100%, 0% 96%, 4% 12%);"></div>
+        <div class="r-layer2"></div>
+        <div class="r-layer3" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&q=70');"></div>
+        <div class="r-content">
+          <div class="r-date" style="color:#E63946;transform:rotate(5deg);">03<br/>ABR</div>
+          <div class="r-title" style="font-size:3rem;">Medios<br/>Alter<br/>nativos</div>
+          <div style="text-align:left;"><span class="r-meta" style="background:#E63946;color:#fff;transform:rotate(-3deg);">BIBLIO. PÚBLICA</span></div>
+        </div>
+      </div>
+      <!-- CARD 3 -->
+      <div class="rasgado-card">
+        <div class="r-layer1" style="background:#22c55e;clip-path:polygon(0% 4%, 93% 8%, 100% 96%, 95% 100%, 8% 90%, 3% 0%);"></div>
+        <div class="r-layer2"></div>
+        <div class="r-layer3" style="background-image:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&q=70');"></div>
+        <div class="r-content">
+          <div class="r-date" style="color:#22c55e;transform:rotate(-2deg);font-size:3.5rem;">25<br/>ABR</div>
+          <div class="r-title" style="font-size:2.2rem;">Lanzamiento<br/>Editorial Vol 3</div>
+          <div style="text-align:right;"><span class="r-meta" style="background:#22c55e;color:#000;">LIBRERÍA COMÚN</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── OPT 10: EL SELLO CLANDESTINO ────────── -->
+  <div id="opt10" class="opt-panel">
+    <div class="sello-wrap">
+      <div class="sello-card" style="grid-column:1/-1;">
+        <span class="st-date">12 ABR 2026 · 7PM</span>
+        <div class="st-title" style="font-size:6rem;">NOCHE DE MICRÓFONO<br/>ABIERTO</div>
+        <div class="st-loc">LA CAVERNA · BOGOTÁ · ENTRADA LIBRE</div>
+        <div class="st-stamp">DESTACADO</div>
+      </div>
+      <div class="sello-card">
+        <span class="st-date">03 ABR 2026</span>
+        <div class="st-title">MEDIOS<br/>ALTERNATIVOS</div>
+        <div class="st-loc">BIBLIOTECA PÚBLICA</div>
+        <div class="st-stamp">PRÓXIMO</div>
+      </div>
+      <div class="sello-card">
+        <span class="st-date" style="background:#22c55e;color:#000;">25 ABR 2026</span>
+        <div class="st-title" style="font-size:2.8rem;">LANZAMIENTO<br/>EDITORIAL VOL.3</div>
+        <div class="st-loc">LIBRERÍA COMÚN</div>
+        <div class="st-stamp" style="-webkit-text-stroke:2px #22c55e;">EN CURSO</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPT 11: CCTV ────────────────────────── -->
+  <div id="opt11" class="opt-panel">
+    <div class="cctv-wrap">
+      <div class="cam-feed">
+        <div class="cam-bg" style="background-image:url('https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=800&q=70');"></div>
+        <div class="cam-ui">
+          <div class="cam-top"><span>CAM-01 [LA CAVERNA]</span><div class="cam-rec"><span class="cam-dot"></span>REC</div></div>
+          <div><div class="cam-title">NOCHE DE MICRÓFONO ABIERTO</div><div class="cam-date">12 ABR 2026 - 19:00:00 // ENTRADA LIBRE</div></div>
+        </div>
+      </div>
+      <div class="cam-feed">
+        <div class="cam-bg" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=70');"></div>
+        <div class="cam-ui">
+          <div class="cam-top"><span>CAM-02 [BIBLIOTECA]</span><div class="cam-rec" style="color:#555;"><span class="cam-dot" style="background:#555;animation:none;box-shadow:none;"></span>OFF</div></div>
+          <div><div class="cam-title">MEDIOS ALTERNATIVOS</div><div class="cam-date">03 ABR 2026 - 20:00:00</div></div>
+        </div>
+      </div>
+      <div class="cam-feed">
+        <div class="cam-bg" style="background-image:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=70');"></div>
+        <div class="cam-ui">
+          <div class="cam-top"><span>CAM-03 [LIB_COMÚN]</span><div class="cam-rec"><span class="cam-dot"></span>REC</div></div>
+          <div><div class="cam-title">LANZAMIENTO EDITORIAL V3</div><div class="cam-date">25 ABR 2026 - 18:00:00</div></div>
+        </div>
+      </div>
+      <div class="cam-feed" style="opacity:.6;">
+        <div class="cam-bg" style="background-image:url('https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=70');"></div>
+        <div class="cam-ui">
+          <div class="cam-top"><span>CAM-04 [PQ.NACIONAL]</span><span style="color:#E63946;">NO SIGNAL</span></div>
+          <div><div class="cam-title" style="color:rgba(255,255,255,.5);">FESTIVAL SONIDOS</div><div class="cam-date">07 MAR 2026 - PASADO</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPT 12: EL FANZINE ────────────────────── -->
+  <div id="opt12" class="opt-panel">
+    <div class="zine-wrap">
+      <div class="zine-grid">
+        <div class="zine-cell zine-hero">
+          <span class="z-tag">VOL. 01 · 12 ABRIL 2026</span>
+          <div class="z-title">NOCHE DE MICRÓFONO<br/>ABIERTO</div>
+          <div class="z-meta">LA CAVERNA · BOGOTÁ · 7PM · ENTRADA LIBRE</div>
+        </div>
+        <div class="zine-cell">
+          <img class="z-img" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=70" />
+          <span class="z-tag" style="background:#E63946;transform:rotate(2deg);">03 ABRIL</span>
+          <div class="z-title" style="font-size:1.8rem;">CONVERSATORIO: MEDIOS</div>
+          <div class="z-meta">BIBLIOTECA PÚBLICA</div>
+        </div>
+        <div class="zine-cell">
+          <img class="z-img" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&q=70" />
+          <span class="z-tag" style="background:#22c55e;transform:rotate(-1deg);">25 ABRIL</span>
+          <div class="z-title" style="font-size:1.8rem;">LANZAMIENTO<br/>EDITORIAL V.3</div>
+          <div class="z-meta">LIBRERÍA COMÚN</div>
+        </div>
+        <div class="zine-cell">
+          <div class="z-tag" style="background:#555;">07 MARZO</div>
+          <div class="z-title" style="font-size:1.8rem;text-decoration:line-through;opacity:.5;">SONIDOS DEL<br/>MARGEN</div>
+          <div class="z-meta" style="opacity:.5;">PARQUE NACIONAL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div><!-- end mode-eventos -->
+
+
+<script>
+  // ── Mode switcher ──────────────────────────────
+  function switchMode(mode) {
+    document.getElementById('mode-design').classList.toggle('visible', mode === 'design');
+    document.getElementById('mode-eventos').classList.toggle('visible', mode === 'eventos');
+    document.querySelectorAll('.mode-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', (i === 0 && mode === 'design') || (i === 1 && mode === 'eventos'));
+    });
+  }
+
+  // ── Eventos sub-tabs ───────────────────────────
+  function showOpt(id) {
+    document.querySelectorAll('.opt-panel').forEach(p => p.classList.remove('visible'));
+    document.getElementById(id).classList.add('visible');
+    document.querySelectorAll('.subnav .sub-tab').forEach((btn, i) => {
+      btn.classList.toggle('active', ['opt1','opt2','opt3','opt4','opt5','opt6','opt7','opt8','opt9'][i] === id);
+    });
+  }
+
+  // ── Sticker filters ────────────────────────────
+  document.querySelectorAll('.sticker').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sticker').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // ── Folder tabs ────────────────────────────────
+  document.querySelectorAll('.folder-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.folder-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // ── Live countdown ─────────────────────────────
+  const target = new Date(Date.now() + (8*86400 + 14*3600 + 32*60) * 1000);
+  function tick() {
+    const diff = target - Date.now();
+    const pad = n => String(Math.max(0, Math.floor(n))).padStart(2,'0');
+    const d = diff / 86400000;
+    const h = (diff % 86400000) / 3600000;
+    const m = (diff % 3600000) / 60000;
+    const s = (diff % 60000) / 1000;
+    ['d1','h1','m1','s1'].forEach((id,i) => { const el=document.getElementById(id); if(el) el.textContent=pad([d,h,m,s][i]); });
+    ['cd2d','cd2h','cd2m'].forEach((id,i) => { const el=document.getElementById(id); if(el) el.textContent=pad([d,h,m][i]); });
+    ['p4d','p4h','p4m'].forEach((id,i) => { const el=document.getElementById(id); if(el) el.textContent=pad([d,h,m][i]); });
+    ['s6d','s6h','s6m'].forEach((id,i) => { const el=document.getElementById(id); if(el) el.textContent=pad([d,h,m][i]); });
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+</body>
 </html>

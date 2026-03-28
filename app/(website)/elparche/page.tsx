@@ -312,7 +312,7 @@ export default function ElParchePage() {
                         </div>
                     ) : (
                         <div className="text-center py-20">
-                            <p className="text-gray-500 text-2xl font-display tracking-widest uppercase">Silencio... Estamos mutando.</p>
+                            <p className="text-gray-500 text-2xl font-display tracking-widest uppercase">Estamos mutando...</p>
                         </div>
                     )}
                 </section>

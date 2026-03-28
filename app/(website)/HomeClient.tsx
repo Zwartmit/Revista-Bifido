@@ -90,7 +90,7 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
             <section id="la-manada" className="pb-20 relative bg-black">
                 {/* Background Green Element */}
                 <div className="absolute top-0 right-0 w-full h-full opacity-30 pointer-events-none overflow-hidden flex justify-end">
-                    <div className="w-[800px] h-[800px] bg-[url('/gradiente-verde.png')] bg-contain bg-right bg-no-repeat mix-blend-screen opacity-50 translate-x-1/4" />
+                    <div className="w-[800px] h-[800px] bg-[url('/backgrounds/gradiente-verde.png')] bg-contain bg-right bg-no-repeat mix-blend-screen opacity-50 translate-x-1/4" />
                 </div>
 
                 <div className="container mx-auto px-4 relative z-10">
