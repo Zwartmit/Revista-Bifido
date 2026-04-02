@@ -5,35 +5,39 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { mascots } from '@/lib/mascots';
+import { characters } from '@/lib/characters';
+import GlobalSearchOverlay from './GlobalSearchOverlay';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isMascotMenuOpen, setIsMascotMenuOpen] = useState(false);
+    const [isCharacterMenuOpen, setIsCharacterMenuOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const pathname = usePathname();
     const menuRef = useRef<HTMLDivElement>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Close menu when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setIsMascotMenuOpen(false);
+                setIsCharacterMenuOpen(false);
             }
         };
 
-        if (isMascotMenuOpen) {
+        if (isCharacterMenuOpen) {
             document.addEventListener('mousedown', handleClickOutside);
         }
 
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [isMascotMenuOpen]);
+    }, [isCharacterMenuOpen]);
 
-    // Find active mascot based on pathname
-    const activeMascot = mascots.find(m => pathname === `/${m.slug}`);
+    // Find active character based on pathname
+    const activeCharacter = characters.find(m => pathname === `/${m.slug}`);
     return (
         <>
+            <GlobalSearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
             <header
                 className="fixed top-0 left-0 right-0 z-50 border-b-2 border-bifido-neon bg-black transition-colors duration-500"
             >
@@ -42,7 +46,7 @@ export default function Header() {
                     <div className="flex lg:hidden items-center justify-between">
                         <Link href="/" className="relative h-12 w-48 lg:h-14 lg:w-56" onClick={() => setIsMenuOpen(false)}>
                             <Image
-                                src="/logos/bifido.svg"
+                                src="/icons/bifido.svg"
                                 alt="Revista Bífido"
                                 fill
                                 className="object-contain"
@@ -50,20 +54,29 @@ export default function Header() {
                             />
                         </Link>
 
-                        <button
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="text-bifido-neon p-2"
-                            aria-label="Toggle menu"
-                        >
-                            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-                        </button>
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={() => setIsSearchOpen(true)}
+                                className="p-1 hover:scale-110 transition-transform"
+                                aria-label="Open search"
+                            >
+                                <Image src="/icons/search.svg" alt="Search" width={24} height={24} className="object-contain" />
+                            </button>
+                            <button
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                className="p-1 hover:scale-110 transition-transform"
+                                aria-label="Toggle menu"
+                            >
+                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <Image src="/icons/menu.svg" alt="Menu" width={24} height={24} className="object-contain" />}
+                            </button>
+                        </div>
                     </div>
 
                     {/* Desktop Layout - Logo left, Links center/right */}
                     <div className="hidden lg:flex items-center justify-between">
                         <Link href="/" className="flex items-center flex-shrink-0">
                             <Image
-                                src="/logos/bifido.svg"
+                                src="/icons/bifido.svg"
                                 alt="Revista Bífido"
                                 width={180}
                                 height={50}
@@ -73,45 +86,67 @@ export default function Header() {
                         </Link>
                         {/* Desktop Navigation */}
                         <div className="flex items-center gap-4 lg:gap-6 h-10">
+                            <button
+                                onClick={() => setIsSearchOpen(true)}
+                                className="p-1 hover:scale-110 transition-transform"
+                                aria-label="Open search"
+                            >
+                                <Image src="/icons/search.svg" alt="Search" width={24} height={24} className="object-contain" />
+                            </button>
+
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
+
                             <Link href="/" className={`flex items-center gap-2 font-display tracking-wider text-lg transition-colors uppercase px-2 ${pathname === '/' ? 'text-bifido-neon' : 'text-white hover:text-bifido-neon'}`}>
                                 <Image src="/icons/home.svg" alt="Inicio" width={20} height={20} className="object-contain" />
                                 INICIO
                             </Link>
 
-                            <div className="h-4 w-[2px] bg-bifido-neon" />
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
 
-                            {/* Mascot buttons Dropdown */}
-                            <div className="relative h-full flex items-center">
+                            {/* Character buttons Dropdown */}
+                            <div
+                                className="relative h-full flex items-center"
+                                onMouseEnter={() => {
+                                    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+                                    setIsCharacterMenuOpen(true);
+                                }}
+                                onMouseLeave={() => {
+                                    timeoutRef.current = setTimeout(() => {
+                                        setIsCharacterMenuOpen(false);
+                                    }, 200);
+                                }}
+                            >
                                 <button
-                                    onClick={() => setIsMascotMenuOpen(!isMascotMenuOpen)}
-                                    className="flex items-center gap-1 text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase px-2"
+                                    className="flex items-center gap-1 text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase px-2 py-1"
                                 >
                                     LA MANADA
-                                    <ChevronDown size={18} className={`transform transition-transform duration-200 ${isMascotMenuOpen ? 'rotate-180' : ''}`} />
+                                    <ChevronDown size={18} className={`transform transition-transform duration-200 ${isCharacterMenuOpen ? 'rotate-180' : ''}`} />
                                 </button>
 
-                                {isMascotMenuOpen && (
-                                    <div className="fixed top-[100px] left-1/2 -translate-x-1/2 w-max max-w-[95vw] overflow-x-auto bg-black border border-bifido-neon rounded-full py-4 px-6 lg:px-8 shadow-[0_0_15px_rgba(204,253,41,0.2)] flex flex-row items-center gap-4 lg:gap-8 justify-center z-50">
-                                        {mascots.map((mascot) => (
-                                            <div key={mascot.id} onClick={() => setIsMascotMenuOpen(false)}>
-                                                <MascotNavLink mascot={mascot} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                                {/* Invisible bridge to prevent gap issues */}
+                                <div className={`absolute top-full h-2 w-full z-40 ${isCharacterMenuOpen ? 'block' : 'hidden'}`} />
+
+                                <div className={`absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 w-max min-w-[240px] bg-black border border-bifido-neon rounded-2xl py-4 px-2 shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_20px_rgba(204,253,41,0.1)] flex flex-col gap-1 z-50 transition-all duration-300 origin-top ${isCharacterMenuOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible pointer-events-none'}`}>
+                                    {characters.map((character) => (
+                                        <div key={character.id} onClick={() => setIsCharacterMenuOpen(false)} className="w-full">
+                                            <CharacterNavLink character={character} />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
 
-                            <div className="h-4 w-[2px] bg-bifido-neon" />
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
 
                             <StaticNavLink href="/elparche" label="EL PARCHE" className="font-display tracking-wider text-lg uppercase" />
 
-                            <div className="h-4 w-[2px] bg-bifido-neon" />
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
 
                             <StaticNavLink href="/eventos" label="EVENTOS" className="font-display tracking-wider text-lg uppercase" />
 
-                            <div className="h-4 w-[2px] bg-bifido-neon" />
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
 
                             <StaticNavLink href="/contactanos" label="CONTÁCTANOS" className="font-display tracking-wider text-lg uppercase" />
+
                         </div>
                     </div>
 
@@ -123,21 +158,21 @@ export default function Header() {
                                 Inicio
                             </Link>
 
-                            {/* Mascot Mobile Dropdown */}
+                            {/* Character Mobile Dropdown */}
                             <div className="pb-2">
                                 <button
-                                    onClick={() => setIsMascotMenuOpen(!isMascotMenuOpen)}
+                                    onClick={() => setIsCharacterMenuOpen(!isCharacterMenuOpen)}
                                     className="flex w-full items-center justify-between font-display tracking-wider text-lg px-2 text-white hover:text-bifido-neon transition-colors uppercase"
                                 >
                                     LA MANADA
-                                    <ChevronDown size={24} className={`transform transition-transform duration-200 ${isMascotMenuOpen ? 'rotate-180' : ''}`} />
+                                    <ChevronDown size={24} className={`transform transition-transform duration-200 ${isCharacterMenuOpen ? 'rotate-180' : ''}`} />
                                 </button>
 
-                                <div className={`overflow-hidden transition-all duration-300 ${isMascotMenuOpen ? 'max-h-[500px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                <div className={`overflow-hidden transition-all duration-300 ${isCharacterMenuOpen ? 'max-h-[500px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="space-y-3 px-2">
-                                        {mascots.map((mascot) => (
-                                            <div key={mascot.id} className="px-2">
-                                                <MascotNavLink mascot={mascot} isMobile onClick={() => { setIsMenuOpen(false); setIsMascotMenuOpen(false); }} />
+                                        {characters.map((character) => (
+                                            <div key={character.id} className="px-2">
+                                                <CharacterNavLink character={character} isMobile onClick={() => { setIsMenuOpen(false); setIsCharacterMenuOpen(false); }} />
                                             </div>
                                         ))}
                                     </div>
@@ -200,20 +235,20 @@ export default function Header() {
     );
 }
 
-function MascotNavLink({ mascot, isMobile, onClick }: { mascot: typeof mascots[0], isMobile?: boolean, onClick?: () => void }) {
+function CharacterNavLink({ character, isMobile, onClick }: { character: typeof characters[0], isMobile?: boolean, onClick?: () => void }) {
     const [isHovered, setIsHovered] = useState(false);
     const pathname = usePathname();
-    const isActive = pathname === `/${mascot.slug}`;
+    const isActive = pathname === `/${character.slug}`;
 
     // Check if we're on any section page
-    const isOnSectionPage = mascots.some(m => pathname === `/${m.slug}`);
+    const isOnSectionPage = characters.some(m => pathname === `/${m.slug}`);
 
     // Determine text color based on state and context
     let textColor;
     if (isActive) {
         textColor = '#000000'; // Black for active link on colored background
     } else if (isHovered) {
-        textColor = isOnSectionPage ? '#FFFFFF' : mascot.color.primary;
+        textColor = isOnSectionPage ? '#FFFFFF' : character.color.primary;
     } else {
         textColor = isOnSectionPage ? '#E5E7EB' : '#9CA3AF'; // Light gray on section pages, normal gray otherwise
     }
@@ -221,26 +256,26 @@ function MascotNavLink({ mascot, isMobile, onClick }: { mascot: typeof mascots[0
     if (isMobile) {
         return (
             <Link
-                href={`/${mascot.slug}`}
+                href={`/${character.slug}`}
                 className={`block text-xl font-display tracking-wider transition-colors py-2 rounded ${isActive
                     ? 'bg-bifido-neon text-black font-bold'
                     : 'text-white hover:bg-white/10'
                     }`}
                 onClick={onClick}
                 style={{
-                    borderLeft: isActive ? '4px solid #000000' : `4px solid ${mascot.color.primary}`,
+                    borderLeft: isActive ? '4px solid #000000' : `4px solid ${character.color.primary}`,
                     paddingLeft: '12px'
                 }}
             >
-                {mascot.section}
+                {character.section}
             </Link>
         );
     }
 
     return (
         <Link
-            href={`/${mascot.slug}`}
-            className={`text-sm font-medium transition-all duration-200 flex items-center gap-2 px-3 py-1 rounded-full ${isActive ? 'bg-white/90' : ''
+            href={`/${character.slug}`}
+            className={`text-base font-medium transition-all duration-200 flex items-center gap-3 px-4 py-3 rounded-xl w-full ${isActive ? 'bg-bifido-neon/10 border-l-4 border-bifido-neon' : 'hover:bg-white/5 border-l-4 border-transparent'
                 }`}
             style={{
                 color: textColor,
@@ -252,11 +287,11 @@ function MascotNavLink({ mascot, isMobile, onClick }: { mascot: typeof mascots[0
             <span
                 className="w-2 h-2 rounded-full transition-transform duration-200"
                 style={{
-                    backgroundColor: isActive ? '#000000' : mascot.color.primary,
+                    backgroundColor: isActive ? '#000000' : character.color.primary,
                     transform: isHovered || isActive ? 'scale(1.5)' : 'scale(1)'
                 }}
             />
-            {mascot.section}
+            {character.section}
         </Link>
     );
 }
@@ -266,7 +301,7 @@ function StaticNavLink({ href, label, onClick, className }: { href: string; labe
     const isActive = pathname === href;
 
     // Check if we're on any section page
-    const isOnSectionPage = mascots.some(m => pathname === `/${m.slug}`);
+    const isOnSectionPage = characters.some(m => pathname === `/${m.slug}`);
 
     return (
         <Link

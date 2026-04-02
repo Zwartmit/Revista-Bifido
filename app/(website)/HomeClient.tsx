@@ -7,15 +7,15 @@ import { formatDate } from '@/lib/utils';
 // import { Article } from '@/types'; // Removing explicit type import to direct usage or let inference handle it if needed
 import gsap from 'gsap';
 import { ArrowRight, Newspaper, Calendar, Clock } from 'lucide-react';
-import { getMascotBySlug } from '@/lib/mascots'; // Still using local helper for mascot colors/info if applicable, or pass from server?
+import { getCharacterBySlug } from '@/lib/characters'; // Still using local helper for character colors/info if applicable, or pass from server?
 
 // Interface for props
 interface HomeClientProps {
     articles: any[]; // Replace with correct Article type
-    mascots: any[];
+    characters: any[];
 }
 
-export default function HomeClient({ articles, mascots }: HomeClientProps) {
+export default function HomeClient({ articles, characters }: HomeClientProps) {
     const heroRef = useRef<HTMLDivElement>(null);
     const recentRef = useRef<HTMLDivElement>(null);
 
@@ -41,8 +41,8 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
         }
     }, []);
 
-    // Helper to get mascot data (color, etc) from the passed mascots list
-    const getMascot = (slug: string) => mascots.find((m: any) => m.slug === slug) || mascots[0];
+    // Helper to get character data (color, etc) from the passed characters list
+    const getCharacter = (slug: string) => characters.find((m: any) => m.slug === slug) || characters[0];
 
     return (
         <div className="min-h-screen bg-black">
@@ -70,13 +70,13 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                     <Link href="/elparche" className="group/btn relative inline-block">
                         <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover/btn:opacity-100 transition duration-1000 group-hover/btn:duration-200"></div>
                         <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#fe5e00] rounded-full font-display text-xl md:text-3xl text-white tracking-[0.1em] md:tracking-[0.2em] transition-all duration-300 group-hover/btn:border-[#fe5e00] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
-                            EXPLORA EL PARCHE 
-                            <Image 
-                                src="/icons/arrow_o.svg" 
-                                alt="arrow" 
-                                width={28} 
-                                height={24} 
-                                className="object-contain md:w-[32px] md:h-[28px] transition-transform duration-300 group-hover/btn:translate-x-2 animate-pulse" 
+                            CONOCE EL PARCHE
+                            <Image
+                                src="/icons/arrow_o.svg"
+                                alt="arrow"
+                                width={28}
+                                height={24}
+                                className="object-contain md:w-[32px] md:h-[28px] transition-transform duration-300 group-hover/btn:translate-x-2 animate-pulse"
                             />
                         </div>
                     </Link>
@@ -94,10 +94,10 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                 </div>
 
                 <div className="container mx-auto px-4 relative z-10">
-                    {/* Mascots Section - Hidden for now */}
-{/*                     
+                    {/* Characters Section - Hidden for now */}
+                    {/*                     
                     <div className="flex justify-center flex-wrap gap-x-8 gap-y-12 items-end">
-                        {mascots.map((mascot: any, index: number) => {
+                        {characters.map((character: any, index: number) => {
                             ...
                         })}
                     </div>
@@ -120,8 +120,8 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
 
                     <div ref={recentRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {recentArticles.map((article: any) => {
-                            const mascot = getMascot(article.section);
-                            const color = mascot?.color?.primary || '#CCFD29';
+                            const character = getCharacter(article.section);
+                            const color = character?.color?.primary || '#CCFD29';
 
                             return (
                                 <Link
@@ -142,7 +142,7 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                                             className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold text-black shadow-lg text-white"
                                             style={{ backgroundColor: color }}
                                         >
-                                            {mascot?.name || article.section}
+                                            {character?.name || article.section}
                                         </div>
                                     </div>
 
@@ -170,18 +170,21 @@ export default function HomeClient({ articles, mascots }: HomeClientProps) {
                 </div>
             </section>
 
-            {/* Separator */}
-            <div className="w-full flex justify-center py-10 bg-black">
-                <div className="w-[80%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/30 to-transparent blur-[0.5px]"></div>
-            </div>
-
             {/* Contact CTA Section */}
-            <section className="pb-32 pt-10 bg-black relative overflow-hidden">
+            <section className="pb-32 pt-24 relative overflow-hidden bg-black">
+                <div
+                    className="absolute inset-0 z-0 bg-cover bg-center grayscale brightness-[0.25] opacity-90"
+                    style={{ backgroundImage: "url('/backgrounds/snake_scale.jpg')" }}
+                ></div>
+                {/* Gradients to fade in/out */}
+                <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-0"></div>
+                <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-0"></div>
+
                 <div className="container mx-auto px-4 text-center relative z-10">
-                    <h2 className="font-display text-4xl md:text-7xl text-white mb-8">
+                    <h2 className="font-display text-4xl md:text-7xl text-white mb-8 drop-shadow-lg">
                         ¿TIENES ALGO QUE <span className="text-bifido-neon">CONTAR</span>?
                     </h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto mb-14 text-lg md:text-2xl font-googlesans leading-relaxed px-4">
+                    <p className="text-gray-300 max-w-2xl mx-auto mb-14 text-lg md:text-2xl font-googlesans leading-relaxed px-4 drop-shadow-md">
                         Estamos siempre buscando nuevas voces y parches para visibilizar lo que pasa en la calle. No te quedes con las ganas.
                     </p>
                     <Link href="/contactanos" className="group relative inline-block">

@@ -3,31 +3,34 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { mascots } from '@/lib/mascots';
+import { characters } from '@/lib/characters';
 import gsap from 'gsap';
 import { Users, Mail, Instagram, Twitter, Facebook, Globe } from 'lucide-react';
 import { getAuthors } from '@/lib/api';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const FluidSimulation = dynamic(() => import('@/components/FluidSimulation'), { ssr: false });
 
 export default function ElParchePage() {
     const contentRef = useRef<HTMLDivElement>(null);
     const teamRef = useRef<HTMLDivElement>(null);
     const [team, setTeam] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeMascotId, setActiveMascotId] = useState(mascots[0].id);
-    const activeMascot = mascots.find(m => m.id === activeMascotId) || mascots[0];
-    const otherMascots = mascots.filter((m) => m.id !== activeMascotId);
+    const [activeCharacterId, setActiveCharacterId] = useState(characters[0].id);
+    const activeCharacter = characters.find(m => m.id === activeCharacterId) || characters[0];
+    const otherCharacters = characters.filter((m) => m.id !== activeCharacterId);
 
     const handlePrev = () => {
-        const currentIndex = mascots.findIndex(m => m.id === activeMascotId);
-        const prevIndex = (currentIndex - 1 + mascots.length) % mascots.length;
-        setActiveMascotId(mascots[prevIndex].id);
+        const currentIndex = characters.findIndex(m => m.id === activeCharacterId);
+        const prevIndex = (currentIndex - 1 + characters.length) % characters.length;
+        setActiveCharacterId(characters[prevIndex].id);
     };
 
     const handleNext = () => {
-        const currentIndex = mascots.findIndex(m => m.id === activeMascotId);
-        const nextIndex = (currentIndex + 1) % mascots.length;
-        setActiveMascotId(mascots[nextIndex].id);
+        const currentIndex = characters.findIndex(m => m.id === activeCharacterId);
+        const nextIndex = (currentIndex + 1) % characters.length;
+        setActiveCharacterId(characters[nextIndex].id);
     };
 
     useEffect(() => {
@@ -67,20 +70,20 @@ export default function ElParchePage() {
 
     return (
         <div className="min-h-screen bg-black">
-            {/* Mascots Explorer - Full Width Layout */}
+            {/* Characters Explorer - Full Width Layout */}
             <div ref={contentRef} className="flex flex-col md:flex-row w-full bg-black">
 
                 {/* Left Sticky Grid - Other Characters */}
-                <div className="w-full md:w-[34%] lg:w-[28%] xl:w-[22%] flex-shrink-0 bg-black z-30 border-r-2 border-black">
+                <div className="hidden md:block w-full md:w-[34%] lg:w-[28%] xl:w-[22%] flex-shrink-0 bg-black z-30 border-r-2 border-black">
                     <div className="md:sticky md:top-40 md:h-[calc(100vh-10rem)] flex flex-col">
                         <div className="relative flex-1 overflow-hidden bg-black flex flex-col group min-h-[350px] md:min-h-[500px]">
                             {/* Interactive Accordion Items */}
-                            {otherMascots.map((m, i) => (
+                            {otherCharacters.map((m, i) => (
                                 <div
                                     key={m.id}
-                                    onClick={() => setActiveMascotId(m.id)}
+                                    onClick={() => setActiveCharacterId(m.id)}
                                     className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative"
-                                    style={{ backgroundColor: i % 2 === 0 ? '#111' : '#1a1a1a' }}
+                                    style={{ backgroundColor: '#000' }}
                                 >
                                     {/* Subtle Background Glow */}
                                     <div
@@ -89,20 +92,20 @@ export default function ElParchePage() {
                                             background: `radial-gradient(ellipse at 50% 20%, ${m.color?.primary}80 0%, ${m.color?.primary}00 70%)`
                                         }}
                                     ></div>
-                                    
-                                    {/* Mascot Image */}
+
+                                    {/* Character Image */}
                                     {m.image && (
                                         <Image
                                             src={m.image}
                                             alt={m.name}
                                             width={400}
                                             height={500}
-                                            className="absolute right-0 md:right-4 lg:right-12 bottom-0 h-[85%] md:h-[95%] lg:h-[105%] lg:group-hover/item:h-[95%] w-auto object-contain object-bottom filter grayscale group-hover/item:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] opacity-40 group-hover/item:opacity-100 transform origin-bottom"
+                                            className="absolute right-0 md:right-4 lg:right-12 bottom-0 h-[85%] md:h-[95%] lg:h-[105%] lg:group-hover/item:h-[95%] w-auto object-contain object-bottom filter grayscale group-hover/item:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] opacity-60 group-hover:opacity-20 group-hover/item:!opacity-100 transform origin-bottom z-10"
                                         />
                                     )}
-                                    
+
                                     {/* Typography - Single Element with Dynamic Position Transition */}
-                                    <div 
+                                    <div
                                         className="absolute transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] z-20 pointer-events-none 
                                         left-4 top-1/2 translate-x-0 -translate-y-1/2 
                                         md:left-6 
@@ -111,8 +114,8 @@ export default function ElParchePage() {
                                         md:group-hover/item:translate-x-[calc(-100%-1.5rem)] md:group-hover/item:translate-y-[calc(-100%-1.5rem)]"
                                     >
                                         <span
-                                            className="font-display text-2xl lg:text-3xl xl:text-3xl lg:group-hover/item:text-5xl tracking-widest transition-all duration-700 opacity-50 group-hover/item:opacity-100 [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:group-hover/item:[writing-mode:horizontal-tb] md:rotate-180 md:group-hover/item:rotate-0 uppercase drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)] leading-none block origin-center text-right"
-                                            style={{ color: m.color?.primary || 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.6)' }}
+                                            className="font-display text-2xl lg:text-3xl xl:text-3xl lg:group-hover/item:text-6xl tracking-widest transition-all duration-700 opacity-80 group-hover:opacity-20 group-hover/item:!opacity-100 [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:group-hover:[writing-mode:horizontal-tb] md:rotate-180 md:group-hover:rotate-0 uppercase drop-shadow-4xl leading-none block origin-center text-right group-hover:scale-90 group-hover/item:scale-100"
+                                            style={{ color: m.color?.primary || 'white', textShadow: '0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)' }}
                                         >
                                             {m.name}
                                         </span>
@@ -120,133 +123,155 @@ export default function ElParchePage() {
                                 </div>
                             ))}
                         </div>
+                    </div>
+                </div>
+
+                {/* Right Content - Active Character Showcase */}
+                <div className="flex-1 bg-black relative border-b border-[#333] min-h-screen md:min-h-[calc(100vh-10rem)] flex flex-col">
+                    <div className="absolute inset-0 w-full h-full transition-colors duration-500 overflow-hidden">
+                        {/* Animated Smoky Background */}
+                        <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-black">
+                            {/* Stronger Corner Smoke / Glow Vignette */}
+                            <div
+                                className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-700 opacity-60 md:opacity-40"
+                                style={{
+                                    background: `radial-gradient(circle at 50% 40%, ${activeCharacter.color?.primary}44 0%, ${activeCharacter.color?.primary}11 50%, transparent 100%)`
+                                }}
+                            />
+
+                            {/* Interactive WebGL Fluid Simulation */}
+                            <FluidSimulation
+                                color={activeCharacter.color?.primary}
+                                opacity={0.5}
+                                className="absolute inset-0 z-0 pointer-events-none"
+                            />
                         </div>
                     </div>
+                    
+                    <div className="relative w-full flex-1 flex items-start lg:items-center justify-center">
 
-                    {/* Right Content - Active Mascot Showcase */}
-                    <div className="flex-1 bg-black overflow-hidden relative border-y-[2px] md:border-y-0 border-black">
-                        <div className="relative w-full h-full min-h-[70vh] md:min-h-[calc(100vh-10rem)] flex items-center justify-center overflow-hidden transition-colors duration-500">
-
-                            {/* Animated Smoky Background */}
-                            <div className="absolute inset-0 overflow-hidden flex items-center justify-center transition-all duration-700 bg-black">
-                                {/* Base color tint that recolors the smoke */}
-                                <div 
-                                    className="absolute inset-0 transition-colors duration-700 z-10 mix-blend-color pointer-events-none opacity-80" 
-                                    style={{ backgroundColor: activeMascot.color?.primary }} 
-                                />
-                                
-                                {/* Smoke Layer 1 */}
-                                <div className="absolute w-[150%] h-[150%] opacity-60 mix-blend-screen animate-smoke pointer-events-none z-0">
-                                    <Image 
-                                        src="/backgrounds/gradiente-verde.png"
-                                        alt="Smoke"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                                {/* Smoke Layer 2 (Reverse animated) */}
-                                <div className="absolute w-[150%] h-[150%] opacity-40 mix-blend-screen animate-smoke-reverse pointer-events-none z-0">
-                                    <Image 
-                                        src="/backgrounds/gradiente-amarillo.png"
-                                        alt="Smoke"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Content Group (Centered Automatically via Flexbox) */}
-                            <div className="relative z-20 w-full h-full min-h-screen lg:min-h-0 flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16 xl:gap-24 px-4 py-24 lg:py-0">
-                                
-                                {/* 1. Center Layout: Mascot, Text, Arrows, Button */}
-                                <div className="flex flex-col items-center justify-center relative w-full lg:w-auto">
-
-                                    <div className="relative z-10 h-[300px] sm:h-[350px] w-full flex items-end justify-center mb-8">
-                                        {/* Mascot Image */}
-                                        {activeMascot.image && (
-                                            <Image
-                                                key={activeMascot.id}
-                                                src={activeMascot.image}
-                                                alt={activeMascot.name}
-                                                width={400}
-                                                height={500}
-                                                className="object-contain object-bottom h-full max-w-[80%] drop-shadow-[0_20px_20px_rgba(0,0,0,0.6)] animate-float"
-                                                priority
+                        {/* Mobile Horizontal Avatar Carrousel (Hidden on Desktop) */}
+                        <div className="absolute top-0 left-0 w-full z-40 flex md:hidden justify-center items-start py-6 px-2 gap-3 sm:gap-5 bg-gradient-to-b from-black via-black/80 to-transparent">
+                            {otherCharacters.map(m => (
+                                <button 
+                                    key={m.id}
+                                    onClick={() => setActiveCharacterId(m.id)}
+                                    className="flex-shrink-0 flex flex-col items-center gap-2 group w-[70px] sm:w-[80px]"
+                                >
+                                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden relative flex items-center justify-center bg-black transition-all border-2 border-[#222] group-hover:border-white shadow-[0_0_15px_rgba(0,0,0,0.8)]"
+                                         style={{ borderColor: m.color?.primary }}>
+                                        {m.image && (
+                                            <Image 
+                                                src={m.image} 
+                                                alt={m.name} 
+                                                width={64} 
+                                                height={64} 
+                                                className="object-cover object-top filter grayscale group-hover:grayscale-0 scale-[1.35] pt-2 transition-all duration-300"
                                             />
                                         )}
                                     </div>
+                                    <span className="text-[10px] font-display tracking-widest uppercase transition-colors leading-tight text-center"
+                                          style={{ color: m.color?.primary || '#aaa' }}>
+                                        {m.name}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
 
-                                    {/* Base concentric circles */}
-                                    <div className="absolute z-0 top-[270px] sm:top-[320px] left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none opacity-40">
-                                        <div className="w-[200px] sm:w-[300px] h-[34px] sm:h-[50px] rounded-[100%] border border-white absolute"></div>
-                                        <div className="w-[140px] sm:w-[200px] h-[24px] sm:h-[34px] rounded-[100%] border border-white absolute"></div>
-                                        <div className="w-[70px] sm:w-[100px] h-[12px] sm:h-[16px] rounded-[100%] border border-white absolute"></div>
-                                    </div>
 
-                                    {/* Title */}
-                                    <div className="flex flex-col items-center mt-6">
-                                        <h2 className="font-display text-2xl sm:text-3xl text-white mb-2 uppercase">
-                                            ¡Hola, soy {activeMascot.name}!
-                                        </h2>
-                                        <div className="w-full h-[2px] bg-white mb-6"></div>
-                                    </div>
+                        {/* Content Group (Centered Automatically via Flexbox) */}
+                        <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-20 xl:gap-32 px-4 pt-28 pb-10 lg:py-0">
 
-                                    {/* Arrows */}
-                                    <div className="flex items-center gap-16 sm:gap-24 mb-6">
-                                        <button onClick={handlePrev} className="text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all">
-                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
-                                        </button>
-                                        <button onClick={handleNext} className="text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all">
-                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
-                                        </button>
-                                    </div>
+                            {/* 1. Center Layout: Character, Text, Arrows, Button */}
+                            <div className="flex flex-col items-center justify-center relative w-full lg:w-auto">
 
-                                    {/* CTA Buttons */}
-                                    <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                                        <Link
-                                            href={`/${activeMascot.slug}`}
-                                            className="bg-white text-black font-display tracking-widest py-3 px-8 rounded-full text-sm hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all uppercase text-center w-full sm:w-auto"
-                                        >
-                                            Mis artículos
-                                        </Link>
-                                        <button
-                                            onClick={() => {
-                                                if (window.innerWidth < 1024) {
-                                                    document.getElementById('bio-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                                }
-                                            }}
-                                            className="bg-transparent border border-white text-white font-display tracking-widest py-3 px-8 rounded-full text-sm hover:bg-white/10 transition-all uppercase text-center w-full sm:w-auto"
-                                        >
-                                            Conóceme
-                                        </button>
-                                    </div>
+                                <div className="relative z-10 h-[300px] sm:h-[350px] w-full sm:w-[400px] flex items-end justify-center mb-0 mx-auto">
+                                    {/* Left Arrow */}
+                                    <button onClick={handlePrev} className="absolute left-[-10px] sm:-left-10 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-20">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                                    </button>
+
+                                    {/* Character Image */}
+                                    {activeCharacter.image && (
+                                        <Image
+                                            key={activeCharacter.id}
+                                            src={activeCharacter.image}
+                                            alt={activeCharacter.name}
+                                            width={400}
+                                            height={500}
+                                            className="object-contain object-bottom h-full max-w-[80%] drop-shadow-[0_20px_20px_rgba(0,0,0,0.6)] animate-float"
+                                            priority
+                                        />
+                                    )}
+
+                                    {/* Right Arrow */}
+                                    <button onClick={handleNext} className="absolute right-[-10px] sm:-right-10 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-20">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                                    </button>
                                 </div>
 
-                                {/* 2. Glassmorphism Bio Card */}
-                                <div id="bio-card" className="w-full lg:w-[340px] xl:w-[380px] flex-shrink-0">
-                                    <div className="bg-white/5 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl relative z-10">
+                                {/* Base concentric circles */}
+                                <div className="absolute z-0 top-[270px] sm:top-[320px] left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none opacity-40">
+                                    <div className="w-[200px] sm:w-[300px] h-[34px] sm:h-[50px] rounded-[100%] border border-white absolute"></div>
+                                    <div className="w-[140px] sm:w-[200px] h-[24px] sm:h-[34px] rounded-[100%] border border-white absolute"></div>
+                                    <div className="w-[70px] sm:w-[100px] h-[12px] sm:h-[16px] rounded-[100%] border border-white absolute"></div>
+                                </div>
 
-                                        <h3 className="text-center font-bold mb-4 tracking-wider text-3xl" style={{ color: activeMascot.color?.primary }}>
-                                            Biografía
-                                        </h3>
+                                {/* Title */}
+                                <div className="flex flex-col items-center mt-0">
+                                    <h2 className="font-display text-2xl sm:text-3xl text-white mb-2 uppercase">
+                                        ¡Hola, soy {activeCharacter.name}!
+                                    </h2>
+                                    <div className="w-full h-[2px] bg-white mb-4"></div>
+                                </div>
 
-                                        <p className="text-sm text-gray-200 mb-8 leading-relaxed text-center font-light">
-                                            {activeMascot.description}
-                                        </p>
+                                <div className="h-2"></div>
 
-                                        <div className="space-y-4 text-sm tracking-wide">
-                                            <div>
-                                                <span className="text-white font-bold">Religión: </span>
-                                                <span className="text-gray-300 font-light">{activeMascot.religion}.</span>
-                                            </div>
-                                            <div>
-                                                <span className="text-white font-bold">Edad: </span>
-                                                <span className="text-gray-300 font-light">{activeMascot.age}</span>
-                                            </div>
-                                            <div>
-                                                <span className="text-white font-bold">Color favorito: </span>
-                                                <span className="text-gray-300 font-light">{activeMascot.favoriteColor}</span>
-                                            </div>
+                                {/* CTA Buttons */}
+                                <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full sm:w-auto">
+                                    <button
+                                        onClick={() => {
+                                            if (window.innerWidth < 1024) {
+                                                document.getElementById('bio-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                            }
+                                        }}
+                                        className="bg-transparent border border-white text-white font-display tracking-widest py-3 px-2 sm:px-8 rounded-3xl text-[10px] sm:text-sm hover:bg-white/10 transition-all uppercase text-center flex-1 sm:flex-none"
+                                    >
+                                        Conóceme
+                                    </button>
+                                    <Link
+                                        href={`/${activeCharacter.slug}`}
+                                        className="bg-white text-black font-display tracking-widest py-3 px-2 sm:px-8 rounded-3xl text-[10px] sm:text-sm hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all uppercase text-center flex-1 sm:flex-none"
+                                    >
+                                        Lee mis artículos
+                                    </Link>
+                                </div>
+                            </div>
+
+                            {/* 2. Glassmorphism Bio Card */}
+                            <div id="bio-card" className="w-full lg:w-[340px] xl:w-[380px] flex-shrink-0">
+                                <div className="bg-black/20 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl relative z-10">
+
+                                    <h3 className="text-center font-bold mb-4 tracking-wider text-3xl" style={{ color: activeCharacter.color?.primary }}>
+                                        Biografía
+                                    </h3>
+
+                                    <p className="text-sm text-gray-200 mb-8 leading-relaxed text-center font-light">
+                                        {activeCharacter.description}
+                                    </p>
+
+                                    <div className="space-y-4 text-sm tracking-wide">
+                                        <div>
+                                            <span className="text-white font-bold">Religión: </span>
+                                            <span className="text-gray-300 font-light">{activeCharacter.religion}.</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-white font-bold">Edad: </span>
+                                            <span className="text-gray-300 font-light">{activeCharacter.age}</span>
+                                        </div>
+                                        <div>
+                                            <span className="text-white font-bold">Color favorito: </span>
+                                            <span className="text-gray-300 font-light">{activeCharacter.favoriteColor}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -254,12 +279,13 @@ export default function ElParchePage() {
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="container mx-auto px-4 max-w-7xl">
-                    {/* Team Section */}
-                    <section className="pb-24 pt-16 bg-black">
-                        <div className="text-center mb-12">
-                            <h2 className="font-display text-4xl md:text-5xl text-white mb-4">El Equipo</h2>
+            <div className="container mx-auto px-4 max-w-7xl">
+                {/* Team Section */}
+                <section className="pb-24 pt-16 bg-black">
+                    <div className="text-center mb-12">
+                        <h2 className="font-display text-4xl md:text-5xl text-white mb-4">Equipo Bífido</h2>
                         <div className="w-24 h-1 bg-bifido-neon mx-auto rounded-full shadow-[0_0_10px_rgba(204,253,41,0.5)]"></div>
                     </div>
 
@@ -312,7 +338,7 @@ export default function ElParchePage() {
                         </div>
                     ) : (
                         <div className="text-center py-20">
-                            <p className="text-gray-500 text-2xl font-display tracking-widest uppercase">Estamos mutando...</p>
+                            <p className="text-gray-500 text-2xl font-display tracking-widest uppercase">Mutando...</p>
                         </div>
                     )}
                 </section>

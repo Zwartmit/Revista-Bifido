@@ -1,10 +1,10 @@
-import { Mascot } from '@/types';
+import { Character } from '@/types';
 
-export const mascots: Mascot[] = [
+export const characters: Character[] = [
   {
     id: 'malandra',
     name: 'Malandra',
-    section: 'Mala Fama',
+    section: 'Mala fama',
     slug: 'malandra',
     description: 'Cronista de la cultura underground y las expresiones artísticas marginales. Malandra celebra lo que la sociedad rechaza y encuentra belleza en lo prohibido.',
     religion: 'Culto a la creatividad',
@@ -21,7 +21,7 @@ export const mascots: Mascot[] = [
   {
     id: 'incendia',
     name: 'Incendia',
-    section: 'Fuegos Diversos',
+    section: 'Fuegos diversos',
     slug: 'incendia',
     description: 'Activista de género, diversidad y equidad. Incendia arde con la pasión de la justicia social y lucha por un mundo donde todas las identidades sean respetadas.',
     religion: 'Interseccionalidad',
@@ -72,7 +72,7 @@ export const mascots: Mascot[] = [
   {
     id: 'anika',
     name: 'Anika',
-    section: 'Muda de Piel',
+    section: 'Muda de piel',
     slug: 'anika',
     description: 'Defensora de la reducción de riesgos y daños. Anika promueve el autocuidado, la información responsable y el respeto a las decisiones personales sin juicios morales.',
     religion: 'Pragmatismo compasivo',
@@ -88,10 +88,10 @@ export const mascots: Mascot[] = [
   },
 ];
 
-export const getMascotBySlug = (slug: string): Mascot | undefined => {
-  return mascots.find(m => m.slug === slug);
+export const getCharacterBySlug = (slug: string): Character | undefined => {
+  return characters.find(m => m.slug === slug);
 };
 
-export const getMascotById = (id: string): Mascot | undefined => {
-  return mascots.find(m => m.id === id);
+export const getCharacterById = (id: string): Character | undefined => {
+  return characters.find(m => m.id === id);
 };

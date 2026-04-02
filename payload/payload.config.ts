@@ -11,7 +11,7 @@ import { es } from '@payloadcms/translations/languages/es';
 // Collections
 import { Articles } from './collections/Articles';
 import { Sections } from './collections/Sections';
-import { Mascots } from './collections/Mascots';
+import { Characters } from './collections/Characters';
 import { Authors } from './collections/Authors';
 import { Events } from './collections/Events';
 import { Products } from './collections/Products';
@@ -25,12 +25,21 @@ export default buildConfig({
     admin: {
         user: Users.slug,
         meta: {
-            titleSuffix: '- Revista Bífido CMS',
+            titleSuffix: '| Revista Bífido',
             icons: [
                 {
                     rel: 'icon',
                     type: 'image/png',
-                    url: '/images/logo_bifido.png',
+                    url: '/favicon/favicon-96x96.png',
+                },
+                {
+                    rel: 'icon',
+                    type: 'image/svg+xml',
+                    url: '/favicon/favicon.svg',
+                },
+                {
+                    rel: 'apple-touch-icon',
+                    url: '/favicon/apple-touch-icon.png',
                 },
             ],
         },
@@ -49,7 +58,7 @@ export default buildConfig({
         Users,
         Articles,
         Sections,
-        Mascots,
+        Characters,
         Authors,
         Events,
         Products,

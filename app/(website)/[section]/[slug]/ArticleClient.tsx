@@ -9,11 +9,11 @@ import gsap from 'gsap';
 
 interface ArticleClientProps {
     article: any;
-    mascot: any;
+    character: any;
 }
 
 // Basic Lexical JSON Renderer
-const renderRichText = (content: any, mascotColor: string) => {
+const renderRichText = (content: any, characterColor: string) => {
     if (!content || !content.root || !content.root.children) return null;
 
     const renderNode = (node: any, index: number): React.ReactNode => {
@@ -27,7 +27,7 @@ const renderRichText = (content: any, mascotColor: string) => {
 
             case 'link':
                 return (
-                    <a key={index} href={node.fields.url} target={node.fields.newTab ? "_blank" : "_self"} className="underline" style={{ color: mascotColor }}>
+                    <a key={index} href={node.fields.url} target={node.fields.newTab ? "_blank" : "_self"} className="underline" style={{ color: characterColor }}>
                         {node.children.map((child: any, i: number) => renderNode(child, i))}
                     </a>
                 );
@@ -49,7 +49,7 @@ const renderRichText = (content: any, mascotColor: string) => {
 
             case 'quote':
                 return (
-                    <blockquote key={index} className="border-l-4 pl-4 italic my-6 text-gray-700" style={{ borderColor: mascotColor }}>
+                    <blockquote key={index} className="border-l-4 pl-4 italic my-6 text-gray-700" style={{ borderColor: characterColor }}>
                         {node.children?.map((child: any, i: number) => renderNode(child, i))}
                     </blockquote>
                 );
@@ -83,7 +83,7 @@ const renderRichText = (content: any, mascotColor: string) => {
     return content.root.children.map((node: any, i: number) => renderNode(node, i));
 };
 
-export default function ArticleClient({ article, mascot }: ArticleClientProps) {
+export default function ArticleClient({ article, character }: ArticleClientProps) {
     const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -98,18 +98,18 @@ export default function ArticleClient({ article, mascot }: ArticleClientProps) {
 
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
-    if (!mascot) return <div>Mascot not found</div>;
+    if (!character) return <div>Character not found</div>;
 
     return (
         <article className="min-h-screen pt-24 md:pt-52">
             {/* Back Button */}
             <div className="container mx-auto px-4 py-6">
                 <Link
-                    href={`/${mascot.section}`} // Use mascot.section (which acts as slug here based on mock data logic, or mascot.slug)
+                    href={`/${character.section}`} // Use character.section (which acts as slug here based on mock data logic, or character.slug)
                     className="inline-flex items-center text-gray-600 hover:text-bifido-black transition-colors"
                 >
                     <ArrowLeft size={20} className="mr-2" />
-                    Volver a {mascot.section}
+                    Volver a {character.section}
                 </Link>
             </div>
 
@@ -135,9 +135,9 @@ export default function ArticleClient({ article, mascot }: ArticleClientProps) {
                     <div className="container mx-auto">
                         <div
                             className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
-                            style={{ backgroundColor: mascot.color?.primary || '#000' }}
+                            style={{ backgroundColor: character.color?.primary || '#000' }}
                         >
-                            {mascot.section}
+                            {character.section}
                         </div>
                         <h1 className="font-display text-4xl md:text-6xl mb-4 max-w-4xl">
                             {article.title}
@@ -197,11 +197,11 @@ export default function ArticleClient({ article, mascot }: ArticleClientProps) {
                 <div
                     className="prose prose-lg max-w-none"
                     style={{
-                        '--tw-prose-headings': mascot.color?.dark,
-                        '--tw-prose-links': mascot.color?.primary,
+                        '--tw-prose-headings': character.color?.dark,
+                        '--tw-prose-links': character.color?.primary,
                     } as React.CSSProperties}
                 >
-                    {renderRichText(article.content, mascot.color?.primary)}
+                    {renderRichText(article.content, character.color?.primary)}
                 </div>
             </div>
         </article>

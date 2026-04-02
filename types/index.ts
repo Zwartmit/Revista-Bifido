@@ -1,4 +1,4 @@
-export interface Mascot {
+export interface Character {
   id: string;
   name: string;
   section: string;
@@ -26,7 +26,7 @@ export interface Article {
   publishedAt: string;
   featuredImage: string;
   section: string;
-  mascotId: string;
+  characterId: string;
   featured?: boolean;
 }
 
@@ -34,6 +34,6 @@ export interface Section {
   id: string;
   name: string;
   slug: string;
-  mascotId: string;
+  characterId: string;
   description: string;
 }

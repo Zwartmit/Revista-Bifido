@@ -2,12 +2,16 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { mascots } from '@/lib/mascots';
+import { characters } from '@/lib/characters';
 import { RiFacebookFill, RiWhatsappFill, RiInstagramFill, RiYoutubeFill } from "react-icons/ri";
 
 export default function Footer() {
   return (
-    <footer className="bg-black pb-8 pt-10 relative overflow-hidden">
+    <footer className="bg-black pb-8 relative overflow-hidden">
+      {/* Separator */}
+      <div className="w-full flex justify-center pb-10">
+        <div className="w-[50%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/30 to-transparent blur-[0.5px]"></div>
+      </div>
 
       <div className="container mx-auto px-4 lg:px-12 relative z-10 flex flex-col">
 
@@ -67,14 +71,14 @@ export default function Footer() {
                 <span className="text-white font-display tracking-widest text-xl uppercase">La Manada</span>
                 <div className="w-full h-px bg-bifido-neon" />
               </div>
-              {mascots.map((mascot) => (
+              {characters.map((character) => (
                 <Link
-                  key={mascot.id}
-                  href={`/${mascot.slug}`}
+                  key={character.id}
+                  href={`/${character.slug}`}
                   className="font-display tracking-wider text-lg transition-colors uppercase"
-                  style={{ color: mascot.color.primary }}
+                  style={{ color: character.color.primary }}
                 >
-                  {mascot.section}
+                  {character.section}
                 </Link>
               ))}
             </div>
@@ -83,7 +87,7 @@ export default function Footer() {
 
           {/* Right: Logo */}
           <div className="flex-shrink-0 lg:w-1/4 flex justify-center lg:justify-end items-center">
-            <Image src="/logos/bifido.svg" alt="Revista Bífido" width={280} height={70} className="object-contain" />
+            <Image src="/icons/bifido.svg" alt="Revista Bífido" width={280} height={70} className="object-contain" />
           </div>
 
         </div>
@@ -94,7 +98,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="text-center">
           <p className="text-gray-400 text-xs font-jack tracking-[0.2em] font-semibold uppercase">
-            {new Date().getFullYear()} Revista Bífido. Todos los derechos reservados.
+            © {new Date().getFullYear()} Revista Bífido. <br className="md:hidden" /> Todos los derechos reservados.
           </p>
         </div>
 

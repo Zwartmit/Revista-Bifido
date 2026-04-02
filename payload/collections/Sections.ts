@@ -48,10 +48,10 @@ export const Sections: CollectionConfig = {
             required: true,
         },
         {
-            name: 'mascot',
-            label: 'Mascota',
+            name: 'character',
+            label: 'Charactera',
             type: 'relationship',
-            relationTo: 'mascots',
+            relationTo: 'characters',
             required: true,
         },
         {

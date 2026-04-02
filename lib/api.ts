@@ -94,15 +94,15 @@ export async function getArticlesBySection(sectionSlug: string) {
 /**
  * Obtener todas los personajes
  */
-export async function getMascots() {
-  const data = await fetchPayload('mascots');
-  return data.docs.map(transformPayloadMascot);
+export async function getCharacters() {
+  const data = await fetchPayload('characters');
+  return data.docs.map(transformPayloadCharacter);
 }
 
 /**
  * Obtener un personaje por su slug
  */
-export async function getMascotBySlug(slug: string) {
+export async function getCharacterBySlug(slug: string) {
   const params = {
     where: {
       slug: {
@@ -111,8 +111,8 @@ export async function getMascotBySlug(slug: string) {
     },
     limit: 1,
   };
-  const data = await fetchPayload('mascots', params);
-  return data.docs[0] ? transformPayloadMascot(data.docs[0]) : null;
+  const data = await fetchPayload('characters', params);
+  return data.docs[0] ? transformPayloadCharacter(data.docs[0]) : null;
 }
 
 /**
@@ -151,13 +151,71 @@ export async function searchArticles(query: string) {
 }
 
 /**
+ * Búsqueda Global: artículos, eventos y personajes
+ */
+export async function globalSearch(query: string) {
+  if (!query || query.trim() === '') return { articles: [], events: [], characters: [] };
+  
+  const articleParams = {
+    where: {
+      or: [
+        { title: { like: query } },
+        { excerpt: { like: query } },
+      ],
+      status: { equals: 'published' },
+    },
+    limit: 6,
+  };
+
+  const eventParams = {
+    where: {
+      or: [
+        { name: { like: query } },
+        { shortDescription: { like: query } },
+      ],
+    },
+    limit: 6,
+  };
+
+  const characterParams = {
+    where: {
+      or: [
+        { name: { like: query } },
+        { description: { like: query } },
+      ]
+    },
+    limit: 4,
+  };
+
+  try {
+    const [articlesRes, eventsRes, charactersRes] = await Promise.all([
+      fetchPayload('articles', articleParams),
+      fetchPayload('events', eventParams),
+      fetchPayload('characters', characterParams)
+    ]).catch((e) => {
+      console.warn("One or more search endpoints failed, returning empty arrays", e);
+      return [{docs:[]}, {docs:[]}, {docs:[]}];
+    });
+
+    return {
+      articles: articlesRes?.docs ? articlesRes.docs.map(transformPayloadArticle) : [],
+      events: eventsRes?.docs ? eventsRes.docs.map(transformPayloadEvent) : [],
+      characters: charactersRes?.docs ? charactersRes.docs.map(transformPayloadCharacter) : []
+    };
+  } catch (error) {
+    console.error('Error en globalSearch:', error);
+    return { articles: [], events: [], characters: [] };
+  }
+}
+
+/**
  * Obtener todos los eventos
  */
 export async function getEvents() {
   const params = {
     sort: 'date', // Ascending (nearest first)
     limit: 50,
-    depth: 1,
+    depth: 1, // Include relations
   };
   const data = await fetchPayload('events', params);
   return data.docs.map(transformPayloadEvent);
@@ -174,7 +232,7 @@ export async function getEventBySlug(slug: string) {
       },
     },
     limit: 1,
-    depth: 1,
+    depth: 1, // Include relations
   };
   const data = await fetchPayload('events', params);
   return data.docs[0] ? transformPayloadEvent(data.docs[0]) : null;
@@ -202,16 +260,16 @@ export function transformPayloadArticle(doc: any) {
     // Prioritize constructed URL because staticURL config might be missing/broken in Media collection
     featuredImage: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
     section: doc.section?.slug || 'general',
-    // mascotId can be derived if sections are related to mascots
-    mascotId: doc.section?.mascot?.slug || '',
+    // characterId can be derived if sections are related to characters
+    characterId: doc.section?.character?.slug || '',
   };
 }
 
-export function transformPayloadMascot(doc: any) {
+export function transformPayloadCharacter(doc: any) {
   return {
     id: doc.slug,
     name: doc.name,
-    section: doc.slug, // Assuming mascot slug matches section slug usually
+    section: doc.slug, // Assuming character slug matches section slug usually
     slug: doc.slug,
     description: doc.description,
     religion: doc.religion,

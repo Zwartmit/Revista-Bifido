@@ -56,7 +56,7 @@ const config: Config = {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
         'float': 'float 3s ease-in-out infinite',
-        'marquee': 'marquee 60s linear infinite',
+        'marquee': 'marquee 90s linear infinite',
         'smoke': 'smoke 20s ease-in-out infinite alternate',
         'smoke-reverse': 'smokeReverse 25s ease-in-out infinite alternate',
       },

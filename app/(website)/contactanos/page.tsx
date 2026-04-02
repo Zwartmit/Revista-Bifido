@@ -55,7 +55,7 @@ export default function ContactPage() {
             {/* Logo - top on mobile, center on desktop */}
             <div className="order-1 lg:order-2 relative w-40 h-40 lg:w-56 lg:h-56 flex items-center justify-center group">
               <Image
-                src="/logos/bifido_contact.svg"
+                src="/icons/bifido_contact.svg"
                 alt="Bífido Logo"
                 width={224}
                 height={224}

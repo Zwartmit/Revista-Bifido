@@ -25,14 +25,14 @@ export const Media: CollectionConfig = {
                         throw new APIError(`No se puede eliminar: Esta imagen se usa en el artículo "${articles.docs[0].title}"`, 400);
                     }
 
-                    // Check Mascots
-                    const mascots = await req.payload.find({
-                        collection: 'mascots',
+                    // Check Characters
+                    const characters = await req.payload.find({
+                        collection: 'characters',
                         where: { image: { equals: id } },
                         limit: 1,
                     });
-                    if (mascots.totalDocs > 0) {
-                        throw new APIError(`No se puede eliminar: Esta imagen es la mascota "${mascots.docs[0].name}"`, 400);
+                    if (characters.totalDocs > 0) {
+                        throw new APIError(`No se puede eliminar: Esta imagen es la charactera "${characters.docs[0].name}"`, 400);
                     }
 
                     // Check Events

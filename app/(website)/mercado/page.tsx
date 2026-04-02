@@ -29,7 +29,7 @@ const products = [
         price: 10000,
         category: 'Papelería',
         image: '/images/placeholder-article.jpg',
-        description: 'Set de 10 stickers con las mascotas y frases icónicas.',
+        description: 'Set de 10 stickers con los personajes y frases icónicas.',
     },
     {
         id: 4,

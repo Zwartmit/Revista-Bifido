@@ -1,22 +1,22 @@
 import type { CollectionConfig } from 'payload';
 import { APIError } from 'payload';
 
-export const Mascots: CollectionConfig = {
-    slug: 'mascots',
+export const Characters: CollectionConfig = {
+    slug: 'characters',
     labels: {
-        singular: 'Mascota',
-        plural: 'Mascotas',
+        singular: 'Personaje',
+        plural: 'Personajes',
     },
     hooks: {
         beforeDelete: [
             async ({ req, id }) => {
                 const sections = await req.payload.find({
                     collection: 'sections',
-                    where: { mascot: { equals: id } },
+                    where: { character: { equals: id } },
                     limit: 1,
                 });
                 if (sections.totalDocs > 0) {
-                    throw new APIError(`No se puede eliminar: Esta mascota está asignada a la sección "${sections.docs[0].name}"`, 400);
+                    throw new APIError(`No se puede eliminar: Este personaje está asignado a la sección "${sections.docs[0].name}"`, 400);
                 }
             },
         ],

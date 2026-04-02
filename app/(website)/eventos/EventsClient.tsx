@@ -104,7 +104,7 @@ export default function EventsClient({ events }: EventsClientProps) {
     };
 
     return (
-        <div className="min-h-screen pt-12 relative" style={{
+        <div className="min-h-[60vh] pt-12 pb-12 relative" style={{
             background: "#030303 url('data:image/svg+xml,%3Csvg width=\\'80\\' height=\\'80\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'n\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'.75\\' numOctaves=\\'3\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23n)\\' opacity=\\'.07\\'/%3E%3C/svg%3E') repeat"
         }}>
             <style dangerouslySetInnerHTML={{ __html: `
@@ -123,12 +123,15 @@ export default function EventsClient({ events }: EventsClientProps) {
                 .rasgado-card:hover .r-layer3 { opacity:.7; }
                 
                 .r-content { position:absolute; inset:0; padding:2rem; display:flex; flex-direction:column; justify-content:center; filter:drop-shadow(3px 4px 0px rgba(0,0,0,1)); pointer-events:none; }
+                
+                .hide-scrollbar::-webkit-scrollbar { display: none; }
+                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
             `}} />
 
             <div className="container mx-auto px-4 max-w-[1200px]">
-                {/* Header (La Señal Style) */}
+                {/* Header */}
                 <div className="mb-12">
-                    <h1 className="font-display text-[clamp(4rem,10vw,8rem)] leading-[0.85] text-[#f5f5f5] tracking-wide glitch-title uppercase" data-text="EVENTOS">
+                    <h1 className="font-display text-[clamp(3.5rem,8vw,6.5rem)] leading-[0.85] text-[#f5f5f5] tracking-wide glitch-title uppercase" data-text="EVENTOS">
                         EVENTOS
                     </h1>
                     <div className="w-48 md:w-64 h-[2px] bg-gradient-to-r from-[#CCFD29] to-transparent mt-3 md:mt-4"></div>
@@ -138,12 +141,12 @@ export default function EventsClient({ events }: EventsClientProps) {
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-wrap gap-2 md:gap-4 mb-12 border-b border-white/10 pb-6">
+                <div className="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-visible hide-scrollbar gap-2 md:gap-4 mb-12 border-b border-white/10 pb-4 md:pb-6 w-full -mx-4 px-4 md:mx-0 md:px-0" style={{ WebkitOverflowScrolling: 'touch' }}>
                     {filters.map((f) => (
                         <button
                             key={f.id}
                             onClick={() => setFilter(f.id)}
-                            className={`px-5 py-2 text-xs md:text-sm font-mono tracking-widest uppercase transition-all ${filter === f.id
+                            className={`whitespace-nowrap flex-shrink-0 px-4 md:px-5 py-2 text-xs md:text-sm font-mono tracking-widest uppercase transition-all ${filter === f.id
                                 ? 'bg-[#CCFD29] text-black font-bold shadow-[2px_2px_0px_#fff]'
                                 : 'bg-transparent text-gray-400 border border-white/20 hover:border-white/50 hover:text-white'
                                 }`}

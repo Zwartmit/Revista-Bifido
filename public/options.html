@@ -226,7 +226,6 @@
     .z-title { font-family:'Playfair Display',serif; font-size:3.5rem; font-weight:900; line-height:1; color:#111; letter-spacing:-.02em; margin-bottom:1rem; }
     .z-meta { font-family:'Space Mono',monospace; font-size:.8rem; color:#666; }
     .z-img { width:100%; aspect-ratio:4/3; object-fit:cover; filter:grayscale(100%) contrast(1.4); margin-bottom:1.5rem; mix-blend-mode:multiply; }
-
   </style>
 </head>
 <body>
@@ -723,10 +722,7 @@
       </div>
     </div>
   </div>
-
-
 </div><!-- end mode-eventos -->
-
 
 <script>
   // ── Mode switcher ──────────────────────────────
@@ -734,7 +730,10 @@
     document.getElementById('mode-design').classList.toggle('visible', mode === 'design');
     document.getElementById('mode-eventos').classList.toggle('visible', mode === 'eventos');
     document.querySelectorAll('.mode-btn').forEach((btn, i) => {
-      btn.classList.toggle('active', (i === 0 && mode === 'design') || (i === 1 && mode === 'eventos'));
+      btn.classList.toggle('active', 
+        (i === 0 && mode === 'design') || 
+        (i === 1 && mode === 'eventos')
+      );
     });
   }
 
