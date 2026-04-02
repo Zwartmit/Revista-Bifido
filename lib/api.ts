@@ -11,7 +11,7 @@ function getPayloadURL(path: string = '') {
 }
 
 /**
- * Función genérica para hacer llamadas a la API de Payload
+ * Función genérica para hacer llamadas a la API de Payload de forma segura
  */
 async function fetchPayload(collection: string, params: any = {}, options: RequestInit = {}) {
   const stringifiedParams = qs.stringify(params, { addQueryPrefix: true });
@@ -28,14 +28,17 @@ async function fetchPayload(collection: string, params: any = {}, options: Reque
     });
 
     if (!res.ok) {
-      throw new Error(`Payload API call failed: ${res.status} ${res.statusText}`);
+      console.warn(`Payload API call failed for ${collection}: ${res.status} ${res.statusText}`);
+      return { docs: [] };
     }
 
     const data = await res.json();
-    return data;
+    return data || { docs: [] };
   } catch (error) {
-    console.error(`Error fetching ${collection}:`, error);
-    throw error;
+    console.error(`Network or fetch error while requesting ${collection}:`, error);
+    // En producción (Netlify), si la URL de payload no está configurada o el backend está dormido, 
+    // devolver un arreglo vacío previene un volcado 500 (Server Component Crash).
+    return { docs: [] };
   }
 }
 
