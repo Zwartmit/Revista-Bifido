@@ -104,7 +104,7 @@ export default function EventsClient({ events }: EventsClientProps) {
     };
 
     return (
-        <div className="min-h-[60vh] pt-12 pb-12 relative" style={{
+        <div className="flex-1 w-full pt-12 pb-12 relative flex flex-col" style={{
             background: "#030303 url('data:image/svg+xml,%3Csvg width=\\'80\\' height=\\'80\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'n\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'.75\\' numOctaves=\\'3\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23n)\\' opacity=\\'.07\\'/%3E%3C/svg%3E') repeat"
         }}>
             <style dangerouslySetInnerHTML={{ __html: `
@@ -141,12 +141,12 @@ export default function EventsClient({ events }: EventsClientProps) {
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-visible hide-scrollbar gap-2 md:gap-4 mb-12 border-b border-white/10 pb-4 md:pb-6 w-full -mx-4 px-4 md:mx-0 md:px-0" style={{ WebkitOverflowScrolling: 'touch' }}>
+                <div className="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-visible hide-scrollbar gap-2 md:gap-4 mb-12 border-b border-white/10 pb-4 md:pb-6 w-[calc(100%+2rem)] -mx-4 px-4 md:w-full md:mx-0 md:px-0" style={{ WebkitOverflowScrolling: 'touch' }}>
                     {filters.map((f) => (
                         <button
                             key={f.id}
                             onClick={() => setFilter(f.id)}
-                            className={`whitespace-nowrap flex-shrink-0 px-4 md:px-5 py-2 text-xs md:text-sm font-mono tracking-widest uppercase transition-all ${filter === f.id
+                            className={`whitespace-nowrap flex-shrink-0 px-4 md:px-5 py-2 text-[10px] md:text-sm font-mono tracking-widest uppercase transition-all ${filter === f.id
                                 ? 'bg-[#CCFD29] text-black font-bold shadow-[2px_2px_0px_#fff]'
                                 : 'bg-transparent text-gray-400 border border-white/20 hover:border-white/50 hover:text-white'
                                 }`}
@@ -154,6 +154,8 @@ export default function EventsClient({ events }: EventsClientProps) {
                             {f.label}
                         </button>
                     ))}
+                    {/* Trailing spacer to avoid cut-off on mobile scrolling */}
+                    <div className="w-1 md:hidden flex-shrink-0"></div>
                 </div>
 
                 <div ref={contentRef}>

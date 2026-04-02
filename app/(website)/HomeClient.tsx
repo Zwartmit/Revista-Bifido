@@ -47,7 +47,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
     return (
         <div className="min-h-screen bg-black">
             {/* Hero Section */}
-            <section className="relative w-full h-screen overflow-hidden mt-0 group">
+            <section className="relative w-full h-[55vh] md:h-[65vh] lg:h-[85vh] overflow-hidden mt-0 group">
                 {/* Desktop Hero */}
                 <Image
                     src="/hero/desk.png"
@@ -61,12 +61,12 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                     src="/hero/movil.png"
                     alt="La Manada Bífido"
                     fill
-                    className="block lg:hidden object-cover object-center"
+                    className="block lg:hidden object-cover object-[center_90%] md:object-[center_70%]"
                     priority
                 />
 
                 {/* Explora el Parche Button - Inside Hero */}
-                <div className="absolute bottom-6 md:bottom-2 left-1/2 -translate-x-1/2 z-20 w-fit">
+                <div className="absolute bottom-4 md:bottom-6 lg:bottom-2 left-1/2 -translate-x-1/2 z-20 w-fit">
                     <Link href="/elparche" className="group/btn relative inline-block">
                         <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover/btn:opacity-100 transition duration-1000 group-hover/btn:duration-200"></div>
                         <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#fe5e00] rounded-full font-display text-xl md:text-3xl text-white tracking-[0.1em] md:tracking-[0.2em] transition-all duration-300 group-hover/btn:border-[#fe5e00] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
@@ -86,8 +86,8 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                 <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
             </section>
 
-            {/* La Manada Section */}
-            <section id="la-manada" className="pb-20 relative bg-black">
+            {/* La Manada Section (Currently Hidden/Commented Characters) */}
+            <section id="la-manada" className="pb-0 relative bg-black">
                 {/* Background Green Element */}
                 <div className="absolute top-0 right-0 w-full h-full opacity-30 pointer-events-none overflow-hidden flex justify-end">
                     <div className="w-[800px] h-[800px] bg-[url('/backgrounds/gradiente-verde.png')] bg-contain bg-right bg-no-repeat mix-blend-screen opacity-50 translate-x-1/4" />
@@ -106,12 +106,12 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
             </section>
 
             {/* Separator */}
-            <div className="w-full flex justify-center py-6 bg-black relative z-10">
-                <div className="w-[90%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/20 to-transparent blur-[0.5px]"></div>
+            <div className="w-full flex justify-center py-4 md:py-8 bg-black relative z-10">
+                <div className="w-[90%] md:w-[70%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/20 to-transparent blur-[0.5px]"></div>
             </div>
 
-            {/* Recent Articles Section (Kept from existing) */}
-            <section className="py-20 bg-black relative z-10">
+            {/* Recent Articles Section */}
+            <section className="pt-8 pb-20 md:pt-16 bg-black relative z-10">
                 <div className="container mx-auto px-4">
                     <div className="flex items-center gap-4 mb-12 justify-center">
                         <Clock className="text-bifido-orange" size={32} />

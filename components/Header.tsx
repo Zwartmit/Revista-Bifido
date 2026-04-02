@@ -33,6 +33,18 @@ export default function Header() {
         };
     }, [isCharacterMenuOpen]);
 
+    // Lock body scroll when mobile menu is active
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isMenuOpen]);
+
     // Find active character based on pathname
     const activeCharacter = characters.find(m => pathname === `/${m.slug}`);
     return (
@@ -41,7 +53,7 @@ export default function Header() {
             <header
                 className="fixed top-0 left-0 right-0 z-50 border-b-2 border-bifido-neon bg-black transition-colors duration-500"
             >
-                <nav className="container mx-auto px-4 py-4" ref={menuRef}>
+                <nav className="container mx-auto px-4 py-4 relative z-[70]" ref={menuRef}>
                     {/* Mobile Layout - Logo and Menu Button side by side */}
                     <div className="flex lg:hidden items-center justify-between">
                         <Link href="/" className="relative h-12 w-48 lg:h-14 lg:w-56" onClick={() => setIsMenuOpen(false)}>
@@ -150,55 +162,70 @@ export default function Header() {
                         </div>
                     </div>
 
-                    {/* Mobile Navigation */}
-                    {isMenuOpen && (
-                        <div className="lg:hidden mt-4 pb-4 space-y-4">
-                            <Link href="/" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-2 font-display tracking-wider text-lg transition-colors px-2 ${pathname === '/' ? 'text-bifido-neon' : 'text-white hover:text-bifido-neon'}`}>
-                                <Image src="/icons/home.svg" alt="Home" width={20} height={20} className="object-contain" />
-                                Inicio
+                    {/* Mobile Navigation - Brutalismo Neón Overlay */}
+                    <div className={`fixed inset-0 z-[100] bg-black transition-all duration-500 lg:hidden flex flex-col overflow-y-auto ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
+                        
+                        {/* Modal Internal Header */}
+                        <div className="flex items-center justify-between px-4 py-4 border-b-2 border-bifido-neon shrink-0 w-full mb-4">
+                            <Link href="/" className="relative h-12 w-48" onClick={() => setIsMenuOpen(false)}>
+                                <Image
+                                    src="/icons/bifido.svg"
+                                    alt="Revista Bífido"
+                                    fill
+                                    className="object-contain"
+                                    priority
+                                />
+                            </Link>
+                            <button
+                                onClick={() => setIsMenuOpen(false)}
+                                className="p-1 hover:scale-110 transition-transform"
+                                aria-label="Close menu"
+                            >
+                                <X size={36} className="text-bifido-neon" />
+                            </button>
+                        </div>
+
+                        <div className="flex flex-col w-full h-full justify-start">
+                            <Link href="/" onClick={() => setIsMenuOpen(false)} className={`w-full border-t border-b border-white/20 py-6 px-6 font-display text-3xl sm:text-4xl uppercase transition-all duration-300 ${pathname === '/' ? 'bg-bifido-neon text-black' : 'text-white hover:bg-white hover:text-black'}`}>
+                                INICIO
                             </Link>
 
                             {/* Character Mobile Dropdown */}
-                            <div className="pb-2">
+                            <div className="flex flex-col w-full">
                                 <button
                                     onClick={() => setIsCharacterMenuOpen(!isCharacterMenuOpen)}
-                                    className="flex w-full items-center justify-between font-display tracking-wider text-lg px-2 text-white hover:text-bifido-neon transition-colors uppercase"
+                                    className={`w-full border-b border-white/20 py-6 px-6 font-display text-3xl sm:text-4xl uppercase transition-all duration-300 flex justify-between items-center ${isCharacterMenuOpen ? 'bg-bifido-neon text-black' : 'text-white hover:bg-white hover:text-black'}`}
                                 >
-                                    LA MANADA
-                                    <ChevronDown size={24} className={`transform transition-transform duration-200 ${isCharacterMenuOpen ? 'rotate-180' : ''}`} />
+                                    <span>LA MANADA</span>
+                                    <span className="text-4xl sm:text-5xl font-mono leading-none mb-1">{isCharacterMenuOpen ? '-' : '+'}</span>
                                 </button>
 
-                                <div className={`overflow-hidden transition-all duration-300 ${isCharacterMenuOpen ? 'max-h-[500px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                    <div className="space-y-3 px-2">
-                                        {characters.map((character) => (
-                                            <div key={character.id} className="px-2">
-                                                <CharacterNavLink character={character} isMobile onClick={() => { setIsMenuOpen(false); setIsCharacterMenuOpen(false); }} />
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div className={`overflow-hidden transition-all duration-500 w-full flex flex-col items-start ${isCharacterMenuOpen ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    {characters.map((character) => {
+                                        const isActive = pathname === `/${character.slug}`;
+                                        return (
+                                            <Link key={character.id} href={`/${character.slug}`} onClick={() => { setIsMenuOpen(false); setIsCharacterMenuOpen(false); }} className={`w-full border-b border-white/10 py-5 px-8 font-display text-2xl sm:text-3xl uppercase transition-colors flex items-center gap-4 bg-[#111] hover:bg-[#222] ${isActive ? 'text-bifido-neon' : 'text-white/60 hover:text-white'}`}>
+                                                <div className="w-2 h-6 shrink-0 rounded-full" style={{ backgroundColor: character.color.primary }}></div>
+                                                {character.name}
+                                            </Link>
+                                        );
+                                    })}
                                 </div>
                             </div>
 
-                            <StaticNavLink
-                                href="/elparche"
-                                label="El Parche"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block font-display tracking-wider text-lg px-2"
-                            />
-                            <StaticNavLink
-                                href="/eventos"
-                                label="Eventos"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block font-display tracking-wider text-lg px-2"
-                            />
-                            <StaticNavLink
-                                href="/contactanos"
-                                label="Contáctanos"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block font-display tracking-wider text-lg px-2"
-                            />
+                            <Link href="/elparche" onClick={() => setIsMenuOpen(false)} className={`w-full border-b border-white/20 py-6 px-6 font-display text-3xl sm:text-4xl uppercase transition-all duration-300 ${pathname === '/elparche' ? 'bg-bifido-neon text-black' : 'text-white hover:bg-white hover:text-black'}`}>
+                                EL PARCHE
+                            </Link>
+                            
+                            <Link href="/eventos" onClick={() => setIsMenuOpen(false)} className={`w-full border-b border-white/20 py-6 px-6 font-display text-3xl sm:text-4xl uppercase transition-all duration-300 ${pathname === '/eventos' ? 'bg-bifido-neon text-black' : 'text-white hover:bg-white hover:text-black'}`}>
+                                EVENTOS
+                            </Link>
+                            
+                            <Link href="/contactanos" onClick={() => setIsMenuOpen(false)} className={`w-full border-b border-white/20 py-6 px-6 font-display text-3xl sm:text-4xl uppercase transition-all duration-300 ${pathname === '/contactanos' ? 'bg-bifido-neon text-black' : 'text-white hover:bg-white hover:text-black'}`}>
+                                CONTACTO
+                            </Link>
                         </div>
-                    )}
+                    </div>
                 </nav>
 
                 {/* Scrolling Marquee Tape */}
@@ -246,7 +273,7 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
     // Determine text color based on state and context
     let textColor;
     if (isActive) {
-        textColor = '#000000'; // Black for active link on colored background
+        textColor = character.color.primary; // Bright color for active link on dark background
     } else if (isHovered) {
         textColor = isOnSectionPage ? '#FFFFFF' : character.color.primary;
     } else {
@@ -258,12 +285,14 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
             <Link
                 href={`/${character.slug}`}
                 className={`block text-xl font-display tracking-wider transition-colors py-2 rounded ${isActive
-                    ? 'bg-bifido-neon text-black font-bold'
+                    ? 'font-bold'
                     : 'text-white hover:bg-white/10'
                     }`}
                 onClick={onClick}
                 style={{
-                    borderLeft: isActive ? '4px solid #000000' : `4px solid ${character.color.primary}`,
+                    backgroundColor: isActive ? `${character.color.primary}1A` : 'transparent',
+                    borderLeft: `4px solid ${character.color.primary}`,
+                    color: isActive ? character.color.primary : textColor,
                     paddingLeft: '12px'
                 }}
             >
@@ -275,10 +304,11 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
     return (
         <Link
             href={`/${character.slug}`}
-            className={`text-base font-medium transition-all duration-200 flex items-center gap-3 px-4 py-3 rounded-xl w-full ${isActive ? 'bg-bifido-neon/10 border-l-4 border-bifido-neon' : 'hover:bg-white/5 border-l-4 border-transparent'
-                }`}
+            className={`text-base font-medium transition-all duration-200 flex items-center gap-3 px-4 py-3 rounded-xl w-full ${!isActive ? 'hover:bg-white/5 border-l-4 border-transparent' : ''}`}
             style={{
                 color: textColor,
+                backgroundColor: isActive ? `${character.color.primary}1A` : undefined,
+                borderLeft: isActive ? `4px solid ${character.color.primary}` : undefined,
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -287,7 +317,7 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
             <span
                 className="w-2 h-2 rounded-full transition-transform duration-200"
                 style={{
-                    backgroundColor: isActive ? '#000000' : character.color.primary,
+                    backgroundColor: character.color.primary,
                     transform: isHovered || isActive ? 'scale(1.5)' : 'scale(1)'
                 }}
             />

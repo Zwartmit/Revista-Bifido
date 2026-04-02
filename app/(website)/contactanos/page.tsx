@@ -26,7 +26,7 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative min-h-[70vh] md:min-h-[75vh] lg:min-h-screen py-16 lg:py-0 flex flex-col items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -40,7 +40,7 @@ export default function ContactPage() {
       </div>
 
       <div className="container mx-auto px-4 pt-0 relative z-10">
-        <div ref={contentRef} className="flex flex-col items-center gap-12">
+        <div ref={contentRef} className="flex flex-col items-center gap-8 lg:gap-12">
 
           {/* Heading Section */}
           <div className="text-center w-full px-2">
@@ -50,10 +50,10 @@ export default function ContactPage() {
           </div>
 
           {/* Top Section: Email | Logo | Socials */}
-          <div className="flex flex-col lg:grid lg:grid-cols-3 items-center justify-items-center gap-8 lg:gap-0 w-full max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-items-center gap-8 w-full max-w-6xl">
 
-            {/* Logo - top on mobile, center on desktop */}
-            <div className="order-1 lg:order-2 relative w-40 h-40 lg:w-56 lg:h-56 flex items-center justify-center group">
+            {/* Logo - top on mobile/tablet (spans 2), center on desktop */}
+            <div className="order-1 md:col-span-2 lg:col-span-1 lg:order-2 relative w-40 h-40 lg:w-56 lg:h-56 flex items-center justify-center group">
               <Image
                 src="/icons/bifido_contact.svg"
                 alt="Bífido Logo"
@@ -63,8 +63,8 @@ export default function ContactPage() {
               />
             </div>
 
-            {/* Left: Email Pill */}
-            <div className="order-2 lg:order-1 flex justify-center lg:justify-end w-full">
+            {/* Left/Bottom-Left: Email Pill */}
+            <div className="order-3 md:order-2 md:col-span-1 lg:col-span-1 lg:order-1 flex justify-center md:justify-end w-full">
               <div className="bg-white rounded-full px-6 py-3 flex items-center gap-3 shadow-2xl hover:scale-105 transition-transform duration-300">
                 <div className="relative overflow-hidden w-9 h-9 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group">
                   <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
@@ -80,8 +80,8 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Right: Social Pill */}
-            <div className="order-3 flex justify-center lg:justify-start w-full">
+            {/* Right/Bottom-Right: Social Pill */}
+            <div className="order-2 md:order-3 md:col-span-1 lg:col-span-1 lg:order-3 flex justify-center md:justify-start w-full">
               <div className="bg-white rounded-full px-8 py-3 flex items-center gap-4 shadow-2xl hover:scale-105 transition-transform duration-300">
                 {[
                   { Icon: RiFacebookFill, href: "https://www.facebook.com/revistabifido/" },

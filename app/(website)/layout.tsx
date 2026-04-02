@@ -62,9 +62,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${inter.variable} ${bebas.variable} ${jackInput.variable} ${anton.variable} ${outfit.variable}`}>
-      <body className="bg-black text-white font-sans antialiased">
+      <body className="bg-black text-white font-sans antialiased flex flex-col min-h-[100dvh]">
         <Header />
-        <main className="min-h-screen">
+        <main className="flex-1 w-full flex flex-col">
           {children}
         </main>
         <Footer />

@@ -127,7 +127,7 @@ export default function ElParchePage() {
                 </div>
 
                 {/* Right Content - Active Character Showcase */}
-                <div className="flex-1 bg-black relative border-b border-[#333] min-h-screen md:min-h-[calc(100vh-10rem)] flex flex-col">
+                <div className="flex-1 bg-black relative border-b border-[#333] md:min-h-[calc(100vh-10rem)] flex flex-col">
                     <div className="absolute inset-0 w-full h-full transition-colors duration-500 overflow-hidden">
                         {/* Animated Smoky Background */}
                         <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-black">
@@ -151,26 +151,26 @@ export default function ElParchePage() {
                     <div className="relative w-full flex-1 flex items-start lg:items-center justify-center">
 
                         {/* Mobile Horizontal Avatar Carrousel (Hidden on Desktop) */}
-                        <div className="absolute top-0 left-0 w-full z-40 flex md:hidden justify-center items-start py-6 px-2 gap-3 sm:gap-5 bg-gradient-to-b from-black via-black/80 to-transparent">
+                        <div className="absolute top-0 left-0 w-full z-40 flex md:hidden justify-center items-start py-6 px-4 gap-2 sm:gap-6 bg-gradient-to-b from-black via-black/80 to-transparent">
                             {otherCharacters.map(m => (
                                 <button 
                                     key={m.id}
                                     onClick={() => setActiveCharacterId(m.id)}
-                                    className="flex-shrink-0 flex flex-col items-center gap-2 group w-[70px] sm:w-[80px]"
+                                    className="flex-1 flex flex-col items-center gap-2 group max-w-[90px]"
                                 >
-                                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden relative flex items-center justify-center bg-black transition-all border-2 border-[#222] group-hover:border-white shadow-[0_0_15px_rgba(0,0,0,0.8)]"
+                                    <div className="w-[clamp(45px,16vw,75px)] h-[clamp(45px,16vw,75px)] rounded-full overflow-hidden relative flex items-center justify-center bg-black transition-all border-2 border-[#222] group-hover:border-white shadow-[0_0_15px_rgba(0,0,0,0.8)]"
                                          style={{ borderColor: m.color?.primary }}>
                                         {m.image && (
                                             <Image 
                                                 src={m.image} 
                                                 alt={m.name} 
-                                                width={64} 
-                                                height={64} 
-                                                className="object-cover object-top filter grayscale group-hover:grayscale-0 scale-[1.35] pt-2 transition-all duration-300"
+                                                width={75} 
+                                                height={75} 
+                                                className="object-cover object-top filter grayscale group-hover:grayscale-0 scale-[1.35] pt-1 transition-all duration-300 w-full h-full"
                                             />
                                         )}
                                     </div>
-                                    <span className="text-[10px] font-display tracking-widest uppercase transition-colors leading-tight text-center"
+                                    <span className="text-[clamp(8px,2.8vw,12px)] font-display tracking-widest uppercase transition-colors leading-tight text-center"
                                           style={{ color: m.color?.primary || '#aaa' }}>
                                         {m.name}
                                     </span>
@@ -235,13 +235,13 @@ export default function ElParchePage() {
                                                 document.getElementById('bio-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                                             }
                                         }}
-                                        className="bg-transparent border border-white text-white font-display tracking-widest py-3 px-2 sm:px-8 rounded-3xl text-[10px] sm:text-sm hover:bg-white/10 transition-all uppercase text-center flex-1 sm:flex-none"
+                                        className="bg-transparent border border-white text-white font-display tracking-widest py-3 px-6 sm:px-8 rounded-3xl text-[clamp(11px,3.5vw,14px)] hover:bg-white/10 transition-all uppercase text-center"
                                     >
                                         Conóceme
                                     </button>
                                     <Link
                                         href={`/${activeCharacter.slug}`}
-                                        className="bg-white text-black font-display tracking-widest py-3 px-2 sm:px-8 rounded-3xl text-[10px] sm:text-sm hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all uppercase text-center flex-1 sm:flex-none"
+                                        className="bg-white text-black font-display tracking-widest py-3 px-6 sm:px-8 rounded-3xl text-[clamp(11px,3.5vw,14px)] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all uppercase text-center"
                                     >
                                         Lee mis artículos
                                     </Link>

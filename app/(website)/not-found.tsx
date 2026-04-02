@@ -3,10 +3,10 @@ import Image from 'next/image';
 
 export default function NotFound() {
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black px-4">
+    <div className="relative w-full h-[60vh] md:h-[80vh] lg:h-[85vh] flex flex-col items-center justify-center overflow-hidden bg-black px-4 mt-20 md:mt-24">
       
       {/* Background Glitch Image */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-40 pointer-events-none">
+      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-20 lg:opacity-40 pointer-events-none">
         {/* Desktop Image */}
         <Image 
           src="/backgrounds/404desk.png" 
@@ -14,6 +14,7 @@ export default function NotFound() {
           fill
           className="object-cover hidden sm:block"
           priority
+          unoptimized
         />
         {/* Mobile Image */}
         <Image 
@@ -22,6 +23,7 @@ export default function NotFound() {
           fill
           className="object-cover sm:hidden"
           priority
+          unoptimized
         />
         {/* CRT Overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.7)_100%)]"></div>

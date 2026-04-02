@@ -138,7 +138,10 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
         {!isSearching && (
           <div className="text-center py-20 opacity-60 mt-6">
             <p className="font-display text-2xl md:text-5xl uppercase text-white">INGRESA UN TÉRMINO PARA EMPEZAR A BUSCAR</p>
-            <p className="font-mono mt-4 tracking-[0.2em] text-xs md:text-sm text-white">PRESIONA ESC PARA SALIR</p>
+            <p className="font-mono mt-4 tracking-[0.2em] text-xs md:text-sm text-white">
+              <span className="hidden lg:inline">PRESIONA ESC PARA SALIR</span>
+              <span className="lg:hidden">TOCA LA X PARA SALIR</span>
+            </p>
           </div>
         )}
 

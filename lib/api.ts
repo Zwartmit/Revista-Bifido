@@ -33,6 +33,10 @@ async function fetchPayload(collection: string, params: any = {}, options: Reque
     }
 
     const data = await res.json();
+    // Guarantee docs exists to prevent .map() crashes downstream
+    if (data && !data.docs) {
+      data.docs = [];
+    }
     return data || { docs: [] };
   } catch (error) {
     console.error(`Network or fetch error while requesting ${collection}:`, error);
