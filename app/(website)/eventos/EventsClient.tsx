@@ -168,6 +168,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                     {/* Image Section */}
                                     <div className="relative w-full md:w-3/5 min-h-[400px] overflow-hidden">
                                         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\\'40\\' height=\\'40\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z\\' fill=\\'%23111\\' fill-opacity=\\'0.4\\' fill-rule=\\'evenodd\\'/%3E%3C/svg%3E')] z-10 opacity-30 pointer-events-none mix-blend-overlay" />
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
                                             src={featuredEvent.image || '/images/placeholder-article.jpg'}
                                             alt={featuredEvent.title}

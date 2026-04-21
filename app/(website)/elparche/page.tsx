@@ -422,7 +422,7 @@ export default function ElParchePage() {
                     {/* Texto de transición */}
                     <div ref={bridgeTextRef} className="flex flex-col gap-2">
                         <span className="font-display text-xl text-bifido-neon uppercase">
-                            // Y DETRÁS DE TODO ESTO HAY PERSONAS REALES QUE HACEN POSIBLE EL PARCHE...
+                            {"//"} Y DETRÁS DE TODO ESTO HAY PERSONAS REALES QUE HACEN POSIBLE EL PARCHE...
                         </span>
                         <p className="font-anton text-2xl md:text-4xl text-white uppercase leading-tight max-w-xl">
                             NUESTRO PARCHE, ARCHIVO VIVO.
@@ -482,7 +482,7 @@ export default function ElParchePage() {
                                 {/* Tagline */}
                                 <div className="pt-4 space-y-1">
                                     <p className="font-display text-[11px] md:text-xl tracking-[0.18em] text-white uppercase">
-                                        // NO SOMOS UN EQUIPO, SOMOS UN{' '}
+                                        {"//"} NO SOMOS UN EQUIPO, SOMOS UN{' '}
                                         <span className="underline underline-offset-4">ARCHIVO VIVO</span> →{' '}
                                         <span className="font-display text-[11px] md:text-xl tracking-[0.18em] text-[#fe5e00] uppercase">NARRAMOS, SEÑALAMOS, REGISTRAMOS</span>
                                     </p>

@@ -167,6 +167,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                   {results.characters.map((char) => (
                     <Link href={`/${char.slug}`} key={char.id} onClick={onClose} className="group block border border-white/5 hover:border-white/20 bg-white/5 overflow-hidden transition-all duration-300">
                       <div className="aspect-square relative w-full overflow-hidden bg-black/50">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={char.image} alt={char.name} className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 scale-100 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                         <div className="absolute bottom-3 left-3 right-3">
@@ -189,6 +190,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                   {results.articles.map((article) => (
                     <Link href={`/${article.section}/${article.slug}`} key={article.id} onClick={onClose} className="group flex gap-4 p-3 border-l-2 border-transparent hover:border-[#CCFD29] hover:bg-white/5 transition-all duration-200">
                       <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-zinc-900 relative overflow-hidden hidden sm:block">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" />
                       </div>
                       <div className="flex flex-col justify-center flex-1">
