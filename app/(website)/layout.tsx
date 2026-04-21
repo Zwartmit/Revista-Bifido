@@ -61,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${bebas.variable} ${jackInput.variable} ${anton.variable} ${outfit.variable}`}>
+    <html lang="es" suppressHydrationWarning className={`${inter.variable} ${bebas.variable} ${jackInput.variable} ${anton.variable} ${outfit.variable}`}>
       <body className="bg-black text-white font-sans antialiased flex flex-col min-h-[100dvh]">
         <Header />
         <main className="flex-1 w-full flex flex-col">

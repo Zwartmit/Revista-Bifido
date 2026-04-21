@@ -329,5 +329,6 @@ export function transformPayloadAuthor(doc: any) {
     profileImage: doc.profileImage?.filename ? `/media/${doc.profileImage.filename}` : (doc.profileImage?.url || '/images/placeholder-author.jpg'),
     email: doc.email,
     socialMedia: doc.socialMedia || {},
+    tags: doc.tags || [],
   };
 }

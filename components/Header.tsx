@@ -79,7 +79,7 @@ export default function Header() {
                                 className="p-1 hover:scale-110 transition-transform"
                                 aria-label="Toggle menu"
                             >
-                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <Image src="/icons/menu.svg" alt="Menu" width={24} height={24} className="object-contain" />}
+                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <Image src="/icons/menu.svg" alt="Menu" width={24} height={24} className="object-contain w-auto h-auto" />}
                             </button>
                         </div>
                     </div>

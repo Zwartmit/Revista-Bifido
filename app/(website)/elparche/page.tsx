@@ -1,20 +1,36 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { characters } from '@/lib/characters';
 import gsap from 'gsap';
-import { Users, Mail, Instagram, Twitter, Facebook, Globe } from 'lucide-react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { getAuthors } from '@/lib/api';
-import { useState } from 'react';
 import dynamic from 'next/dynamic';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const FluidSimulation = dynamic(() => import('@/components/FluidSimulation'), { ssr: false });
 
 export default function ElParchePage() {
-    const contentRef = useRef<HTMLDivElement>(null);
-    const teamRef = useRef<HTMLDivElement>(null);
+    // ── Refs ──────────────────────────────────────────────────────────
+    const pageRef       = useRef<HTMLDivElement>(null);
+    const contentRef    = useRef<HTMLDivElement>(null);
+    const introRef      = useRef<HTMLDivElement>(null);
+    const introh1Ref    = useRef<HTMLHeadingElement>(null);
+    const introPRef     = useRef<HTMLParagraphElement>(null);
+    const leftGridRef   = useRef<HTMLDivElement>(null);
+    const showcaseRef   = useRef<HTMLDivElement>(null);
+    const bioCardRef    = useRef<HTMLDivElement>(null);
+    const bridgeRef     = useRef<HTMLDivElement>(null);
+    const bridgeLineRef = useRef<HTMLDivElement>(null);
+    const bridgeTextRef = useRef<HTMLDivElement>(null);
+    const heroTitleRef  = useRef<HTMLHeadingElement>(null);
+    const teamRef       = useRef<HTMLDivElement>(null);
+
+    // ── State ─────────────────────────────────────────────────────────
     const [team, setTeam] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeCharacterId, setActiveCharacterId] = useState(characters[0].id);
@@ -33,8 +49,8 @@ export default function ElParchePage() {
         setActiveCharacterId(characters[nextIndex].id);
     };
 
+    // ── Data fetch ────────────────────────────────────────────────────
     useEffect(() => {
-        // Fetch authors
         const fetchTeam = async () => {
             try {
                 const authors = await getAuthors();
@@ -46,44 +62,155 @@ export default function ElParchePage() {
             }
         };
         fetchTeam();
-
-        // Animate content appearance
-        if (contentRef.current) {
-            gsap.fromTo(
-                contentRef.current,
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
-            );
-        }
     }, []);
 
-    // Animation for team section when it loads
+    // ── GSAP Animations ───────────────────────────────────────────────
+    useGSAP(() => {
+        const ctx = gsap.context(() => {
+
+            // 1. INTRO: title slides up with clip, paragraph fades after
+            if (introh1Ref.current && introPRef.current) {
+                gsap.fromTo(
+                    introh1Ref.current,
+                    { y: 60, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out', delay: 0.05 }
+                );
+                gsap.fromTo(
+                    introPRef.current,
+                    { y: 20, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', delay: 0.2 }
+                );
+            }
+
+            // 2. LEFT ACCORDION: stripes slide in from left in stagger
+            if (leftGridRef.current) {
+                const items = leftGridRef.current.querySelectorAll(':scope > div');
+                gsap.fromTo(
+                    items,
+                    { x: -60, opacity: 0 },
+                    { x: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out', delay: 0.15 }
+                );
+            }
+
+            // 3. SHOWCASE: image scales from 1.08 + bio card floats up
+            if (showcaseRef.current) {
+                gsap.fromTo(
+                    showcaseRef.current,
+                    { scale: 1.06, opacity: 0 },
+                    { scale: 1, opacity: 1, duration: 0.8, ease: 'expo.out', delay: 0.1 }
+                );
+            }
+            if (bioCardRef.current) {
+                gsap.fromTo(
+                    bioCardRef.current,
+                    { y: 50, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', delay: 0.2 }
+                );
+            }
+
+            // 4. BRIDGE: neon line draws left-to-right, then text fades
+            if (bridgeRef.current && bridgeLineRef.current && bridgeTextRef.current) {
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: bridgeRef.current,
+                        start: 'top 80%',
+                        once: true,
+                    },
+                });
+                tl.fromTo(
+                    bridgeLineRef.current,
+                    { scaleX: 0, transformOrigin: 'left center' },
+                    { scaleX: 1, duration: 0.5, ease: 'power2.out' }
+                ).fromTo(
+                    bridgeTextRef.current.children,
+                    { y: 30, opacity: 0 },
+                    { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out' },
+                    '-=0.3'
+                );
+            }
+
+            // 5. HERO TITLE "SIN FILTROS": dramatic clip reveal on scroll
+            if (heroTitleRef.current) {
+                gsap.fromTo(
+                    heroTitleRef.current,
+                    { y: 80, opacity: 0 },
+                    {
+                        y: 0, opacity: 1,
+                        duration: 0.8, ease: 'expo.out',
+                        scrollTrigger: {
+                            trigger: heroTitleRef.current,
+                            start: 'top 85%',
+                            once: true,
+                        },
+                    }
+                );
+            }
+
+        }, pageRef); // scope to page
+        return () => ctx.revert();
+    }, { scope: pageRef });
+
+    // 6. TEAM CARDS: stagger pop when scrolled into view (fires when data arrives)
     useEffect(() => {
         if (!loading && team.length > 0 && teamRef.current) {
+            const cards = teamRef.current.querySelectorAll(':scope > div');
             gsap.fromTo(
-                teamRef.current.children,
-                { opacity: 0, scale: 0.9 },
-                { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.7)' }
+                cards,
+                { opacity: 0, y: 40, scale: 0.93 },
+                {
+                    opacity: 1, y: 0, scale: 1,
+                    duration: 0.6, stagger: 0.08, ease: 'back.out(1.2)',
+                    scrollTrigger: {
+                        trigger: teamRef.current,
+                        start: 'top 85%',
+                        once: true,
+                    },
+                }
             );
         }
     }, [loading, team]);
 
     return (
-        <div className="min-h-screen bg-black">
+        <div ref={pageRef} className="min-h-screen bg-black">
+
+            {/* ── INTRO: PERSONAJES ── */}
+            <div className="w-full bg-black px-6 py-10">
+                <div className="w-full mx-auto flex flex-col items-center text-center gap-3">
+                    {/* Etiqueta superior */}
+                    <div className="flex flex-col items-center gap-2 w-full">
+                        <h1 ref={introh1Ref} className="font-anton text-2xl md:text-5xl text-white uppercase leading-tight w-full">
+                            Bífido tiene voces que la representan
+                        </h1>
+                        <p ref={introPRef} className="text-white/55 text-sm md:text-lg max-w-6xl">
+                            Esta es la manada. Cada uno representa y defiende distintos sectores de la cultura, el arte y lo marginal.{' '}
+                            <span className="text-white/80">Conócelos.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             {/* Characters Explorer - Full Width Layout */}
-            <div ref={contentRef} className="flex flex-col md:flex-row w-full bg-black">
+            <div ref={contentRef} className="flex flex-col md:flex-row w-full bg-black isolate relative overflow-hidden">
+                
+                {/* Dynamic Global Glow based on Active Character */}
+                <div 
+                    className="absolute inset-0 z-0 pointer-events-none transition-all duration-1000 opacity-50"
+                    style={{
+                        background: `radial-gradient(ellipse at 15% 100%, ${activeCharacter.color?.primary || '#b4ff00'}33 0%, transparent 60%)`
+                    }}
+                />
 
                 {/* Left Sticky Grid - Other Characters */}
-                <div className="hidden md:block w-full md:w-[34%] lg:w-[28%] xl:w-[22%] flex-shrink-0 bg-black z-30 border-r-2 border-black">
-                    <div className="md:sticky md:top-40 md:h-[calc(100vh-10rem)] flex flex-col">
-                        <div className="relative flex-1 overflow-hidden bg-black flex flex-col group min-h-[350px] md:min-h-[500px]">
+                <div className="hidden md:block w-full md:w-[34%] lg:w-[28%] xl:w-[22%] flex-shrink-0 bg-transparent z-30">
+                    <div className="md:sticky md:top-40 md:h-[calc(100vh-10rem)] flex flex-col overflow-hidden">
+                        <div ref={leftGridRef} className="relative flex-1 overflow-hidden bg-transparent flex flex-col group min-h-[350px] md:min-h-[500px]">
                             {/* Interactive Accordion Items */}
                             {otherCharacters.map((m, i) => (
                                 <div
                                     key={m.id}
                                     onClick={() => setActiveCharacterId(m.id)}
-                                    className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden border-b border-[#333] transition-all duration-500 ease-out relative"
-                                    style={{ backgroundColor: '#000' }}
+                                    className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden transition-all duration-500 ease-out relative"
+                                    style={{ backgroundColor: 'transparent' }}
                                 >
                                     {/* Subtle Background Glow */}
                                     <div
@@ -127,10 +254,10 @@ export default function ElParchePage() {
                 </div>
 
                 {/* Right Content - Active Character Showcase */}
-                <div className="flex-1 bg-black relative border-b border-[#333] md:min-h-[calc(100vh-10rem)] flex flex-col">
+                <div ref={showcaseRef} className="flex-1 bg-transparent relative md:min-h-[calc(100vh-10rem)] flex flex-col">
                     <div className="absolute inset-0 w-full h-full transition-colors duration-500 overflow-hidden">
                         {/* Animated Smoky Background */}
-                        <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-black">
+                        <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-transparent">
                             {/* Stronger Corner Smoke / Glow Vignette */}
                             <div
                                 className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-700 opacity-60 md:opacity-40"
@@ -249,7 +376,7 @@ export default function ElParchePage() {
                             </div>
 
                             {/* 2. Glassmorphism Bio Card */}
-                            <div id="bio-card" className="w-full lg:w-[340px] xl:w-[380px] flex-shrink-0">
+                            <div id="bio-card" ref={bioCardRef} className="w-full lg:w-[340px] xl:w-[380px] flex-shrink-0">
                                 <div className="bg-black/20 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl relative z-10">
 
                                     <h3 className="text-center font-bold mb-4 tracking-wider text-3xl" style={{ color: activeCharacter.color?.primary }}>
@@ -281,67 +408,196 @@ export default function ElParchePage() {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 max-w-7xl">
-                {/* Team Section */}
-                <section className="pb-24 pt-16 bg-black">
-                    <div className="text-center mb-12">
-                        <h2 className="font-display text-4xl md:text-5xl text-white mb-4">Equipo Bífido</h2>
-                        <div className="w-24 h-1 bg-bifido-neon mx-auto rounded-full shadow-[0_0_10px_rgba(204,253,41,0.5)]"></div>
+            {/* ── BRIDGE: TRANSICIÓN PERSONAJES → EQUIPO ── */}
+            <div ref={bridgeRef} className="w-full bg-black py-12 md:py-16 px-6 md:px-12 lg:px-16 relative overflow-hidden">
+                {/* Light spill from Characters section */}
+                <div 
+                    className="absolute inset-0 z-0 pointer-events-none transition-all duration-1000 opacity-60"
+                    style={{
+                        background: `radial-gradient(ellipse at 15% 0%, ${activeCharacter.color?.primary || '#b4ff00'}33 0%, transparent 70%)`
+                    }}
+                />
+                
+                <div className="max-w-[85rem] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+                    {/* Texto de transición */}
+                    <div ref={bridgeTextRef} className="flex flex-col gap-2">
+                        <span className="font-display text-xl text-bifido-neon uppercase">
+                            // Y DETRÁS DE TODO ESTO HAY PERSONAS REALES QUE HACEN POSIBLE EL PARCHE...
+                        </span>
+                        <p className="font-anton text-2xl md:text-4xl text-white uppercase leading-tight max-w-xl">
+                            NUESTRO PARCHE, ARCHIVO VIVO.
+                        </p>
                     </div>
 
-                    {loading ? (
-                        <div className="flex justify-center items-center py-20">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-bifido-neon"></div>
-                        </div>
-                    ) : team.length > 0 ? (
-                        <div ref={teamRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                            {team.map((member) => (
-                                <div key={member.id} className="bg-bifido-gray/50 border border-bifido-gray/30 rounded-2xl p-6 flex flex-col items-center text-center hover:border-bifido-neon transition-all duration-300 group">
-                                    <div className="relative w-32 h-32 mb-6 rounded-full overflow-hidden border-4 border-bifido-gray group-hover:border-bifido-neon transition-colors duration-300">
-                                        <Image
-                                            src={member.profileImage}
-                                            alt={member.name}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                    <h3 className="font-display text-2xl text-white mb-2">{member.name}</h3>
-                                    <p className="text-bifido-lightgray text-sm mb-4 flex-1 line-clamp-3">
-                                        {member.biography || 'Miembro del equipo de Revista Bífido.'}
-                                    </p>
+                    {/* Flecha / indicador visual */}
+                    <div className="flex items-center gap-4 flex-shrink-0">
+                        <div ref={bridgeLineRef} className="hidden md:block w-16 h-[2px] bg-bifido-neon" />
+                        <svg
+                            className="w-8 h-8 md:w-12 md:h-12 text-bifido-neon animate-bounce"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
 
-                                    {/* Social Links */}
-                                    <div className="flex items-center gap-4">
-                                        {member.email && (
-                                            <a href={`mailto:${member.email}`} className="text-gray-400 hover:text-bifido-neon transition-colors">
-                                                <Mail size={20} />
-                                            </a>
-                                        )}
-                                        {member.socialMedia?.instagram && (
-                                            <a href={member.socialMedia.instagram.startsWith('http') ? member.socialMedia.instagram : `https://${member.socialMedia.instagram}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-bifido-neon transition-colors">
-                                                <Instagram size={20} />
-                                            </a>
-                                        )}
-                                        {member.socialMedia?.twitter && (
-                                            <a href={member.socialMedia.twitter.startsWith('http') ? member.socialMedia.twitter : `https://${member.socialMedia.twitter}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-bifido-neon transition-colors">
-                                                <Twitter size={20} />
-                                            </a>
-                                        )}
-                                        {member.socialMedia?.website && (
-                                            <a href={member.socialMedia.website.startsWith('http') ? member.socialMedia.website : `https://${member.socialMedia.website}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-bifido-neon transition-colors">
-                                                <Globe size={20} />
-                                            </a>
-                                        )}
-                                    </div>
+            {/* ── DESDE ADENTRO / SIN FILTROS ── */}
+            <div 
+                className="relative w-full bg-cover bg-center bg-[url('/backgrounds/team_movil.jpeg')] lg:bg-[url('/backgrounds/team_desk.png')]"
+            >
+                    {/* Overlay oscuro para que el texto siga siendo legible */}
+                    <div className="absolute inset-0 bg-black/70 pointer-events-none"></div>
+
+                    <div className="relative z-10">
+
+                    {/* Hero header: text + badge */}
+                    <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-[85rem]">
+                        <div className="flex items-start justify-between py-6 md:py-10 gap-6">
+
+                            {/* Left: label + big title + tagline */}
+                            <div className="flex-1 min-w-0">
+                                {/* DESDE ADENTRO */}
+                                <div className="flex items-center gap-3 mb-5">
+                                    <Image
+                                        src="/icons/user.svg"
+                                        alt="Equipo"
+                                        width={40}
+                                        height={40}
+                                        className="flex-shrink-0"
+                                    />
+                                    <span className="font-anton text-4xl md:text-[3rem] tracking-normal text-[#fe5e00] uppercase leading-none">
+                                        DESDE ADENTRO
+                                    </span>
                                 </div>
-                            ))}
+
+                                {/* SIN FILTROS */}
+                                <h2 ref={heroTitleRef} className="font-anton text-[clamp(4.5rem,13vw,10.5rem)] leading-[0.85] text-black uppercase tracking-normal [-webkit-text-stroke:1.5px_white] md:[-webkit-text-stroke:2.5px_white] drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+                                    SIN FILTROS
+                                </h2>
+
+                                {/* Tagline */}
+                                <div className="pt-4 space-y-1">
+                                    <p className="font-display text-[11px] md:text-xl tracking-[0.18em] text-white uppercase">
+                                        // NO SOMOS UN EQUIPO, SOMOS UN{' '}
+                                        <span className="underline underline-offset-4">ARCHIVO VIVO</span> →{' '}
+                                        <span className="font-display text-[11px] md:text-xl tracking-[0.18em] text-[#fe5e00] uppercase">NARRAMOS, SEÑALAMOS, REGISTRAMOS</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Right: Bifido badge */}
+                            <div className="hidden md:flex flex-shrink-0 items-center justify-center mt-2">
+                                <Image
+                                    src="/icons/bifido_contact.svg"
+                                    alt="Periodismo crudo para sensibilidades frágiles"
+                                    width={170}
+                                    height={170}
+                                    className="opacity-90 brightness-0 invert"
+                                />
+                            </div>
                         </div>
-                    ) : (
-                        <div className="text-center py-20">
-                            <p className="text-gray-500 text-2xl font-display tracking-widest uppercase">Mutando...</p>
-                        </div>
-                    )}
-                </section>
+                    </div>
+
+                    {/* Team Cards */}
+                    <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-[85rem] pb-24">
+                        {loading ? (
+                            <div className="flex justify-center items-center py-20">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-bifido-neon" />
+                            </div>
+                        ) : team.length > 0 ? (
+                            <div ref={teamRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                {team.map((member) => {
+                                    const rawHandle = member.socialMedia?.instagram || '';
+                                    const instagramHandle = rawHandle
+                                        ? rawHandle
+                                            .replace(/^https?:\/\/(www\.)?instagram\.com\//, '')
+                                            .replace(/\/$/, '')
+                                        : null;
+                                    const instagramHref = rawHandle
+                                        ? (rawHandle.startsWith('http') ? rawHandle : `https://instagram.com/${rawHandle}`)
+                                        : null;
+                                    const memberSlug = member.slug || member.id;
+
+                                    return (
+                                        <div
+                                            key={member.id}
+                                            className="border border-[#2a2a2a] bg-black flex flex-col group hover:border-bifido-neon/40 transition-colors duration-300"
+                                        >
+                                            {/* Avatar */}
+                                            <div className="flex justify-center pt-7 pb-4 px-4">
+                                                <div className="relative w-28 h-28 rounded-full overflow-hidden border-[3px] border-white flex-shrink-0">
+                                                    <Image
+                                                        src={member.profileImage}
+                                                        alt={member.name}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Name bar – neon green */}
+                                            <div className="bg-bifido-neon py-2 px-3">
+                                                <h3 className="font-display text-black text-center uppercase tracking-[0.12em] text-sm leading-tight truncate">
+                                                    {member.name}
+                                                </h3>
+                                            </div>
+
+                                            {/* Card body */}
+                                            <div className="p-4 flex flex-col flex-1 gap-3">
+                                                {/* Bio */}
+                                                <p className="text-white/55 text-[11px] leading-relaxed line-clamp-3">
+                                                    {member.biography || 'Miembro del equipo de Revista Bífido.'}
+                                                </p>
+
+                                                {/* Skill tags */}
+                                                {member.tags && member.tags.length > 0 && (
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {member.tags.map((tag: string) => (
+                                                            <span
+                                                                key={tag}
+                                                                className="border border-white/25 text-white/45 text-[9px] px-2 py-0.5 uppercase tracking-wider"
+                                                            >
+                                                                {tag}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {/* Actions – pushed to bottom */}
+                                                <div className="flex flex-col gap-2 mt-auto pt-1">
+                                                    {instagramHandle && (
+                                                        <a
+                                                            href={instagramHref!}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="border border-bifido-neon text-bifido-neon text-center text-[10px] py-1.5 px-2 uppercase tracking-wider font-display hover:bg-bifido-neon hover:text-black transition-all duration-200 truncate"
+                                                        >
+                                                            @{instagramHandle}
+                                                        </a>
+                                                    )}
+                                                    <Link
+                                                        href={`/autores/${memberSlug}`}
+                                                        className="border border-white/30 text-white/70 text-center text-[10px] py-1.5 px-2 uppercase tracking-wider font-display hover:bg-white hover:text-black transition-all duration-200"
+                                                    >
+                                                        Ver Más
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="text-center py-20">
+                                <p className="text-gray-500 text-2xl font-display tracking-widest uppercase">Mutando...</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

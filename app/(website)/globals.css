@@ -16,12 +16,3 @@
         @apply bg-bifido-black text-white decoration-amber-50;
     }
 }
-
-/* Custom Fonts */
-@font-face {
-    font-family: 'Bebas Neue';
-    src: url('/fonts/BebasNeue-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}

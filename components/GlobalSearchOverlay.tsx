@@ -86,7 +86,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
   return (
     <div 
       ref={overlayRef} 
-      className="fixed inset-0 z-[100] bg-black/90 flex flex-col pt-12 md:pt-24 px-4 overflow-y-auto"
+      className="fixed inset-0 z-[100] bg-black/90"
       style={{
         background: "radial-gradient(circle at 50% -50%, rgba(204,253,41,0.15) 0%, rgba(0,0,0,0.95) 100%)",
       }}
@@ -101,16 +101,18 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
       `}} />
 
       {/* Background decoration */}
-      <div className="fixed inset-0 opacity-10 pointer-events-none filter sepia blur-[1px] mix-blend-screen" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
+      <div className="absolute inset-0 opacity-10 pointer-events-none filter sepia blur-[1px] mix-blend-screen" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
 
       <button 
         onClick={onClose}
-        className="absolute top-6 right-6 md:top-10 md:right-10 text-white/50 hover:text-[#CCFD29] transition-colors p-2 z-50 group hover:rotate-90 duration-300"
+        className="absolute top-6 right-6 md:top-10 md:right-10 text-white/50 hover:text-[#CCFD29] transition-colors p-2 z-[110] group hover:rotate-90 duration-300"
       >
         <X size={36} strokeWidth={1.5} />
       </button>
 
-      <div ref={contentRef} className="w-full max-w-4xl mx-auto flex flex-col relative z-10 pb-20">
+      {/* Scrollable Container */}
+      <div className="absolute inset-0 overflow-y-auto pt-12 md:pt-24 px-4 flex flex-col">
+        <div ref={contentRef} className="w-full max-w-4xl mx-auto flex flex-col relative z-10 pb-20">
         
         {/* Input Area */}
         <div className="relative mb-12 mt-8">
@@ -232,6 +234,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
           </div>
         )}
 
+        </div>
       </div>
     </div>
   );

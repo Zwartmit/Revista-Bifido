@@ -59,8 +59,8 @@ export default function EventsClient({ events }: EventsClientProps) {
 
     const formatDayMonth = (dateString: string) => {
         if (!dateString) return { day: '00', month: '---' };
-        // Assuming strict ISO 'YYYY-MM-DD' ignoring timezone
-        const date = new Date(dateString + 'T12:00:00Z');
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return { day: '00', month: '---' };
         return {
             day: date.getDate().toString().padStart(2, '0'),
             month: date.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase().replace('.', '')
@@ -69,7 +69,8 @@ export default function EventsClient({ events }: EventsClientProps) {
     
     const formatDate = (dateString: string) => {
         if (!dateString) return '';
-        const date = new Date(dateString + 'T12:00:00Z');
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'FECHA INVÁLIDA';
         return date.toLocaleDateString('es-ES', {
             weekday: 'long',
             year: 'numeric',

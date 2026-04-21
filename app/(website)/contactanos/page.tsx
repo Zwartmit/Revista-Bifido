@@ -118,12 +118,8 @@ export default function ContactPage() {
               ¿Tienes una historia que contar?, ¿Quieres colaborar con nosotros?, Estamos aquí para escucharte.
             </p>
           </div>
-
         </div>
       </div>
-
-      {/* Shadow Gradient at the Bottom of Hero */}
-      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
     </div>
   );
 }
