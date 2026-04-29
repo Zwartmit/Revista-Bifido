@@ -4,11 +4,8 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
-// import { Article } from '@/types'; 
-import { Calendar, User, ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
-
-import { characters as allCharacters } from '@/lib/characters';
 
 interface SectionClientProps {
     section: string;
@@ -17,191 +14,310 @@ interface SectionClientProps {
 }
 
 export default function SectionClient({ section, character, articles }: SectionClientProps) {
-    const contentRef = useRef<HTMLDivElement>(null);
-    const otherCharacters = allCharacters.filter((m) => m.id !== character.id);
+    const heroRef = useRef<HTMLDivElement>(null);
+    const gridRef = useRef<HTMLDivElement>(null);
+
+    const featuredArticle = articles[0] || null;
+    const regularArticles = articles.slice(1);
 
     useEffect(() => {
-        if (contentRef.current && contentRef.current.children.length > 0) {
-            gsap.fromTo(
-                contentRef.current.children,
-                { opacity: 0, scale: 0.95, y: 20 },
-                { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' }
+        const tl = gsap.timeline();
+
+        if (heroRef.current) {
+            tl.fromTo(
+                heroRef.current.querySelectorAll('.hero-anim'),
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out' }
+            );
+        }
+
+        if (gridRef.current && gridRef.current.children.length > 0) {
+            tl.fromTo(
+                gridRef.current.children,
+                { opacity: 0, y: 24 },
+                { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
+                '-=0.3'
             );
         }
     }, [character.id]);
 
-    if (!character) return <div>Section not found</div>;
+    if (!character) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Sección no encontrada</div>;
+
+    const primaryColor = character.color?.primary || '#CCFD29';
+    const darkColor = character.color?.dark || '#000';
 
     return (
-        <div className="min-h-screen bg-black pt-24 md:pt-32 text-white">
-            <div className="container mx-auto px-4 max-w-7xl">
-                <div className="flex flex-col md:flex-row gap-8 lg:gap-16">
+        <div className="min-h-screen bg-black text-white">
 
-                    {/* Left Sticky Grid - Other Characters */}
-                    <div className="hidden md:block w-32 lg:w-48 flex-shrink-0">
-                        <div className="sticky top-40 flex flex-col gap-4">
-                            <h3 className="font-display text-bifido-neon tracking-wider mb-2">LA MANADA</h3>
-                            <div className="grid grid-cols-2 gap-2">
-                                {allCharacters.map((m) => (
-                                    <Link
-                                        href={`/${m.slug}`}
-                                        key={m.id}
-                                        className={`block aspect-square w-full relative group overflow-hidden border transition-colors ${m.id === character.id ? 'border-white' : 'border-transparent hover:border-gray-500'}`}
-                                        style={{ backgroundColor: m.color?.dark || '#333' }}
-                                    >
-                                        <div className="absolute inset-0 opacity-50 transition-opacity group-hover:opacity-100" style={{ backgroundColor: m.color?.primary }} />
-                                        {m.image && (
-                                            <Image
-                                                src={m.image}
-                                                alt={m.name}
-                                                fill
-                                                className="object-cover object-top opacity-80 group-hover:opacity-100 transition-opacity"
-                                            />
-                                        )}
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
+            {/* ─── 1. CHARACTER HERO ─────────────────────────────────── */}
+            <div
+                ref={heroRef}
+                className="relative w-full min-h-[75vh] flex items-end overflow-hidden"
+                style={{
+                    background: `linear-gradient(160deg, ${darkColor}80 0%, #000 55%)`,
+                }}
+            >
+                {/* Radial glow */}
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background: `radial-gradient(ellipse 60% 70% at 70% 50%, ${primaryColor}20 0%, transparent 70%)`,
+                    }}
+                />
+
+                {/* Vertical neon stripe */}
+                <div
+                    className="absolute top-0 right-[38%] w-px h-full opacity-20 hidden lg:block"
+                    style={{ backgroundColor: primaryColor }}
+                />
+
+                {/* Character image */}
+                <div className="absolute inset-y-0 right-0 w-[55%] lg:w-[45%] flex items-end justify-center pointer-events-none">
+                    {character.image && (
+                        <Image
+                            src={character.image}
+                            alt={character.name}
+                            width={600}
+                            height={750}
+                            className="object-contain object-bottom w-full h-full max-h-[85vh] drop-shadow-[0_0_60px_rgba(0,0,0,0.95)]"
+                            priority
+                        />
+                    )}
+                </div>
+
+                {/* Text content */}
+                <div className="relative z-10 w-full lg:w-[55%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-16 pt-32">
+                    {/* Back link */}
+                    <Link
+                        href="/elparche"
+                        className="hero-anim inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/40 hover:text-white/70 uppercase mb-10 transition-colors"
+                    >
+                        <ArrowLeft size={14} />
+                        El Parche
+                    </Link>
+
+                    {/* Section tag */}
+                    <span
+                        className="hero-anim block font-display text-xs tracking-[0.4em] uppercase mb-3"
+                        style={{ color: primaryColor }}
+                    >
+                        {character.section}
+                    </span>
+
+                    {/* Character name */}
+                    <h1 className="hero-anim font-display text-6xl sm:text-7xl lg:text-8xl text-white leading-none mb-5 uppercase">
+                        {character.name}
+                    </h1>
+
+                    {/* Accent line */}
+                    <div
+                        className="hero-anim w-20 h-[3px] mb-6"
+                        style={{ backgroundColor: primaryColor }}
+                    />
+
+                    {/* Description */}
+                    <p className="hero-anim font-googlesans text-gray-400 text-base leading-relaxed max-w-md mb-8">
+                        {character.description}
+                    </p>
+
+                    {/* Article count pill */}
+                    <div className="hero-anim flex items-center gap-3">
+                        <span
+                            className="font-display text-xs tracking-[0.3em] uppercase px-4 py-2 border"
+                            style={{ borderColor: `${primaryColor}50`, color: primaryColor }}
+                        >
+                            {articles.length} {articles.length === 1 ? 'publicación' : 'publicaciones'}
+                        </span>
                     </div>
+                </div>
 
-                    {/* Right Content - Character Showcase */}
-                    <div className="flex-1 flex flex-col gap-12 pb-24">
+                {/* Bottom gradient fade */}
+                <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+            </div>
 
-                        {/* Character Hero & Glass Card */}
-                        <div className="relative w-full min-h-[600px] md:min-h-[700px] flex items-center justify-center rounded-3xl overflow-hidden border border-gray-800">
+            {/* ─── 2. ARTICLES ───────────────────────────────────────── */}
+            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20">
 
-                            {/* Radial Glow Background */}
-                            <div
-                                className="absolute inset-0"
-                                style={{
-                                    background: `radial-gradient(circle at center, ${character.color?.primary}40 0%, ${character.color?.dark}10 40%, transparent 70%)`
-                                }}
-                            />
+                {/* Section header */}
+                <div className="flex items-center gap-4 mb-12">
+                    <div className="w-6 h-[3px]" style={{ backgroundColor: primaryColor }} />
+                    <span className="font-display text-2xl tracking-[0.25em] text-white uppercase">
+                        Publicaciones
+                    </span>
+                    <div className="flex-1 h-px bg-white/10" />
+                    <span className="font-googlesans text-white/30 text-xs tracking-widest">
+                        {articles.length} artículos
+                    </span>
+                </div>
 
-                            {/* Character Image */}
-                            <div className="absolute inset-x-0 bottom-0 h-full flex justify-center items-end" style={{ zIndex: 10 }}>
-                                {character.image && (
-                                    <Image
-                                        src={character.image}
-                                        alt={character.name}
-                                        width={600}
-                                        height={800}
-                                        className="object-contain object-bottom w-[80%] md:w-[60%] lg:w-[50%] max-h-full drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]"
-                                        priority
-                                    />
-                                )}
-                            </div>
+                {articles.length === 0 ? (
+                    /* Empty state */
+                    <div className="text-center py-28 border border-[#1e1e1e]">
+                        <p className="font-display text-3xl text-white/10 tracking-widest uppercase mb-3">
+                            Sin publicaciones aún
+                        </p>
+                        <p className="font-googlesans text-white/25 text-sm">
+                            El contenido de {character.name} llegará pronto.
+                        </p>
+                    </div>
+                ) : (
+                    <>
+                        {/* ── Featured / Origin article ── */}
+                        {featuredArticle && (
+                            <Link
+                                href={`/${section}/${featuredArticle.slug}`}
+                                className="group block mb-14 border border-[#1e1e1e] hover:border-white/20 transition-colors duration-300 overflow-hidden"
+                            >
+                                <div className="flex flex-col lg:flex-row">
+                                    {/* Image */}
+                                    <div className="relative w-full lg:w-[55%] aspect-[16/9] lg:aspect-auto lg:min-h-[380px] overflow-hidden flex-shrink-0">
+                                        {featuredArticle.featuredImage ? (
+                                            <Image
+                                                src={featuredArticle.featuredImage}
+                                                alt={featuredArticle.title}
+                                                fill
+                                                className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
+                                            />
+                                        ) : (
+                                            <div
+                                                className="absolute inset-0 flex items-center justify-center"
+                                                style={{ backgroundColor: `${darkColor}60` }}
+                                            >
+                                                <span
+                                                    className="font-display text-[8rem] leading-none opacity-10"
+                                                    style={{ color: primaryColor }}
+                                                >
+                                                    B
+                                                </span>
+                                            </div>
+                                        )}
+                                        {/* DESTACADO badge */}
+                                        <span
+                                            className="absolute top-4 left-4 font-display text-[10px] tracking-[0.4em] px-3 py-1 uppercase"
+                                            style={{ backgroundColor: primaryColor, color: '#000' }}
+                                        >
+                                            Destacado
+                                        </span>
+                                    </div>
 
-                            {/* Glassmorphism Bio Card */}
-                            <div className="absolute bottom-4 left-4 right-4 md:bottom-10 md:left-10 md:w-96 z-20">
-                                <div className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-2xl">
-                                    <h1 className="font-display text-3xl md:text-4xl mb-2" style={{ color: character.color?.primary }}>
-                                        HOLA, SOY {character.name.toUpperCase()}
-                                    </h1>
-                                    <h2 className="text-gray-300 font-bold mb-4 tracking-wider text-sm uppercase">
-                                        {character.section}
-                                    </h2>
-                                    <p className="text-sm text-gray-200 mb-6 leading-relaxed">
-                                        {character.description}
-                                    </p>
-
-                                    <div className="space-y-4 text-xs font-bold tracking-widest uppercase">
+                                    {/* Content */}
+                                    <div className="flex flex-col justify-between p-8 lg:p-12 bg-[#080808] flex-1">
                                         <div>
-                                            <div className="flex justify-between text-gray-400 mb-1">
-                                                <span>Religión</span>
-                                                <span className="text-white text-right">{character.religion}</span>
-                                            </div>
-                                            <div className="w-full h-1 bg-black/50 rounded-full overflow-hidden">
-                                                <div className="h-full w-[85%]" style={{ backgroundColor: character.color?.primary }} />
-                                            </div>
+                                            <span className="font-googlesans text-xs text-white/40 tracking-wider block mb-4">
+                                                {formatDate(featuredArticle.publishedAt)}
+                                            </span>
+                                            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-6 uppercase group-hover:text-white/80 transition-colors">
+                                                {featuredArticle.title}
+                                            </h2>
+                                            {featuredArticle.excerpt && (
+                                                <p className="font-googlesans text-gray-400 text-base leading-relaxed line-clamp-3">
+                                                    {featuredArticle.excerpt}
+                                                </p>
+                                            )}
                                         </div>
-                                        <div>
-                                            <div className="flex justify-between text-gray-400 mb-1">
-                                                <span>Edad</span>
-                                                <span className="text-white text-right">{character.age}</span>
-                                            </div>
-                                            <div className="w-full h-1 bg-black/50 rounded-full overflow-hidden">
-                                                <div className="h-full w-[60%]" style={{ backgroundColor: character.color?.primary }} />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="flex justify-between text-gray-400 mb-1">
-                                                <span>Color</span>
-                                                <span className="text-white text-right">{character.favoriteColor}</span>
-                                            </div>
-                                            <div className="w-full h-1 bg-black/50 rounded-full overflow-hidden">
-                                                <div className="h-full w-[100%]" style={{ backgroundColor: character.color?.primary }} />
-                                            </div>
+                                        <div
+                                            className="flex items-center gap-2 mt-8 font-googlesans text-sm font-medium"
+                                            style={{ color: primaryColor }}
+                                        >
+                                            <span>Leer artículo</span>
+                                            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </Link>
+                        )}
 
-                        {/* Recent Articles from this Character */}
-                        <div>
-                            <div className="flex items-center gap-4 mb-8">
-                                <div className="w-8 h-1" style={{ backgroundColor: character.color?.primary }} />
-                                <h2 className="font-display text-3xl text-white tracking-widest">
-                                    PUBLICACIONES
-                                </h2>
-                            </div>
-
-                            <div ref={contentRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {articles.length > 0 ? articles.map((article) => (
+                        {/* ── Regular articles grid ── */}
+                        {regularArticles.length > 0 && (
+                            <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                                {regularArticles.map((article) => (
                                     <Link
                                         key={article.id}
                                         href={`/${section}/${article.slug}`}
-                                        className="group flex flex-col bg-bifido-gray/30 border border-gray-800 rounded-xl overflow-hidden hover:border-white transition-all duration-300"
+                                        className="group flex flex-col border border-[#1e1e1e] hover:border-white/20 transition-all duration-300 overflow-hidden bg-[#080808]"
                                     >
-                                        <div className="relative h-48 w-full overflow-hidden">
+                                        {/* Thumbnail */}
+                                        <div className="relative w-full aspect-[4/3] overflow-hidden">
                                             {article.featuredImage ? (
                                                 <Image
                                                     src={article.featuredImage}
                                                     alt={article.title}
                                                     fill
-                                                    className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+                                                    className="object-cover opacity-60 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
                                                 />
                                             ) : (
-                                                <div className="absolute inset-0 bg-gray-900" />
+                                                <div
+                                                    className="absolute inset-0 flex items-center justify-center"
+                                                    style={{ backgroundColor: `${darkColor}60` }}
+                                                >
+                                                    <span
+                                                        className="font-display text-6xl opacity-10"
+                                                        style={{ color: primaryColor }}
+                                                    >
+                                                        B
+                                                    </span>
+                                                </div>
                                             )}
                                         </div>
 
-                                        <div className="p-6 flex-1 flex flex-col">
-                                            <div className="flex items-center justify-between text-gray-400 text-xs mb-3">
-                                                <div className="flex items-center gap-2">
-                                                    <Calendar size={14} />
-                                                    <span>{formatDate(article.publishedAt)}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <User size={14} />
-                                                    <span>{article.author}</span>
-                                                </div>
-                                            </div>
-
-                                            <h3 className="font-display text-xl mb-3 text-white flex-1 group-hover:text-white transition-colors" style={{ color: character.color?.secondary }}>
+                                        {/* Content */}
+                                        <div className="flex flex-col flex-1 p-5">
+                                            <span className="font-googlesans text-[11px] text-white/30 tracking-wider mb-2 block">
+                                                {formatDate(article.publishedAt)}
+                                            </span>
+                                            <h3 className="font-display text-xl text-white uppercase leading-tight mb-3 flex-1 group-hover:text-white/70 transition-colors">
                                                 {article.title}
                                             </h3>
-
-                                            <div className="flex items-center gap-2 text-sm font-bold mt-4" style={{ color: character.color?.primary }}>
-                                                <span>Leer artículo</span>
-                                                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                            {article.excerpt && (
+                                                <p className="font-googlesans text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">
+                                                    {article.excerpt}
+                                                </p>
+                                            )}
+                                            <div
+                                                className="flex items-center gap-2 text-xs font-googlesans font-medium mt-auto"
+                                                style={{ color: primaryColor }}
+                                            >
+                                                <span>Leer</span>
+                                                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                                             </div>
                                         </div>
                                     </Link>
-                                )) : (
-                                    <div className="col-span-1 md:col-span-2 text-center py-12 border border-gray-800 rounded-xl bg-gray-900/20">
-                                        <p className="text-gray-500 text-sm tracking-widest uppercase">
-                                            Aún no hay artículos publicados aquí.
-                                        </p>
-                                    </div>
-                                )}
+                                ))}
                             </div>
-                        </div>
+                        )}
+                    </>
+                )}
+            </div>
 
-                    </div>
+            {/* ─── 3. SUPPORT BANNER ─────────────────────────────────── */}
+            <div
+                className="mx-6 sm:mx-10 lg:mx-16 xl:mx-24 mb-20 border border-[#1e1e1e] overflow-hidden"
+                style={{ borderTopColor: `${primaryColor}40` }}
+            >
+                <div className="p-10 sm:p-14 text-center bg-[#080808]">
+                    <span
+                        className="font-display text-[10px] tracking-[0.5em] uppercase block mb-4"
+                        style={{ color: primaryColor }}
+                    >
+                        Periodismo independiente
+                    </span>
+                    <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-white uppercase mb-4 leading-tight">
+                        Apoya el periodismo libre
+                    </h2>
+                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-sm leading-relaxed">
+                        Bífido existe porque hay personas que creen en el periodismo crudo y honesto.
+                        Si lo que lees te mueve, considera apoyarnos.
+                    </p>
+                    <a
+                        href="#"
+                        className="inline-block font-display tracking-[0.25em] text-black text-sm px-8 py-4 uppercase hover:opacity-90 transition-opacity"
+                        style={{ backgroundColor: primaryColor }}
+                    >
+                        Colaborar
+                    </a>
                 </div>
             </div>
+
         </div>
     );
 }

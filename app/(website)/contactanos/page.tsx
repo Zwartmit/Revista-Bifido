@@ -44,7 +44,7 @@ export default function ContactPage() {
 
           {/* Heading Section */}
           <div className="text-center w-full px-2">
-            <h1 className="font-googlesans font-bold text-[clamp(2.5rem,12vw,7rem)] leading-none text-bifido-neon tracking-tighter uppercase">
+            <h1 className="font-anton text-[clamp(2.5rem,12vw,7rem)] leading-none text-bifido-neon tracking-tighter uppercase">
               CONTÁCTANOS
             </h1>
           </div>

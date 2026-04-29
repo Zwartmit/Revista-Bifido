@@ -69,7 +69,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                 <div className="absolute bottom-4 md:bottom-6 lg:bottom-2 left-1/2 -translate-x-1/2 z-20 w-fit">
                     <Link href="/elparche" className="group/btn relative inline-block">
                         <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover/btn:opacity-100 transition duration-1000 group-hover/btn:duration-200"></div>
-                        <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#fe5e00] rounded-full font-display text-xl md:text-3xl text-white tracking-[0.1em] md:tracking-[0.2em] transition-all duration-300 group-hover/btn:border-[#fe5e00] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
+                        <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#fe5e00] rounded-full font-display text-xl md:text-3xl text-white transition-all duration-300 group-hover/btn:border-[#fe5e00] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
                             CONOCE EL PARCHE
                             <Image
                                 src="/icons/arrow_o.svg"
@@ -188,7 +188,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                         Estamos siempre buscando nuevas voces y parches para visibilizar lo que pasa en la calle. No te quedes con las ganas.
                     </p>
                     <Link href="/contactanos" className="group relative inline-block">
-                        <div className="relative flex items-center gap-6 px-8 py-3 bg-bifido-neon text-black rounded-full font-display text-2xl tracking-[0.2em] transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap">
+                        <div className="relative flex items-center gap-6 px-8 py-3 bg-bifido-neon text-black rounded-full font-display text-2xl transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap">
                             CONTÁCTANOS
                             <ArrowRight size={32} className="group-hover:translate-x-2 transition-transform" />
                         </div>

@@ -13,14 +13,17 @@ export default function Footer() {
         <div className="w-[50%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/30 to-transparent blur-[0.5px]"></div>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-12 relative z-10 flex flex-col">
+      <div className="container mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 relative z-10 flex flex-col">
 
         {/* Main Row: Síguenos | Logo | Nav Columns */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-16 lg:gap-10 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 items-start gap-16 lg:gap-8 mb-16">
 
           {/* Left: Síguenos */}
-          <div className="flex flex-col gap-4 items-center lg:items-start lg:w-1/4">
-            <span className="text-white font-display text-xl tracking-wider">Síguenos:</span>
+          <div className="flex flex-col gap-4 items-center lg:items-start">
+            <div className="flex flex-col items-center">
+              <span className="text-white font-display text-xl tracking-wider">Síguenos</span>
+              <div className="w-full h-[2px] bg-bifido-neon" />
+            </div>
             <div className="flex items-center gap-3">
               {[
                 { Icon: RiFacebookFill, href: "https://www.facebook.com/revistabifido/" },
@@ -51,43 +54,63 @@ export default function Footer() {
           </div>
 
           {/* Center: Two Nav Columns */}
-          <div className="flex gap-20 md:gap-28 lg:gap-36 w-full lg:flex-1 justify-center">
+          <div className="flex flex-col lg:flex-row gap-16 xl:gap-28 justify-center items-center lg:items-start w-full">
 
             {/* Column 1: Main nav */}
-            <div className="flex flex-col gap-3 items-center lg:items-start">
-              <div className="flex flex-col items-center lg:items-start">
-                <span className="text-white font-display tracking-widest text-xl uppercase">Navegación</span>
-                <div className="w-full h-px bg-bifido-neon" />
+            <div className="flex flex-col gap-4 lg:gap-3 items-center lg:items-start">
+              <div className="flex flex-col items-center">
+                <span className="text-white font-display text-xl tracking-wider">Navegación</span>
+                <div className="w-full h-[2px] bg-bifido-neon" />
               </div>
-              <Link href="/" className="text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase">Inicio</Link>
-              <Link href="/elparche" className="text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase">El Parche</Link>
-              <Link href="/eventos" className="text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase">Eventos</Link>
-              <Link href="/contactanos" className="text-white font-display tracking-wider text-lg hover:text-bifido-neon transition-colors uppercase">Contáctanos</Link>
+              <div className="flex flex-row lg:flex-col gap-4 lg:gap-3 justify-center lg:items-start flex-wrap">
+                <Link href="/" className="text-white font-googlesans text-base hover:text-bifido-neon transition-colors text-center lg:text-left">Inicio</Link>
+                <Link href="/elparche" className="text-white font-googlesans text-base hover:text-bifido-neon transition-colors text-center lg:text-left">El Parche</Link>
+                <Link href="/eventos" className="text-white font-googlesans text-base hover:text-bifido-neon transition-colors text-center lg:text-left">Eventos</Link>
+                <Link href="/contactanos" className="text-white font-googlesans text-base hover:text-bifido-neon transition-colors text-center lg:text-left">Contáctanos</Link>
+              </div>
             </div>
 
             {/* Column 2: La Manada */}
-            <div className="flex flex-col gap-3 items-center lg:items-start">
-              <div className="flex flex-col items-center lg:items-start">
-                <span className="text-white font-display tracking-widest text-xl uppercase">La Manada</span>
-                <div className="w-full h-px bg-bifido-neon" />
+            <div className="flex flex-col gap-4 lg:gap-3 items-center lg:items-start">
+              <div className="flex flex-col items-center">
+                <span className="text-white font-display text-xl tracking-wider">La Manada</span>
+                <div className="w-full h-[2px] bg-bifido-neon" />
               </div>
-              {characters.map((character) => (
-                <Link
-                  key={character.id}
-                  href={`/${character.slug}`}
-                  className="font-display tracking-wider text-lg transition-colors uppercase"
-                  style={{ color: character.color.primary }}
-                >
-                  {character.section}
-                </Link>
-              ))}
+              <div className="flex flex-row lg:flex-col gap-3 lg:gap-3 justify-center lg:items-start flex-wrap">
+                {characters.map((character) => (
+                  <Link
+                    key={character.id}
+                    href={`/${character.slug}`}
+                    className="font-googlesans text-base transition-colors text-center lg:text-left group flex items-center justify-center"
+                    style={{ color: character.color.primary }}
+                  >
+                    {/* Desktop text */}
+                    <span className="hidden lg:inline-block hover:brightness-125 transition-all">
+                      {character.section}
+                    </span>
+                    {/* Mobile icon */}
+                    <div
+                      className="lg:hidden w-12 h-12 rounded-full overflow-hidden border-2 transition-transform hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
+                      style={{ borderColor: character.color.primary }}
+                    >
+                      <Image
+                        src={`/icons/${character.slug}.png`}
+                        alt={character.name}
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
 
           </div>
 
           {/* Right: Logo */}
-          <div className="flex-shrink-0 lg:w-1/4 flex justify-center lg:justify-end items-center">
-            <Image src="/icons/bifido.svg" alt="Revista Bífido" width={280} height={70} className="object-contain w-auto h-auto" />
+          <div className="flex justify-center items-start">
+            <Image src="/icons/bifido.svg" alt="Revista Bífido" width={240} height={60} className="object-contain max-w-full" />
           </div>
 
         </div>

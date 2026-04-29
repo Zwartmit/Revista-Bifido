@@ -53,7 +53,7 @@ export default function Header() {
             <header
                 className="fixed top-0 left-0 right-0 z-50 border-b-2 border-bifido-neon bg-black transition-colors duration-500"
             >
-                <nav className="container mx-auto px-4 py-4 relative z-[70]" ref={menuRef}>
+                <nav className="container mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 py-4 relative z-[70]" ref={menuRef}>
                     {/* Mobile Layout - Logo and Menu Button side by side */}
                     <div className="flex lg:hidden items-center justify-between">
                         <Link href="/" className="relative h-12 w-48 lg:h-14 lg:w-56" onClick={() => setIsMenuOpen(false)}>
@@ -79,7 +79,7 @@ export default function Header() {
                                 className="p-1 hover:scale-110 transition-transform"
                                 aria-label="Toggle menu"
                             >
-                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <Image src="/icons/menu.svg" alt="Menu" width={24} height={24} className="object-contain w-auto h-auto" />}
+                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <Image src="/icons/navmobil.svg" alt="Menu" width={32} height={32} className="object-contain" />}
                             </button>
                         </div>
                     </div>
@@ -88,7 +88,7 @@ export default function Header() {
                     <div className="hidden lg:flex items-center justify-between">
                         <Link href="/" className="flex items-center flex-shrink-0">
                             <Image
-                                src="/icons/bifido.svg"
+                                src="/icons/bifido_w.png"
                                 alt="Revista Bífido"
                                 width={180}
                                 height={50}
@@ -304,7 +304,7 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
     return (
         <Link
             href={`/${character.slug}`}
-            className={`text-base font-medium transition-all duration-200 flex items-center gap-3 px-4 py-3 rounded-xl w-full ${!isActive ? 'hover:bg-white/5 border-l-4 border-transparent' : ''}`}
+            className={`font-display text-base transition-all duration-200 flex items-center gap-3 px-4 py-3 rounded-xl w-full ${!isActive ? 'hover:bg-white/5 border-l-4 border-transparent' : ''}`}
             style={{
                 color: textColor,
                 backgroundColor: isActive ? `${character.color.primary}1A` : undefined,

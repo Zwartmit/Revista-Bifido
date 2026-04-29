@@ -7,6 +7,16 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: '1.5rem',
+        sm: '2rem',
+        lg: '4rem',
+        xl: '5rem',
+        '2xl': '6rem',
+      },
+    },
     extend: {
       colors: {
         // Colores de los personajes
@@ -21,14 +31,14 @@ const config: Config = {
           dark: '#D32F2F',
         },
         malandra: {
-          primary: '#9C27B0',
-          secondary: '#BA68C8',
-          dark: '#7B1FA2',
+          primary: '#f6daa3',
+          secondary: '#ffeed0',
+          dark: '#d6ba83',
         },
         anika: {
-          primary: '#00BCD4',
-          secondary: '#4DD0E1',
-          dark: '#0097A7',
+          primary: '#a372b3',
+          secondary: '#b88bc8',
+          dark: '#8b5a9a',
         },
         incendia: {
           primary: '#FF9800',
@@ -74,8 +84,8 @@ const config: Config = {
           '50%': { transform: 'translateY(-10px)' },
         },
         marquee: {
-          '0%': { transform: 'translateX(-50%)' },
-          '100%': { transform: 'translateX(0%)' },
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
         smoke: {
           '0%': { transform: 'scale(1.1) translate(0, 0) rotate(0deg)' },

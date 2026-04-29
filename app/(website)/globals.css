@@ -14,5 +14,31 @@
     /* Estilos base para la revista */
     body {
         @apply bg-bifido-black text-white decoration-amber-50;
+        overflow-y: scroll;
+    }
+
+    /* Scrollbar overlay style — todos los navegadores se ven como Opera */
+    ::-webkit-scrollbar {
+        width: 6px;
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(204, 253, 41, 0.25);
+        border-radius: 99px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(204, 253, 41, 0.5);
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    /* Firefox */
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(204, 253, 41, 0.25) transparent;
     }
 }
