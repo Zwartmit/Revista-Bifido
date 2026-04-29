@@ -40,7 +40,7 @@ export default function ContactPage() {
       </div>
 
       <div className="container mx-auto px-4 pt-0 relative z-10">
-        <div ref={contentRef} className="flex flex-col items-center gap-8 lg:gap-12">
+        <div ref={contentRef} className="flex flex-col items-center gap-10 lg:gap-12">
 
           {/* Heading Section */}
           <div className="text-center w-full px-2">
@@ -50,7 +50,7 @@ export default function ContactPage() {
           </div>
 
           {/* Top Section: Email | Logo | Socials */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-items-center gap-8 w-full max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-items-center gap-10 lg:gap-12 w-full max-w-6xl">
 
             {/* Logo - top on mobile/tablet (spans 2), center on desktop */}
             <div className="order-1 md:col-span-2 lg:col-span-1 lg:order-2 relative w-40 h-40 lg:w-56 lg:h-56 flex items-center justify-center group">

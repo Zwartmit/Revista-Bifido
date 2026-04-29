@@ -58,7 +58,7 @@ export default function Header() {
                     <div className="flex lg:hidden items-center justify-between">
                         <Link href="/" className="relative h-12 w-48 lg:h-14 lg:w-56" onClick={() => setIsMenuOpen(false)}>
                             <Image
-                                src="/icons/bifido.svg"
+                                src="/icons/bifido_w.png"
                                 alt="Revista Bífido"
                                 fill
                                 className="object-contain"
