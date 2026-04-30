@@ -88,22 +88,5 @@ export const Media: CollectionConfig = {
         adminThumbnail: 'thumbnail',
         mimeTypes: ['image/*'],
     },
-    fields: [
-        {
-            name: 'alt',
-            label: 'Texto Alternativo',
-            type: 'text',
-            required: true,
-        },
-        {
-            name: 'caption',
-            label: 'Leyenda',
-            type: 'text',
-        },
-        {
-            name: 'credits',
-            label: 'Créditos',
-            type: 'text',
-        },
-    ],
+    fields: [],
 };

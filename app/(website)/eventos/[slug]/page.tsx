@@ -27,7 +27,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
     }
 
     return (
-        <div className="min-h-screen bg-black pt-24 md:pt-56 pb-20">
+        <div className="min-h-screen bg-black pt-6 pb-20">
             <div className="container mx-auto px-4 max-w-4xl">
                 {/* Back Button */}
                 <Link
@@ -39,17 +39,28 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 </Link>
 
                 {/* Hero */}
-                <div className="relative h-[400px] w-full rounded-2xl overflow-hidden mb-8 shadow-2xl">
+                <div className="relative h-[400px] md:h-[500px] w-full rounded-2xl overflow-hidden mb-8 shadow-2xl bg-[#0a0a0a]">
+                    <div 
+                        className="absolute inset-0 bg-cover bg-center opacity-30 blur-3xl grayscale-[30%]"
+                        style={{ backgroundImage: `url('${event.image || '/images/placeholder-article.jpg'}')` }}
+                    />
                     <Image
                         src={event.image || '/images/placeholder-article.jpg'}
                         alt={event.title}
                         fill
-                        className="object-cover"
+                        className="object-contain md:p-4 z-10"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-bifido-black/90 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-8">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-20" />
+                    <div className="absolute bottom-0 left-0 p-8 z-30">
                         <span className="bg-bifido-red text-white px-4 py-1 rounded-full text-sm font-bold mb-4 inline-block">
-                            {event.category}
+                            {{
+                                concert: 'Concierto',
+                                workshop: 'Taller',
+                                talk: 'Charla',
+                                festival: 'Festival',
+                                exhibition: 'Exposición',
+                                other: 'Otro'
+                            }[event.category as keyof typeof event.category] || 'Evento'}
                         </span>
                         <h1 className="font-display text-4xl md:text-6xl text-white mb-2">
                             {event.title}

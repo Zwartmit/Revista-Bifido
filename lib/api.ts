@@ -178,7 +178,7 @@ export async function globalSearch(query: string) {
     where: {
       or: [
         { name: { like: query } },
-        { shortDescription: { like: query } },
+        { description: { like: query } },
       ],
     },
     limit: 6,
@@ -246,7 +246,7 @@ export async function getEventBySlug(slug: string) {
 }
 
 /**
- * Obtener todos los autores (equipo)
+ * Obtener todos los miembros del archivo vivo
  */
 export async function getAuthors() {
   const data = await fetchPayload('authors');
@@ -298,18 +298,21 @@ export function transformPayloadEvent(doc: any) {
     id: doc.id,
     slug: doc.slug,
     title: doc.name,
+    isFeatured: doc.isFeatured || false,
     date: doc.date,
     time: doc.date ? new Date(doc.date).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) : '',
-    location: doc.location?.type === 'virtual' ? 'Virtual' : (doc.location?.type === 'hybrid' ? 'Híbrido' : (doc.location?.city || 'Presencial')),
-    address: doc.location?.address || '',
-    virtualLink: doc.location?.virtualLink,
-    shortDescription: doc.shortDescription || '',
+    location: doc.locationType === 'virtual' ? 'Virtual' : (doc.locationType === 'hybrid' ? 'Híbrido' : (doc.city || 'Presencial')),
+    address: doc.address || '',
+    virtualLink: doc.virtualLink,
     description: doc.description,
-    category: doc.category ? (doc.category === 'workshop' ? 'Taller' : doc.category === 'concert' ? 'Concierto' : 'Evento') : 'Evento',
-    price: doc.price,
+    category: doc.category || 'other',
+    otherCategoryName: doc.otherCategoryName,
+    price: {
+      isFree: doc.isFree,
+      amount: doc.priceAmount,
+      currency: 'COP'
+    },
     ticketLink: doc.ticketLink,
-    organizer: doc.organizer,
-    status: doc.status || 'upcoming',
     // Prioritize constructed URL
     image: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
     gallery: doc.gallery?.map((item: any) => ({

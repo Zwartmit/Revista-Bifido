@@ -14,6 +14,7 @@ interface Event {
     address: string;
     description: any; // RichText or string
     image?: string;
+    isFeatured?: boolean;
     slug?: string;
     shortDescription?: string;
     price?: { isFree: boolean; amount?: number; currency?: string };
@@ -21,6 +22,7 @@ interface Event {
     organizer?: string;
     status: string;
     category?: string;
+    otherCategoryName?: string;
 }
 
 interface EventsClientProps {
@@ -28,15 +30,33 @@ interface EventsClientProps {
 }
 
 export default function EventsClient({ events }: EventsClientProps) {
-    const [filter, setFilter] = useState('upcoming');
-
-    const filters = [
+    const [filter, setFilter] = useState('all');
+    
+    const baseFilters = [
         { id: 'all', label: 'Todos' },
-        { id: 'upcoming', label: 'Próximos' },
-        { id: 'ongoing', label: 'En Curso' },
-        { id: 'finished', label: 'Pasados' },
-        { id: 'cancelled', label: 'Cancelados' },
+        { id: 'concert', label: 'Conciertos' },
+        { id: 'workshop', label: 'Talleres' },
+        { id: 'talk', label: 'Charlas' },
+        { id: 'festival', label: 'Festivales' },
+        { id: 'exhibition', label: 'Exposiciones' },
     ];
+
+    const customCategoriesMap = new Map<string, string>();
+    events.forEach(e => {
+        if (e.category === 'other' && e.otherCategoryName) {
+            const id = `custom-${e.otherCategoryName.toLowerCase().trim().replace(/\s+/g, '-')}`;
+            if (!customCategoriesMap.has(id)) {
+                customCategoriesMap.set(id, e.otherCategoryName);
+            }
+        }
+    });
+
+    const customFilters = Array.from(customCategoriesMap.entries()).map(([id, label]) => ({ id, label }));
+    const filters = [...baseFilters, ...customFilters];
+    
+    if (events.some(e => e.category === 'other' && !e.otherCategoryName)) {
+        filters.push({ id: 'other', label: 'Otros' });
+    }
 
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -52,10 +72,17 @@ export default function EventsClient({ events }: EventsClientProps) {
 
     const filteredEvents = filter === 'all'
         ? events
-        : events.filter(event => event.status === filter);
+        : events.filter(event => {
+              if (filter.startsWith('custom-')) {
+                  return event.category === 'other' && 
+                         event.otherCategoryName && 
+                         `custom-${event.otherCategoryName.toLowerCase().trim().replace(/\s+/g, '-')}` === filter;
+              }
+              return event.category === filter;
+          });
 
-    const featuredEvent = filteredEvents.length > 0 ? filteredEvents[0] : null;
-    const gridEvents = filteredEvents.length > 1 ? filteredEvents.slice(1) : [];
+    const featuredEvent = filteredEvents.find(e => e.isFeatured) || null;
+    const gridEvents = filteredEvents.filter(e => e.id !== featuredEvent?.id);
 
     const formatDayMonth = (dateString: string) => {
         if (!dateString) return { day: '00', month: '---' };
@@ -113,7 +140,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                 .glitch-title { position:relative; display:inline-block; }
                 .glitch-title::after { content:attr(data-text); position:absolute; inset:0; color:#CCFD29; animation:glitch 4s infinite; opacity:.7; pointer-events:none; }
                 
-                .rasgado-card { width:100%; max-width:340px; aspect-ratio:3/4.2; position:relative; cursor:pointer; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin:0 auto; }
+                .rasgado-card { width:100%; max-width:280px; aspect-ratio:3/4.2; position:relative; cursor:pointer; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin:0 auto; }
                 .rasgado-card:hover { transform:scale(1.08) rotate(2deg) !important; z-index:10; }
                 
                 .r-layer1 { position:absolute; inset:0; transition:all .3s; }
@@ -123,7 +150,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                 .r-layer3 { position:absolute; inset:0; background-position:center; background-size:cover; mix-blend-mode:luminosity; opacity:.4; clip-path:polygon(0% 18%, 100% 12%, 100% 82%, 0% 88%); filter:contrast(1.2); transition:opacity .3s; }
                 .rasgado-card:hover .r-layer3 { opacity:.7; }
                 
-                .r-content { position:absolute; inset:0; padding:2rem; display:flex; flex-direction:column; justify-content:center; filter:drop-shadow(3px 4px 0px rgba(0,0,0,1)); pointer-events:none; }
+                .r-content { position:absolute; inset:0; padding:1.5rem; display:flex; flex-direction:column; justify-content:center; filter:drop-shadow(3px 4px 0px rgba(0,0,0,1)); pointer-events:none; }
                 
                 .hide-scrollbar::-webkit-scrollbar { display: none; }
                 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -162,24 +189,26 @@ export default function EventsClient({ events }: EventsClientProps) {
                 <div ref={contentRef}>
                     {/* Featured Event */}
                     {featuredEvent && (
-                        <div className="mb-16 relative">
-                            <Link href={`/eventos/${featuredEvent.slug || '#'}`} className="block relative group overflow-hidden bg-[#080808] border border-white/10 hover:border-[#CCFD29] transition-all duration-300">
-                                <div className="flex flex-col md:flex-row h-full">
-                                    {/* Image Section */}
-                                    <div className="relative w-full md:w-3/5 min-h-[400px] overflow-hidden">
-                                        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\\'40\\' height=\\'40\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z\\' fill=\\'%23111\\' fill-opacity=\\'0.4\\' fill-rule=\\'evenodd\\'/%3E%3C/svg%3E')] z-10 opacity-30 pointer-events-none mix-blend-overlay" />
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img
-                                            src={featuredEvent.image || '/images/placeholder-article.jpg'}
-                                            alt={featuredEvent.title}
-                                            className="w-full h-full object-cover filter grayscale-[100%] brightness-75 contrast-125 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 pointer-events-none relative z-0"
-                                        />
-                                        {/* Overlay gradient to blend img and content */}
-                                        <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#080808] to-transparent z-10"></div>
-                                    </div>
+                        <div className="mb-16 relative flex justify-center w-full">
+                            <Link href={`/eventos/${featuredEvent.slug || '#'}`} className="relative group overflow-hidden bg-[#080808] border border-white/10 hover:border-[#CCFD29] transition-all duration-300 w-full md:w-fit md:max-w-[95vw] flex flex-col md:flex-row md:min-h-[400px] mx-auto">
+                                {/* Image Section */}
+                                <div className="relative w-full md:w-fit flex flex-col justify-center shrink-0 bg-black">
+                                    {/* Textura */}
+                                    <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\\'40\\' height=\\'40\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z\\' fill=\\'%23111\\' fill-opacity=\\'0.4\\' fill-rule=\\'evenodd\\'/%3E%3C/svg%3E')] z-10 opacity-30 pointer-events-none mix-blend-overlay" />
                                     
-                                    {/* Content Section */}
-                                    <div className="p-8 md:p-12 w-full md:w-2/5 flex flex-col justify-center relative z-20">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={featuredEvent.image || '/images/placeholder-article.jpg'}
+                                        alt={featuredEvent.title}
+                                        className="w-full h-auto max-h-[60vh] md:w-auto md:h-[400px] object-contain filter grayscale-[100%] brightness-75 contrast-125 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 z-20"
+                                    />
+                                    
+                                    {/* Overlay gradient to blend img and content */}
+                                    <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#080808] to-transparent z-30 pointer-events-none"></div>
+                                </div>
+                                
+                                {/* Content Section */}
+                                <div className="p-6 md:py-10 md:px-12 w-full md:w-fit md:max-w-[500px] shrink-0 flex flex-col justify-center relative z-20">
                                         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/10 to-transparent"></div>
                                         
                                         <div className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] mb-6 shadow-sm truncate max-w-full">
@@ -194,7 +223,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                         <div className="font-mono text-sm text-gray-400 space-y-2 mb-8 border-l-2 border-[#E63946] pl-4 py-1">
                                             <p className="text-white font-bold">{formatDate(featuredEvent.date).toUpperCase()}</p>
                                             <p className="truncate">{featuredEvent.location} · {featuredEvent.time}</p>
-                                            <p>{featuredEvent.price?.isFree ? 'ENTRADA LIBRE' : (featuredEvent.price?.amount ? '$' + featuredEvent.price.amount : 'ENTRADA PAGA')}</p>
+                                            <p>{featuredEvent.price?.isFree ? 'ENTRADA LIBRE' : (featuredEvent.price?.amount ? '$ ' + featuredEvent.price.amount.toLocaleString('es-CO') + ' ' + (featuredEvent.price?.currency || 'COP') : 'ENTRADA PAGA')}</p>
                                         </div>
 
                                         <div className="mt-auto">
@@ -203,7 +232,6 @@ export default function EventsClient({ events }: EventsClientProps) {
                                             </button>
                                         </div>
                                     </div>
-                                </div>
                             </Link>
                         </div>
                     )}
@@ -218,7 +246,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                 const clip = getClipPaths(i);
 
                                 return (
-                                    <Link key={event.id} href={`/eventos/${event.slug || '#'}`} className="block">
+                                    <Link key={event.id} href={`/eventos/${event.slug || '#'}`} className="block w-full max-w-[280px]">
                                         <div 
                                             className="rasgado-card group mx-auto" 
                                             style={{ transform: `rotate(${rotation}deg)` }}
@@ -231,11 +259,11 @@ export default function EventsClient({ events }: EventsClientProps) {
                                             />
                                             
                                             <div className="r-content">
-                                                <div className="font-display text-[5rem] leading-[0.8] mb-8 drop-shadow-[3px_4px_0_rgba(0,0,0,1)]" style={{ color: theme.bg, transform: `rotate(${-rotation}deg)` }}>
+                                                <div className="font-display text-[4rem] leading-[0.85] mb-6 drop-shadow-[3px_4px_0_rgba(0,0,0,1)]" style={{ color: theme.bg, transform: `rotate(${-rotation}deg)` }}>
                                                     {day}<br/>{month}
                                                 </div>
                                                 
-                                                <div className="font-primary font-black text-[2.4rem] leading-none text-white uppercase break-words drop-shadow-[2px_2px_0_rgba(0,0,0,1)] relative z-10" style={{ transform: `rotate(${rotation/2}deg)` }}>
+                                                <div className="font-primary font-black text-[1.8rem] leading-none text-white uppercase break-words drop-shadow-[2px_2px_0_rgba(0,0,0,1)] relative z-10" style={{ transform: `rotate(${rotation/2}deg)` }}>
                                                     {event.title}
                                                 </div>
                                                 
@@ -258,7 +286,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                     {/* Empty State */}
                     {filteredEvents.length === 0 && (
                         <div className="text-center py-24 border-2 border-dashed border-white/20 max-w-2xl mx-auto">
-                            <p className="text-white font-display text-3xl md:text-5xl opacity-50">PRONTO VERÁS TODOS LOS PARCHES</p>
+                            <p className="text-white font-display text-3xl md:text-5xl opacity-50">AÚN NO HAY PARCHES PROGRAMADOS</p>
                         </div>
                     )}
                 </div>
