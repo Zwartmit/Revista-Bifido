@@ -53,14 +53,14 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-20" />
                     <div className="absolute bottom-0 left-0 p-8 z-30">
                         <span className="bg-bifido-red text-white px-4 py-1 rounded-full text-sm font-bold mb-4 inline-block">
-                            {{
+                            {({
                                 concert: 'Concierto',
                                 workshop: 'Taller',
                                 talk: 'Charla',
                                 festival: 'Festival',
                                 exhibition: 'Exposición',
                                 other: 'Otro'
-                            }[event.category as keyof typeof event.category] || 'Evento'}
+                            } as Record<string, string>)[event.category] || 'Evento'}
                         </span>
                         <h1 className="font-display text-4xl md:text-6xl text-white mb-2">
                             {event.title}
