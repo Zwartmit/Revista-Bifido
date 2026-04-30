@@ -55,7 +55,7 @@ export const Events: CollectionConfig = {
                         width: '50%',
                         condition: (_, siblingData) => siblingData?.category === 'other',
                     },
-                    validate: (value, { siblingData }) => {
+                    validate: (value: any, { siblingData }: any) => {
                         if (siblingData?.category === 'other' && !value) {
                             return 'Por favor ingresa el nombre de la categoría.';
                         }
@@ -73,7 +73,7 @@ export const Events: CollectionConfig = {
                 position: 'sidebar',
                 description: 'Solo puede haber un evento destacado a la vez.',
             },
-            validate: async (value, { req, id }) => {
+            validate: async (value: any, { req, id }: any) => {
                 if (value && req && req.payload) {
                     const featuredEvents = await req.payload.find({
                         collection: 'events',
