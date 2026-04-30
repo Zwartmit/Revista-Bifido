@@ -158,7 +158,7 @@ export const Events: CollectionConfig = {
                         width: '50%',
                         condition: (_, siblingData) => siblingData?.locationType === 'physical' || siblingData?.locationType === 'hybrid',
                     },
-                    validate: (value, { siblingData }) => {
+                    validate: (value: any, { siblingData }: any) => {
                         if ((siblingData?.locationType === 'physical' || siblingData?.locationType === 'hybrid') && !value) {
                             return 'La dirección es obligatoria.';
                         }
@@ -173,7 +173,7 @@ export const Events: CollectionConfig = {
                         width: '50%',
                         condition: (_, siblingData) => siblingData?.locationType === 'physical' || siblingData?.locationType === 'hybrid',
                     },
-                    validate: (value, { siblingData }) => {
+                    validate: (value: any, { siblingData }: any) => {
                         if ((siblingData?.locationType === 'physical' || siblingData?.locationType === 'hybrid') && !value) {
                             return 'La ciudad es obligatoria.';
                         }
@@ -189,7 +189,7 @@ export const Events: CollectionConfig = {
             admin: {
                 condition: (_, siblingData) => siblingData?.locationType === 'virtual' || siblingData?.locationType === 'hybrid',
             },
-            validate: (value, { siblingData }) => {
+            validate: (value: any, { siblingData }: any) => {
                 if ((siblingData?.locationType === 'virtual' || siblingData?.locationType === 'hybrid') && !value) {
                     return 'El link de transmisión es obligatorio.';
                 }
@@ -226,7 +226,7 @@ export const Events: CollectionConfig = {
                         width: '100%',
                         condition: (_, siblingData) => !siblingData?.isFree,
                     },
-                    validate: (value, { siblingData }) => {
+                    validate: (value: any, { siblingData }: any) => {
                         if (!siblingData?.isFree && (value === null || value === undefined)) {
                             return 'El valor es obligatorio si no es gratis.';
                         }
