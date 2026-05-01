@@ -7,8 +7,10 @@ import { characters } from '@/lib/characters';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { getAuthors } from '@/lib/api';
+import { getLiveArchiveMembers } from '@/lib/api';
 import dynamic from 'next/dynamic';
+import { RiInstagramFill } from 'react-icons/ri';
+import { FaUserSecret, FaGlobe } from 'react-icons/fa';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -36,6 +38,9 @@ export default function ElParchePage() {
     const [team, setTeam] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeCharacterId, setActiveCharacterId] = useState(characters[0].id);
+    const [selectedMember, setSelectedMember] = useState<any | null>(null);
+    const [modalPhotoIndex, setModalPhotoIndex] = useState(0);
+
     const activeCharacter = characters.find(m => m.id === activeCharacterId) || characters[0];
     const otherCharacters = characters.filter((m) => m.id !== activeCharacterId);
 
@@ -55,8 +60,8 @@ export default function ElParchePage() {
     useEffect(() => {
         const fetchTeam = async () => {
             try {
-                const authors = await getAuthors();
-                setTeam(authors);
+                const archiveMembers = await getLiveArchiveMembers();
+                setTeam(archiveMembers);
             } catch (error) {
                 console.error('Error fetching team:', error);
             } finally {
@@ -476,7 +481,7 @@ export default function ElParchePage() {
                                     </p>
                                     <p className="font-jack text-[10px] md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
                                         <span className="opacity-0 select-none">{"//"} </span>
-                                        NARRAMOS, SEÑALAMOS, REGISTRAMOS
+                                        NARRAMOS, SEÑALAMOS, REGISTRAMOS...
                                     </p>
                                 </div>
                             </div>
@@ -501,7 +506,7 @@ export default function ElParchePage() {
                                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-bifido-neon" />
                             </div>
                         ) : team.length > 0 ? (
-                            <div ref={teamRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                            <div ref={teamRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-12">
                                 {team.map((member) => {
                                     const rawHandle = member.socialMedia?.instagram || '';
                                     const instagramHandle = rawHandle
@@ -517,67 +522,104 @@ export default function ElParchePage() {
                                     return (
                                         <div
                                             key={member.id}
-                                            className="border border-[#2a2a2a] bg-black flex flex-col group hover:border-bifido-neon/40 transition-colors duration-300"
+                                            className="bg-transparent flex flex-col group w-full max-w-[320px] mx-auto mt-12 border-2 border-bifido-neon rounded-3xl shadow-2xl hover:shadow-bifido-neon/40 transition-all duration-300"
                                         >
-                                            {/* Avatar */}
+                                            {/* Avatar (Original Bífido) */}
                                             <div className="flex justify-center pt-7 pb-4 px-4">
-                                                <div className="w-28 h-28 rounded-full overflow-hidden border-[3px] border-white flex-shrink-0 bg-white flex items-center justify-center">
-                                                    <Image
-                                                        src={member.profileImage}
-                                                        alt={member.name}
-                                                        width={82}
-                                                        height={82}
-                                                        className="object-contain"
-                                                    />
+                                                <div className="relative w-28 h-28 rounded-full overflow-hidden border-[3px] border-white flex-shrink-0 bg-white flex items-center justify-center group-hover:border-bifido-neon transition-colors duration-300">
+                                                    {/* Foto de Perfil Base */}
+                                                    <div className={`transition-opacity duration-300 ${member.identifierImage ? 'group-hover:opacity-0' : ''} flex items-center justify-center w-full h-full`}>
+                                                        <Image
+                                                            src={member.profileImage}
+                                                            alt={member.name}
+                                                            width={82}
+                                                            height={82}
+                                                            className="object-contain"
+                                                        />
+                                                    </div>
+                                                    
+                                                    {/* Imagen Identificador (Hover) */}
+                                                    {member.identifierImage && (
+                                                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                                            <Image
+                                                                src={member.identifierImage}
+                                                                alt={`${member.name} - Identificador`}
+                                                                width={82}
+                                                                height={82}
+                                                                className="object-contain"
+                                                            />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 
-                                            {/* Name bar – neon green */}
-                                            <div className="bg-bifido-neon py-2 px-3">
-                                                <h3 className="font-display text-black text-center uppercase tracking-[0.12em] text-sm leading-tight truncate">
+                                            {/* Name bar – neon green (Original) */}
+                                            <div className="bg-white py-2 px-3 mb-4">
+                                                <h3 className="font-display text-black text-center uppercase tracking-[0.12em] text-2xl leading-tight truncate">
                                                     {member.name}
                                                 </h3>
                                             </div>
 
-                                            {/* Card body */}
-                                            <div className="p-4 flex flex-col flex-1 gap-3">
-                                                {/* Bio */}
-                                                <p className="text-white/55 text-[11px] leading-relaxed line-clamp-3">
-                                                    {member.biography || 'Miembro del equipo de Revista Bífido.'}
-                                                </p>
-
+                                            {/* Card body (Estilo Opción 2) */}
+                                            <div className="px-2 pb-2 flex flex-col flex-1 items-center text-center">
+                                                
                                                 {/* Skill tags */}
-                                                {member.tags && member.tags.length > 0 && (
-                                                    <div className="flex flex-wrap gap-1">
-                                                        {member.tags.map((tag: string) => (
-                                                            <span
-                                                                key={tag}
-                                                                className="border border-white/25 text-white/45 text-[9px] px-2 py-0.5 uppercase tracking-wider"
-                                                            >
-                                                                {tag}
-                                                            </span>
-                                                        ))}
+                                                {member.characteristics && member.characteristics.length > 0 && (
+                                                    <div className="font-mono text-[9px] text-bifido-neon uppercase tracking-widest mb-3">
+                                                        {member.characteristics.join(' · ')}
                                                     </div>
                                                 )}
 
-                                                {/* Actions – pushed to bottom */}
-                                                <div className="flex flex-col gap-2 mt-auto pt-1">
-                                                    {instagramHandle && (
+                                                {/* Lema */}
+                                                <p className="font-sans text-xs text-gray-400 leading-relaxed line-clamp-3 mb-3 italic">
+                                                    {member.lema ? `"${member.lema}"` : 'Miembro del equipo de Revista Bífido.'}
+                                                </p>
+
+                                                {/* Actions */}
+                                                <div className="flex items-center gap-3 w-full justify-center border-t border-gray-800 pt-4 pb-2 mt-auto">
+                                                    {instagramHref ? (
                                                         <a
-                                                            href={instagramHref!}
+                                                            href={instagramHref}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="border border-bifido-neon text-bifido-neon text-center text-[10px] py-1.5 px-2 uppercase tracking-wider font-display hover:bg-bifido-neon hover:text-black transition-all duration-200 truncate"
+                                                            className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
+                                                            title="Instagram"
                                                         >
-                                                            @{instagramHandle}
+                                                            <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                                {Array.from({ length: 15 }).map((_, i) => (
+                                                                    <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
+                                                                        <RiInstagramFill size={16} />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            <div className="relative z-10 text-black flex items-center justify-center">
+                                                                <RiInstagramFill size={16} />
+                                                            </div>
                                                         </a>
+                                                    ) : (
+                                                        <span className="relative overflow-hidden w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center cursor-not-allowed opacity-50" title="Sin Instagram">
+                                                            <RiInstagramFill size={16} className="text-gray-500" />
+                                                        </span>
                                                     )}
-                                                    <Link
-                                                        href={`/autores/${memberSlug}`}
-                                                        className="border border-white/30 text-white/70 text-center text-[10px] py-1.5 px-2 uppercase tracking-wider font-display hover:bg-white hover:text-black transition-all duration-200"
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedMember(member);
+                                                            setModalPhotoIndex(0);
+                                                        }}
+                                                        className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
+                                                        title="Ver Expediente"
                                                     >
-                                                        Ver Más
-                                                    </Link>
+                                                        <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                            {Array.from({ length: 15 }).map((_, i) => (
+                                                                <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
+                                                                    <FaUserSecret size={16} />
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                        <div className="relative z-10 text-black flex items-center justify-center">
+                                                            <FaUserSecret size={16} />
+                                                        </div>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -592,6 +634,175 @@ export default function ElParchePage() {
                     </div>
                 </div>
             </div>
+
+            {/* Modal Archivo Vivo */}
+            {selectedMember && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-12 md:px-24 bg-black/95 backdrop-blur-sm">
+                    <div className="w-full max-w-5xl bg-black border border-gray-800 rounded-xl relative flex flex-col max-h-full overflow-hidden">
+                        
+                        {/* Header/Close */}
+                        <div className="absolute top-4 right-4 z-10">
+                            <button
+                                onClick={() => setSelectedMember(null)}
+                                className="flex items-center gap-2 text-white hover:text-bifido-neon transition-colors font-mono text-sm tracking-widest"
+                            >
+                                CERRAR <span className="text-xl font-bold text-orange-500">X</span>
+                            </button>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div className="flex flex-col md:flex-row w-full h-full overflow-y-auto md:overflow-hidden p-6 md:p-12 gap-8 md:gap-16">
+                            
+                            {/* Left: Image Carousel (Pill shape) */}
+                            <div className="w-full md:w-[40%] flex-shrink-0 flex flex-col items-center justify-center">
+                                <div className="w-full aspect-[1/2] max-h-[60vh] md:max-h-none rounded-[100px] bg-white overflow-hidden relative flex items-center justify-center">
+                                    {selectedMember.photos && selectedMember.photos.length > 0 ? (
+                                        <Image
+                                            src={selectedMember.photos[modalPhotoIndex]}
+                                            alt={`${selectedMember.name} foto ${modalPhotoIndex + 1}`}
+                                            fill
+                                            className="object-contain p-4"
+                                        />
+                                    ) : (
+                                        <Image
+                                            src={selectedMember.profileImage}
+                                            alt={selectedMember.name}
+                                            fill
+                                            className="object-contain p-4"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Right: Info */}
+                            <div className="w-full md:w-[60%] flex flex-col justify-center text-left py-4">
+                                <span className="font-jack text-orange-500 text-xs tracking-[0.2em] mb-2 uppercase">Manifiesto personal</span>
+                                
+                                <div className="flex items-center gap-3 mb-8">
+                                    <Image 
+                                        src="/icons/message.svg" 
+                                        alt="Manifiesto" 
+                                        width={32} 
+                                        height={32} 
+                                        className="flex-shrink-0"
+                                        style={{ filter: 'brightness(0) saturate(100%) invert(53%) sepia(98%) saturate(1831%) hue-rotate(348deg) brightness(101%) contrast(96%)' }}
+                                    />
+                                    <h2 className="text-3xl md:text-5xl font-display uppercase tracking-widest text-orange-500 leading-none mt-2">
+                                        {selectedMember.name}
+                                    </h2>
+                                </div>
+
+                                <div className="font-mono text-sm md:text-sm text-gray-300 leading-relaxed text-justify mb-12 whitespace-pre-line">
+                                    {selectedMember.biography || 'Miembro del equipo de Revista Bífido.'}
+                                </div>
+
+                                {/* Tags & IG - Ficha Técnica */}
+                                <div className="flex flex-row justify-between items-start mt-auto mb-4 border-t border-gray-800/60 pt-5 w-full">
+                                    {/* Left: Rasgos & Base */}
+                                    <div className="flex flex-col gap-4">
+                                        {/* Rasgos */}
+                                        <div className="flex flex-col gap-1.5">
+                                            <span className="text-[11px] text-gray-500 font-display tracking-widest uppercase">Rasgos y gustos</span>
+                                            <div className="font-mono text-xs text-bifido-neon tracking-wide uppercase">
+                                                {selectedMember.characteristics?.join(" / ")}
+                                            </div>
+                                        </div>
+                                        {/* Base / Ubicación */}
+                                        {selectedMember.location && (
+                                            <div className="flex flex-col gap-1.5">
+                                                <span className="text-[11px] text-gray-500 font-display tracking-widest uppercase">Base</span>
+                                                <span className="font-mono text-xs text-gray-300 uppercase tracking-wide">
+                                                    {selectedMember.location}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    
+                                    {/* Right: Redes */}
+                                    <div className="flex flex-col gap-3 items-end">
+                                        <span className="text-[11px] text-gray-500 font-display tracking-widest uppercase">Contacto</span>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {selectedMember.socialMedia?.website && (
+                                                <a
+                                                    href={selectedMember.socialMedia.website.startsWith('http') ? selectedMember.socialMedia.website : `https://${selectedMember.socialMedia.website}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
+                                                    title="Sitio Web"
+                                                >
+                                                    <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                        {Array.from({ length: 15 }).map((_, i) => (
+                                                            <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
+                                                                <FaGlobe size={16} />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="relative z-10 text-black flex items-center justify-center">
+                                                        <FaGlobe size={16} />
+                                                    </div>
+                                                </a>
+                                            )}
+                                            {selectedMember.socialMedia?.instagram && (
+                                                <a
+                                                    href={`https://instagram.com/${selectedMember.socialMedia.instagram.replace('@', '')}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
+                                                    title="Instagram"
+                                                >
+                                                    <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                        {Array.from({ length: 15 }).map((_, i) => (
+                                                            <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
+                                                                <RiInstagramFill size={16} />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="relative z-10 text-black flex items-center justify-center">
+                                                        <RiInstagramFill size={16} />
+                                                    </div>
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Bottom Navigation (Member Navigation) */}
+                                <div className="w-full border-t border-gray-800 pt-4 mt-12 flex items-center justify-between text-gray-400 font-sans text-sm">
+                                    <button
+                                        onClick={() => {
+                                            const currentIndex = team.findIndex(m => m.id === selectedMember.id);
+                                            const prevIndex = currentIndex <= 0 ? team.length - 1 : currentIndex - 1;
+                                            setSelectedMember(team[prevIndex]);
+                                            setModalPhotoIndex(0);
+                                        }}
+                                        className="group flex items-center gap-3 transition-colors"
+                                    >
+                                        <div className="flex items-center mt-[2px] rotate-180 group-hover:-translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
+                                            <Image src="/icons/arrow_o.svg" alt="Anterior" width={24} height={24} />
+                                        </div>
+                                        <span className="text-white mt-[2px] group-hover:text-orange-500 transition-colors">Anterior</span>
+                                    </button>
+                                    <span className="mt-[2px]">{(team.findIndex(m => m.id === selectedMember.id) + 1)}/{team.length}</span>
+                                    <button
+                                        onClick={() => {
+                                            const currentIndex = team.findIndex(m => m.id === selectedMember.id);
+                                            const nextIndex = currentIndex === team.length - 1 ? 0 : currentIndex + 1;
+                                            setSelectedMember(team[nextIndex]);
+                                            setModalPhotoIndex(0);
+                                        }}
+                                        className="group flex items-center gap-3 transition-colors"
+                                    >
+                                        <span className="text-white mt-[2px] group-hover:text-orange-500 transition-colors">Siguiente</span>
+                                        <div className="flex items-center mt-[2px] group-hover:translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
+                                            <Image src="/icons/arrow_o.svg" alt="Siguiente" width={24} height={24} />
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

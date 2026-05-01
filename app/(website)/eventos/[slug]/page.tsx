@@ -79,7 +79,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                         <div className="text-white">
                             <p className="text-gray-400 text-sm flex flex-col">
                                 <span className="text-white font-semibold text-lg">{new Date(event.date).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                                <span className="opacity-60">{new Date(event.date).toLocaleDateString('es-CO', { weekday: 'long' })}</span>
+                                <span >{new Date(event.date).toLocaleDateString('es-CO', { weekday: 'long' })}</span>
                             </p>
                         </div>
                     </div>
@@ -103,7 +103,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                         </div>
                         <div className="text-white text-sm text-gray-400 space-y-1">
                             <p className="font-semibold text-white text-lg leading-tight">{event.location}</p>
-                            <p className="leading-tight">{event.address}</p>
+                            <p className="leading-tight">{event.address}{event.city ? `, ${event.city}` : ''}</p>
                             {event.virtualLink && (
                                 <a href={event.virtualLink} target="_blank" rel="noopener noreferrer" className="inline-block text-bifido-red font-bold text-xs uppercase tracking-wider mt-2 hover:text-white transition-colors">
                                     Ver evento online

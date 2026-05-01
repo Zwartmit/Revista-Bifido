@@ -56,7 +56,7 @@ export const Articles: CollectionConfig = {
             name: 'author',
             label: 'Autor',
             type: 'relationship',
-            relationTo: 'authors',
+            relationTo: 'characters',
             required: true,
         },
         {

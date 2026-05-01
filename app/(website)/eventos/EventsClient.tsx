@@ -31,7 +31,7 @@ interface EventsClientProps {
 
 export default function EventsClient({ events }: EventsClientProps) {
     const [filter, setFilter] = useState('all');
-    
+
     const baseFilters = [
         { id: 'all', label: 'Todos' },
         { id: 'concert', label: 'Conciertos' },
@@ -53,7 +53,7 @@ export default function EventsClient({ events }: EventsClientProps) {
 
     const customFilters = Array.from(customCategoriesMap.entries()).map(([id, label]) => ({ id, label }));
     const filters = [...baseFilters, ...customFilters];
-    
+
     if (events.some(e => e.category === 'other' && !e.otherCategoryName)) {
         filters.push({ id: 'other', label: 'Otros' });
     }
@@ -73,13 +73,13 @@ export default function EventsClient({ events }: EventsClientProps) {
     const filteredEvents = filter === 'all'
         ? events
         : events.filter(event => {
-              if (filter.startsWith('custom-')) {
-                  return event.category === 'other' && 
-                         event.otherCategoryName && 
-                         `custom-${event.otherCategoryName.toLowerCase().trim().replace(/\s+/g, '-')}` === filter;
-              }
-              return event.category === filter;
-          });
+            if (filter.startsWith('custom-')) {
+                return event.category === 'other' &&
+                    event.otherCategoryName &&
+                    `custom-${event.otherCategoryName.toLowerCase().trim().replace(/\s+/g, '-')}` === filter;
+            }
+            return event.category === filter;
+        });
 
     const featuredEvent = filteredEvents.find(e => e.isFeatured) || null;
     const gridEvents = filteredEvents.filter(e => e.id !== featuredEvent?.id);
@@ -93,7 +93,7 @@ export default function EventsClient({ events }: EventsClientProps) {
             month: date.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase().replace('.', '')
         };
     };
-    
+
     const formatDate = (dateString: string) => {
         if (!dateString) return '';
         const date = new Date(dateString);
@@ -107,7 +107,7 @@ export default function EventsClient({ events }: EventsClientProps) {
     };
 
     const getRotation = (index: number) => {
-        const rots = [ -4, 5, -2, 3, -5, 2 ];
+        const rots = [-4, 5, -2, 3, -5, 2];
         return rots[index % rots.length];
     };
 
@@ -135,7 +135,8 @@ export default function EventsClient({ events }: EventsClientProps) {
         <div className="flex-1 w-full pt-12 pb-12 relative flex flex-col" style={{
             background: "#030303 url('data:image/svg+xml,%3Csvg width=\\'80\\' height=\\'80\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'n\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'.75\\' numOctaves=\\'3\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23n)\\' opacity=\\'.07\\'/%3E%3C/svg%3E') repeat"
         }}>
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 @keyframes glitch { 0%,100%{ clip-path:inset(0 0 95% 0); transform:translate(-2px,0); } 20%{ clip-path:inset(30% 0 60% 0); transform:translate(2px,0); } 40%{ clip-path:inset(60% 0 20% 0); transform:translate(-1px,0); } 60%{ clip-path:inset(5% 0 75% 0); transform:translate(3px,0); } 80%{ clip-path:inset(80% 0 5% 0); transform:translate(-2px,0); } }
                 .glitch-title { position:relative; display:inline-block; }
                 .glitch-title::after { content:attr(data-text); position:absolute; inset:0; color:#CCFD29; animation:glitch 4s infinite; opacity:.7; pointer-events:none; }
@@ -195,43 +196,43 @@ export default function EventsClient({ events }: EventsClientProps) {
                                 <div className="relative w-full md:w-fit flex flex-col justify-center shrink-0 bg-black">
                                     {/* Textura */}
                                     <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\\'40\\' height=\\'40\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z\\' fill=\\'%23111\\' fill-opacity=\\'0.4\\' fill-rule=\\'evenodd\\'/%3E%3C/svg%3E')] z-10 opacity-30 pointer-events-none mix-blend-overlay" />
-                                    
+
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src={featuredEvent.image || '/images/placeholder-article.jpg'}
                                         alt={featuredEvent.title}
                                         className="w-full h-auto max-h-[60vh] md:w-auto md:h-[400px] object-contain filter grayscale-[100%] brightness-75 contrast-125 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 z-20"
                                     />
-                                    
+
                                     {/* Overlay gradient to blend img and content */}
                                     <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#080808] to-transparent z-30 pointer-events-none"></div>
                                 </div>
-                                
+
                                 {/* Content Section */}
                                 <div className="p-6 md:py-10 md:px-12 w-full md:w-fit md:max-w-[500px] shrink-0 flex flex-col justify-center relative z-20">
-                                        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/10 to-transparent"></div>
-                                        
-                                        <div className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] mb-6 shadow-sm truncate max-w-full">
-                                            <span className="w-2 h-2 shrink-0 rounded-full bg-[#E63946] animate-pulse"></span>
-                                            <span className="text-[#CCFD29] truncate">EVENTO DESTACADO</span>
-                                        </div>
-                                        
-                                        <h2 className="font-display text-4xl lg:text-5xl text-white uppercase leading-[0.9] mb-6 glitch-title break-words" data-text={featuredEvent.title}>
-                                            {featuredEvent.title}
-                                        </h2>
-                                        
-                                        <div className="font-mono text-sm text-gray-400 space-y-2 mb-8 border-l-2 border-[#E63946] pl-4 py-1">
-                                            <p className="text-white font-bold">{formatDate(featuredEvent.date).toUpperCase()}</p>
-                                            <p className="truncate">{featuredEvent.location} · {featuredEvent.time}</p>
-                                            <p>{featuredEvent.price?.isFree ? 'ENTRADA LIBRE' : (featuredEvent.price?.amount ? '$ ' + featuredEvent.price.amount.toLocaleString('es-CO') + ' ' + (featuredEvent.price?.currency || 'COP') : 'ENTRADA PAGA')}</p>
-                                        </div>
+                                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/10 to-transparent"></div>
 
-                                        <div className="mt-auto">
-                                            <button className="font-mono text-sm font-bold bg-white text-black px-6 py-3 uppercase tracking-widest group-hover:bg-[#CCFD29] transition-colors w-full md:w-auto text-center md:text-left">
-                                                VER DETALLES →
-                                            </button>
-                                        </div>
+                                    <div className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] mb-6 shadow-sm truncate max-w-full">
+                                        <span className="w-2 h-2 shrink-0 rounded-full bg-[#E63946] animate-pulse"></span>
+                                        <span className="text-[#CCFD29] truncate">EVENTO DESTACADO</span>
                                     </div>
+
+                                    <h2 className="font-display text-4xl lg:text-5xl text-white uppercase leading-[0.9] mb-6 glitch-title break-words" data-text={featuredEvent.title}>
+                                        {featuredEvent.title}
+                                    </h2>
+
+                                    <div className="font-mono text-sm text-gray-400 space-y-2 mb-8 border-l-2 border-[#E63946] pl-4 py-1">
+                                        <p className="text-white font-bold">{formatDate(featuredEvent.date).toUpperCase()}</p>
+                                        <p className="truncate">{featuredEvent.location} · {featuredEvent.time}</p>
+                                        <p>{featuredEvent.price?.isFree ? 'ENTRADA LIBRE' : (featuredEvent.price?.amount ? '$ ' + featuredEvent.price.amount.toLocaleString('es-CO') + ' ' + (featuredEvent.price?.currency || 'COP') : 'ENTRADA PAGA')}</p>
+                                    </div>
+
+                                    <div className="mt-auto">
+                                        <button className="font-mono text-sm font-bold bg-white text-black px-6 py-3 uppercase tracking-widest group-hover:bg-[#CCFD29] transition-colors w-full md:w-auto text-center md:text-left">
+                                            VER DETALLES →
+                                        </button>
+                                    </div>
+                                </div>
                             </Link>
                         </div>
                     )}
@@ -247,28 +248,28 @@ export default function EventsClient({ events }: EventsClientProps) {
 
                                 return (
                                     <Link key={event.id} href={`/eventos/${event.slug || '#'}`} className="block w-full max-w-[280px]">
-                                        <div 
-                                            className="rasgado-card group mx-auto" 
+                                        <div
+                                            className="rasgado-card group mx-auto"
                                             style={{ transform: `rotate(${rotation}deg)` }}
                                         >
                                             <div className="r-layer1" style={{ background: theme.bg, clipPath: clip }} />
                                             <div className="r-layer2" />
-                                            <div 
-                                                className="r-layer3" 
+                                            <div
+                                                className="r-layer3"
                                                 style={{ backgroundImage: `url('${event.image || '/images/placeholder-article.jpg'}')` }}
                                             />
-                                            
+
                                             <div className="r-content">
                                                 <div className="font-display text-[4rem] leading-[0.85] mb-6 drop-shadow-[3px_4px_0_rgba(0,0,0,1)]" style={{ color: theme.bg, transform: `rotate(${-rotation}deg)` }}>
-                                                    {day}<br/>{month}
+                                                    {day}<br />{month}
                                                 </div>
-                                                
-                                                <div className="font-primary font-black text-[1.8rem] leading-none text-white uppercase break-words drop-shadow-[2px_2px_0_rgba(0,0,0,1)] relative z-10" style={{ transform: `rotate(${rotation/2}deg)` }}>
+
+                                                <div className="font-primary font-black text-[1.8rem] leading-none text-white uppercase break-words drop-shadow-[2px_2px_0_rgba(0,0,0,1)] relative z-10" style={{ transform: `rotate(${rotation / 2}deg)` }}>
                                                     {event.title}
                                                 </div>
-                                                
+
                                                 <div className="mt-8 self-start max-w-full">
-                                                    <span 
+                                                    <span
                                                         className="font-mono text-xs font-bold px-3 py-1.5 uppercase shadow-[2px_2px_0_rgba(0,0,0,1)] inline-block truncate max-w-full"
                                                         style={{ background: theme.bg, color: theme.text, transform: `rotate(${-rotation}deg)` }}
                                                     >

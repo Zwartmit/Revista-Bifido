@@ -248,9 +248,9 @@ export async function getEventBySlug(slug: string) {
 /**
  * Obtener todos los miembros del archivo vivo
  */
-export async function getAuthors() {
-  const data = await fetchPayload('authors');
-  return data.docs.map(transformPayloadAuthor);
+export async function getLiveArchiveMembers() {
+  const data = await fetchPayload('live-archive');
+  return data.docs.map(transformPayloadLiveArchiveMember);
 }
 
 // Transformadores de datos (Payload -> Frontend Interface)
@@ -301,8 +301,9 @@ export function transformPayloadEvent(doc: any) {
     isFeatured: doc.isFeatured || false,
     date: doc.date,
     time: doc.date ? new Date(doc.date).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) : '',
-    location: doc.locationType === 'virtual' ? 'Virtual' : (doc.locationType === 'hybrid' ? 'Híbrido' : (doc.city || 'Presencial')),
+    location: doc.locationType === 'virtual' ? 'Virtual' : (doc.locationType === 'hybrid' ? 'Híbrido' : 'Presencial'),
     address: doc.address || '',
+    city: doc.city || '',
     virtualLink: doc.virtualLink,
     description: doc.description,
     category: doc.category || 'other',
@@ -323,15 +324,20 @@ export function transformPayloadEvent(doc: any) {
   };
 }
 
-export function transformPayloadAuthor(doc: any) {
+export function transformPayloadLiveArchiveMember(doc: any) {
   return {
     id: doc.id,
     name: doc.name,
     slug: doc.slug,
+    lema: doc.lema,
     biography: doc.biography,
     profileImage: doc.profileImage?.filename ? `/media/${doc.profileImage.filename}` : (doc.profileImage?.url || '/images/placeholder-author.jpg'),
+    identifierImage: doc.identifierImage?.filename ? `/media/${doc.identifierImage.filename}` : (doc.identifierImage?.url || ''),
     email: doc.email,
+    location: doc.location || '',
+    characteristics: doc.characteristics?.map((c: any) => c.text) || [],
     socialMedia: doc.socialMedia || {},
     tags: doc.tags || [],
+    photos: doc.photos?.map((p: any) => p.image?.filename ? `/media/${p.image.filename}` : (p.image?.url || '')) || [],
   };
 }

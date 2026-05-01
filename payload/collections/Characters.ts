@@ -18,6 +18,15 @@ export const Characters: CollectionConfig = {
                 if (sections.totalDocs > 0) {
                     throw new APIError(`No se puede eliminar: Este personaje está asignado a la sección "${sections.docs[0].name}"`, 400);
                 }
+
+                const articles = await req.payload.find({
+                    collection: 'articles',
+                    where: { author: { equals: id } },
+                    limit: 1,
+                });
+                if (articles.totalDocs > 0) {
+                    throw new APIError(`No se puede eliminar: Este personaje es autor de artículos publicados (ej. "${articles.docs[0].title}")`, 400);
+                }
             },
         ],
     },

@@ -12,7 +12,7 @@ import { es } from '@payloadcms/translations/languages/es';
 import { Articles } from './collections/Articles';
 import { Sections } from './collections/Sections';
 import { Characters } from './collections/Characters';
-import { Authors } from './collections/Authors';
+import { LiveArchive } from './collections/LiveArchive';
 import { Events } from './collections/Events';
 import { Products } from './collections/Products';
 import { Media } from './collections/Media';
@@ -59,7 +59,7 @@ export default buildConfig({
         Articles,
         Sections,
         Characters,
-        Authors,
+        LiveArchive,
         Events,
         Products,
         Media,
