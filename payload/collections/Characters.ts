@@ -10,15 +10,6 @@ export const Characters: CollectionConfig = {
     hooks: {
         beforeDelete: [
             async ({ req, id }) => {
-                const sections = await req.payload.find({
-                    collection: 'sections',
-                    where: { character: { equals: id } },
-                    limit: 1,
-                });
-                if (sections.totalDocs > 0) {
-                    throw new APIError(`No se puede eliminar: Este personaje está asignado a la sección "${sections.docs[0].name}"`, 400);
-                }
-
                 const articles = await req.payload.find({
                     collection: 'articles',
                     where: { author: { equals: id } },
@@ -32,6 +23,7 @@ export const Characters: CollectionConfig = {
     },
     admin: {
         useAsTitle: 'name',
+        defaultColumns: ['name', 'slug', 'age'],
     },
     access: {
         read: () => true,
@@ -47,14 +39,37 @@ export const Characters: CollectionConfig = {
             name: 'slug',
             label: 'Slug',
             type: 'text',
-            required: true,
             unique: true,
+            admin: {
+                position: 'sidebar',
+                readOnly: true,
+                description: 'Se genera automáticamente a partir del nombre',
+            },
+            hooks: {
+                beforeValidate: [
+                    ({ value, data }) => {
+                        if (data?.name) {
+                            return data.name
+                                .toLowerCase()
+                                .trim()
+                                .normalize('NFD')
+                                .replace(/[\u0300-\u036f]/g, '')
+                                .replace(/[^a-z0-9]+/g, '-')
+                                .replace(/(^-|-$)+/g, '');
+                        }
+                        return value;
+                    },
+                ],
+            },
         },
         {
             name: 'description',
             label: 'Descripción',
             type: 'textarea',
             required: true,
+            admin: {
+                description: 'Descripción corta que aparece en las tarjetas y previsualizaciones',
+            },
         },
         {
             name: 'biography',
@@ -76,7 +91,7 @@ export const Characters: CollectionConfig = {
         },
         {
             name: 'favoriteColor',
-            label: 'Color Favorito',
+            label: 'Color favorito',
             type: 'text',
         },
         {
@@ -85,62 +100,6 @@ export const Characters: CollectionConfig = {
             type: 'upload',
             relationTo: 'media',
             required: true,
-        },
-        {
-            name: 'colors',
-            label: 'Colores',
-            type: 'group',
-            fields: [
-                {
-                    name: 'primary',
-                    label: 'Primario',
-                    type: 'text',
-                    required: true,
-                },
-                {
-                    name: 'secondary',
-                    label: 'Secundario',
-                    type: 'text',
-                    required: true,
-                },
-                {
-                    name: 'dark',
-                    label: 'Oscuro',
-                    type: 'text',
-                    required: true,
-                },
-            ],
-        },
-        {
-            name: 'position3D',
-            label: 'Posición 3D',
-            type: 'group',
-            admin: {
-                description: 'Posición 3D para escena interactiva',
-            },
-            fields: [
-                {
-                    name: 'x',
-                    label: 'X',
-                    type: 'number',
-                    required: true,
-                    defaultValue: 0,
-                },
-                {
-                    name: 'y',
-                    label: 'Y',
-                    type: 'number',
-                    required: true,
-                    defaultValue: 0,
-                },
-                {
-                    name: 'z',
-                    label: 'Z',
-                    type: 'number',
-                    required: true,
-                    defaultValue: 0,
-                },
-            ],
         },
     ],
 };

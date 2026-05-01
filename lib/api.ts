@@ -80,19 +80,20 @@ export async function getArticleBySlug(slug: string) {
 }
 
 /**
- * Obtener artículos por sección
+ * Obtener artículos por personaje (author)
  */
-export async function getArticlesBySection(sectionSlug: string) {
+export async function getArticlesByCharacter(characterSlug: string) {
   const params = {
     where: {
-      'section.slug': {
-        equals: sectionSlug,
+      'author.slug': {
+        equals: characterSlug,
       },
       status: {
         equals: 'published',
       },
     },
     sort: '-publishedAt',
+    depth: 1,
   };
   const data = await fetchPayload('articles', params);
   return data.docs.map(transformPayloadArticle);
@@ -122,13 +123,7 @@ export async function getCharacterBySlug(slug: string) {
   return data.docs[0] ? transformPayloadCharacter(data.docs[0]) : null;
 }
 
-/**
- * Obtener todas las secciones
- */
-export async function getSections() {
-  const data = await fetchPayload('sections');
-  return data.docs;
-}
+
 
 /**
  * Buscar artículos
@@ -264,11 +259,10 @@ export function transformPayloadArticle(doc: any) {
     content: doc.content, // RichText JSON
     author: doc.author ? doc.author.name : 'Revista Bífido',
     publishedAt: doc.publishedAt,
-    // Prioritize constructed URL because staticURL config might be missing/broken in Media collection
     featuredImage: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
-    section: doc.section?.slug || 'general',
-    // characterId can be derived if sections are related to characters
-    characterId: doc.section?.character?.slug || '',
+    // Section derived directly from the author (character)
+    section: doc.author?.slug || 'general',
+    characterId: doc.author?.slug || '',
   };
 }
 
@@ -276,20 +270,12 @@ export function transformPayloadCharacter(doc: any) {
   return {
     id: doc.slug,
     name: doc.name,
-    section: doc.slug, // Assuming character slug matches section slug usually
     slug: doc.slug,
     description: doc.description,
-    religion: doc.religion,
-    age: doc.age,
-    favoriteColor: doc.favoriteColor,
+    religion: doc.religion || '',
+    age: doc.age || '',
+    favoriteColor: doc.favoriteColor || '',
     image: doc.image?.filename ? `/media/${doc.image.filename}` : (doc.image?.url || '/images/placeholder.png'),
-    color: {
-      // Mocked colors or accessed if added to schema
-      primary: doc.colorPrimary || '#000000',
-      secondary: doc.colorSecondary || '#ffffff',
-      dark: doc.colorDark || '#000000',
-    },
-    position: [0, 0, 0] as [number, number, number],
   };
 }
 

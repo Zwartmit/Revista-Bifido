@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { ArrowRight, ArrowLeft, Music, Youtube } from 'lucide-react';
 import gsap from 'gsap';
+import { getCharacterColors } from '@/lib/character-colors';
 
 interface Props {
     section: string;
@@ -19,8 +20,7 @@ export default function PunkibriPage({ section, character, articles }: Props) {
 
     const featuredArticle = articles[0] || null;
     const regularArticles = articles.slice(1);
-    const primary = character.color?.primary || '#4CAF50';
-    const dark = character.color?.dark || '#388E3C';
+    const { primary, dark } = getCharacterColors(character.slug);
 
     useEffect(() => {
         gsap.fromTo(
@@ -116,7 +116,7 @@ export default function PunkibriPage({ section, character, articles }: Props) {
                     <>
                         {/* Featured — large landscape */}
                         {featuredArticle && (
-                            <Link href={`/${section}/${featuredArticle.slug}`}
+                            <Link href={`/${section}/articulos/${featuredArticle.slug}`}
                                 className="group block mb-14 border border-[#1e1e1e] hover:border-white/20 transition-colors duration-300 overflow-hidden">
                                 <div className="relative w-full aspect-[21/9] overflow-hidden">
                                     {featuredArticle.featuredImage ? (
@@ -150,7 +150,7 @@ export default function PunkibriPage({ section, character, articles }: Props) {
                         {regularArticles.length > 0 && (
                             <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                                 {regularArticles.map((article) => (
-                                    <Link key={article.id} href={`/${section}/${article.slug}`}
+                                    <Link key={article.id} href={`/${section}/articulos/${article.slug}`}
                                         className="group flex flex-col border border-[#1e1e1e] hover:border-white/20 transition-all duration-300 overflow-hidden bg-[#080808]">
                                         <div className="relative w-full aspect-[4/3] overflow-hidden">
                                             {article.featuredImage ? (

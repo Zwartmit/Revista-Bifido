@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { characters } from '@/lib/characters';
+import { getCharacterColors } from '@/lib/character-colors';
 import { RiFacebookFill, RiWhatsappFill, RiInstagramFill, RiYoutubeFill } from "react-icons/ri";
 
 export default function Footer() {
@@ -77,21 +78,23 @@ export default function Footer() {
                 <div className="w-full h-[2px] bg-bifido-neon" />
               </div>
               <div className="flex flex-row lg:flex-col gap-3 lg:gap-3 justify-center lg:items-start flex-wrap">
-                {characters.map((character) => (
+                {characters.map((character) => {
+                  const cColors = getCharacterColors(character.slug);
+                  return (
                   <Link
                     key={character.id}
                     href={`/${character.slug}`}
                     className="font-googlesans text-base transition-colors text-center lg:text-left group flex items-center justify-center"
-                    style={{ color: character.color.primary }}
+                    style={{ color: cColors.primary }}
                   >
                     {/* Desktop text */}
                     <span className="hidden lg:inline-block hover:brightness-125 transition-all">
-                      {character.section}
+                      {character.name}
                     </span>
                     {/* Mobile icon */}
                     <div
                       className="lg:hidden w-12 h-12 rounded-full overflow-hidden border-2 transition-transform hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
-                      style={{ borderColor: character.color.primary }}
+                      style={{ borderColor: cColors.primary }}
                     >
                       <Image
                         src={`/icons/${character.slug}.png`}
@@ -102,7 +105,8 @@ export default function Footer() {
                       />
                     </div>
                   </Link>
-                ))}
+                  );
+                })}
               </div>
             </div>
 

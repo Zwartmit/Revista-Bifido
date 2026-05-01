@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Article } from '@/types';
 import { formatDate } from '@/lib/utils';
 import { getCharacterById } from '@/lib/characters';
+import { getCharacterColors } from '@/lib/character-colors';
 
 interface ArticleCardProps {
   article: Article;
@@ -24,9 +25,9 @@ export default function ArticleCard({ article }: ArticleCardProps) {
           {character && (
             <div
               className="absolute top-3 right-3 px-3 py-1 rounded-full text-white text-xs font-semibold"
-              style={{ backgroundColor: character.color.primary }}
+              style={{ backgroundColor: getCharacterColors(character.slug).primary }}
             >
-              {character.section}
+              {character.name}
             </div>
           )}
         </div>

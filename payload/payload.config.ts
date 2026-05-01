@@ -10,7 +10,7 @@ import { es } from '@payloadcms/translations/languages/es';
 
 // Collections
 import { Articles } from './collections/Articles';
-import { Sections } from './collections/Sections';
+
 import { Characters } from './collections/Characters';
 import { LiveArchive } from './collections/LiveArchive';
 import { Events } from './collections/Events';
@@ -57,7 +57,6 @@ export default buildConfig({
     collections: [
         Users,
         Articles,
-        Sections,
         Characters,
         LiveArchive,
         Events,

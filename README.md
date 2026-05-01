@@ -1,88 +1,208 @@
 # Revista Bífido
 
-Plataforma web de Revista Bífido construida con una estética visual disruptiva y de alto impacto editorial. La plataforma presenta un diseño dinámico e híbrido, combinando elementos visuales como la estética "glitch / broadcast" con estilos de "collage urbano".
+Plataforma web de **Revista Bífido** — periodismo crudo para sensibilidades frágiles. Construida con una estética visual disruptiva y de alto impacto editorial, combinando elementos de *glitch / broadcast* con *collage urbano*.
 
-El proyecto está construido sobre un stack moderno y robusto utilizando Next.js (App Router) y Payload CMS, garantizando tanto una experiencia de usuario impresionante en la interfaz del cliente (frontend) como un potente administrador para la gestión de contenido (backend).
+El proyecto opera como un **monorepo full-stack**: el frontend (Next.js App Router) y el CMS headless (Payload CMS v3) conviven en el mismo repositorio, compartiendo modelos de datos y la misma instancia de servidor.
 
-## Tecnologías
+---
 
-- **Framework**: [Next.js](https://nextjs.org/) (App Router)
-- **CMS**: [Payload CMS](https://payloadcms.com/) (Versión 3)
-- **Base de Datos**: PostgreSQL
-- **Estilos**: [Tailwind CSS](https://tailwindcss.com/)
-- **Animaciones y 3D**: [GSAP](https://gsap.com/) y [Three.js](https://threejs.org/) (`@react-three/fiber`, `@react-three/drei`)
-- **Iconos**: [Lucide React](https://lucide.dev/) y [React Icons](https://react-icons.github.io/react-icons/)
-- **Lenguaje**: TypeScript
+## Stack tecnológico
 
-## Guía de Inicio
+| Capa              | Tecnología                                                                      |
+| ----------------- | -------------------------------------------------------------------------------- |
+| Framework         | [Next.js 15](https://nextjs.org/) — App Router                                     |
+| CMS               | [Payload CMS v3](https://payloadcms.com/) — headless, embebido                     |
+| Base de datos     | PostgreSQL (local o Neon)                                                        |
+| ORM / Migraciones | Drizzle ORM (via Payload)                                                        |
+| Estilos           | [Tailwind CSS](https://tailwindcss.com/) + tokens personalizados                    |
+| Animaciones       | [GSAP](https://gsap.com/) + ScrollTrigger + `@gsap/react`                         |
+| 3D / WebGL        | [Three.js](https://threejs.org/) · `@react-three/fiber` · `@react-three/drei` |
+| Iconos            | [Lucide React](https://lucide.dev/) · [React Icons](https://react-icons.github.io/)   |
+| Lenguaje          | TypeScript                                                                       |
 
-Sigue estas instrucciones para configurar el proyecto de forma local.
+---
+
+## Inicio rápido
 
 ### Prerrequisitos
 
-- Node.js (se recomienda la versión v18 o superior)
-- Base de datos PostgreSQL (local o en la nube, ej. Neon)
+- Node.js v18+
+- PostgreSQL (local o instancia en la nube como [Neon](https://neon.tech/))
 
 ### Instalación
 
-1. Clona el repositorio y navega al directorio del proyecto (si no lo has hecho aún):
-
-   ```bash
-   cd Revista-Bifido
-   ```
-2. Instala las dependencias necesarias:
-
-   ```bash
-   npm install
-   ```
-3. Configura tus variables de entorno:
-
-   Copia el archivo `.env.example` a un nuevo archivo `.env` y actualiza los valores con tu configuración local:
-
-   ```bash
-   cp .env.example .env
-   ```
-
-   **Variables de Entorno**:
-
-   - `PAYLOAD_SECRET`: Una cadena de texto segura y aleatoria utilizada por Payload CMS para funciones criptográficas.
-   - `DATABASE_URI`: Cadena de conexión (connection string) a tu base de datos PostgreSQL.
-   - `NEXT_PUBLIC_SERVER_URL`: La URL pública de tu aplicación (por defecto: `http://localhost:3000`).
-
-### Ejecutando el Proyecto
-
-Inicia el servidor de desarrollo:
-
 ```bash
-npm run dev
+# 1. Instalar dependencias
+npm install
+
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus valores reales
 ```
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador web para ver la aplicación.
-Para acceder al panel de administración de Payload CMS y gestionar el contenido, ingresa a [http://localhost:3000/admin](http://localhost:3000/admin).
+### Variables de entorno
 
-## Scripts Disponibles
+| Variable                   | Descripción                                                  |
+| -------------------------- | ------------------------------------------------------------- |
+| `PAYLOAD_SECRET`         | Clave secreta para Payload CMS (JWT, cifrado)                 |
+| `DATABASE_URI`           | Connection string de PostgreSQL                               |
+| `NEXT_PUBLIC_SERVER_URL` | URL pública del servidor (default:`http://localhost:3000`) |
 
-- `npm run dev`: Inicia el servidor de desarrollo local de Next.js.
-- `npm run build`: Compila la aplicación y optimiza los recursos para el despliegue en producción.
-- `npm run start`: Inicia la aplicación que ya fue compilada en entorno de producción.
-- `npm run lint`: Ejecuta el validador (ESLint) para asegurar la calidad del código.
+### Comandos
 
-## Estructura del Repositorio
+```bash
+npm run dev      # Servidor de desarrollo
+npm run build    # Build de producción
+npm run start    # Iniciar build compilado
+npm run lint     # Validación ESLint
+```
 
-- `/app`: Rutas del *App Router* de Next.js, vistas y layouts. Incluye tanto el sitio web accesible para los usuarios como la inyección del entorno de administración de Payload.
-- `/components`: Componentes reutilizables de React para la interfaz gráfica.
-- `/payload`: Configuración del CMS genérico, colecciones para bases de datos (Artículos, Eventos, Configuraciones, etc) e inicializador de Payload.
-- `/public`: Archivos estáticos accesibles globalmente (tipografías, imágenes, íconos).
-- `/lib`: Funciones de utilidad, helpers auxiliares y configuraciones globales para facilitar el desarrollo.
-- `/types`: Definiciones de interfaces y tipos en TypeScript.
+- **Sitio web:** `http://localhost:3000`
+- **Panel admin:** `http://localhost:3000/admin`
 
-## Características Principales
+---
 
-- **CMS Headless Embebido**: Todo el poder visual de Next.js convive con el panel de administración centralizado de Payload CMS en el mismo repositorio.
-- **Rutas Dinámicas**: Creación de páginas únicas al instante desde el CMS (como noticias, artículos editoriales y perfiles puntuales).
-- **Interfaz Inmersiva**: Animaciones controladas con GSAP y renderizado en web 3D con Three.js / React Three Fiber.
-- **Diseño Responsivo**: Experiencia de usuario (UX/UI) adaptada al enfoque *Mobile-First*, mejorada globalmente con las utilidades de Tailwind CSS.
+## Arquitectura del proyecto
+
+```
+Revista-Bifido/
+├── app/                          # Next.js App Router
+│   ├── (payload)/                # Rutas internas de Payload CMS
+│   │   ├── admin/                # Panel de administración (/admin)
+│   │   └── api/                  # API handlers de Payload
+│   ├── (website)/                # Grupo de rutas públicas del sitio
+│   │   ├── layout.tsx            # Layout global (Header + Footer)
+│   │   ├── page.tsx              # Home (/)
+│   │   ├── HomeClient.tsx        # Componente cliente de la home
+│   │   ├── globals.css           # Estilos globales del sitio
+│   │   ├── [slug]/               # Rutas dinámicas por personaje
+│   │   │   ├── page.tsx          # Landing informativa (/malandra)
+│   │   │   ├── CharacterLandingClient.tsx
+│   │   │   └── articulos/        # Feed de contenido
+│   │   │       ├── page.tsx      # /malandra/articulos
+│   │   │       ├── SectionClient.tsx   # Fallback genérico
+│   │   │       ├── characters/   # Layouts por personaje
+│   │   │       │   ├── MalandraPage.tsx
+│   │   │       │   ├── IncendiaPage.tsx
+│   │   │       │   ├── MordazPage.tsx
+│   │   │       │   ├── AnikaPage.tsx
+│   │   │       │   └── PunkibriPage.tsx
+│   │   │       └── [article]/    # Artículo individual
+│   │   │           ├── page.tsx  # /malandra/articulos/mi-nota
+│   │   │           └── ArticleClient.tsx
+│   │   ├── elparche/             # Hub de personajes (/elparche)
+│   │   ├── eventos/              # Agenda de eventos (/eventos)
+│   │   ├── contactanos/          # Contacto (/contactanos)
+│   │   ├── mercado/              # Tienda (/mercado) [WIP]
+│   │   └── not-found.tsx         # Página 404 personalizada
+│   ├── api/
+│   │   └── [...slug]/            # API catchall de Payload
+│   └── fonts/                    # Fuentes locales (next/font)
+│
+├── components/                   # Componentes reutilizables
+│   ├── Header.tsx                # Navegación principal (desktop + mobile)
+│   ├── Footer.tsx                # Pie de página con La Manada
+│   ├── ArticleCard.tsx           # Tarjeta de artículo
+│   ├── GlobalSearchOverlay.tsx   # Overlay de búsqueda global
+│   ├── FluidSimulation.tsx       # Simulación de fluido WebGL (home)
+│   ├── ScrollToTop.tsx           # Botón volver arriba
+│   ├── BackToHome.tsx            # Link de regreso al inicio
+│   └── PlaceholderImage.tsx      # Imagen de placeholder
+│
+├── lib/                          # Lógica de negocio y utilidades
+│   ├── api.ts                    # Funciones de acceso a Payload CMS
+│   │                             #   getCharacters, getCharacterBySlug,
+│   │                             #   getArticlesByCharacter, getArticleBySlug,
+│   │                             #   getEvents, getLiveArchiveMembers
+│   ├── character-colors.ts       # Paleta de colores centralizada por personaje
+│   │                             #   CHARACTER_COLORS, getCharacterColors(slug)
+│   ├── characters.ts             # Datos estáticos de personajes (fallback del CMS)
+│   ├── payload.ts                # Inicializador del cliente de Payload
+│   └── utils.ts                  # Helpers generales (formatDate, etc.)
+│
+├── payload/                      # Configuración de Payload CMS
+│   ├── payload.config.ts         # Config principal (DB, colecciones, admin)
+│   └── collections/              # Esquemas de colecciones
+│       ├── Characters.ts         # Personajes (nombre, slug, descripción, bio...)
+│       ├── Articles.ts           # Artículos (título, contenido, author → Character)
+│       ├── Events.ts             # Eventos (título, fecha, lugar, imagen)
+│       ├── LiveArchive.ts        # Miembros del equipo / archivo vivo
+│       ├── Media.ts              # Gestión de archivos multimedia
+│       ├── Products.ts           # Productos para el mercado
+│       └── Users.ts              # Usuarios del panel admin
+│
+├── types/                        # Tipos e interfaces TypeScript
+│   └── index.ts                  # Character, Article
+│
+├── public/                       # Archivos estáticos
+│   ├── personajes/               # Imágenes PNG de los personajes
+│   ├── icons/                    # Logos, SVGs, íconos de la UI
+│   ├── backgrounds/              # Fondos y texturas
+│   ├── hero/                     # Imágenes hero de la home
+│   ├── favicon/                  # Variantes del favicon
+│   └── media/                    # Uploads de Payload CMS
+│
+├── Diagramación/                 # PDFs de referencia de diseño editorial
+├── tailwind.config.ts            # Tokens de diseño: colores, fuentes, animaciones
+├── next.config.js                # Config de Next.js (dominios de imágenes, etc.)
+└── tsconfig.json                 # Configuración de TypeScript
+```
+
+---
+
+## Arquitectura de contenido
+
+### Personajes (La Manada)
+
+Los 5 personajes son el eje central del modelo de contenido. Cada uno tiene:
+
+| Campo                                   | Fuente                                                       |
+| --------------------------------------- | ------------------------------------------------------------ |
+| Nombre, Slug, Descripción, Biografía  | Payload CMS (colección `Characters`)                      |
+| Religión, Edad, Color favorito, Imagen | Payload CMS                                                  |
+| Paleta de colores del UI                | `lib/character-colors.ts` (estático, desacoplado del CMS) |
+
+> **Fallback:** Si Payload CMS no responde, `lib/characters.ts` provee datos estáticos de solo lectura para todos los personajes.
+
+### Artículos
+
+Los artículos se relacionan directamente con el personaje que los escribe (`author → Characters`).
+
+### Rutas de personaje
+
+Cada personaje tiene **dos páginas distintas**:
+
+| Ruta                            | Propósito                                                       |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `/{slug}`                     | Landing informativa: quién es, ficha técnica, CTA al contenido |
+| `/{slug}/articulos`           | Feed editorial: artículos, podcasts, publicaciones              |
+| `/{slug}/articulos/{article}` | Artículo individual                                             |
+
+---
+
+## Sistema de colores
+
+Los colores de cada personaje están centralizados en `lib/character-colors.ts` y **no se almacenan en la base de datos**. Esto garantiza consistencia entre el CMS, el frontend y `tailwind.config.ts`.
+
+| Personaje | Primary     | Dark        |
+| --------- | ----------- | ----------- |
+| Malandra  | `#f6daa3` | `#d6ba83` |
+| Incendia  | `#FF9800` | `#F57C00` |
+| Mordaz    | `#FF6B6B` | `#D32F2F` |
+| Punkibrí | `#4CAF50` | `#388E3C` |
+| Anika     | `#a372b3` | `#8b5a9a` |
+
+---
+
+## Convenciones de desarrollo
+
+- Las páginas server-side usan `export const dynamic = 'force-dynamic'` donde se accede al CMS.
+- Los componentes visuales son `'use client'` con animaciones en `useEffect` via GSAP.
+- Los datos de color **nunca** deben leerse desde `character.color` — siempre usar `getCharacterColors(slug)`.
+- Los links a contenido de personajes siguen el patrón `/{slug}/articulos`, nunca `/{slug}` directamente para artículos.
+
+---
 
 ## Licencia
 
-Este proyecto es de uso privado y comercial de los autores correspondientes. Queda prohibida la copia, distribución u otro uso sin la autorización pertinente de sus propietarios.
+Este proyecto es de uso privado y comercial de sus autores. Queda prohibida la copia, distribución o cualquier uso sin autorización expresa de sus propietarios.

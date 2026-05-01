@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
+import { getCharacterColors } from '@/lib/character-colors';
 
 interface SectionClientProps {
     section: string;
@@ -43,8 +44,7 @@ export default function SectionClient({ section, character, articles }: SectionC
 
     if (!character) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Sección no encontrada</div>;
 
-    const primaryColor = character.color?.primary || '#CCFD29';
-    const darkColor = character.color?.dark || '#000';
+    const { primary: primaryColor, dark: darkColor } = getCharacterColors(character.slug);
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -101,7 +101,7 @@ export default function SectionClient({ section, character, articles }: SectionC
                         className="hero-anim block font-display text-xs tracking-[0.4em] uppercase mb-3"
                         style={{ color: primaryColor }}
                     >
-                        {character.section}
+                        {character.name}
                     </span>
 
                     {/* Character name */}
@@ -165,7 +165,7 @@ export default function SectionClient({ section, character, articles }: SectionC
                         {/* ── Featured / Origin article ── */}
                         {featuredArticle && (
                             <Link
-                                href={`/${section}/${featuredArticle.slug}`}
+                                href={`/${section}/articulos/${featuredArticle.slug}`}
                                 className="group block mb-14 border border-[#1e1e1e] hover:border-white/20 transition-colors duration-300 overflow-hidden"
                             >
                                 <div className="flex flex-col lg:flex-row">
@@ -233,7 +233,7 @@ export default function SectionClient({ section, character, articles }: SectionC
                                 {regularArticles.map((article) => (
                                     <Link
                                         key={article.id}
-                                        href={`/${section}/${article.slug}`}
+                                        href={`/${section}/articulos/${article.slug}`}
                                         className="group flex flex-col border border-[#1e1e1e] hover:border-white/20 transition-all duration-300 overflow-hidden bg-[#080808]"
                                     >
                                         {/* Thumbnail */}

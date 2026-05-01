@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { characters } from '@/lib/characters';
+import { getCharacterColors } from '@/lib/character-colors';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -42,6 +43,7 @@ export default function ElParchePage() {
     const [modalPhotoIndex, setModalPhotoIndex] = useState(0);
 
     const activeCharacter = characters.find(m => m.id === activeCharacterId) || characters[0];
+    const activeColors = getCharacterColors(activeCharacter.slug);
     const otherCharacters = characters.filter((m) => m.id !== activeCharacterId);
 
     const handlePrev = () => {
@@ -200,7 +202,7 @@ export default function ElParchePage() {
                 <div
                     className="absolute inset-0 z-0 pointer-events-none transition-all duration-1000 opacity-50"
                     style={{
-                        background: `radial-gradient(ellipse at 15% 100%, ${activeCharacter.color?.primary || '#b4ff00'}33 0%, transparent 60%)`
+                        background: `radial-gradient(ellipse at 15% 100%, ${activeColors.primary}33 0%, transparent 60%)`
                     }}
                 />
 
@@ -209,18 +211,19 @@ export default function ElParchePage() {
                     <div className="md:sticky md:top-40 flex flex-col overflow-hidden">
                         <div ref={leftGridRef} className="relative flex-1 overflow-hidden bg-transparent flex flex-col group min-h-[350px] md:min-h-[500px]">
                             {/* Interactive Accordion Items */}
-                            {otherCharacters.map((m, i) => (
+                            {otherCharacters.map((m, i) => {
+                                const mColors = getCharacterColors(m.slug);
+                                return (
                                 <div
                                     key={m.id}
                                     onClick={() => setActiveCharacterId(m.id)}
                                     className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden transition-all duration-500 ease-out relative min-h-[90px]"
                                     style={{ backgroundColor: 'transparent' }}
                                 >
-                                    {/* Subtle Background Glow */}
                                     <div
                                         className="absolute inset-0 opacity-20 group-hover/item:opacity-40 transition-opacity duration-500 pointer-events-none"
                                         style={{
-                                            background: `radial-gradient(ellipse at 50% 20%, ${m.color?.primary}80 0%, ${m.color?.primary}00 70%)`
+                                            background: `radial-gradient(ellipse at 50% 20%, ${mColors.primary}80 0%, ${mColors.primary}00 70%)`
                                         }}
                                     ></div>
 
@@ -246,13 +249,13 @@ export default function ElParchePage() {
                                     >
                                         <span
                                             className="font-display text-xl lg:text-2xl xl:text-3xl lg:group-hover/item:text-6xl tracking-widest transition-all duration-700 opacity-80 group-hover:opacity-20 group-hover/item:!opacity-100 [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:group-hover:[writing-mode:horizontal-tb] md:rotate-180 md:group-hover:rotate-0 uppercase drop-shadow-4xl leading-none block origin-center text-right group-hover:scale-90 group-hover/item:scale-100"
-                                            style={{ color: m.color?.primary || 'white', textShadow: '0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)' }}
+                                            style={{ color: mColors.primary, textShadow: '0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)' }}
                                         >
                                             {m.name}
                                         </span>
                                     </div>
                                 </div>
-                            ))}
+                            )})}
                         </div>
                     </div>
                 </div>
@@ -266,13 +269,13 @@ export default function ElParchePage() {
                             <div
                                 className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-700 opacity-60 md:opacity-40"
                                 style={{
-                                    background: `radial-gradient(circle at 50% 40%, ${activeCharacter.color?.primary}44 0%, ${activeCharacter.color?.primary}11 50%, transparent 100%)`
+                                    background: `radial-gradient(circle at 50% 40%, ${activeColors.primary}44 0%, ${activeColors.primary}11 50%, transparent 100%)`
                                 }}
                             />
 
                             {/* Interactive WebGL Fluid Simulation */}
                             <FluidSimulation
-                                color={activeCharacter.color?.primary}
+                                color={activeColors.primary}
                                 opacity={0.5}
                                 className="absolute inset-0 z-0 pointer-events-none"
                             />
@@ -283,14 +286,16 @@ export default function ElParchePage() {
 
                         {/* Mobile Horizontal Avatar Carrousel (Hidden on Desktop) */}
                         <div className="absolute top-0 left-0 w-full z-40 flex md:hidden justify-center items-start py-6 px-4 gap-2 sm:gap-6 bg-gradient-to-b from-black via-black/80 to-transparent">
-                            {otherCharacters.map(m => (
+                            {otherCharacters.map(m => {
+                                const mColors = getCharacterColors(m.slug);
+                                return (
                                 <button
                                     key={m.id}
                                     onClick={() => setActiveCharacterId(m.id)}
                                     className="flex-1 flex flex-col items-center gap-2 group max-w-[90px]"
                                 >
                                     <div className="w-12 h-12 rounded-full overflow-hidden border-2 transition-transform group-hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
-                                        style={{ borderColor: m.color?.primary }}>
+                                        style={{ borderColor: mColors.primary }}>
                                         <Image
                                             src={`/icons/${m.slug}.png`}
                                             alt={m.name}
@@ -300,11 +305,12 @@ export default function ElParchePage() {
                                         />
                                     </div>
                                     <span className="text-[clamp(8px,2.8vw,12px)] font-display tracking-widest uppercase transition-colors leading-tight text-center"
-                                        style={{ color: m.color?.primary || '#aaa' }}>
+                                        style={{ color: mColors.primary || '#aaa' }}>
                                         {m.name}
                                     </span>
                                 </button>
-                            ))}
+                                );
+                            })}
                         </div>
 
 
@@ -349,21 +355,17 @@ export default function ElParchePage() {
                                 {/* CTA Buttons */}
                                 <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full sm:w-auto mt-8 sm:mt-10">
                                     <Link
-                                        href={`/${activeCharacter.slug}`}
+                                        href={`/${activeCharacter.slug}/articulos`}
                                         className="bg-white text-black font-googlesans text-base sm:text-lg py-3 px-6 sm:px-8 rounded-3xl hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all text-center"
                                     >
                                         Lee mis artículos
                                     </Link>
-                                    <button
-                                        onClick={() => {
-                                            if (window.innerWidth < 1024) {
-                                                document.getElementById('bio-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                            }
-                                        }}
+                                    <Link
+                                        href={`/${activeCharacter.slug}`}
                                         className="bg-transparent border border-white text-white font-googlesans text-base sm:text-lg py-3 px-6 sm:px-8 rounded-3xl hover:bg-white/10 transition-all text-center"
                                     >
                                         Conóceme
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
 
@@ -375,7 +377,7 @@ export default function ElParchePage() {
                                         <h2 className="font-display text-2xl sm:text-3xl text-white mb-2 uppercase">
                                             ¡Hola, soy {activeCharacter.name}!
                                         </h2>
-                                        <div className="w-full h-[2px] mb-0" style={{ backgroundColor: activeCharacter.color?.primary }}></div>
+                                        <div className="w-full h-[2px] mb-0" style={{ backgroundColor: activeColors.primary }}></div>
                                     </div>
 
                                     <p className="text-sm text-gray-200 mb-8 leading-relaxed text-center font-light">
@@ -409,7 +411,7 @@ export default function ElParchePage() {
                 <div
                     className="absolute inset-0 z-0 pointer-events-none transition-all duration-1000 opacity-60"
                     style={{
-                        background: `radial-gradient(ellipse at 15% 0%, ${activeCharacter.color?.primary || '#b4ff00'}33 0%, transparent 70%)`
+                        background: `radial-gradient(ellipse at 15% 0%, ${activeColors.primary}33 0%, transparent 70%)`
                     }}
                 />
 

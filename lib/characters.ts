@@ -1,90 +1,60 @@
 import { Character } from '@/types';
 
+/**
+ * Datos estáticos de personajes.
+ * Usados como fallback si el CMS no responde.
+ * La fuente de verdad es Payload CMS (colección "characters").
+ */
 export const characters: Character[] = [
   {
     id: 'malandra',
     name: 'Malandra',
-    section: 'Mala fama',
     slug: 'malandra',
     description: 'Cronista de la cultura underground y las expresiones artísticas marginales. Malandra celebra lo que la sociedad rechaza y encuentra belleza en lo prohibido.',
     religion: 'Culto a la creatividad',
     age: '33 años',
     favoriteColor: 'Púrpura oscuro',
     image: '/personajes/Malandra.png',
-    color: {
-      primary: '#f6daa3',
-      secondary: '#ffeed0',
-      dark: '#d6ba83',
-    },
-    position: [0, 0, 0],
   },
   {
     id: 'incendia',
     name: 'Incendia',
-    section: 'Fuegos diversos',
     slug: 'incendia',
     description: 'Activista de género, diversidad y equidad. Incendia arde con la pasión de la justicia social y lucha por un mundo donde todas las identidades sean respetadas.',
     religion: 'Interseccionalidad',
     age: '31 años',
     favoriteColor: 'Naranja fuego',
     image: '/personajes/Incendia.png',
-    color: {
-      primary: '#FF9800',
-      secondary: '#FFB74D',
-      dark: '#F57C00',
-    },
-    position: [4, 0, 0],
   },
   {
     id: 'mordaz',
     name: 'Mordaz',
-    section: 'Lxs compas de Mordaz',
     slug: 'mordaz',
     description: 'Crítico implacable y portavoz de las verdades incómodas. Mordaz no se muerde la lengua y expone las contradicciones del sistema con humor ácido.',
     religion: 'Escepticismo militante',
     age: '42 años',
     favoriteColor: 'Rojo sangre',
     image: '/personajes/Mordaz.png',
-    color: {
-      primary: '#FF6B6B',
-      secondary: '#FF8E8E',
-      dark: '#D32F2F',
-    },
-    position: [-2, 0, 0],
   },
   {
     id: 'punkibri',
     name: 'Punkibrí',
-    section: 'Ecorebeldia',
     slug: 'punkibri',
     description: 'Guardián de la naturaleza y activista ambiental. Punkibrí lucha por un mundo más verde y sostenible, denunciando la destrucción ecológica con su actitud rebelde.',
     religion: 'Animismo',
     age: '127 años (en años de colibrí)',
     favoriteColor: 'Verde musgo',
     image: '/personajes/Punkibri.png',
-    color: {
-      primary: '#4CAF50',
-      secondary: '#81C784',
-      dark: '#388E3C',
-    },
-    position: [-4, 0, 0],
   },
   {
     id: 'anika',
     name: 'Anika',
-    section: 'Muda de piel',
     slug: 'anika',
     description: 'Defensora de la reducción de riesgos y daños. Anika promueve el autocuidado, la información responsable y el respeto a las decisiones personales sin juicios morales.',
     religion: 'Pragmatismo compasivo',
     age: '28 años',
     favoriteColor: 'Turquesa',
     image: '/personajes/Anika.png',
-    color: {
-      primary: '#a372b3',
-      secondary: '#b88bc8',
-      dark: '#8b5a9a',
-    },
-    position: [2, 0, 0],
   },
 ];
 

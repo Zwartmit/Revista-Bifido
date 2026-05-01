@@ -8,7 +8,7 @@ export const Articles: CollectionConfig = {
     },
     admin: {
         useAsTitle: 'title',
-        defaultColumns: ['title', 'author', 'section', 'publishedAt', 'featured'],
+        defaultColumns: ['title', 'author', 'publishedAt', 'status', 'featured'],
     },
     access: {
         read: () => true,
@@ -54,17 +54,13 @@ export const Articles: CollectionConfig = {
         },
         {
             name: 'author',
-            label: 'Autor',
+            label: 'Personaje',
             type: 'relationship',
             relationTo: 'characters',
             required: true,
-        },
-        {
-            name: 'section',
-            label: 'Sección',
-            type: 'relationship',
-            relationTo: 'sections',
-            required: true,
+            admin: {
+                description: 'Personaje de Bífido que publica este artículo',
+            },
         },
         {
             name: 'featured',

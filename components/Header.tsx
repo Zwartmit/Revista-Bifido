@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { characters } from '@/lib/characters';
+import { getCharacterColors } from '@/lib/character-colors';
 import GlobalSearchOverlay from './GlobalSearchOverlay';
 
 export default function Header() {
@@ -202,10 +203,11 @@ export default function Header() {
 
                                 <div className={`overflow-hidden transition-all duration-500 w-full flex flex-col items-start ${isCharacterMenuOpen ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}`}>
                                     {characters.map((character) => {
+                                        const mColors = getCharacterColors(character.slug);
                                         const isActive = pathname === `/${character.slug}`;
                                         return (
                                             <Link key={character.id} href={`/${character.slug}`} onClick={() => { setIsMenuOpen(false); setIsCharacterMenuOpen(false); }} className={`w-full border-b border-white/10 py-5 px-8 font-display text-2xl sm:text-3xl uppercase transition-colors flex items-center gap-4 bg-[#111] hover:bg-[#222] ${isActive ? 'text-bifido-neon' : 'text-white/60 hover:text-white'}`}>
-                                                <div className="w-2 h-6 shrink-0 rounded-full" style={{ backgroundColor: character.color.primary }}></div>
+                                                <div className="w-2 h-6 shrink-0 rounded-full" style={{ backgroundColor: mColors.primary }}></div>
                                                 {character.name}
                                             </Link>
                                         );
@@ -266,6 +268,7 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
     const [isHovered, setIsHovered] = useState(false);
     const pathname = usePathname();
     const isActive = pathname === `/${character.slug}`;
+    const cColors = getCharacterColors(character.slug);
 
     // Check if we're on any section page
     const isOnSectionPage = characters.some(m => pathname === `/${m.slug}`);
@@ -273,11 +276,11 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
     // Determine text color based on state and context
     let textColor;
     if (isActive) {
-        textColor = character.color.primary; // Bright color for active link on dark background
+        textColor = cColors.primary;
     } else if (isHovered) {
-        textColor = isOnSectionPage ? '#FFFFFF' : character.color.primary;
+        textColor = isOnSectionPage ? '#FFFFFF' : cColors.primary;
     } else {
-        textColor = isOnSectionPage ? '#E5E7EB' : '#9CA3AF'; // Light gray on section pages, normal gray otherwise
+        textColor = isOnSectionPage ? '#E5E7EB' : '#9CA3AF';
     }
 
     if (isMobile) {
@@ -290,13 +293,13 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
                     }`}
                 onClick={onClick}
                 style={{
-                    backgroundColor: isActive ? `${character.color.primary}1A` : 'transparent',
-                    borderLeft: `4px solid ${character.color.primary}`,
-                    color: isActive ? character.color.primary : textColor,
+                    backgroundColor: isActive ? `${cColors.primary}1A` : 'transparent',
+                    borderLeft: `4px solid ${cColors.primary}`,
+                    color: isActive ? cColors.primary : textColor,
                     paddingLeft: '12px'
                 }}
             >
-                {character.section}
+                {character.name}
             </Link>
         );
     }
@@ -307,8 +310,8 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
             className={`font-display text-base transition-all duration-200 flex items-center gap-3 px-4 py-3 rounded-xl w-full ${!isActive ? 'hover:bg-white/5 border-l-4 border-transparent' : ''}`}
             style={{
                 color: textColor,
-                backgroundColor: isActive ? `${character.color.primary}1A` : undefined,
-                borderLeft: isActive ? `4px solid ${character.color.primary}` : undefined,
+                backgroundColor: isActive ? `${cColors.primary}1A` : undefined,
+                borderLeft: isActive ? `4px solid ${cColors.primary}` : undefined,
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -317,11 +320,11 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
             <span
                 className="w-2 h-2 rounded-full transition-transform duration-200"
                 style={{
-                    backgroundColor: character.color.primary,
+                    backgroundColor: cColors.primary,
                     transform: isHovered || isActive ? 'scale(1.5)' : 'scale(1)'
                 }}
             />
-            {character.section}
+            {character.name}
         </Link>
     );
 }

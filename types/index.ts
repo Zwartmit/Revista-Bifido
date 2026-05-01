@@ -1,19 +1,13 @@
 export interface Character {
   id: string;
   name: string;
-  section: string;
   slug: string;
   description: string;
   religion: string;
   age: string;
   favoriteColor: string;
   image: string;
-  color: {
-    primary: string;
-    secondary: string;
-    dark: string;
-  };
-  position: [number, number, number]; // Posición 3D
+  biography?: string;
 }
 
 export interface Article {
@@ -25,15 +19,7 @@ export interface Article {
   author: string;
   publishedAt: string;
   featuredImage: string;
-  section: string;
-  characterId: string;
+  section: string;       // = author.slug (character slug)
+  characterId: string;   // = author.slug
   featured?: boolean;
-}
-
-export interface Section {
-  id: string;
-  name: string;
-  slug: string;
-  characterId: string;
-  description: string;
 }

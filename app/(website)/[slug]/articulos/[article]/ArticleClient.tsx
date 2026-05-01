@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { Facebook, Twitter, Share2, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
+import { getCharacterColors } from '@/lib/character-colors';
 
 interface ArticleClientProps {
     article: any;
@@ -99,17 +100,18 @@ export default function ArticleClient({ article, character }: ArticleClientProps
     const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
     if (!character) return <div>Character not found</div>;
+    const { primary: charPrimary, dark: charDark } = getCharacterColors(character.slug);
 
     return (
         <article className="min-h-screen pt-24 md:pt-52">
             {/* Back Button */}
             <div className="container mx-auto px-4 py-6">
                 <Link
-                    href={`/${character.section}`} // Use character.section (which acts as slug here based on mock data logic, or character.slug)
+                    href={`/${character.slug}/articulos`}
                     className="inline-flex items-center text-gray-600 hover:text-bifido-black transition-colors"
                 >
                     <ArrowLeft size={20} className="mr-2" />
-                    Volver a {character.section}
+                    Volver a {character.name}
                 </Link>
             </div>
 
@@ -135,9 +137,9 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                     <div className="container mx-auto">
                         <div
                             className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
-                            style={{ backgroundColor: character.color?.primary || '#000' }}
+                            style={{ backgroundColor: charPrimary }}
                         >
-                            {character.section}
+                            {character.name}
                         </div>
                         <h1 className="font-display text-4xl md:text-6xl mb-4 max-w-4xl">
                             {article.title}
@@ -197,11 +199,11 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                 <div
                     className="prose prose-lg max-w-none"
                     style={{
-                        '--tw-prose-headings': character.color?.dark,
-                        '--tw-prose-links': character.color?.primary,
+                        '--tw-prose-headings': charDark,
+                        '--tw-prose-links': charPrimary,
                     } as React.CSSProperties}
                 >
-                    {renderRichText(article.content, character.color?.primary)}
+                    {renderRichText(article.content, charPrimary)}
                 </div>
             </div>
         </article>
