@@ -416,17 +416,10 @@ export default function ElParchePage() {
                 <div className="max-w-[85rem] mx-auto px-6 md:px-12 lg:px-16 flex flex-col items-center lg:items-start gap-8 relative z-10">
                     {/* Texto de transición */}
                     <div ref={bridgeTextRef} className="flex flex-col items-center lg:items-start w-fit">
-                        <Image
-                            src="/icons/arrow_g.png"
-                            alt="Flecha Izquierda"
-                            width={26}
-                            height={62}
-                            className="w-10 h-10 object-contain -rotate-90 -mb-2"
-                        />
                         <span className="font-jack text-lg text-bifido-neon uppercase tracking-tight [word-spacing:-0.05em] leading-none text-center lg:text-left">
                             DETRÁS DE TODO ESTO ESTÁ NUESTRO PARCHE, ARCHIVO VIVO...
                         </span>
-                        {/* <div className="flex justify-center w-full -mt-2">
+                        <div className="lg:hidden flex justify-center w-full animate-bounce">
                             <Image
                                 src="/icons/arrow_g.png"
                                 alt="Flecha Derecha"
@@ -434,7 +427,7 @@ export default function ElParchePage() {
                                 height={62}
                                 className="w-10 h-10 object-contain rotate-90"
                             />
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -453,9 +446,9 @@ export default function ElParchePage() {
                         <div className="flex items-start justify-between py-6 md:py-10 gap-6">
 
                             {/* Left: label + big title + tagline */}
-                            <div className="flex-1 min-w-0">
+                            <div className="flex-1 min-w-0 flex flex-col items-center lg:items-start">
                                 {/* DESDE ADENTRO */}
-                                <div ref={teamLabelRef} className="flex items-center gap-3 mb-5">
+                                <div ref={teamLabelRef} className="flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-3 mb-5">
                                     <Image
                                         src="/icons/user.svg"
                                         alt="Equipo"
@@ -469,12 +462,12 @@ export default function ElParchePage() {
                                 </div>
 
                                 {/* SIN FILTROS */}
-                                <h2 ref={heroTitleRef} className="font-anton text-[clamp(4.5rem,13vw,8rem)] leading-[0.85] text-black uppercase tracking-normal [-webkit-text-stroke:1.5px_white] md:[-webkit-text-stroke:2.5px_white] drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+                                <h2 ref={heroTitleRef} className="font-anton text-[clamp(4.5rem,13vw,8rem)] leading-[0.85] text-black uppercase tracking-normal [-webkit-text-stroke:1.5px_white] md:[-webkit-text-stroke:2.5px_white] drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)] text-center lg:text-left">
                                     SIN FILTROS
                                 </h2>
 
                                 {/* Tagline */}
-                                <div ref={teamTaglineRef} className="pt-2 space-y-0.5">
+                                <div ref={teamTaglineRef} className="pt-2 space-y-0.5 flex flex-col items-center lg:items-start text-center lg:text-left">
                                     <p className="font-jack text-[10px] md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
                                         {"//"} NO SOMOS UN EQUIPO, SOMOS UN{' '}
                                         <span className="underline underline-offset-4">ARCHIVO VIVO</span>
@@ -506,7 +499,7 @@ export default function ElParchePage() {
                                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-bifido-neon" />
                             </div>
                         ) : team.length > 0 ? (
-                            <div ref={teamRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-12">
+                            <div ref={teamRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 md:gap-2 lg:gap-12">
                                 {team.map((member) => {
                                     const rawHandle = member.socialMedia?.instagram || '';
                                     const instagramHandle = rawHandle
@@ -607,7 +600,7 @@ export default function ElParchePage() {
                                                             setModalPhotoIndex(0);
                                                         }}
                                                         className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
-                                                        title="Ver Expediente"
+                                                        title="Ver expediente"
                                                     >
                                                         <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
                                                             {Array.from({ length: 15 }).map((_, i) => (
@@ -721,7 +714,7 @@ export default function ElParchePage() {
                                     {/* Right: Redes */}
                                     <div className="flex flex-col gap-3 items-end">
                                         <span className="text-[11px] text-gray-500 font-display tracking-widest uppercase">Contacto</span>
-                                        <div className="grid grid-cols-2 gap-3">
+                                        <div className="flex flex-wrap justify-end gap-3 max-w-[76px]">
                                             {selectedMember.socialMedia?.website && (
                                                 <a
                                                     href={selectedMember.socialMedia.website.startsWith('http') ? selectedMember.socialMedia.website : `https://${selectedMember.socialMedia.website}`}
