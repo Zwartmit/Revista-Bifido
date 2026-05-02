@@ -117,20 +117,55 @@ export default function ElParchePage() {
                 );
             }
 
-            // 4. BRIDGE: text fades in sequence
+            // 4. BRIDGE: Advanced sequence with parallax and lines
             if (bridgeRef.current && bridgeTextRef.current) {
-                gsap.fromTo(
+                const lines = bridgeRef.current.querySelectorAll('.bridge-line');
+                const bgText = bridgeRef.current.querySelector('.bridge-bg-text');
+
+                // Initial animation on scroll entry
+                const tlBridge = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: bridgeRef.current,
+                        start: 'top 80%',
+                        once: true,
+                    }
+                });
+
+                if (bgText) {
+                    tlBridge.fromTo(bgText, 
+                        { opacity: 0, scale: 1.1, filter: 'blur(10px)' }, 
+                        { opacity: 0.03, scale: 1, filter: 'blur(0px)', duration: 2, ease: 'power2.out' }, 
+                        0
+                    );
+                }
+                
+                if (lines.length > 0) {
+                    tlBridge.fromTo(lines, 
+                        { scaleY: 0, opacity: 0 }, 
+                        { scaleY: 1, opacity: 1, stagger: 0.4, duration: 1, ease: 'expo.out' }, 
+                        0.2
+                    );
+                }
+
+                tlBridge.fromTo(
                     bridgeTextRef.current.children,
                     { y: 30, opacity: 0 },
-                    { 
-                        y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power3.out',
+                    { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power3.out' },
+                    0.4
+                );
+
+                // Parallax effect for BG Text
+                if (bgText) {
+                    gsap.to(bgText, {
+                        x: '-10%',
                         scrollTrigger: {
                             trigger: bridgeRef.current,
-                            start: 'top 80%',
-                            once: true,
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: 1,
                         }
-                    }
-                );
+                    });
+                }
             }
 
             // 5. HERO HEADER: timeline for label, title, tagline, badge
@@ -180,16 +215,17 @@ export default function ElParchePage() {
         <div ref={pageRef} className="min-h-screen bg-black">
 
             {/* ── INTRO: PERSONAJES ── */}
-            <div className="w-full bg-black px-6 py-4 lg:pt-10 lg:pb-4">
-                <div className="w-full mx-auto flex flex-col items-center text-center gap-3">
-                    {/* Etiqueta superior */}
-                    <div className="flex flex-col items-center gap-2 w-full">
-                        <h1 ref={introh1Ref} className="font-anton text-2xl md:text-5xl text-white uppercase leading-tight w-full">
+            <div className="w-full bg-black px-6 pt-4 pb-2 lg:pt-8 lg:pb-4 relative overflow-hidden">
+                {/* Subtle Top Glow */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 bg-bifido-neon/5 blur-[120px] pointer-events-none"></div>
+
+                <div className="w-full mx-auto flex flex-col items-center text-center relative z-10">
+                    <div className="flex flex-col items-center gap-2 max-w-7xl mt-2">
+                        <h1 ref={introh1Ref} className="font-anton text-4xl md:text-6xl text-white uppercase leading-[0.9] tracking-tight">
                             Bífido tiene voces que la representan
                         </h1>
-                        <p ref={introPRef} className="text-white/55 text-sm md:text-lg max-w-6xl">
-                            Esta es la manada. Cada uno representa y defiende distintos sectores de la cultura, el arte y lo marginal.{' '}
-                            <span className="text-white/80">Conócelos.</span>
+                        <p ref={introPRef} className="text-white/60 text-base md:text-xl max-w-5xl font-light leading-relaxed">
+                            Esta es la manada. Cada uno representa y defiende distintos sectores de la cultura, el arte y lo marginal.
                         </p>
                     </div>
                 </div>
@@ -261,7 +297,7 @@ export default function ElParchePage() {
                 </div>
 
                 {/* Right Content - Active Character Showcase */}
-                <div ref={showcaseRef} className="grow bg-transparent relative md:min-h-[calc(100vh-10rem)] flex flex-col">
+                <div ref={showcaseRef} className="grow bg-transparent relative md:min-h-[500px] flex flex-col">
                     <div className="absolute inset-0 w-full h-full transition-colors duration-500 overflow-hidden">
                         {/* Animated Smoky Background */}
                         <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-transparent">
@@ -406,31 +442,51 @@ export default function ElParchePage() {
             </div>
 
             {/* ── BRIDGE: TRANSICIÓN PERSONAJES → EQUIPO ── */}
-            <div ref={bridgeRef} className="w-full bg-black py-12 md:py-16 relative overflow-hidden">
+            <div ref={bridgeRef} className="w-full bg-black py-24 md:py-32 relative overflow-hidden border-y border-white/5">
+                {/* Huge Background Text */}
+                <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none">
+                    <span className="bridge-bg-text font-anton text-[25vw] text-white opacity-[0.03] uppercase leading-none whitespace-nowrap">
+                        ARCHIVO VIVO
+                    </span>
+                </div>
                 {/* Light spill from Characters section */}
                 <div
-                    className="absolute inset-0 z-0 pointer-events-none transition-all duration-1000 opacity-60"
+                    className="absolute inset-0 z-0 pointer-events-none transition-all duration-1000 opacity-40"
                     style={{
-                        background: `radial-gradient(ellipse at 15% 0%, ${activeColors.primary}33 0%, transparent 70%)`
+                        background: `radial-gradient(circle at 50% 50%, ${activeColors.primary}22 0%, transparent 80%)`
                     }}
                 />
 
-                <div className="max-w-[85rem] mx-auto px-6 md:px-12 lg:px-16 flex flex-col items-center lg:items-start gap-8 relative z-10">
+                <div className="max-w-[85rem] mx-auto px-6 md:px-12 lg:px-16 flex flex-col items-center justify-center relative z-10">
+                    {/* Decorative Vertical Line */}
+                    <div className="bridge-line w-px h-20 bg-gradient-to-b from-transparent via-bifido-neon to-transparent mb-8 origin-top"></div>
+
                     {/* Texto de transición */}
-                    <div ref={bridgeTextRef} className="flex flex-col items-center lg:items-start w-fit">
-                        <span className="font-jack text-lg text-bifido-neon uppercase tracking-tight [word-spacing:-0.05em] leading-none text-center lg:text-left">
-                            DETRÁS DE TODO ESTO ESTÁ NUESTRO PARCHE, ARCHIVO VIVO...
+                    <div ref={bridgeTextRef} className="flex flex-col items-center max-w-5xl text-center">
+                        <span className="font-jack text-xl md:text-3xl text-white uppercase tracking-tight [word-spacing:-0.05em] leading-tight mb-2">
+                            Detrás de todo esto está
                         </span>
-                        <div className="lg:hidden flex justify-center w-full animate-bounce">
+                        <h2 className="font-anton text-5xl md:text-8xl text-bifido-neon uppercase tracking-normal leading-none drop-shadow-[0_0_8px_rgba(204,253,41,0.4)]">
+                            Nuestro Parche
+                        </h2>
+                        <span className="font-jack text-lg md:text-2xl text-white/50 uppercase tracking-[0.3em] mt-4">
+                            Archivo Vivo
+                        </span>
+
+                        {/* Mobile Arrow Indicator */}
+                        <div className="lg:hidden mt-10 animate-bounce">
                             <Image
                                 src="/icons/arrow_g.png"
-                                alt="Flecha Derecha"
+                                alt="Flecha"
                                 width={26}
                                 height={62}
-                                className="w-10 h-10 object-contain rotate-90"
+                                className="w-10 h-10 object-contain rotate-90 opacity-30"
                             />
                         </div>
                     </div>
+
+                    {/* Decorative Vertical Line */}
+                    <div className="bridge-line w-px h-20 bg-gradient-to-b from-bifido-neon via-bifido-neon/50 to-transparent mt-8 origin-bottom"></div>
                 </div>
             </div>
 

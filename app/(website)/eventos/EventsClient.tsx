@@ -113,7 +113,7 @@ export default function EventsClient({ events }: EventsClientProps) {
 
     const getColors = (index: number) => {
         const colors = [
-            { bg: '#CCFD29', text: '#000' }, // Neon
+            { bg: '#b8ff00', text: '#000' }, // Neon
             { bg: '#E63946', text: '#fff' }, // Red
             { bg: '#22c55e', text: '#000' }, // Green
             { bg: '#00BCD4', text: '#000' }  // Cyan
@@ -139,7 +139,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                 __html: `
                 @keyframes glitch { 0%,100%{ clip-path:inset(0 0 95% 0); transform:translate(-2px,0); } 20%{ clip-path:inset(30% 0 60% 0); transform:translate(2px,0); } 40%{ clip-path:inset(60% 0 20% 0); transform:translate(-1px,0); } 60%{ clip-path:inset(5% 0 75% 0); transform:translate(3px,0); } 80%{ clip-path:inset(80% 0 5% 0); transform:translate(-2px,0); } }
                 .glitch-title { position:relative; display:inline-block; }
-                .glitch-title::after { content:attr(data-text); position:absolute; inset:0; color:#CCFD29; animation:glitch 4s infinite; opacity:.7; pointer-events:none; }
+                .glitch-title::after { content:attr(data-text); position:absolute; inset:0; color:#b8ff00; animation:glitch 4s infinite; opacity:.7; pointer-events:none; }
                 
                 .rasgado-card { width:100%; max-width:280px; aspect-ratio:3/4.2; position:relative; cursor:pointer; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin:0 auto; }
                 .rasgado-card:hover { transform:scale(1.08) rotate(2deg) !important; z-index:10; }
@@ -163,7 +163,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                     <h1 className="font-display text-[clamp(3.5rem,8vw,6.5rem)] leading-[0.85] text-[#f5f5f5] tracking-wide glitch-title uppercase" data-text="EVENTOS">
                         EVENTOS
                     </h1>
-                    <div className="w-48 md:w-64 h-[2px] bg-gradient-to-r from-[#CCFD29] to-transparent mt-3 md:mt-4"></div>
+                    <div className="w-48 md:w-64 h-[2px] bg-gradient-to-r from-[#b8ff00] to-transparent mt-3 md:mt-4"></div>
                     <p className="mt-6 font-mono text-xs md:text-base text-gray-400 tracking-widest uppercase">
                         Espacios de encuentro, diálogo y resistencia
                     </p>
@@ -176,7 +176,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                             key={f.id}
                             onClick={() => setFilter(f.id)}
                             className={`whitespace-nowrap flex-shrink-0 px-4 md:px-5 py-2 text-[10px] md:text-sm font-mono tracking-widest uppercase transition-all ${filter === f.id
-                                ? 'bg-[#CCFD29] text-black font-bold shadow-[2px_2px_0px_#fff]'
+                                ? 'bg-[#b8ff00] text-black font-bold shadow-[2px_2px_0px_#fff]'
                                 : 'bg-transparent text-gray-400 border border-white/20 hover:border-white/50 hover:text-white'
                                 }`}
                         >
@@ -191,7 +191,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                     {/* Featured Event */}
                     {featuredEvent && (
                         <div className="mb-16 relative flex justify-center w-full">
-                            <Link href={`/eventos/${featuredEvent.slug || '#'}`} className="relative group overflow-hidden bg-[#080808] border border-white/10 hover:border-[#CCFD29] transition-all duration-300 w-full md:w-fit md:max-w-[95vw] flex flex-col md:flex-row md:min-h-[400px] mx-auto">
+                            <Link href={`/eventos/${featuredEvent.slug || '#'}`} className="relative group overflow-hidden bg-[#080808] border border-white/10 hover:border-[#b8ff00] transition-all duration-300 w-full md:w-fit md:max-w-[95vw] flex flex-col md:flex-row md:min-h-[400px] mx-auto">
                                 {/* Image Section */}
                                 <div className="relative w-full md:w-fit flex flex-col justify-center shrink-0 bg-black">
                                     {/* Textura */}
@@ -214,7 +214,7 @@ export default function EventsClient({ events }: EventsClientProps) {
 
                                     <div className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] mb-6 shadow-sm truncate max-w-full">
                                         <span className="w-2 h-2 shrink-0 rounded-full bg-[#E63946] animate-pulse"></span>
-                                        <span className="text-[#CCFD29] truncate">EVENTO DESTACADO</span>
+                                        <span className="text-[#b8ff00] truncate">EVENTO DESTACADO</span>
                                     </div>
 
                                     <h2 className="font-display text-4xl lg:text-5xl text-white uppercase leading-[0.9] mb-6 glitch-title break-words" data-text={featuredEvent.title}>
@@ -228,7 +228,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                     </div>
 
                                     <div className="mt-auto">
-                                        <button className="font-mono text-sm font-bold bg-white text-black px-6 py-3 uppercase tracking-widest group-hover:bg-[#CCFD29] transition-colors w-full md:w-auto text-center md:text-left">
+                                        <button className="font-mono text-sm font-bold bg-white text-black px-6 py-3 uppercase tracking-widest group-hover:bg-[#b8ff00] transition-colors w-full md:w-auto text-center md:text-left">
                                             VER DETALLES →
                                         </button>
                                     </div>

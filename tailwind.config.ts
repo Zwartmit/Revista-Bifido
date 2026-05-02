@@ -49,10 +49,10 @@ const config: Config = {
           black: '#000000',
           gray: '#2a2a2a',
           lightgray: '#e0e0e0',
-          neon: '#CCFD29',
-          orange: '#FF5E1E',
-          teal: '#25A69A',
-          olive: '#3e4a3b',
+          neon: '#b8ff00',
+          orange: '#fe5e00',
+          teal: '#1da3a3',
+          olive: '#344844',
         }
       },
       fontFamily: {

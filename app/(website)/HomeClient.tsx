@@ -121,7 +121,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                     <div ref={recentRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {recentArticles.map((article: any) => {
                             const character = getCharacter(article.section);
-                            const color = character?.color?.primary || '#CCFD29';
+                            const color = character?.color?.primary || '#b8ff00';
 
                             return (
                                 <Link

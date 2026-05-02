@@ -107,14 +107,14 @@ export default function Header() {
                                 <Image src="/icons/search.svg" alt="Search" width={24} height={24} className="object-contain" />
                             </button>
 
-                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#b8ff00" /></svg>
 
                             <Link href="/" className={`flex items-center gap-2 font-display tracking-wider text-lg transition-colors uppercase px-2 ${pathname === '/' ? 'text-bifido-neon' : 'text-white hover:text-bifido-neon'}`}>
                                 <Image src="/icons/home.svg" alt="Inicio" width={20} height={20} className="object-contain" />
                                 INICIO
                             </Link>
 
-                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#b8ff00" /></svg>
 
                             {/* Character buttons Dropdown */}
                             <div
@@ -148,15 +148,15 @@ export default function Header() {
                                 </div>
                             </div>
 
-                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#b8ff00" /></svg>
 
                             <StaticNavLink href="/elparche" label="EL PARCHE" className="font-display tracking-wider text-lg uppercase" />
 
-                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#b8ff00" /></svg>
 
                             <StaticNavLink href="/eventos" label="EVENTOS" className="font-display tracking-wider text-lg uppercase" />
 
-                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#CCFD29" /></svg>
+                            <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#b8ff00" /></svg>
 
                             <StaticNavLink href="/contactanos" label="CONTÁCTANOS" className="font-display tracking-wider text-lg uppercase" />
 
@@ -165,7 +165,7 @@ export default function Header() {
 
                     {/* Mobile Navigation - Brutalismo Neón Overlay */}
                     <div className={`fixed inset-0 z-[100] bg-black transition-all duration-500 lg:hidden flex flex-col overflow-y-auto ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
-                        
+
                         {/* Modal Internal Header */}
                         <div className="flex items-center justify-between px-4 py-4 border-b-2 border-bifido-neon shrink-0 w-full mb-4">
                             <Link href="/" className="relative h-12 w-48" onClick={() => setIsMenuOpen(false)}>
@@ -218,11 +218,11 @@ export default function Header() {
                             <Link href="/elparche" onClick={() => setIsMenuOpen(false)} className={`w-full border-b border-white/20 py-6 px-6 font-display text-3xl sm:text-4xl uppercase transition-all duration-300 ${pathname === '/elparche' ? 'bg-bifido-neon text-black' : 'text-white hover:bg-white hover:text-black'}`}>
                                 EL PARCHE
                             </Link>
-                            
+
                             <Link href="/eventos" onClick={() => setIsMenuOpen(false)} className={`w-full border-b border-white/20 py-6 px-6 font-display text-3xl sm:text-4xl uppercase transition-all duration-300 ${pathname === '/eventos' ? 'bg-bifido-neon text-black' : 'text-white hover:bg-white hover:text-black'}`}>
                                 EVENTOS
                             </Link>
-                            
+
                             <Link href="/contactanos" onClick={() => setIsMenuOpen(false)} className={`w-full border-b border-white/20 py-6 px-6 font-display text-3xl sm:text-4xl uppercase transition-all duration-300 ${pathname === '/contactanos' ? 'bg-bifido-neon text-black' : 'text-white hover:bg-white hover:text-black'}`}>
                                 CONTACTO
                             </Link>

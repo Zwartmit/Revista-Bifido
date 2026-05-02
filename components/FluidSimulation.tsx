@@ -12,10 +12,10 @@ interface FluidSimulationProps {
   className?: string;
 }
 
-export default function FluidSimulation({ 
-  color = '#CCFD29', 
+export default function FluidSimulation({
+  color = '#b8ff00',
   opacity = 0.6,
-  className = "" 
+  className = ""
 }: FluidSimulationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -210,12 +210,12 @@ export default function FluidSimulation({
 
     // Color conversion
     const hexToRgb = (hex: string) => {
-        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? [
-            parseInt(result[1], 16) / 255,
-            parseInt(result[2], 16) / 255,
-            parseInt(result[3], 16) / 255
-        ] : [1, 1, 1];
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [
+        parseInt(result[1], 16) / 255,
+        parseInt(result[2], 16) / 255,
+        parseInt(result[3], 16) / 255
+      ] : [1, 1, 1];
     };
 
     // Animation Loop
@@ -241,7 +241,7 @@ export default function FluidSimulation({
       gl.uniform2f(uMouse, mouseX, mouseY);
       gl.uniform2f(uResolution, width, height);
       gl.uniform1f(uOpacity, opacity);
-      
+
       const rgb = hexToRgb(color);
       gl.uniform3f(uColor, rgb[0], rgb[1], rgb[2]);
 
@@ -260,10 +260,10 @@ export default function FluidSimulation({
   }, [color, opacity]);
 
   return (
-    <canvas 
-        ref={canvasRef} 
-        className={`w-full h-full block ${className}`}
-        style={{ background: 'transparent' }}
+    <canvas
+      ref={canvasRef}
+      className={`w-full h-full block ${className}`}
+      style={{ background: 'transparent' }}
     />
   );
 }

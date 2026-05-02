@@ -9,6 +9,17 @@ import { RiFacebookFill, RiWhatsappFill, RiInstagramFill, RiYoutubeFill } from "
 export default function Footer() {
   return (
     <footer className="bg-black pb-8 relative overflow-hidden">
+      {/* Background Image Overlay */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <Image
+          src="/backgrounds/footer.png"
+          alt="Footer background"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+      </div>
+
       {/* Separator */}
       <div className="w-full flex justify-center pb-10">
         <div className="w-[50%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/30 to-transparent blur-[0.5px]"></div>
@@ -81,35 +92,34 @@ export default function Footer() {
                 {characters.map((character) => {
                   const cColors = getCharacterColors(character.slug);
                   return (
-                  <Link
-                    key={character.id}
-                    href={`/${character.slug}`}
-                    className="font-googlesans text-base transition-colors text-center lg:text-left group flex items-center justify-center"
-                    style={{ color: cColors.primary }}
-                  >
-                    {/* Desktop text */}
-                    <span className="hidden lg:inline-block hover:brightness-125 transition-all">
-                      {character.name}
-                    </span>
-                    {/* Mobile icon */}
-                    <div
-                      className="lg:hidden w-12 h-12 rounded-full overflow-hidden border-2 transition-transform hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
-                      style={{ borderColor: cColors.primary }}
+                    <Link
+                      key={character.id}
+                      href={`/${character.slug}`}
+                      className="font-googlesans text-base transition-colors text-center lg:text-left group flex items-center justify-center"
+                      style={{ color: cColors.primary }}
                     >
-                      <Image
-                        src={`/icons/${character.slug}.png`}
-                        alt={character.name}
-                        width={48}
-                        height={48}
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    </div>
-                  </Link>
+                      {/* Desktop text */}
+                      <span className="hidden lg:inline-block hover:brightness-125 transition-all">
+                        {character.name}
+                      </span>
+                      {/* Mobile icon */}
+                      <div
+                        className="lg:hidden w-12 h-12 rounded-full overflow-hidden border-2 transition-transform hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
+                        style={{ borderColor: cColors.primary }}
+                      >
+                        <Image
+                          src={`/icons/${character.slug}.png`}
+                          alt={character.name}
+                          width={48}
+                          height={48}
+                          className="w-full h-full object-cover rounded-full"
+                        />
+                      </div>
+                    </Link>
                   );
                 })}
               </div>
             </div>
-
           </div>
 
           {/* Right: Logo */}
