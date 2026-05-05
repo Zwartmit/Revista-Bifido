@@ -220,11 +220,11 @@ export default function ElParchePage() {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 bg-bifido-neon/5 blur-[120px] pointer-events-none"></div>
 
                 <div className="w-full mx-auto flex flex-col items-center text-center relative z-10">
-                    <div className="flex flex-col items-center gap-2 max-w-7xl mt-2">
+                    <div className="flex flex-col items-center gap-2 max-w-7xl mt-10 mb-10">
                         <h1 ref={introh1Ref} className="font-anton text-4xl md:text-6xl text-white uppercase leading-[0.9] tracking-tight">
                             Bífido tiene voces que la representan
                         </h1>
-                        <p ref={introPRef} className="text-white/60 text-base md:text-xl max-w-5xl font-light leading-relaxed">
+                        <p ref={introPRef} className="text-white/60 text-base md:text-xl max-w-5xl mt-2 font-light leading-relaxed">
                             Esta es la manada. Cada uno representa y defiende distintos sectores de la cultura, el arte y lo marginal.
                         </p>
                     </div>
