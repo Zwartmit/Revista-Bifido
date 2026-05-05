@@ -132,17 +132,17 @@ export default function ElParchePage() {
                 });
 
                 if (bgText) {
-                    tlBridge.fromTo(bgText, 
-                        { opacity: 0, scale: 1.1, filter: 'blur(10px)' }, 
-                        { opacity: 0.03, scale: 1, filter: 'blur(0px)', duration: 2, ease: 'power2.out' }, 
+                    tlBridge.fromTo(bgText,
+                        { opacity: 0, scale: 1.1, filter: 'blur(10px)' },
+                        { opacity: 0.03, scale: 1, filter: 'blur(0px)', duration: 2, ease: 'power2.out' },
                         0
                     );
                 }
-                
+
                 if (lines.length > 0) {
-                    tlBridge.fromTo(lines, 
-                        { scaleY: 0, opacity: 0 }, 
-                        { scaleY: 1, opacity: 1, stagger: 0.4, duration: 1, ease: 'expo.out' }, 
+                    tlBridge.fromTo(lines,
+                        { scaleY: 0, opacity: 0 },
+                        { scaleY: 1, opacity: 1, stagger: 0.4, duration: 1, ease: 'expo.out' },
                         0.2
                     );
                 }
@@ -179,11 +179,11 @@ export default function ElParchePage() {
                 });
 
                 if (teamLabelRef.current) tlHero.fromTo(teamLabelRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' }, 0);
-                
+
                 tlHero.fromTo(heroTitleRef.current, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: 'expo.out' }, 0.15);
-                
+
                 if (teamTaglineRef.current) tlHero.fromTo(teamTaglineRef.current.children, { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power2.out' }, 0.4);
-                
+
                 if (teamBadgeRef.current) tlHero.fromTo(teamBadgeRef.current, { scale: 0.5, opacity: 0, rotation: -45 }, { scale: 1, opacity: 1, rotation: 0, duration: 1.0, ease: 'back.out(1.5)' }, 0.5);
             }
 
@@ -250,48 +250,49 @@ export default function ElParchePage() {
                             {otherCharacters.map((m, i) => {
                                 const mColors = getCharacterColors(m.slug);
                                 return (
-                                <div
-                                    key={m.id}
-                                    onClick={() => setActiveCharacterId(m.id)}
-                                    className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden transition-all duration-500 ease-out relative min-h-[90px]"
-                                    style={{ backgroundColor: 'transparent' }}
-                                >
                                     <div
-                                        className="absolute inset-0 opacity-20 group-hover/item:opacity-40 transition-opacity duration-500 pointer-events-none"
-                                        style={{
-                                            background: `radial-gradient(ellipse at 50% 20%, ${mColors.primary}80 0%, ${mColors.primary}00 70%)`
-                                        }}
-                                    ></div>
+                                        key={m.id}
+                                        onClick={() => setActiveCharacterId(m.id)}
+                                        className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden transition-all duration-500 ease-out relative min-h-[90px]"
+                                        style={{ backgroundColor: 'transparent' }}
+                                    >
+                                        <div
+                                            className="absolute inset-0 opacity-20 group-hover/item:opacity-40 transition-opacity duration-500 pointer-events-none"
+                                            style={{
+                                                background: `radial-gradient(ellipse at 50% 20%, ${mColors.primary}80 0%, ${mColors.primary}00 70%)`
+                                            }}
+                                        ></div>
 
-                                    {/* Character Image */}
-                                    {m.image && (
-                                        <Image
-                                            src={m.image}
-                                            alt={m.name}
-                                            width={400}
-                                            height={500}
-                                            className="absolute right-0 md:right-4 lg:right-12 bottom-0 h-[85%] md:h-[95%] lg:h-[105%] lg:group-hover/item:h-[95%] w-auto object-contain object-bottom filter grayscale group-hover/item:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] opacity-60 group-hover:opacity-20 group-hover/item:!opacity-100 transform origin-bottom z-10"
-                                        />
-                                    )}
+                                        {/* Character Image */}
+                                        {m.image && (
+                                            <Image
+                                                src={m.image}
+                                                alt={m.name}
+                                                width={400}
+                                                height={500}
+                                                className="absolute right-0 md:right-4 lg:right-12 bottom-0 h-[85%] md:h-[95%] lg:h-[105%] lg:group-hover/item:h-[95%] w-auto object-contain object-bottom filter grayscale group-hover/item:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] opacity-60 group-hover:opacity-20 group-hover/item:!opacity-100 transform origin-bottom z-10"
+                                            />
+                                        )}
 
-                                    {/* Typography - Single Element with Dynamic Position Transition */}
-                                    <div
-                                        className="absolute transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] z-20 pointer-events-none 
+                                        {/* Typography - Single Element with Dynamic Position Transition */}
+                                        <div
+                                            className="absolute transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] z-20 pointer-events-none 
                                         left-4 top-1/2 translate-x-0 -translate-y-1/2 
                                         md:left-6 
                                         group-hover/item:left-[100%] group-hover/item:top-[100%] 
                                         group-hover/item:translate-x-[calc(-100%-1rem)] group-hover/item:translate-y-[calc(-100%-1rem)] 
                                         md:group-hover/item:translate-x-[calc(-100%-1.5rem)] md:group-hover/item:translate-y-[calc(-100%-1.5rem)]"
-                                    >
-                                        <span
-                                            className="font-display text-xl lg:text-2xl xl:text-3xl lg:group-hover/item:text-6xl tracking-widest transition-all duration-700 opacity-80 group-hover:opacity-20 group-hover/item:!opacity-100 [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:group-hover:[writing-mode:horizontal-tb] md:rotate-180 md:group-hover:rotate-0 uppercase drop-shadow-4xl leading-none block origin-center text-right group-hover:scale-90 group-hover/item:scale-100"
-                                            style={{ color: mColors.primary, textShadow: '0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)' }}
                                         >
-                                            {m.name}
-                                        </span>
+                                            <span
+                                                className="font-display text-xl lg:text-2xl xl:text-3xl lg:group-hover/item:text-6xl tracking-widest transition-all duration-700 opacity-80 group-hover:opacity-20 group-hover/item:!opacity-100 [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:group-hover:[writing-mode:horizontal-tb] md:rotate-180 md:group-hover:rotate-0 uppercase drop-shadow-4xl leading-none block origin-center text-right group-hover:scale-90 group-hover/item:scale-100"
+                                                style={{ color: mColors.primary, textShadow: '0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)' }}
+                                            >
+                                                {m.name}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            )})}
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
@@ -325,26 +326,26 @@ export default function ElParchePage() {
                             {otherCharacters.map(m => {
                                 const mColors = getCharacterColors(m.slug);
                                 return (
-                                <button
-                                    key={m.id}
-                                    onClick={() => setActiveCharacterId(m.id)}
-                                    className="flex-1 flex flex-col items-center gap-2 group max-w-[90px]"
-                                >
-                                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 transition-transform group-hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
-                                        style={{ borderColor: mColors.primary }}>
-                                        <Image
-                                            src={`/icons/${m.slug}.png`}
-                                            alt={m.name}
-                                            width={48}
-                                            height={48}
-                                            className="w-full h-full object-cover rounded-full"
-                                        />
-                                    </div>
-                                    <span className="text-[clamp(8px,2.8vw,12px)] font-display tracking-widest uppercase transition-colors leading-tight text-center"
-                                        style={{ color: mColors.primary || '#aaa' }}>
-                                        {m.name}
-                                    </span>
-                                </button>
+                                    <button
+                                        key={m.id}
+                                        onClick={() => setActiveCharacterId(m.id)}
+                                        className="flex-1 flex flex-col items-center gap-2 group max-w-[90px]"
+                                    >
+                                        <div className="w-12 h-12 rounded-full overflow-hidden border-2 transition-transform group-hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
+                                            style={{ borderColor: mColors.primary }}>
+                                            <Image
+                                                src={`/icons/${m.slug}.png`}
+                                                alt={m.name}
+                                                width={48}
+                                                height={48}
+                                                className="w-full h-full object-cover rounded-full"
+                                            />
+                                        </div>
+                                        <span className="text-[clamp(8px,2.8vw,12px)] font-display tracking-widest uppercase transition-colors leading-tight text-center"
+                                            style={{ color: mColors.primary || '#aaa' }}>
+                                            {m.name}
+                                        </span>
+                                    </button>
                                 );
                             })}
                         </div>
@@ -442,7 +443,7 @@ export default function ElParchePage() {
             </div>
 
             {/* ── BRIDGE: TRANSICIÓN PERSONAJES → EQUIPO ── */}
-            <div ref={bridgeRef} className="w-full bg-black py-24 md:py-32 relative overflow-hidden border-y border-white/5">
+            <div ref={bridgeRef} className="w-full bg-black py-24 md:py-32 relative overflow-hidden">
                 {/* Huge Background Text */}
                 <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none">
                     <span className="bridge-bg-text font-anton text-[25vw] text-white opacity-[0.03] uppercase leading-none whitespace-nowrap">
@@ -588,7 +589,7 @@ export default function ElParchePage() {
                                                             className="object-contain"
                                                         />
                                                     </div>
-                                                    
+
                                                     {/* Imagen Identificador (Hover) */}
                                                     {member.identifierImage && (
                                                         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -613,7 +614,7 @@ export default function ElParchePage() {
 
                                             {/* Card body (Estilo Opción 2) */}
                                             <div className="px-2 pb-2 flex flex-col flex-1 items-center text-center">
-                                                
+
                                                 {/* Skill tags */}
                                                 {member.characteristics && member.characteristics.length > 0 && (
                                                     <div className="font-mono text-[9px] text-bifido-neon uppercase tracking-widest mb-3">
@@ -690,7 +691,7 @@ export default function ElParchePage() {
             {selectedMember && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-12 md:px-24 bg-black/95 backdrop-blur-sm">
                     <div className="w-full max-w-5xl bg-black border border-gray-800 rounded-xl relative flex flex-col max-h-full overflow-hidden">
-                        
+
                         {/* Header/Close */}
                         <div className="absolute top-4 right-4 z-10">
                             <button
@@ -703,7 +704,7 @@ export default function ElParchePage() {
 
                         {/* Modal Body */}
                         <div className="flex flex-col md:flex-row w-full h-full overflow-y-auto md:overflow-hidden p-6 md:p-12 gap-8 md:gap-16">
-                            
+
                             {/* Left: Image Carousel (Pill shape) */}
                             <div className="w-full md:w-[40%] flex-shrink-0 flex flex-col items-center justify-center">
                                 <div className="w-full aspect-[1/2] max-h-[60vh] md:max-h-none rounded-[100px] bg-white overflow-hidden relative flex items-center justify-center">
@@ -728,13 +729,13 @@ export default function ElParchePage() {
                             {/* Right: Info */}
                             <div className="w-full md:w-[60%] flex flex-col justify-center text-left py-4">
                                 <span className="font-jack text-orange-500 text-xs tracking-[0.2em] mb-2 uppercase">Manifiesto personal</span>
-                                
+
                                 <div className="flex items-center gap-3 mb-8">
-                                    <Image 
-                                        src="/icons/message.svg" 
-                                        alt="Manifiesto" 
-                                        width={32} 
-                                        height={32} 
+                                    <Image
+                                        src="/icons/message.svg"
+                                        alt="Manifiesto"
+                                        width={32}
+                                        height={32}
                                         className="flex-shrink-0"
                                         style={{ filter: 'brightness(0) saturate(100%) invert(53%) sepia(98%) saturate(1831%) hue-rotate(348deg) brightness(101%) contrast(96%)' }}
                                     />
@@ -768,7 +769,7 @@ export default function ElParchePage() {
                                             </div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Right: Redes */}
                                     <div className="flex flex-col gap-3 items-end">
                                         <span className="text-[11px] text-gray-500 font-display tracking-widest uppercase">Contacto</span>
