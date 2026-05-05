@@ -9,17 +9,6 @@ import { RiFacebookFill, RiWhatsappFill, RiInstagramFill, RiYoutubeFill } from "
 export default function Footer() {
   return (
     <footer className="bg-black pb-8 relative overflow-hidden">
-      {/* Background Image Overlay */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-        <Image
-          src="/backgrounds/footer.png"
-          alt="Footer background"
-          fill
-          className="object-cover object-center"
-          priority
-        />
-      </div>
-
       {/* Separator */}
       <div className="w-full flex justify-center pb-10">
         <div className="w-[50%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/30 to-transparent blur-[0.5px]"></div>

@@ -12,6 +12,9 @@ export const Articles: CollectionConfig = {
     },
     access: {
         read: () => true,
+        create: ({ req: { user } }) => ['admin', 'editor'].includes(user?.role as string),
+        update: ({ req: { user } }) => ['admin', 'editor'].includes(user?.role as string),
+        delete: ({ req: { user } }) => ['admin', 'editor'].includes(user?.role as string),
     },
     fields: [
         {

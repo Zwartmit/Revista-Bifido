@@ -1,4 +1,5 @@
 import { buildConfig } from 'payload';
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import path from 'path';
@@ -43,12 +44,24 @@ export default buildConfig({
                 },
             ],
         },
-        // components: {
-        //     graphics: {
-        //         Logo,
-        //         Icon,
-        //     },
-        // },
+        components: {
+            graphics: {
+                Logo: {
+                    path: '@/payload/components/Logo#Logo',
+                },
+                Icon: {
+                    path: '@/payload/components/Icon#Icon',
+                },
+            },
+            logout: {
+                Button: {
+                    path: '@/payload/components/LogoutButton#LogoutButton',
+                },
+            },
+            providers: [
+                '@/payload/components/PasswordToggleProvider#PasswordToggleProvider',
+            ],
+        },
     },
     i18n: {
         supportedLanguages: { es },
@@ -64,7 +77,7 @@ export default buildConfig({
         Media,
     ],
     editor: lexicalEditor({}),
-    secret: process.env.PAYLOAD_SECRET || 'your-secret-key-here',
+    secret: process.env.PAYLOAD_SECRET as string,
     typescript: {
         outputFile: path.resolve(dirname, 'payload-types.ts'),
     },
@@ -74,4 +87,16 @@ export default buildConfig({
         },
     }),
     sharp,
+    email: nodemailerAdapter({
+        defaultFromAddress: process.env.SMTP_USER as string,
+        defaultFromName: 'Revista Bífido',
+        transportOptions: {
+            host: 'smtp.gmail.com',
+            port: 587,
+            auth: {
+                user: process.env.SMTP_USER as string,
+                pass: process.env.SMTP_PASS as string,
+            },
+        },
+    }),
 });
