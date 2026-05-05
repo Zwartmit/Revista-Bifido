@@ -5,8 +5,8 @@ import { useAuth } from '@payloadcms/ui';
 export const LogoutButton: React.FC = () => {
   const auth = useAuth();
   
-  // In Payload 3.0, the function is usually 'logOut' (camelCase)
-  const logOut = auth?.logOut || auth?.logout;
+  // In Payload 3.0, the function is 'logOut' (camelCase)
+  const logOut = auth?.logOut;
 
   const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault();
