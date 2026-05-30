@@ -71,7 +71,7 @@ export async function GET() {
 
       // 2. Subir imagen a Media
       const filePath = path.resolve(process.cwd(), 'public/icons', char.imageFile);
-      let mediaId = '';
+      let mediaId: string | number = '';
 
       if (fs.existsSync(filePath)) {
         // En un entorno web, necesitamos usar los métodos de payload.create para archivos locales
