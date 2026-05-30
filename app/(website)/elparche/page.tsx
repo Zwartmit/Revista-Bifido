@@ -263,8 +263,19 @@ export default function ElParchePage() {
                     }}
                 />
 
-                {/* Left Sticky Grid - Other Characters */}
-                <div className="hidden md:block w-full md:w-[34%] lg:w-[28%] xl:w-[22%] flex-shrink-0 bg-transparent z-30">
+                {!loading && fetchedCharacters.length === 0 ? (
+                    <div className="flex flex-col w-full items-center justify-center py-32 text-center z-10 relative space-y-4">
+                        <span className="font-anton text-2xl md:text-4xl text-white/40 uppercase tracking-widest">
+                            LA MANADA SE ESTÁ REUNIENDO...
+                        </span>
+                        <span className="font-jack text-sm md:text-lg text-white/30 uppercase tracking-widest">
+                            Pronto conocerás nuestras voces
+                        </span>
+                    </div>
+                ) : (
+                    <>
+                        {/* Left Sticky Grid - Other Characters */}
+                        <div className="hidden md:block w-full md:w-[34%] lg:w-[28%] xl:w-[22%] flex-shrink-0 bg-transparent z-30">
                     <div className="h-full flex flex-col overflow-hidden">
                         <div ref={leftGridRef} className="relative flex-1 h-full overflow-hidden bg-transparent flex flex-col group min-h-[350px] md:min-h-[500px]">
                             {/* Interactive Accordion Items */}
@@ -459,6 +470,8 @@ export default function ElParchePage() {
                         </div>
                     </div>
                 </div>
+                </>
+                )}
             </div>
 
             {/* ── BRIDGE: TRANSICIÓN PERSONAJES → EQUIPO ── */}
