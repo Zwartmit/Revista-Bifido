@@ -29,7 +29,11 @@ if (process.env.S3_ENDPOINT) {
     plugins.push(
         s3Storage({
             collections: {
-                media: true,
+                media: {
+                    generateFileURL: ({ filename, prefix }) => {
+                        return `${process.env.S3_PUBLIC_URL}/${prefix ? `${prefix}/` : ''}${filename}`;
+                    },
+                },
             },
             bucket: process.env.S3_BUCKET as string,
             config: {

@@ -40,8 +40,6 @@ async function fetchPayload(collection: string, params: any = {}, options: Reque
     return data || { docs: [] };
   } catch (error) {
     console.error(`Network or fetch error while requesting ${collection}:`, error);
-    // En producción (Netlify), si la URL de payload no está configurada o el backend está dormido, 
-    // devolver un arreglo vacío previene un volcado 500 (Server Component Crash).
     return { docs: [] };
   }
 }
@@ -157,7 +155,7 @@ export async function searchArticles(query: string) {
  */
 export async function globalSearch(query: string) {
   if (!query || query.trim() === '') return { articles: [], events: [], characters: [] };
-  
+
   const articleParams = {
     where: {
       or: [
@@ -196,7 +194,7 @@ export async function globalSearch(query: string) {
       fetchPayload('characters', characterParams)
     ]).catch((e) => {
       console.warn("One or more search endpoints failed, returning empty arrays", e);
-      return [{docs:[]}, {docs:[]}, {docs:[]}];
+      return [{ docs: [] }, { docs: [] }, { docs: [] }];
     });
 
     return {
