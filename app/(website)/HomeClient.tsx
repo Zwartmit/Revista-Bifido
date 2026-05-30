@@ -139,7 +139,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                                             />
                                         )}
                                         <div
-                                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold text-black shadow-lg text-white"
+                                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold text-black bg-white/80 shadow-lg text-white"
                                             style={{ backgroundColor: color }}
                                         >
                                             {character?.name || article.section}

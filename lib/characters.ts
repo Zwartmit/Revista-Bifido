@@ -28,9 +28,9 @@ export const characters: Character[] = [
   },
   {
     id: 'mordaz',
-    name: 'Mordaz',
+    name: 'Mordáz',
     slug: 'mordaz',
-    description: 'Crítico implacable y portavoz de las verdades incómodas. Mordaz no se muerde la lengua y expone las contradicciones del sistema con humor ácido.',
+    description: 'Crítico implacable y portavoz de las verdades incómodas. Mordáz no se muerde la lengua y expone las contradicciones del sistema con humor ácido.',
     religion: 'Escepticismo militante',
     age: '42 años',
     favoriteColor: 'Rojo sangre',
@@ -48,9 +48,9 @@ export const characters: Character[] = [
   },
   {
     id: 'anika',
-    name: 'Anika',
+    name: 'Ánika',
     slug: 'anika',
-    description: 'Defensora de la reducción de riesgos y daños. Anika promueve el autocuidado, la información responsable y el respeto a las decisiones personales sin juicios morales.',
+    description: 'Defensora de la reducción de riesgos y daños. Ánika promueve el autocuidado, la información responsable y el respeto a las decisiones personales sin juicios morales.',
     religion: 'Pragmatismo compasivo',
     age: '28 años',
     favoriteColor: 'Turquesa',

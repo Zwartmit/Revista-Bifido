@@ -201,9 +201,6 @@ export default function PunkibriPage({ section, character, articles }: Props) {
             <div className="mx-6 sm:mx-10 lg:mx-16 xl:mx-24 mb-20 border border-[#1e1e1e]"
                 style={{ borderTopColor: `${primary}40` }}>
                 <div className="p-10 sm:p-14 text-center bg-[#080808]">
-                    <span className="font-display text-[10px] tracking-[0.5em] uppercase block mb-4" style={{ color: primary }}>
-                        Periodismo independiente
-                    </span>
                     <h2 className="font-display text-3xl sm:text-5xl text-white uppercase mb-4 leading-tight">
                         Apoya el periodismo libre
                     </h2>

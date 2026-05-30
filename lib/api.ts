@@ -244,7 +244,10 @@ export async function getEventBySlug(slug: string) {
  * Obtener todos los miembros del archivo vivo
  */
 export async function getLiveArchiveMembers() {
-  const data = await fetchPayload('live-archive');
+  const params = {
+    sort: 'name', // Ascending alphabetically by name
+  };
+  const data = await fetchPayload('live-archive', params);
   return data.docs.map(transformPayloadLiveArchiveMember);
 }
 
@@ -276,6 +279,7 @@ export function transformPayloadCharacter(doc: any) {
     age: doc.age || '',
     favoriteColor: doc.favoriteColor || '',
     image: doc.image?.filename ? `/media/${doc.image.filename}` : (doc.image?.url || '/images/placeholder.png'),
+    model3d: doc.model3d?.filename ? `/media/${doc.model3d.filename}` : (doc.model3d?.url || null),
   };
 }
 
@@ -317,6 +321,7 @@ export function transformPayloadLiveArchiveMember(doc: any) {
     slug: doc.slug,
     lema: doc.lema,
     biography: doc.biography,
+    profession: doc.profession || '',
     profileImage: doc.profileImage?.filename ? `/media/${doc.profileImage.filename}` : (doc.profileImage?.url || '/images/placeholder-author.jpg'),
     identifierImage: doc.identifierImage?.filename ? `/media/${doc.identifierImage.filename}` : (doc.identifierImage?.url || ''),
     email: doc.email,
@@ -325,5 +330,6 @@ export function transformPayloadLiveArchiveMember(doc: any) {
     socialMedia: doc.socialMedia || {},
     tags: doc.tags || [],
     photos: doc.photos?.map((p: any) => p.image?.filename ? `/media/${p.image.filename}` : (p.image?.url || '')) || [],
+    model3d: doc.model3d?.filename ? `/media/${doc.model3d.filename}` : (doc.model3d?.url || null),
   };
 }

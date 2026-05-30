@@ -89,7 +89,11 @@ export const Media: CollectionConfig = {
             },
         ],
         adminThumbnail: 'thumbnail',
-        mimeTypes: ['image/*'],
+        mimeTypes: [
+            'image/*',
+            'model/gltf-binary',
+            'model/gltf+json',
+        ],
     },
     fields: [],
 };

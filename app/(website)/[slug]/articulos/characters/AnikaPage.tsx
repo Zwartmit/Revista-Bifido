@@ -23,6 +23,7 @@ export default function AnikaPage({ section, character, articles }: Props) {
     const { primary, dark } = getCharacterColors(character.slug);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         gsap.fromTo(
             heroRef.current?.querySelectorAll('.ha') || [],
             { opacity: 0, y: 24 },
@@ -56,7 +57,7 @@ export default function AnikaPage({ section, character, articles }: Props) {
                     </div>
                 )}
 
-                <div className="relative z-10 w-full lg:w-[58%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-16 pt-32">
+                <div className="relative z-10 w-full lg:w-[58%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-32 pt-20 xl:pb-48">
                     <Link href="/elparche" className="ha inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/40 hover:text-white/70 uppercase mb-10 transition-colors">
                         <ArrowLeft size={14} />El Parche
                     </Link>
@@ -178,13 +179,10 @@ export default function AnikaPage({ section, character, articles }: Props) {
             <div className="mx-6 sm:mx-10 lg:mx-16 xl:mx-24 mb-20 border border-[#1e1e1e]"
                 style={{ borderTopColor: `${primary}40` }}>
                 <div className="p-10 sm:p-14 text-center bg-[#080808]">
-                    <span className="font-display text-[10px] tracking-[0.5em] uppercase block mb-4" style={{ color: primary }}>
-                        Periodismo independiente
-                    </span>
                     <h2 className="font-display text-3xl sm:text-5xl text-white uppercase mb-4 leading-tight">
                         Apoya el periodismo libre
                     </h2>
-                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-sm leading-relaxed">
+                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-[20px] leading-relaxed">
                         Bífido existe porque hay personas que creen en el periodismo crudo y honesto.
                     </p>
                     <a href="#" className="inline-block font-display tracking-[0.25em] text-black text-sm px-8 py-4 uppercase hover:opacity-90 transition-opacity"

@@ -101,5 +101,16 @@ export const Characters: CollectionConfig = {
             relationTo: 'media',
             required: true,
         },
+        {
+            name: 'model3d',
+            label: 'Modelo 3D (.glb)',
+            type: 'upload',
+            relationTo: 'media',
+            required: false,
+            admin: {
+                description: 'Archivo GLTF/GLB para la visualización 3D del personaje.',
+            },
+        },
+
     ],
 };

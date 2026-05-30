@@ -82,7 +82,7 @@ export default function Header() {
                             >
                                 {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <Image src="/icons/navmobil.svg" alt="Menu" width={32} height={32} className="object-contain" />}
                             </button>
-                        </div>
+                         </div>
                     </div>
 
                     {/* Desktop Layout - Logo left, Links center/right */}

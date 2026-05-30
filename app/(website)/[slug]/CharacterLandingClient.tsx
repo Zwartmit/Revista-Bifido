@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
 import { Character } from '@/types';
@@ -17,6 +17,7 @@ export default function CharacterLandingClient({ character }: Props) {
     const { primary, dark } = getCharacterColors(character.slug);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         if (!containerRef.current) return;
         const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
         tl.fromTo('.cl-anim', { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.1 })
@@ -35,64 +36,50 @@ export default function CharacterLandingClient({ character }: Props) {
 
             {/* ─── HERO FULLBLEED ─────────────────────────────────── */}
             <section
-                className="relative w-full min-h-screen flex items-end"
-                style={{ background: `linear-gradient(145deg, ${dark}55 0%, #000 55%)` }}
+                className="relative w-full min-h-[75vh] flex items-end overflow-hidden"
+                style={{ background: `linear-gradient(150deg, ${dark}50 0%, #000 60%)` }}
             >
                 {/* Ambient glow */}
                 <div
                     className="absolute inset-0 pointer-events-none"
-                    style={{ background: `radial-gradient(ellipse 60% 80% at 72% 40%, ${primary}18 0%, transparent 70%)` }}
-                />
-
-                {/* Vertical decorative line */}
-                <div
-                    className="absolute top-0 left-[38%] w-px h-full opacity-10 hidden lg:block"
-                    style={{ backgroundColor: primary }}
+                    style={{ background: `radial-gradient(ellipse 55% 65% at 68% 50%, ${primary}18 0%, transparent 70%)` }}
                 />
 
                 {/* Character image — right pinned */}
-                <div className="cl-image absolute inset-y-0 right-0 w-[58%] lg:w-[48%] flex items-end justify-center pointer-events-none">
+                <div className="cl-image absolute inset-y-0 right-0 w-[50%] lg:w-[42%] flex items-end justify-center pointer-events-none">
                     {character.image && (
                         <Image
                             src={character.image}
                             alt={character.name}
-                            width={640}
-                            height={820}
-                            className="object-contain object-bottom w-full h-full max-h-screen drop-shadow-[0_0_80px_rgba(0,0,0,0.98)]"
+                            width={560}
+                            height={720}
+                            className="object-contain object-bottom w-full h-full max-h-[85vh] drop-shadow-[0_0_50px_rgba(0,0,0,0.95)]"
                             priority
                         />
                     )}
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 w-full lg:w-[55%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-20 pt-36">
+                <div className="relative z-10 w-full lg:w-[58%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-32 pt-20 xl:pb-48">
 
                     {/* Back */}
                     <Link
                         href="/elparche"
-                        className="cl-anim inline-flex items-center gap-2 font-googlesans text-[11px] tracking-[0.3em] text-white/30 hover:text-white/60 uppercase mb-12 transition-colors"
+                        className="cl-anim inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/40 hover:text-white/70 uppercase mb-10 transition-colors"
                     >
-                        ← El Parche
+                        <ArrowLeft size={14} />Volver a El Parche
                     </Link>
 
-                    {/* Label */}
-                    <span
-                        className="cl-anim block font-display text-[11px] tracking-[0.5em] uppercase mb-4"
-                        style={{ color: primary }}
-                    >
-                        La Manada
-                    </span>
-
                     {/* Name */}
-                    <h1 className="cl-anim font-display text-7xl sm:text-8xl lg:text-[9rem] text-white leading-[0.9] mb-6 uppercase tracking-tight">
+                    <h1 className="cl-anim font-display text-6xl sm:text-7xl lg:text-8xl text-white leading-none mb-4 uppercase">
                         {character.name}
                     </h1>
 
                     {/* Accent line */}
-                    <div className="cl-anim w-24 h-[3px] mb-8" style={{ backgroundColor: primary }} />
+                    <div className="cl-anim w-16 h-[3px] mb-6" style={{ backgroundColor: primary }} />
 
                     {/* Description */}
-                    <p className="cl-anim font-googlesans text-gray-300 text-base leading-relaxed max-w-md mb-10">
+                    <p className="cl-anim font-googlesans text-gray-400 text-base leading-relaxed max-w-md mb-8">
                         {character.description}
                     </p>
 
@@ -106,19 +93,11 @@ export default function CharacterLandingClient({ character }: Props) {
                             Ver artículos
                             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                         </Link>
-                        <Link
-                            href="#ficha"
-                            className="group inline-flex items-center gap-3 px-7 py-4 font-display text-sm tracking-[0.25em] uppercase text-white border transition-all duration-300 hover:border-white/50"
-                            style={{ borderColor: `${primary}40` }}
-                        >
-                            Ficha técnica
-                            <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                        </Link>
                     </div>
                 </div>
 
                 {/* Bottom fade */}
-                <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-black to-transparent pointer-events-none" />
             </section>
 
             {/* ─── FICHA TÉCNICA ──────────────────────────────────── */}
@@ -139,7 +118,7 @@ export default function CharacterLandingClient({ character }: Props) {
                                 className="cl-tag flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 px-8 py-7 border-b border-white/5"
                             >
                                 <span
-                                    className="font-display text-[10px] tracking-[0.4em] uppercase w-32 shrink-0"
+                                    className="font-display text-sm tracking-[0.4em] uppercase w-32 shrink-0"
                                     style={{ color: primary }}
                                 >
                                     {item.label}

@@ -56,10 +56,25 @@ export const LiveArchive: CollectionConfig = {
             type: 'textarea',
         },
         {
+            name: 'profession',
+            label: 'Profesión',
+            type: 'text',
+        },
+        {
             name: 'profileImage',
             label: 'Imagen de perfil',
             type: 'upload',
             relationTo: 'media',
+            required: true,
+        },
+        {
+            name: 'model3d',
+            label: 'Modelo 3D (.glb)',
+            type: 'upload',
+            relationTo: 'media',
+            admin: {
+                description: 'Sube el archivo .glb del personaje para la visualización interactiva.',
+            },
         },
         {
             name: 'identifierImage',

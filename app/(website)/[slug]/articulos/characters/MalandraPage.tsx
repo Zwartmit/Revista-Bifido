@@ -59,7 +59,7 @@ export default function MalandraPage({ section, character, articles }: Props) {
 
                 <div className="relative z-10 w-full lg:w-[58%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-16 pt-32">
                     <Link href="/elparche" className="ha inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/40 hover:text-white/70 uppercase mb-10 transition-colors">
-                        <ArrowLeft size={14} />El Parche
+                        <ArrowLeft size={14} />Volver a El Parche
                     </Link>
                     <span className="ha block font-display text-xs tracking-[0.4em] uppercase mb-3" style={{ color: primary }}>
                         {character.name}
@@ -186,9 +186,6 @@ export default function MalandraPage({ section, character, articles }: Props) {
             <div className="mx-6 sm:mx-10 lg:mx-16 xl:mx-24 mb-20 border border-[#1e1e1e] overflow-hidden"
                 style={{ borderTopColor: `${primary}40` }}>
                 <div className="p-10 sm:p-14 text-center bg-[#080808]">
-                    <span className="font-display text-[10px] tracking-[0.5em] uppercase block mb-4" style={{ color: primary }}>
-                        Periodismo independiente
-                    </span>
                     <h2 className="font-display text-3xl sm:text-5xl text-white uppercase mb-4 leading-tight">
                         Apoya el periodismo libre
                     </h2>
