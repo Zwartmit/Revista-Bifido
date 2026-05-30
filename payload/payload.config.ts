@@ -2,6 +2,7 @@ import { buildConfig } from 'payload';
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { s3Storage } from '@payloadcms/storage-s3';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import sharp from 'sharp';
@@ -21,6 +22,27 @@ import { Users } from './collections/Users';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
+
+const plugins = [];
+
+if (process.env.S3_ENDPOINT) {
+    plugins.push(
+        s3Storage({
+            collections: {
+                media: true,
+            },
+            bucket: process.env.S3_BUCKET as string,
+            config: {
+                credentials: {
+                    accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
+                    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string,
+                },
+                region: process.env.S3_REGION || 'auto',
+                endpoint: process.env.S3_ENDPOINT as string,
+            },
+        })
+    );
+}
 
 export default buildConfig({
     admin: {
@@ -76,6 +98,7 @@ export default buildConfig({
         Products,
         Media,
     ],
+    plugins,
     editor: lexicalEditor({}),
     secret: process.env.PAYLOAD_SECRET as string,
     typescript: {
