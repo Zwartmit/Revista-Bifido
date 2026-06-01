@@ -114,16 +114,20 @@ export default buildConfig({
         },
     }),
     sharp,
-    email: nodemailerAdapter({
-        defaultFromAddress: process.env.SMTP_USER as string,
-        defaultFromName: 'Revista Bífido',
-        transportOptions: {
-            host: 'smtp.gmail.com',
-            port: 587,
-            auth: {
-                user: process.env.SMTP_USER as string,
-                pass: process.env.SMTP_PASS as string,
-            },
-        },
-    }),
+    ...(process.env.SMTP_USER
+        ? {
+              email: nodemailerAdapter({
+                  defaultFromAddress: process.env.SMTP_USER,
+                  defaultFromName: 'Revista Bífido',
+                  transportOptions: {
+                      host: 'smtp.gmail.com',
+                      port: 587,
+                      auth: {
+                          user: process.env.SMTP_USER,
+                          pass: process.env.SMTP_PASS,
+                      },
+                  },
+              }),
+          }
+        : {}),
 });
