@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cross-env PAYLOAD_CONFIG_PATH=payload/payload.config.ts payload generate:importmap && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
