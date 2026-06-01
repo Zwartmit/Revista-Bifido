@@ -25,6 +25,7 @@ import { LogoutButton as LogoutButton_4fa0da4f39e65c0a260a976af575b7d4 } from '@
 import { Icon as Icon_ee083e57cfeceb6433911927d214e2fa } from '@/payload/components/Icon'
 import { Logo as Logo_91bbc66a9b3ed1dae52e0caef1a54af7 } from '@/payload/components/Logo'
 import { PasswordToggleProvider as PasswordToggleProvider_8f4152ff01afc2bb65544649d709d4a8 } from '@/payload/components/PasswordToggleProvider'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { CollectionCards as CollectionCards_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 
 export const importMap = {
@@ -55,5 +56,6 @@ export const importMap = {
   "@/payload/components/Icon#Icon": Icon_ee083e57cfeceb6433911927d214e2fa,
   "@/payload/components/Logo#Logo": Logo_91bbc66a9b3ed1dae52e0caef1a54af7,
   "@/payload/components/PasswordToggleProvider#PasswordToggleProvider": PasswordToggleProvider_8f4152ff01afc2bb65544649d709d4a8,
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@payloadcms/ui/rsc#CollectionCards": CollectionCards_ab83ff7e88da8d3530831f296ec4756a
 }

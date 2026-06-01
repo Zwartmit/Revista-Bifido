@@ -25,28 +25,27 @@ const dirname = path.dirname(filename);
 
 const plugins = [];
 
-if (process.env.S3_ENDPOINT) {
-    plugins.push(
-        s3Storage({
-            collections: {
-                media: {
-                    generateFileURL: ({ filename, prefix }) => {
-                        return `${process.env.S3_PUBLIC_URL}/${prefix ? `${prefix}/` : ''}${filename}`;
-                    },
+plugins.push(
+    s3Storage({
+        enabled: !!process.env.S3_ENDPOINT,
+        collections: {
+            media: {
+                generateFileURL: ({ filename, prefix }) => {
+                    return `${process.env.S3_PUBLIC_URL}/${prefix ? `${prefix}/` : ''}${filename}`;
                 },
             },
-            bucket: process.env.S3_BUCKET as string,
-            config: {
-                credentials: {
-                    accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
-                    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string,
-                },
-                region: process.env.S3_REGION || 'auto',
-                endpoint: process.env.S3_ENDPOINT as string,
+        },
+        bucket: process.env.S3_BUCKET as string || '',
+        config: {
+            credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY_ID as string || '',
+                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string || '',
             },
-        })
-    );
-}
+            region: process.env.S3_REGION || 'auto',
+            endpoint: process.env.S3_ENDPOINT as string || '',
+        },
+    })
+);
 
 export default buildConfig({
     admin: {
