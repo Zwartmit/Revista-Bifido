@@ -112,6 +112,7 @@ export default buildConfig({
         pool: {
             connectionString: process.env.DATABASE_URI || 'postgresql://postgres:admin@localhost:5432/revista-bifido',
         },
+        push: true,
     }),
     sharp,
     ...(process.env.SMTP_USER
