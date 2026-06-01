@@ -1,7 +1,7 @@
 // API Service para integración con Payload CMS
 import qs from 'qs';
 
-const PAYLOAD_URL = process.env.NEXT_PUBLIC_PAYLOAD_URL || 'http://localhost:3000';
+const PAYLOAD_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
 /**
  * Función genérica para construir URLs de Payload
