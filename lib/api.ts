@@ -260,7 +260,7 @@ export function transformPayloadArticle(doc: any) {
     content: doc.content, // RichText JSON
     author: doc.author ? doc.author.name : 'Revista Bífido',
     publishedAt: doc.publishedAt,
-    featuredImage: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
+    featuredImage: doc.featuredImage?.url || '/images/placeholder-article.jpg',
     // Section derived directly from the author (character)
     section: doc.author?.slug || 'general',
     characterId: doc.author?.slug || '',
@@ -276,8 +276,8 @@ export function transformPayloadCharacter(doc: any) {
     religion: doc.religion || '',
     age: doc.age || '',
     favoriteColor: doc.favoriteColor || '',
-    image: doc.image?.filename ? `/media/${doc.image.filename}` : (doc.image?.url || '/images/placeholder.png'),
-    model3d: doc.model3d?.filename ? `/media/${doc.model3d.filename}` : (doc.model3d?.url || null),
+    image: doc.image?.url || '/images/placeholder.png',
+    model3d: doc.model3d?.url || null,
   };
 }
 
@@ -303,10 +303,10 @@ export function transformPayloadEvent(doc: any) {
     },
     ticketLink: doc.ticketLink,
     // Prioritize constructed URL
-    image: doc.featuredImage?.filename ? `/media/${doc.featuredImage.filename}` : (doc.featuredImage?.url || '/images/placeholder-article.jpg'),
+    image: doc.featuredImage?.url || '/images/placeholder-article.jpg',
     gallery: doc.gallery?.map((item: any) => ({
       id: item.id,
-      url: item.image?.filename ? `/media/${item.image.filename}` : (item.image?.url || ''),
+      url: item.image?.url || '',
       alt: item.image?.alt || ''
     })) || [],
   };
@@ -320,14 +320,14 @@ export function transformPayloadLiveArchiveMember(doc: any) {
     lema: doc.lema,
     biography: doc.biography,
     profession: doc.profession || '',
-    profileImage: doc.profileImage?.filename ? `/media/${doc.profileImage.filename}` : (doc.profileImage?.url || '/images/placeholder-author.jpg'),
-    identifierImage: doc.identifierImage?.filename ? `/media/${doc.identifierImage.filename}` : (doc.identifierImage?.url || ''),
+    profileImage: doc.profileImage?.url || '/images/placeholder-author.jpg',
+    identifierImage: doc.identifierImage?.url || '',
     email: doc.email,
     location: doc.location || '',
     characteristics: doc.characteristics?.map((c: any) => c.text) || [],
     socialMedia: doc.socialMedia || {},
     tags: doc.tags || [],
-    photos: doc.photos?.map((p: any) => p.image?.filename ? `/media/${p.image.filename}` : (p.image?.url || '')) || [],
-    model3d: doc.model3d?.filename ? `/media/${doc.model3d.filename}` : (doc.model3d?.url || null),
+    photos: doc.photos?.map((p: any) => p.image?.url || '') || [],
+    model3d: doc.model3d?.url || null,
   };
 }
