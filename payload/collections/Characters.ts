@@ -8,7 +8,7 @@ export const Characters: CollectionConfig = {
         plural: 'Personajes',
     },
     hooks: {
-        beforeDelete: [
+                beforeDelete: [
             async ({ req, id }) => {
                 const articles = await req.payload.find({
                     collection: 'articles',
@@ -17,6 +17,15 @@ export const Characters: CollectionConfig = {
                 });
                 if (articles.totalDocs > 0) {
                     throw new APIError(`No se puede eliminar: Este personaje es autor de artículos publicados (ej. "${articles.docs[0].title}")`, 400);
+                }
+
+                const sections = await req.payload.find({
+                    collection: 'sections',
+                    where: { character: { equals: id } },
+                    limit: 1,
+                });
+                if (sections.totalDocs > 0) {
+                    throw new APIError(`No se puede eliminar: Este personaje está asignado a la sección "${sections.docs[0].name}"`, 400);
                 }
             },
         ],
