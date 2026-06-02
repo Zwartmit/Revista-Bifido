@@ -43,6 +43,7 @@ plugins.push(
             },
             region: process.env.S3_REGION || 'auto',
             endpoint: process.env.S3_ENDPOINT as string || '',
+            forcePathStyle: true,
         },
     })
 );
