@@ -106,11 +106,13 @@ export default function ElParchePage() {
             // 2. LEFT ACCORDION: stripes slide in from left in stagger
             if (leftGridRef.current) {
                 const items = leftGridRef.current.querySelectorAll(':scope > div');
-                gsap.fromTo(
-                    items,
-                    { x: -60, opacity: 0 },
-                    { x: 0, opacity: 1, duration: 1.0, stagger: 0.15, ease: 'power3.out', delay: 0.3 }
-                );
+                if (items.length > 0) {
+                    gsap.fromTo(
+                        items,
+                        { x: -60, opacity: 0 },
+                        { x: 0, opacity: 1, duration: 1.0, stagger: 0.15, ease: 'power3.out', delay: 0.3 }
+                    );
+                }
             }
 
             // 3. SHOWCASE: image scales from 1.08 + bio card floats up
@@ -296,9 +298,9 @@ export default function ElParchePage() {
                                         ></div>
 
                                         {/* Character Image */}
-                                        {m.image && (
+                                        {m.slug && (
                                             <Image
-                                                src={m.image}
+                                                src={`/icons/${m.slug}.png`}
                                                 alt={m.name}
                                                 width={400}
                                                 height={500}
@@ -399,7 +401,7 @@ export default function ElParchePage() {
                                     <div className="w-full h-full max-w-[80%] sm:max-w-full relative z-20 animate-float">
                                         <ModelViewer
                                             modelUrl={activeCharacter.model3d}
-                                            fallbackImage={activeCharacter.image}
+                                            fallbackImage={`/icons/${activeCharacter.slug}.png`}
                                             transparent
                                             primaryColor={activeColors.primary}
                                             secondaryColor={activeColors.secondary}
