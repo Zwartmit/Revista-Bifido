@@ -137,7 +137,8 @@ export default function ModelViewer({
         shadows={!transparent}
         camera={{ position: [0, 0, 6], fov: 16 }} // Zoom extremo (FOV 16)
         style={{ pointerEvents: 'auto' }}
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
+        gl={{ powerPreference: "high-performance" }}
       >
         {/* Iluminación */}
         {transparent ? (
@@ -153,8 +154,8 @@ export default function ModelViewer({
         <Suspense fallback={<Loader primaryColor={primaryColor} secondaryColor={secondaryColor} />}>
           <ModelContent url={modelUrl} onLoaded={() => setIsLoaded(true)} />
           
-          {/* Sombra de contacto realista en la base */}
-          <ContactShadows position={[0, -1.4, 0]} opacity={0.65} scale={10} blur={2.5} far={4} color="#000000" />
+          {/* Sombra de contacto realista en la base (Optimizada para móvil con frames={1}) */}
+          <ContactShadows position={[0, -1.4, 0]} opacity={0.65} scale={10} blur={2.5} far={4} color="#000000" resolution={256} frames={1} />
 
           <OrbitControls
             enablePan={false}
