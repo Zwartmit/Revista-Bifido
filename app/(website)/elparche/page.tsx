@@ -304,6 +304,7 @@ export default function ElParchePage() {
                                                 alt={m.name}
                                                 width={400}
                                                 height={500}
+                                                priority={true}
                                                 className="absolute right-0 md:right-4 lg:right-12 bottom-0 h-[85%] md:h-[95%] lg:h-[105%] lg:group-hover/item:h-[95%] w-auto object-contain object-bottom filter grayscale group-hover/item:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] opacity-60 group-hover:opacity-20 group-hover/item:!opacity-100 transform origin-bottom z-10"
                                             />
                                         )}
@@ -622,6 +623,16 @@ export default function ElParchePage() {
                                                             height={82}
                                                             className="object-contain"
                                                         />
+                                                        {/* Truco: Precargamos la versión de alta resolución en secreto para que el Modal abra al instante */}
+                                                        <div className="absolute w-0 h-0 overflow-hidden opacity-0 pointer-events-none">
+                                                            <Image
+                                                                src={member.profileImage}
+                                                                alt={`${member.name} preload`}
+                                                                fill
+                                                                sizes="(max-width: 768px) 100vw, 50vw"
+                                                                priority={true}
+                                                            />
+                                                        </div>
                                                     </div>
 
                                                     {/* Imagen Identificador (Hover) */}

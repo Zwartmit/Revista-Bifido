@@ -86,14 +86,13 @@ export default function SectionClient({ section, character, articles }: SectionC
                 </div>
 
                 {/* Text content */}
-                <div className="relative z-10 w-full lg:w-[55%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-16 pt-32">
+                <div className="relative z-10 w-full lg:w-[55%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-32 pt-20 xl:pb-48">
                     {/* Back link */}
                     <Link
                         href="/elparche"
                         className="hero-anim inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/40 hover:text-white/70 uppercase mb-10 transition-colors"
                     >
-                        <ArrowLeft size={14} />
-                        El Parche
+                        <ArrowLeft size={14} /> Volver a El Parche
                     </Link>
 
                     {/* Section tag */}
@@ -116,7 +115,7 @@ export default function SectionClient({ section, character, articles }: SectionC
                     />
 
                     {/* Description */}
-                    <p className="hero-anim font-googlesans text-gray-400 text-base leading-relaxed max-w-md mb-8">
+                    <p className="hero-anim font-googlesans text-gray-400 text-lg md:text-xl leading-relaxed max-w-xl mb-8">
                         {character.description}
                     </p>
 
@@ -141,11 +140,11 @@ export default function SectionClient({ section, character, articles }: SectionC
                 {/* Section header */}
                 <div className="flex items-center gap-4 mb-12">
                     <div className="w-6 h-[3px]" style={{ backgroundColor: primaryColor }} />
-                    <span className="font-display text-2xl tracking-[0.25em] text-white uppercase">
+                    <span className="font-display text-3xl tracking-[0.25em] text-white uppercase">
                         Publicaciones
                     </span>
                     <div className="flex-1 h-px bg-white/10" />
-                    <span className="font-googlesans text-white/30 text-xs tracking-widest">
+                    <span className="font-googlesans text-white/30 text-sm tracking-widest">
                         {articles.length} artículos
                     </span>
                 </div>
@@ -203,20 +202,20 @@ export default function SectionClient({ section, character, articles }: SectionC
                                     {/* Content */}
                                     <div className="flex flex-col justify-between p-8 lg:p-12 bg-[#080808] flex-1">
                                         <div>
-                                            <span className="font-googlesans text-xs text-white/40 tracking-wider block mb-4">
+                                            <span className="font-googlesans text-sm text-white/40 tracking-wider block mb-4">
                                                 {formatDate(featuredArticle.publishedAt)}
                                             </span>
-                                            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-6 uppercase group-hover:text-white/80 transition-colors">
+                                            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-6 uppercase group-hover:text-white/80 transition-colors">
                                                 {featuredArticle.title}
                                             </h2>
                                             {featuredArticle.excerpt && (
-                                                <p className="font-googlesans text-gray-400 text-base leading-relaxed line-clamp-3">
+                                                <p className="font-googlesans text-gray-400 text-base md:text-lg leading-relaxed line-clamp-3">
                                                     {featuredArticle.excerpt}
                                                 </p>
                                             )}
                                         </div>
                                         <div
-                                            className="flex items-center gap-2 mt-8 font-googlesans text-sm font-medium"
+                                            className="flex items-center gap-2 mt-8 font-googlesans text-base font-medium"
                                             style={{ color: primaryColor }}
                                         >
                                             <span>Leer artículo</span>
@@ -262,19 +261,19 @@ export default function SectionClient({ section, character, articles }: SectionC
 
                                         {/* Content */}
                                         <div className="flex flex-col flex-1 p-5">
-                                            <span className="font-googlesans text-[11px] text-white/30 tracking-wider mb-2 block">
+                                            <span className="font-googlesans text-xs text-white/30 tracking-wider mb-2 block">
                                                 {formatDate(article.publishedAt)}
                                             </span>
-                                            <h3 className="font-display text-xl text-white uppercase leading-tight mb-3 flex-1 group-hover:text-white/70 transition-colors">
+                                            <h3 className="font-display text-2xl text-white uppercase leading-tight mb-3 flex-1 group-hover:text-white/70 transition-colors">
                                                 {article.title}
                                             </h3>
                                             {article.excerpt && (
-                                                <p className="font-googlesans text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">
+                                                <p className="font-googlesans text-gray-500 text-base leading-relaxed line-clamp-2 mb-4">
                                                     {article.excerpt}
                                                 </p>
                                             )}
                                             <div
-                                                className="flex items-center gap-2 text-xs font-googlesans font-medium mt-auto"
+                                                className="flex items-center gap-2 text-sm font-googlesans font-medium mt-auto"
                                                 style={{ color: primaryColor }}
                                             >
                                                 <span>Leer</span>
@@ -296,21 +295,21 @@ export default function SectionClient({ section, character, articles }: SectionC
             >
                 <div className="p-10 sm:p-14 text-center bg-[#080808]">
                     <span
-                        className="font-display text-[10px] tracking-[0.5em] uppercase block mb-4"
+                        className="font-display text-xs tracking-[0.5em] uppercase block mb-4"
                         style={{ color: primaryColor }}
                     >
                         Periodismo independiente
                     </span>
-                    <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-white uppercase mb-4 leading-tight">
+                    <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-white uppercase mb-4 leading-tight">
                         Apoya el periodismo libre
                     </h2>
-                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-sm leading-relaxed">
+                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-base md:text-lg leading-relaxed">
                         Bífido existe porque hay personas que creen en el periodismo crudo y honesto.
                         Si lo que lees te mueve, considera apoyarnos.
                     </p>
                     <a
                         href="#"
-                        className="inline-block font-display tracking-[0.25em] text-black text-sm px-8 py-4 uppercase hover:opacity-90 transition-opacity"
+                        className="inline-block font-display tracking-[0.25em] text-black text-base px-8 py-4 uppercase hover:opacity-90 transition-opacity"
                         style={{ backgroundColor: primaryColor }}
                     >
                         Colaborar

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Suspense, useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF, OrbitControls, Center, Html, useProgress, ContactShadows } from '@react-three/drei';
 
@@ -99,11 +100,16 @@ export default function ModelViewer({
     return (
       <div className={`w-full h-full flex items-center justify-center ${transparent ? 'bg-transparent' : 'bg-zinc-900/10'}`}>
         {fallbackImage ? (
-          <img
-            src={fallbackImage}
-            alt="Fallback"
-            className={`w-full h-full object-contain ${transparent ? 'drop-shadow-[0_20px_20px_rgba(0,0,0,0.6)]' : 'p-8 opacity-50 grayscale'}`}
-          />
+          <div className={`relative w-full h-full ${transparent ? 'drop-shadow-[0_20px_20px_rgba(0,0,0,0.6)]' : 'p-8 opacity-50 grayscale'}`}>
+            <Image
+              src={fallbackImage}
+              alt="Fallback"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-contain"
+            />
+          </div>
         ) : (
           <div className="text-zinc-500 font-display text-sm uppercase tracking-widest">Sin modelo 3D</div>
         )}

@@ -56,18 +56,15 @@ export default function PunkibriPage({ section, character, articles }: Props) {
                     </div>
                 )}
 
-                <div className="relative z-10 w-full lg:w-[58%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-16 pt-32">
+                <div className="relative z-10 w-full lg:w-[58%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-32 pt-20 xl:pb-48">
                     <Link href="/elparche" className="ha inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/40 hover:text-white/70 uppercase mb-10 transition-colors">
-                        <ArrowLeft size={14} />El Parche
+                        <ArrowLeft size={14} /> Volver a El Parche
                     </Link>
-                    <span className="ha block font-display text-xs tracking-[0.4em] uppercase mb-3" style={{ color: primary }}>
-                        {character.section}
-                    </span>
                     <h1 className="ha font-display text-6xl sm:text-7xl lg:text-8xl text-white leading-none mb-4 uppercase">
                         {character.name}
                     </h1>
                     <div className="ha w-16 h-[3px] mb-6" style={{ backgroundColor: primary }} />
-                    <p className="ha font-googlesans text-gray-400 text-base leading-relaxed max-w-md mb-8">
+                    <p className="ha font-googlesans text-gray-400 text-lg md:text-xl leading-relaxed max-w-xl mb-8">
                         {character.description}
                     </p>
                     <span className="ha inline-block font-display text-xs tracking-[0.3em] uppercase px-4 py-2 border"
@@ -104,7 +101,7 @@ export default function PunkibriPage({ section, character, articles }: Props) {
             <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20">
                 <div className="flex items-center gap-4 mb-12">
                     <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
-                    <span className="font-display text-2xl tracking-[0.25em] uppercase">Ecorebeldía</span>
+                    <span className="font-display text-3xl tracking-[0.25em] uppercase">Ecorebeldía</span>
                     <div className="flex-1 h-px bg-white/10" />
                 </div>
 
@@ -131,7 +128,7 @@ export default function PunkibriPage({ section, character, articles }: Props) {
                                     <div className="absolute bottom-0 inset-x-0 p-8 sm:p-12">
                                         <span className="font-display text-[10px] tracking-[0.4em] px-3 py-1 uppercase mb-4 inline-block"
                                             style={{ backgroundColor: primary, color: '#000' }}>Artivismo</span>
-                                        <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white uppercase leading-tight mb-3 max-w-3xl">
+                                        <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-white uppercase leading-tight mb-3 max-w-4xl">
                                             {featuredArticle.title}
                                         </h2>
                                         <div className="flex items-center gap-3 font-googlesans text-sm" style={{ color: primary }}>
@@ -163,13 +160,13 @@ export default function PunkibriPage({ section, character, articles }: Props) {
                                             )}
                                         </div>
                                         <div className="flex flex-col flex-1 p-5">
-                                            <span className="font-googlesans text-[11px] text-white/30 tracking-wider mb-2 block">
+                                            <span className="font-googlesans text-xs text-white/30 tracking-wider mb-2 block">
                                                 {formatDate(article.publishedAt)}
                                             </span>
-                                            <h3 className="font-display text-xl text-white uppercase leading-tight mb-3 flex-1 group-hover:text-white/70 transition-colors">
+                                            <h3 className="font-display text-2xl text-white uppercase leading-tight mb-3 flex-1 group-hover:text-white/70 transition-colors">
                                                 {article.title}
                                             </h3>
-                                            <div className="flex items-center gap-2 text-xs font-googlesans font-medium mt-auto" style={{ color: primary }}>
+                                            <div className="flex items-center gap-2 text-sm font-googlesans font-medium mt-auto" style={{ color: primary }}>
                                                 <span>Leer</span>
                                                 <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                                             </div>
@@ -185,13 +182,13 @@ export default function PunkibriPage({ section, character, articles }: Props) {
             {/* ── ARTIVISMO Y RESISTENCIA ── */}
             <div className="px-6 sm:px-10 lg:px-16 xl:px-24 pb-20">
                 <div className="border border-[#1e1e1e] p-8 sm:p-12" style={{ borderTopWidth: 3, borderTopColor: primary }}>
-                    <span className="font-display text-[10px] tracking-[0.5em] uppercase mb-3 block" style={{ color: primary }}>
+                    <span className="font-display text-xs tracking-[0.5em] uppercase mb-3 block" style={{ color: primary }}>
                         Especial colectivo
                     </span>
-                    <h2 className="font-display text-3xl sm:text-4xl text-white uppercase mb-4">
+                    <h2 className="font-display text-4xl sm:text-5xl text-white uppercase mb-4">
                         Artivismo y Resistencia
                     </h2>
-                    <p className="font-googlesans text-gray-500 text-sm leading-relaxed max-w-xl">
+                    <p className="font-googlesans text-gray-500 text-base md:text-lg leading-relaxed max-w-2xl">
                         Experiencias colectivas, arte callejero y brigadas de resistencia ecológica. Podcast, video y galería. Próximamente.
                     </p>
                 </div>
@@ -201,13 +198,13 @@ export default function PunkibriPage({ section, character, articles }: Props) {
             <div className="mx-6 sm:mx-10 lg:mx-16 xl:mx-24 mb-20 border border-[#1e1e1e]"
                 style={{ borderTopColor: `${primary}40` }}>
                 <div className="p-10 sm:p-14 text-center bg-[#080808]">
-                    <h2 className="font-display text-3xl sm:text-5xl text-white uppercase mb-4 leading-tight">
+                    <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-white uppercase mb-4 leading-tight">
                         Apoya el periodismo libre
                     </h2>
-                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-sm leading-relaxed">
+                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-base md:text-lg leading-relaxed">
                         Bífido existe porque hay personas que creen en el periodismo crudo y honesto.
                     </p>
-                    <a href="#" className="inline-block font-display tracking-[0.25em] text-black text-sm px-8 py-4 uppercase hover:opacity-90 transition-opacity"
+                    <a href="#" className="inline-block font-display tracking-[0.25em] text-black text-base px-8 py-4 uppercase hover:opacity-90 transition-opacity"
                         style={{ backgroundColor: primary }}>
                         Colaborar
                     </a>
