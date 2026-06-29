@@ -751,15 +751,78 @@ export default function ElParchePage() {
                         </div>
 
                         {/* Modal Body */}
-                        <div className="flex flex-col md:flex-row w-full flex-1 min-h-0 overflow-y-auto md:overflow-hidden p-6 md:p-8 gap-8 md:gap-12">
+                        <div className="flex flex-col md:flex-row w-full flex-1 min-h-0 overflow-y-scroll md:overflow-hidden p-6 md:p-8 gap-2 md:gap-12 custom-scrollbar">
 
                             {/* Left: 3D Model Viewer (Pill shape) */}
                             <div className="w-full md:w-[40%] flex-shrink-0 flex flex-col items-center justify-center min-h-0">
-                                <div className="w-full aspect-[1/2] max-h-[60vh] md:max-h-full rounded-[100px] bg-white/5 overflow-hidden relative flex items-center justify-center border border-white/10">
-                                    <ModelViewer
-                                        modelUrl={selectedMember.model3d}
-                                        fallbackImage={selectedMember.profileImage}
-                                    />
+                                {/* Mobile Header (Hidden on Desktop) */}
+                                <div className="flex flex-col md:hidden w-full mb-6">
+                                    <span className="font-jack text-orange-500 text-xs tracking-[0.2em] mb-2 uppercase">Manifiesto personal</span>
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <Image
+                                            src="/icons/message.svg"
+                                            alt="Manifiesto"
+                                            width={24}
+                                            height={24}
+                                            className="flex-shrink-0"
+                                            style={{ filter: 'brightness(0) saturate(100%) invert(53%) sepia(98%) saturate(1831%) hue-rotate(348deg) brightness(101%) contrast(96%)' }}
+                                        />
+                                        <h2 className="text-4xl font-display uppercase tracking-widest text-orange-500 leading-none mt-2">
+                                            {selectedMember.name}
+                                        </h2>
+                                    </div>
+                                    {selectedMember.profession && (
+                                        <div className="font-mono text-xs text-bifido-neon uppercase tracking-widest font-bold">
+                                            {selectedMember.profession}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="w-full relative">
+                                    {/* Navigation Arrows Overlay (Mobile Only) */}
+                                    <div className="absolute inset-y-0 -left-2 -right-2 flex md:hidden items-center justify-between pointer-events-none z-10">
+                                        <button
+                                            onClick={() => {
+                                                const currentIndex = team.findIndex(m => m.id === selectedMember.id);
+                                                const prevIndex = currentIndex <= 0 ? team.length - 1 : currentIndex - 1;
+                                                setSelectedMember(team[prevIndex]);
+                                                setModalPhotoIndex(0);
+                                            }}
+                                            className="pointer-events-auto group flex items-center transition-colors p-2"
+                                            title="Anterior"
+                                        >
+                                            <div className="flex items-center rotate-180 group-hover:-translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
+                                                <Image src="/icons/arrow_o.svg" alt="Anterior" width={32} height={32} />
+                                            </div>
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                const currentIndex = team.findIndex(m => m.id === selectedMember.id);
+                                                const nextIndex = currentIndex === team.length - 1 ? 0 : currentIndex + 1;
+                                                setSelectedMember(team[nextIndex]);
+                                                setModalPhotoIndex(0);
+                                            }}
+                                            className="pointer-events-auto group flex items-center transition-colors p-2"
+                                            title="Siguiente"
+                                        >
+                                            <div className="flex items-center group-hover:translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
+                                                <Image src="/icons/arrow_o.svg" alt="Siguiente" width={32} height={32} />
+                                            </div>
+                                        </button>
+                                    </div>
+
+                                    <div className="w-full aspect-[1/2] max-h-[60vh] md:max-h-full rounded-[100px] bg-white/5 overflow-hidden relative flex items-center justify-center border border-white/10">
+                                        <ModelViewer
+                                            modelUrl={selectedMember.model3d}
+                                            fallbackImage={selectedMember.profileImage}
+                                        />
+                                    </div>
+
+                                    {/* Pagination indicator (Mobile Only) */}
+                                    <div className="absolute bottom-6 left-0 right-0 flex md:hidden justify-center pointer-events-none z-10">
+                                        <span className="text-gray-300 font-sans text-xs bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
+                                            {(team.findIndex(m => m.id === selectedMember.id) + 1)}/{team.length}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -768,7 +831,7 @@ export default function ElParchePage() {
                                 <div className="flex flex-col text-left py-2 md:absolute md:inset-0 md:overflow-hidden min-h-0">
                                     
                                     {/* Header (Sticky on desktop) */}
-                                    <div className="flex flex-col flex-shrink-0 order-2 md:order-1">
+                                    <div className="hidden md:flex flex-col flex-shrink-0">
                                         <span className="font-jack text-orange-500 text-xs tracking-[0.2em] mb-2 uppercase">Manifiesto personal</span>
 
                                         <div className="flex items-center gap-3 mb-4">
@@ -872,8 +935,8 @@ export default function ElParchePage() {
                                         )}
                                     </div>
 
-                                    {/* Bottom Navigation (Member Navigation) */}
-                                    <div className="w-full border-b border-gray-800 pb-4 mb-6 md:border-b-0 md:pb-0 md:mb-0 md:border-t md:pt-4 md:mt-4 flex items-center justify-between text-gray-400 font-sans text-sm flex-shrink-0 order-1 md:order-4">
+                                    {/* Bottom Navigation (Member Navigation) - Desktop Only */}
+                                    <div className="hidden md:flex w-full md:border-t md:pt-4 md:mt-4 items-center justify-between text-gray-400 font-sans text-sm flex-shrink-0 order-4">
                                         <button
                                             onClick={() => {
                                                 const currentIndex = team.findIndex(m => m.id === selectedMember.id);
