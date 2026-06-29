@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 // --- VANILLA WEBGL FLUID SIMULATION ---
 // Based on the classic WebGL Fluid Simulation by Pavel Do Great
@@ -18,8 +18,18 @@ export default function FluidSimulation({
   className = ""
 }: FluidSimulationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -258,6 +268,10 @@ export default function FluidSimulation({
       cancelAnimationFrame(animationFrameId);
     };
   }, [color, opacity]);
+
+  if (isMobile) {
+    return <div className={`w-full h-full block ${className}`} style={{ background: 'transparent' }} />;
+  }
 
   return (
     <canvas

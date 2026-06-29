@@ -147,8 +147,8 @@ export default function ElParchePage() {
 
                 if (bgText) {
                     tlBridge.fromTo(bgText,
-                        { opacity: 0, scale: 1.1, filter: 'blur(10px)' },
-                        { opacity: 0.03, scale: 1, filter: 'blur(0px)', duration: 2, ease: 'power2.out' },
+                        { opacity: 0, scale: 1.1 },
+                        { opacity: 0.03, scale: 1, duration: 2, ease: 'power2.out' },
                         0
                     );
                 }
@@ -234,8 +234,8 @@ export default function ElParchePage() {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 bg-bifido-neon/5 blur-[120px] pointer-events-none"></div>
 
                 <div className="w-full mx-auto flex flex-col items-center text-center relative z-10">
-                    <div className="flex flex-col items-center gap-2 max-w-7xl mt-10 mb-10">
-                        <h1 ref={introh1Ref} className="font-anton text-4xl md:text-6xl text-white uppercase leading-[0.9] tracking-tight">
+                    <div className="flex flex-col items-center gap-2 max-w-7xl mt-4">
+                        <h1 ref={introh1Ref} className="font-anton text-4xl md:text-6xl text-white uppercase leading-[1.1] md:leading-[0.9] tracking-tight">
                             Bífido tiene voces que la representan
                         </h1>
                         <p ref={introPRef} className="text-white/60 text-base md:text-xl max-w-5xl mt-2 font-light leading-relaxed">
@@ -499,7 +499,7 @@ export default function ElParchePage() {
 
                     {/* Texto de transición */}
                     <div ref={bridgeTextRef} className="flex flex-col items-center max-w-5xl text-center">
-                        <span className="font-jack text-xl md:text-3xl text-white uppercase tracking-tight [word-spacing:-0.05em] leading-tight mb-2">
+                        <span className="font-jack text-xl md:text-3xl text-white uppercase tracking-widest [word-spacing:0.1em] leading-tight mb-4">
                             Detrás de todo esto está
                         </span>
                         <h2 className="font-anton text-5xl md:text-8xl text-bifido-neon uppercase tracking-normal leading-none drop-shadow-[0_0_8px_rgba(204,253,41,0.4)]">
