@@ -7,14 +7,14 @@ import { Character } from '@/types';
  */
 export const characters: Character[] = [
   {
-    id: 'malandra',
-    name: 'Malandra',
-    slug: 'malandra',
-    description: 'Cronista de la cultura underground y las expresiones artísticas marginales. Malandra celebra lo que la sociedad rechaza y encuentra belleza en lo prohibido.',
-    religion: 'Culto a la creatividad',
-    age: '33 años',
-    favoriteColor: 'Púrpura oscuro',
-    image: '/personajes/Malandra.png',
+    id: 'anika',
+    name: 'Ánika',
+    slug: 'anika',
+    description: 'Defensora de la reducción de riesgos y daños. Ánika promueve el autocuidado, la información responsable y el respeto a las decisiones personales sin juicios morales.',
+    religion: 'Pragmatismo compasivo',
+    age: '28 años',
+    favoriteColor: 'Turquesa',
+    image: '/personajes/Anika.png',
   },
   {
     id: 'incendia',
@@ -25,6 +25,16 @@ export const characters: Character[] = [
     age: '31 años',
     favoriteColor: 'Naranja fuego',
     image: '/personajes/Incendia.png',
+  },
+  {
+    id: 'malandra',
+    name: 'Malandra',
+    slug: 'malandra',
+    description: 'Cronista de la cultura underground y las expresiones artísticas marginales. Malandra celebra lo que la sociedad rechaza y encuentra belleza en lo prohibido.',
+    religion: 'Culto a la creatividad',
+    age: '33 años',
+    favoriteColor: 'Púrpura oscuro',
+    image: '/personajes/Malandra.png',
   },
   {
     id: 'mordaz',
@@ -45,16 +55,6 @@ export const characters: Character[] = [
     age: '127 años (en años de colibrí)',
     favoriteColor: 'Verde musgo',
     image: '/personajes/Punkibri.png',
-  },
-  {
-    id: 'anika',
-    name: 'Ánika',
-    slug: 'anika',
-    description: 'Defensora de la reducción de riesgos y daños. Ánika promueve el autocuidado, la información responsable y el respeto a las decisiones personales sin juicios morales.',
-    religion: 'Pragmatismo compasivo',
-    age: '28 años',
-    favoriteColor: 'Turquesa',
-    image: '/personajes/Anika.png',
   },
 ];
 

@@ -2,7 +2,11 @@ import { getCharacterBySlug as getCharacterBySlugFromAPI } from '@/lib/api';
 import { getCharacterBySlug as getCharacterBySlugStatic } from '@/lib/characters';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import CharacterLandingClient from './CharacterLandingClient';
+import AnikaLanding from './landings/AnikaLanding';
+import IncendiaLanding from './landings/IncendiaLanding';
+import MalandraLanding from './landings/MalandraLanding';
+import MordazLanding from './landings/MordazLanding';
+import PunkibriLanding from './landings/PunkibriLanding';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,5 +32,13 @@ export default async function CharacterLandingPage({ params }: { params: Promise
         notFound();
     }
 
-    return <CharacterLandingClient character={character} />;
+    switch (slug) {
+        case 'anika':    return <AnikaLanding />;
+        case 'incendia': return <IncendiaLanding />;
+        case 'malandra': return <MalandraLanding />;
+        case 'mordaz':   return <MordazLanding />;
+        case 'punkibri': return <PunkibriLanding />;
+        default:         notFound();
+    }
 }
+

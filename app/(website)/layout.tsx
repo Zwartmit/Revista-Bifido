@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Bebas_Neue, Anton, Outfit } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
+import './character-landings.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -62,7 +63,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning className={`${inter.variable} ${bebas.variable} ${jackInput.variable} ${anton.variable} ${outfit.variable}`}>
-      <body className="bg-black text-white font-sans antialiased flex flex-col min-h-[100dvh]">
+      <body suppressHydrationWarning className="bg-black text-white font-sans antialiased flex flex-col min-h-[100dvh]">
         <Header />
         <main className="flex-1 w-full flex flex-col">
           {children}
