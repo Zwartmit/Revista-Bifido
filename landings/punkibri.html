@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Punkibrí — Revista Bífido</title>
+  <meta name="description" content="Punkibrí habla desde el territorio. Defiende el páramo sin pedir permiso. Personaje de Revista Bífido inspirado en el Chivito del Ruiz."/>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── PALETA PUNKIBRÍ ─── */
+    :root {
+      --negro:  #1a1a1a;
+      --blanco: #f0efeb;
+      --p1:     #3b933f;  /* Verde Páramo */
+      --p2:     #f3e359;  /* Amarillo Lima */
+      --p3:     #553979;  /* Púrpura */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--negro);
+      color: var(--blanco);
+      font-family: 'Roboto', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.3;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 24px clamp(20px, 5vw, 80px);
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 100;
+      background: linear-gradient(180deg, rgba(26,26,26,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(4px);
+    }
+    .nav-logo { font-family: 'Anton', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--blanco); text-decoration: none; }
+    .nav-logo span { color: var(--p1); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s ease; }
+    .nav-links a:hover { color: var(--blanco); }
+    .nav-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--p1);
+      border: 1px solid var(--p1);
+      padding: 6px 14px;
+    }
+
+    /* ─── ENHANCED HERO BACKGROUND ─── */
+    .hero-bg-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-bg-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(26, 26, 26, 0.95) 0%,
+        rgba(26, 26, 26, 0.8) 35%,
+        rgba(26, 26, 26, 0.2) 70%,
+        rgba(26, 26, 26, 0.6) 100%
+      );
+    }
+    
+    @keyframes heroZoom {
+      from { transform: scale(1.08); }
+      to { transform: scale(1); }
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 70% 50%, rgba(59,147,63,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 30% 80%, rgba(85,57,121,0.12) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--p1), var(--p2), transparent);
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(60px, 8vw, 80px) clamp(40px, 6vw, 80px);
+      padding-top: clamp(80px, 10vw, 120px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(59,147,63,0.12) 0%, transparent 70%);
+      z-index: 1;
+    }
+
+    .character-wrap {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .character-svg {
+      width: 85%;
+      max-width: 550px;
+      height: auto;
+      object-fit: contain;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: riseIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+      filter: drop-shadow(0 0 40px rgba(59,147,63,0.3));
+    }
+
+    .label-revista {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--p1);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.1s forwards;
+      margin-bottom: 24px;
+    }
+
+    .hero-nombre {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 11vw, 11rem);
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      color: var(--blanco);
+      opacity: 0;
+      animation: fadeUp 1s ease 0.2s forwards;
+    }
+    .hero-nombre .acento { color: var(--p2); }
+
+    .hero-tagline {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(255,255,255,0.6);
+      margin-top: 28px;
+      line-height: 1.6;
+      max-width: 440px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.4s forwards;
+    }
+    .hero-tagline strong { color: var(--p2); font-style: normal; }
+
+    .hero-meta {
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.6s forwards;
+    }
+
+    .meta-badge {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.45);
+      transition: all 0.3s ease;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+    .meta-badge::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--p1);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .meta-badge:hover { color: var(--blanco); border-color: var(--p1); }
+    .meta-badge:hover::before { transform: scaleX(1); }
+
+    .scroll-cta {
+      position: absolute;
+      bottom: 40px; left: 80px;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeUp 1s ease 1s forwards;
+    }
+    .scroll-cta::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--p1);
+    }
+
+    /* ─── SECCIÓN ESPECIE ─── */
+    .section-especie {
+      padding: 120px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 80px;
+      align-items: start;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+    }
+    .section-especie::before {
+      content: 'OXYPOGON';
+      position: absolute;
+      top: 50px; right: 80px;
+      font-family: 'Anton', sans-serif;
+      font-size: 7rem;
+      color: rgba(255,255,255,0.02);
+      letter-spacing: 0.1em;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--p1);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      color: var(--blanco);
+      margin-bottom: 40px;
+    }
+    .section-title em { font-style: italic; color: rgba(255,255,255,0.45); }
+
+    .especie-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .especie-stat {
+      padding: 28px 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.3s ease;
+    }
+    .especie-stat:hover { background: rgba(59,147,63,0.06); }
+
+    .especie-stat .stat-val {
+      font-family: 'Anton', sans-serif;
+      font-size: 2.4rem;
+      color: var(--p2);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .especie-stat .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .especie-texto {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .especie-texto p { font-size: 0.9rem; line-height: 1.8; color: rgba(255,255,255,0.6); }
+    .especie-texto strong { color: var(--blanco); }
+
+    .alerta-box {
+      margin-top: 32px;
+      padding: 20px 24px;
+      border-left: 3px solid var(--p2);
+      background: rgba(243,227,89,0.05);
+    }
+    .alerta-box .alerta-head {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--p2);
+      margin-bottom: 8px;
+    }
+    .alerta-box p { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,0.5); }
+
+    /* ─── SECCIÓN TERRITORIO ─── */
+    .section-territorio {
+      padding: 100px 80px;
+      background: rgba(255,255,255,0.015);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .territorio-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .amenazas-lista {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .amenaza-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .amenaza-item:hover {
+      border-color: rgba(59,147,63,0.4);
+      color: var(--blanco);
+      background: rgba(59,147,63,0.04);
+    }
+
+    .amenaza-num {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.6rem;
+      color: rgba(59,147,63,0.25);
+      min-width: 36px;
+      line-height: 1;
+    }
+
+    .mapa-placeholder {
+      aspect-ratio: 3/4;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .mapa-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(59,147,63,0.08) 0%, transparent 60%);
+    }
+
+    .colombia-shape {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .colombia-shape svg { width: 180px; }
+
+    .mapa-label {
+      position: absolute;
+      bottom: 24px; left: 0; right: 0;
+      text-align: center;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ─── SECCIÓN PERSONAJE ─── */
+    .section-personaje {
+      padding: 120px 80px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .personaje-bg-text {
+      position: absolute;
+      top: -20px; left: -20px;
+      font-family: 'Anton', sans-serif;
+      font-size: 20vw;
+      color: rgba(255,255,255,0.012);
+      letter-spacing: -0.05em;
+      pointer-events: none;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .personaje-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+    }
+
+    .personaje-intro {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      line-height: 1.4;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 48px;
+    }
+    .personaje-intro em { font-style: italic; color: rgba(255,255,255,0.4); }
+
+    .personaje-voz {
+      padding-left: 32px;
+      border-left: 2px solid var(--p1);
+      margin-bottom: 48px;
+    }
+    .personaje-voz p {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 14px;
+    }
+    .personaje-voz p:last-child { margin-bottom: 0; }
+    .personaje-voz strong { font-style: normal; color: var(--blanco); }
+
+    .datos-personaje {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-bottom: 48px;
+    }
+
+    .dato-card {
+      padding: 28px 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.3s ease;
+    }
+    .dato-card:hover {
+      background: rgba(59,147,63,0.05);
+      border-color: rgba(59,147,63,0.25);
+    }
+    .dato-card .dato-key {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--p1);
+      margin-bottom: 12px;
+    }
+    .dato-card .dato-val {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.4;
+    }
+
+    /* ─── MANIFIESTO ─── */
+    .section-manifiesto {
+      padding: 100px 80px;
+      border-top: 2px solid var(--p1);
+      position: relative;
+      overflow: hidden;
+      background-image: url('punkibri_manifiesto.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .section-manifiesto::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)),
+        radial-gradient(ellipse at 20% 50%, rgba(85,57,121,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(59,147,63,0.15) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .manifiesto-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .manifiesto-sub {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 12px;
+    }
+    .manifiesto-quote {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      color: var(--blanco);
+      margin: 40px 0;
+    }
+    .manifiesto-quote .highlight {
+      color: var(--p1);
+      display: block;
+    }
+
+    /* ─── TEMAS ─── */
+    .section-temas {
+      padding: 100px 80px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .temas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+
+    .tema-card {
+      padding: 40px 36px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      cursor: default;
+    }
+    .tema-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--p1);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .tema-card:hover { background: rgba(59,147,63,0.04); }
+    .tema-card:hover::before { transform: scaleX(1); }
+
+    .tema-num {
+      font-family: 'Anton', sans-serif;
+      font-size: 4rem;
+      color: rgba(255,255,255,0.035);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .tema-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--blanco);
+      margin-bottom: 12px;
+    }
+    .tema-desc { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,0.4); }
+
+    /* ─── CTA ─── */
+    .section-cta {
+      padding: 120px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .cta-left { max-width: 520px; }
+    .cta-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 0.95;
+      color: var(--blanco);
+      margin-bottom: 20px;
+    }
+    .cta-title span { color: var(--p1); }
+    .cta-sub { font-size: 0.85rem; line-height: 1.8; color: rgba(255,255,255,0.4); }
+
+    .cta-btns { display: flex; flex-direction: column; gap: 12px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 32px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn-primary { background: var(--p1); color: var(--negro); }
+    .btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--blanco);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .btn-secondary:hover { border-color: var(--blanco); background: rgba(255,255,255,0.05); }
+    .btn-arrow { transition: transform 0.3s ease; }
+    .btn:hover .btn-arrow { transform: translateX(4px); }
+
+    /* ─── DIVISOR ─── */
+    .divisor {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59,147,63,0.3), transparent);
+      margin: 0 80px;
+    }
+
+    /* ─── ANIMACIONES ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes wingBeat {
+      0%, 100% { transform: scaleX(1); }
+      50% { transform: scaleX(0.88); }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .dot-live {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--p2);
+      animation: pulse 2s ease-in-out infinite;
+      margin-right: 8px;
+    }
+
+    /* ─── REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── STORYTELLING HORIZONTAL SCROLL ─── */
+    .horizontal-scroll-container {
+      position: relative;
+      height: 300vh;
+      background: var(--negro);
+    }
+    .sticky-wrapper {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .horizontal-track {
+      display: flex;
+      width: 300vw;
+      height: 100vh;
+      will-change: transform;
+      transition: transform 0.1s ease-out;
+    }
+    .slide-panel {
+      width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 80px 140px;
+      overflow: hidden;
+      position: relative;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .slide-panel::-webkit-scrollbar {
+      display: none;
+    }
+    @media (min-width: 901px) {
+      .slide-panel { overflow-y: auto; }
+    }
+    .slide-panel .section-especie,
+    .slide-panel .section-territorio,
+    .slide-panel .section-personaje {
+      width: 100%;
+      max-width: 1200px;
+      border-top: none !important;
+      padding: 0 !important;
+      margin: 0 auto;
+      background: transparent !important;
+    }
+
+    .scroll-progress-container {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 10;
+    }
+    .scroll-progress-track {
+      width: 100%;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      position: relative;
+    }
+    .scroll-progress-fill {
+      position: absolute;
+      left: 0; top: 0;
+      height: 100%;
+      width: 0%;
+      background: var(--p1);
+      transition: width 0.1s ease-out;
+      box-shadow: 0 0 10px var(--p1);
+    }
+    .scroll-progress-labels {
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-label {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .progress-label.active { color: var(--blanco); font-weight: 600; }
+
+    /* ─── RESPONSIVE ─── */
+    /* Tablet grande / landscape ≤ 1200px */
+    @media (max-width: 1200px) {
+      .hero-left { padding: clamp(60px, 6vw, 80px) clamp(32px, 4vw, 60px); padding-top: clamp(80px, 9vw, 100px); }
+      nav { padding: 20px clamp(24px, 4vw, 60px); }
+    }
+    /* Tablet ≤ 900px */
+    @media (max-width: 900px) {
+      nav { padding: 20px 32px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-bg-overlay {
+        background: linear-gradient(
+          to bottom,
+          rgba(26, 26, 26, 0.95) 0%,
+          rgba(26, 26, 26, 0.75) 50%,
+          rgba(26, 26, 26, 0.95) 100%
+        );
+      }
+      .hero-right { display: none; }
+      .hero-left { padding: 120px 32px 60px !important; }
+      .section-especie { grid-template-columns: 1fr; padding: 60px 32px; gap: 40px; }
+      .territorio-inner { grid-template-columns: 1fr; }
+      .section-territorio { padding: 60px 32px; }
+      .section-personaje { padding: 60px 32px; }
+      .section-manifiesto { padding: 60px 32px; }
+      .section-temas { padding: 60px 32px; }
+      .temas-grid { grid-template-columns: 1fr; }
+      .datos-personaje { grid-template-columns: 1fr 1fr; }
+      .section-cta { padding: 60px 32px; flex-direction: column; align-items: flex-start; }
+      .scroll-cta { left: 32px; }
+      .divisor { margin: 0 32px; }
+      .horizontal-scroll-container { height: auto !important; }
+      .sticky-wrapper { position: relative !important; height: auto !important; overflow: visible !important; }
+      .horizontal-track { display: flex; flex-direction: column; width: 100% !important; height: auto !important; transform: none !important; }
+      .slide-panel { width: 100% !important; height: auto !important; padding: 60px 32px !important; }
+      .scroll-progress-container { display: none !important; }
+    }
+    /* Mobile ≤ 600px */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .hero-left { padding: 96px 20px 40px !important; }
+      .hero-nombre { font-size: clamp(3rem, 14vw, 5.5rem); }
+      .hero-tagline { font-size: 0.95rem; }
+      .section-especie,
+      .section-territorio,
+      .section-personaje,
+      .section-manifiesto,
+      .section-temas,
+      .section-cta { padding: 48px 20px !important; }
+      .especie-grid { grid-template-columns: 1fr; }
+      .datos-personaje { grid-template-columns: 1fr; }
+      .divisor { margin: 0 20px; }
+      .slide-panel { padding: 48px 20px !important; }
+      .section-cta { align-items: flex-start; }
+      .cta-btns { width: 100%; }
+      .btn { width: 100%; justify-content: center; }
+    }
+    /* Ultrawide ≥ 1440px */
+    @media (min-width: 1440px) {
+      body { --gutter: 100px; }
+      nav { padding: 28px clamp(80px, 7vw, 120px); }
+      .hero-left { padding: clamp(80px, 8vw, 120px) clamp(80px, 7vw, 120px); }
+      .section-especie,
+      .section-territorio,
+      .section-personaje,
+      .section-manifiesto,
+      .section-temas,
+      .section-cta { padding-left: clamp(80px, 7vw, 120px); padding-right: clamp(80px, 7vw, 120px); }
+      .divisor { margin: 0 clamp(80px, 7vw, 120px); }
+    }
+    /* Max content width ≥ 1800px */
+    @media (min-width: 1800px) {
+      .section-manifiesto, .section-temas, .section-cta,
+      .section-especie, .section-territorio, .section-personaje {
+        max-width: 1600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      nav {
+        max-width: 1600px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+      }
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+    @media (pointer: fine) {
+      body { cursor: none; }
+      .cursor-dot { position: fixed; width: 5px; height: 5px; border-radius: 50%; background: var(--p1); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); mix-blend-mode: screen; will-change: transform; }
+      .cursor-ring { position: fixed; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(59,147,63,0.5); pointer-events: none; z-index: 9997; transform: translate(-50%,-50%); transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease; will-change: transform; }
+      .cursor-ring.hov { width: 52px; height: 52px; border-color: var(--p1); }
+    }
+
+
+
+    /* ─── SHIMMER BUTTON ─── */
+    .btn { position: relative; overflow: hidden; }
+    .btn::after { content: ''; position: absolute; top: -50%; left: -120%; width: 60%; height: 200%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-20deg); transition: left 0.55s ease; pointer-events: none; }
+    .btn:hover::after { left: 140%; }
+
+    /* ─── ENHANCED REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── AMENAZA ITEM HOVER ENHANCED ─── */
+    .amenaza-num { transition: color 0.3s ease, transform 0.3s ease; display: inline-block; }
+    .amenaza-item:hover .amenaza-num { color: var(--p1); transform: scale(1.15); }
+
+    /* ─── MANIFIESTO QUOTE ENTRANCE ─── */
+    .manifiesto-quote { opacity: 0; transform: translateY(20px); transition: opacity 1.2s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1); }
+    .manifiesto-wrap.visible .manifiesto-quote { opacity: 1; transform: none; transition-delay: 0.25s; }
+
+    /* ─── SLIDE INDICATOR DOTS ─── */
+    .slide-dots { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: none; gap: 8px; z-index: 50; }
+    @media (min-width: 900px) { .slide-dots { display: flex; } }
+    .slide-dot {
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      margin: 0;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+    .slide-dot.active {
+      width: 24px;
+      border-radius: 4px;
+      background: var(--p1);
+      border-color: var(--p1);
+    }
+
+    /* ─── PREFERS-REDUCED-MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+
+      .cursor-dot, .cursor-ring { display: none; }
+      .character-svg.floating { animation: none !important; }
+      .hero-bg-video { filter: grayscale(0.5); }
+      .btn::after { display: none; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .manifiesto-quote { opacity: 1 !important; transform: none !important; transition: none !important; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav aria-label="Navegación principal">
+    <a href="#" class="nav-logo" aria-label="Bífido Revista — Inicio">Bí<span>fi</span>do</a>
+    <ul class="nav-links">
+      <li><a href="#especie">Especie</a></li>
+      <li><a href="#territorio">Territorio</a></li>
+      <li><a href="#personaje">Personaje</a></li>
+      <li><a href="#temas">Temas</a></li>
+    </ul>
+    <span class="nav-tag">Revista</span>
+  </nav>
+
+  <!-- Dots indicadores de slide (desktop) -->
+  <div class="slide-dots" id="slide-dots" role="tablist" aria-label="Secciones del personaje">
+    <button class="slide-dot active" role="tab" aria-selected="true"  aria-label="Ir a Especie"    data-idx="0"></button>
+    <button class="slide-dot"        role="tab" aria-selected="false" aria-label="Ir a Territorio" data-idx="1"></button>
+    <button class="slide-dot"        role="tab" aria-selected="false" aria-label="Ir a Personaje"  data-idx="2"></button>
+  </div>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-bg-wrap">
+      <video class="hero-bg-video" autoplay loop muted playsinline>
+        <source src="Punkibri_Video.mp4" type="video/mp4">
+      </video>
+      <div class="hero-bg-overlay"></div>
+    </div>
+    <div class="hero-left">
+      <p class="label-revista">
+        <span class="dot-live"></span>Revista Bífido — Personajes
+      </p>
+      <h1 class="hero-nombre">
+        PUNK<span class="acento">I</span>BRÍ
+      </h1>
+      <p class="hero-tagline">
+        Habla desde el territorio.<br/>
+        Defiende el páramo sin pedir permiso.<br/>
+        <strong>Lo frágil también sostiene el mundo.</strong>
+      </p>
+      <div class="hero-meta">
+        <span class="meta-badge">Oxypogon stubelii</span>
+        <span class="meta-badge">Medio Ambiente</span>
+        <span class="meta-badge">Vulnerable — IUCN</span>
+      </div>
+      <p class="scroll-cta">Scroll para conocerlo</p>
+    </div>
+
+    <div class="hero-right">
+      <div class="character-wrap">
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── THE JOURNEY (Horizontal Scroll) ─── -->
+  <div class="horizontal-scroll-container">
+    <div class="sticky-wrapper">
+      <div class="horizontal-track">
+
+        <!-- Slide 1: Especie -->
+        <div class="slide-panel" id="panel-especie">
+          <section class="section-especie" id="especie">
+            <div class="reveal">
+              <p class="section-label">01 — La especie</p>
+              <h2 class="section-title">
+                Antes del parche,<br/><em>las alturas</em>
+              </h2>
+              <div class="especie-grid">
+                <div class="especie-stat">
+                  <div class="stat-val">177</div>
+                  <div class="stat-label">Especies de colibríes en Colombia</div>
+                </div>
+                <div class="especie-stat">
+                  <div class="stat-val">VU</div>
+                  <div class="stat-label">Estado IUCN — Vulnerable</div>
+                </div>
+                <div class="especie-stat">
+                  <div class="stat-val">100%</div>
+                  <div class="stat-label">Endémico de Colombia</div>
+                </div>
+                <div class="especie-stat">
+                  <div class="stat-val">Páramo</div>
+                  <div class="stat-label">Hábitat único en el mundo</div>
+                </div>
+              </div>
+              <div class="alerta-box">
+                <div class="alerta-head">⚠ Estado de conservación</div>
+                <p>El Chivito del Ruiz es <strong style="color:#fff">endémico de Colombia</strong>, lo que significa que solo existe aquí. Su área de distribución es muy limitada y cualquier transformación del páramo afecta directamente su supervivencia.</p>
+              </div>
+            </div>
+
+            <div class="especie-texto reveal">
+              <p>El <strong>Chivito del Ruiz</strong> (Oxypogon stubelii) es un colibrí que vive donde el aire escasea y el frío no perdona. Habita únicamente en los <strong>páramos de la Cordillera Central</strong>, entre frailejones, neblina y cambios de clima que no avisan.</p>
+              <p>Es pequeño, rápido y resistente. Su pico es delgado, su plumaje atrapa la luz, y carga una <strong>barba característica</strong> —las plumas iridiscentes bajo el pico— que le da un aire que parece decir que no vino a encajar.</p>
+              <p>Colombia es el país con <strong>mayor diversidad de colibríes en el mundo</strong>, con cerca de 177 especies registradas. Entre todas ellas, pocas viven donde casi nada más puede hacerlo.</p>
+              <p>Su vida gira alrededor del néctar. Pero no es solo alimento: mientras vuela de flor en flor, también <strong>poliniza</strong>. En estos territorios, lo pequeño sostiene lo grande.</p>
+            </div>
+          </section>
+        </div>
+
+        <!-- Slide 2: Territorio -->
+        <div class="slide-panel" id="panel-territorio">
+          <section class="section-territorio" id="territorio">
+            <div class="territorio-inner">
+              <div class="reveal">
+                <p class="section-label">02 — Territorio y amenazas</p>
+                <h2 class="section-title">
+                  Donde todo<br/><em>florece lento</em>
+                </h2>
+                <p style="font-size:0.9rem;line-height:1.8;color:rgba(255,255,255,0.5);margin-bottom:8px;">
+                  Su hogar existe en un solo lugar del planeta y eso lo hace único, pero también frágil. Cuando el territorio cambia, Punkibrí también está en riesgo.
+                </p>
+                <p style="font-size:0.9rem;line-height:1.8;color:rgba(255,255,255,0.35);margin-bottom:32px;">
+                  <em>Resiste en las alturas… pero incluso aquí, el mundo está cambiando.</em>
+                </p>
+                <div class="amenazas-lista">
+                  <div class="amenaza-item"><span class="amenaza-num">01</span> Expansión agrícola en zonas de páramo</div>
+                  <div class="amenaza-item"><span class="amenaza-num">02</span> Quemas e incendios de ecosistemas altoandinos</div>
+                  <div class="amenaza-item"><span class="amenaza-num">03</span> Cambio climático y variación de temperatura</div>
+                  <div class="amenaza-item"><span class="amenaza-num">04</span> Pérdida y degradación del hábitat</div>
+                  <div class="amenaza-item"><span class="amenaza-num">05</span> Distribución geográfica muy reducida</div>
+                </div>
+              </div>
+
+              <div class="mapa-placeholder reveal">
+                <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;">
+                  <source src="Punkibri_V.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Slide 3: Personaje -->
+        <div class="slide-panel" id="panel-personaje">
+          <section class="section-personaje" id="personaje">
+            <div class="personaje-bg-text">PUNK</div>
+            <div class="personaje-inner">
+              <p class="section-label reveal">03 — El personaje</p>
+              <p class="personaje-intro reveal">
+                Aquí empieza <em>el vuelo</em>.<br/>
+                Habla desde el territorio.<br/>No desde la autoridad.
+              </p>
+
+              <div class="personaje-voz reveal">
+                <p>En Bífido le llaman <strong>Punkibrí</strong>.</p>
+                <p>Tiene <strong>127 años</strong> —en años de colibrí—. Suficiente tiempo para entender que lo que crece lento es lo que más vale.</p>
+                <p>Su religión es el <strong>animismo</strong>: todo lo que vive merece respeto. No habla desde el juicio. Habla desde lo que el territorio le enseñó.</p>
+                <p>No es neutral. Cree en el cuidado, en lo colectivo y en la tierra como algo que no nos pertenece.</p>
+                <p><em>Desde lo que crece lento, desde lo que resiste sin ruido, desde lo que muchos no ven.</em></p>
+              </div>
+
+              <div class="datos-personaje reveal">
+                <div class="dato-card">
+                  <div class="dato-key">Rol en la revista</div>
+                  <div class="dato-val">Medio ambiente &amp; territorio</div>
+                </div>
+                <div class="dato-card">
+                  <div class="dato-key">Tono</div>
+                  <div class="dato-val">Cuidado. Colectivo. Sin neutralidad.</div>
+                </div>
+                <div class="dato-card">
+                  <div class="dato-key">Color identidad</div>
+                  <div class="dato-val" style="color:var(--p1)">Verde Páramo / Amarillo y Púrpura</div>
+                </div>
+                <div class="dato-card">
+                  <div class="dato-key">Inspiración animal</div>
+                  <div class="dato-val">Chivito del Ruiz<br/><span style="font-size:0.8rem;color:rgba(255,255,255,0.35)">Oxypogon stubelii</span></div>
+                </div>
+                <div class="dato-card">
+                  <div class="dato-key">Filosofía</div>
+                  <div class="dato-val">Animismo &amp; defensa del territorio</div>
+                </div>
+                <div class="dato-card">
+                  <div class="dato-key">Edad</div>
+                  <div class="dato-val">127 años<br/><span style="font-size:0.8rem;color:rgba(255,255,255,0.35)">(en años de colibrí)</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="scroll-progress-container">
+        <div class="scroll-progress-track">
+          <div class="scroll-progress-fill"></div>
+        </div>
+        <div class="scroll-progress-labels">
+          <span class="progress-label active" data-index="0">01 Especie</span>
+          <span class="progress-label" data-index="1">02 Territorio</span>
+          <span class="progress-label" data-index="2">03 Personaje</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── MANIFIESTO ─── -->
+  <section class="section-manifiesto" id="manifiesto">
+    <div class="manifiesto-wrap reveal">
+      <p class="manifiesto-sub">Manifiesto</p>
+      <p class="manifiesto-quote">
+        En estos territorios,<br/>lo pequeño sostiene lo grande.
+        <span class="highlight">Lo frágil también<br/>sostiene el mundo.</span>
+      </p>
+      <p style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.18);">— Punkibrí, Revista Bífido</p>
+    </div>
+  </section>
+
+  <div class="divisor"></div>
+
+  <!-- ─── TEMAS ─── -->
+  <section class="section-temas" id="temas">
+    <p class="section-label reveal">04 — Lo que Punkibrí habla</p>
+    <h2 class="section-title reveal">Sus territorios<br/><em>editoriales</em></h2>
+    <div class="temas-grid">
+      <div class="tema-card reveal">
+        <div class="tema-num">01</div>
+        <div class="tema-title">Defensa del territorio</div>
+        <div class="tema-desc">Crónicas desde el páramo y otros ecosistemas amenazados. Lo que el territorio dice cuando alguien se toma el tiempo de escucharlo.</div>
+      </div>
+      <div class="tema-card reveal">
+        <div class="tema-num">02</div>
+        <div class="tema-title">Ambientalismo sin poses</div>
+        <div class="tema-desc">Sin greenwashing, sin discursos vacíos. La crisis ambiental contada desde lo concreto: incendios, quemas, expansión agrícola, silencio institucional.</div>
+      </div>
+      <div class="tema-card reveal">
+        <div class="tema-num">03</div>
+        <div class="tema-title">Lo que resiste sin ruido</div>
+        <div class="tema-desc">Historias de comunidades, ecosistemas y especies que sostienen el mundo desde la marginalidad. Lo frágil como forma de resistencia.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─── -->
+  <section class="section-cta">
+    <div class="cta-left reveal">
+      <h2 class="cta-title">
+        ¿Listo para<br/>escuchar al<br/><span>páramo</span>?
+      </h2>
+      <p class="cta-sub">Las ediciones de Bífido ya están disponibles. Punkibrí habla desde las alturas — pequeño, pero imposible de ignorar.</p>
+    </div>
+    <div class="cta-btns reveal">
+      <a href="#" class="btn btn-primary">
+        Leer la revista
+        <span class="btn-arrow">→</span>
+      </a>
+      <a href="#" class="btn btn-secondary">
+        Conocer al resto del parche
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <script>
+    const container = document.querySelector('.horizontal-scroll-container');
+    const track = document.querySelector('.horizontal-track');
+    const fill = document.querySelector('.scroll-progress-fill');
+    const labels = document.querySelectorAll('.progress-label');
+
+    function handleScroll() {
+      if (window.innerWidth >= 900) {
+        const rect = container.getBoundingClientRect();
+        const viewHeight = window.innerHeight;
+
+        if (rect.top <= 0 && rect.bottom >= viewHeight) {
+          const scrolled = -rect.top;
+          const totalScrollable = rect.height - viewHeight;
+          const pct = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
+
+          const maxTranslate = track.scrollWidth - window.innerWidth;
+          track.style.transform = `translateX(-${pct * maxTranslate}px)`;
+          fill.style.width = `${pct * 100}%`;
+
+          let activeIndex = 0;
+          if (pct >= 0.33 && pct < 0.66) activeIndex = 1;
+          else if (pct >= 0.66) activeIndex = 2;
+
+          labels.forEach((label, index) => {
+            label.classList.toggle('active', index === activeIndex);
+          });
+
+          const activePanel = document.querySelectorAll('.slide-panel')[activeIndex];
+          if (activePanel) {
+            activePanel.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+          }
+        } else if (rect.top > 0) {
+          track.style.transform = 'translateX(0px)';
+          fill.style.width = '0%';
+          labels.forEach((label, idx) => label.classList.toggle('active', idx === 0));
+          const activePanel = document.querySelectorAll('.slide-panel')[0];
+          if (activePanel) {
+            activePanel.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+          }
+        } else if (rect.bottom < viewHeight) {
+          const maxTranslate = track.scrollWidth - window.innerWidth;
+          track.style.transform = `translateX(-${maxTranslate}px)`;
+          fill.style.width = '100%';
+          labels.forEach((label, idx) => label.classList.toggle('active', idx === 2));
+          const activePanel = document.querySelectorAll('.slide-panel')[2];
+          if (activePanel) {
+            activePanel.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+          }
+        }
+      } else {
+        track.style.transform = 'none';
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    handleScroll();
+
+    labels.forEach((label) => {
+      label.addEventListener('click', () => {
+        if (window.innerWidth >= 900) {
+          const index = parseInt(label.getAttribute('data-index'));
+          const containerTop = window.scrollY + container.getBoundingClientRect().top;
+          const totalScrollable = container.offsetHeight - window.innerHeight;
+          window.scrollTo({ top: containerTop + (index / 2) * totalScrollable, behavior: 'smooth' });
+        } else {
+          const sections = ['especie', 'territorio', 'personaje'];
+          const targetEl = document.getElementById(sections[parseInt(label.getAttribute('data-index'))]);
+          if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href.startsWith('#')) {
+          const targetId = href.substring(1);
+          const panels = ['especie', 'territorio', 'personaje'];
+          const index = panels.indexOf(targetId);
+          if (index !== -1 && window.innerWidth >= 900) {
+            e.preventDefault();
+            const containerTop = window.scrollY + container.getBoundingClientRect().top;
+            const totalScrollable = container.offsetHeight - window.innerHeight;
+            window.scrollTo({ top: containerTop + (index / 2) * totalScrollable, behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const isInsideHorizontal = entry.target.closest('.horizontal-scroll-container');
+        if (entry.isIntersecting && (!isInsideHorizontal || window.innerWidth < 900)) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    reveals.forEach((el, i) => {
+      observer.observe(el);
+      el.style.transitionDelay = `${(i % 4) * 0.08}s`;
+    });
+
+    // ── SLIDE INDICATOR DOTS SYNC ──
+    const slideDots = document.querySelectorAll('.slide-dot');
+    function updateDots(activeIdx) {
+      slideDots.forEach((d, i) => {
+        d.classList.toggle('active', i === activeIdx);
+        d.setAttribute('aria-selected', i === activeIdx ? 'true' : 'false');
+      });
+    }
+    if (container && window.innerWidth >= 900) {
+      window.addEventListener('scroll', () => {
+        const cTop = container.getBoundingClientRect().top;
+        const cH   = container.offsetHeight;
+        const prog  = Math.max(0, Math.min(1, -cTop / (cH - window.innerHeight)));
+        updateDots(Math.round(prog * 2));
+      });
+    }
+    slideDots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(dot.getAttribute('data-idx'));
+        if (window.innerWidth >= 900 && container) {
+          const cTop = window.scrollY + container.getBoundingClientRect().top;
+          const total = container.offsetHeight - window.innerHeight;
+          window.scrollTo({ top: cTop + (idx / 2) * total, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+  <!-- ─── CUSTOM CURSOR ─── -->
+  <script>
+  (function() {
+    // ── CUSTOM CURSOR ──
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    if (dot && ring && window.matchMedia('(pointer: fine)').matches) {
+      let cx = -200, cy = -200, rx = -200, ry = -200;
+      document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+      (function cursorLoop() {
+        requestAnimationFrame(cursorLoop);
+        dot.style.left = cx + 'px'; dot.style.top = cy + 'px';
+        rx += (cx - rx) * 0.10; ry += (cy - ry) * 0.10;
+        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      })();
+      document.querySelectorAll('a, button, .btn, .meta-badge, .amenaza-item, .tema-card, .dato-card, .especie-stat, .progress-label')
+        .forEach(el => {
+          el.addEventListener('mouseenter', () => ring.classList.add('hov'));
+          el.addEventListener('mouseleave', () => ring.classList.remove('hov'));
+        });
+    }
+  })();
+  </script>
+</body>
+</html>

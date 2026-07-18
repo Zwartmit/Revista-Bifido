@@ -23,15 +23,18 @@ export default function MordazLanding() {
       if (window.innerWidth >= 900) {
         const rect = container!.getBoundingClientRect();
         const viewHeight = window.innerHeight;
-        if (rect.top <= 0 && rect.bottom >= viewHeight) {
-          const pct = Math.min(Math.max(-rect.top / (rect.height - viewHeight), 0), 1);
+        const stickyOffset = 120;
+        if (rect.top <= stickyOffset && rect.bottom >= viewHeight) {
+          const scrolled = -(rect.top - stickyOffset);
+          const totalScrollable = rect.height - (viewHeight - stickyOffset);
+          const pct = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
           track!.style.transform = `translateX(-${pct * (track!.scrollWidth - window.innerWidth)}px)`;
           fill!.style.width = `${pct * 100}%`;
           const ai = pct >= 0.66 ? 2 : pct >= 0.33 ? 1 : 0;
           labels.forEach((l, i) => l.classList.toggle('active', i === ai));
           slideDots.forEach((d, i) => { d.classList.toggle('active', i === ai); d.setAttribute('aria-selected', i === ai ? 'true' : 'false'); });
           document.querySelectorAll('.mor-slide-panel')[ai]?.querySelectorAll<HTMLElement>('.mor-reveal').forEach(el => el.classList.add('visible'));
-        } else if (rect.top > 0) {
+        } else if (rect.top > stickyOffset) {
           track!.style.transform = 'translateX(0px)'; fill!.style.width = '0%';
           document.querySelectorAll('.mor-slide-panel')[0]?.querySelectorAll<HTMLElement>('.mor-reveal').forEach(el => el.classList.add('visible'));
         } else {
@@ -58,7 +61,35 @@ export default function MordazLanding() {
       if (entry.isIntersecting && (!entry.target.closest('.cl-horizontal-container') || window.innerWidth < 900)) entry.target.classList.add('visible');
     }), { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll<HTMLElement>('.mor-reveal').forEach((el, i) => { observer.observe(el); el.style.transitionDelay = `${(i % 4) * 0.08}s`; });
-    return () => { window.removeEventListener('scroll', handleScroll); window.removeEventListener('resize', handleScroll); observer.disconnect(); };
+    const panels = document.querySelectorAll<HTMLElement>('.mor-slide-panel');
+    const handleWheel = (e: WheelEvent) => {
+      if (window.innerWidth >= 900) {
+        const panel = e.currentTarget as HTMLElement;
+        const isScrollable = panel.scrollHeight > panel.clientHeight;
+        if (!isScrollable) {
+          e.preventDefault();
+          window.scrollBy(0, e.deltaY);
+          return;
+        }
+        const isAtBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2;
+        const isAtTop = panel.scrollTop <= 2;
+        if (e.deltaY > 0 && isAtBottom) {
+          e.preventDefault();
+          window.scrollBy(0, e.deltaY);
+        } else if (e.deltaY < 0 && isAtTop) {
+          e.preventDefault();
+          window.scrollBy(0, e.deltaY);
+        }
+      }
+    };
+    panels.forEach(p => p.addEventListener('wheel', handleWheel, { passive: false }));
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      panels.forEach(p => p.removeEventListener('wheel', handleWheel));
+      observer.disconnect();
+    };
   }, []);
 
   return (

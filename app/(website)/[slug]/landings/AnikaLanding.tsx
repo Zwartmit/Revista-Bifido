@@ -26,9 +26,10 @@ export default function AnikaLanding() {
       if (window.innerWidth >= 900) {
         const rect = container!.getBoundingClientRect();
         const viewHeight = window.innerHeight;
-        if (rect.top <= 0 && rect.bottom >= viewHeight) {
-          const scrolled = -rect.top;
-          const totalScrollable = rect.height - viewHeight;
+        const stickyOffset = 120;
+        if (rect.top <= stickyOffset && rect.bottom >= viewHeight) {
+          const scrolled = -(rect.top - stickyOffset);
+          const totalScrollable = rect.height - (viewHeight - stickyOffset);
           const pct = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
           const maxTranslate = track!.scrollWidth - window.innerWidth;
           track!.style.transform = `translateX(-${pct * maxTranslate}px)`;
@@ -40,7 +41,7 @@ export default function AnikaLanding() {
           slideDots.forEach((d, i) => { d.classList.toggle('active', i === activeIndex); d.setAttribute('aria-selected', i === activeIndex ? 'true' : 'false'); });
           const activePanel = document.querySelectorAll('.anika-slide-panel')[activeIndex];
           if (activePanel) activePanel.querySelectorAll<HTMLElement>('.anika-reveal').forEach(el => el.classList.add('visible'));
-        } else if (rect.top > 0) {
+        } else if (rect.top > stickyOffset) {
           track!.style.transform = 'translateX(0px)'; fill!.style.width = '0%';
           labels.forEach((l, i) => l.classList.toggle('active', i === 0));
           slideDots.forEach((d, i) => { d.classList.toggle('active', i === 0); d.setAttribute('aria-selected', i === 0 ? 'true' : 'false'); });
@@ -95,9 +96,33 @@ export default function AnikaLanding() {
       (el as HTMLElement).style.transitionDelay = `${(i % 4) * 0.08}s`;
     });
 
+    const panels = document.querySelectorAll<HTMLElement>('.anika-slide-panel');
+    const handleWheel = (e: WheelEvent) => {
+      if (window.innerWidth >= 900) {
+        const panel = e.currentTarget as HTMLElement;
+        const isScrollable = panel.scrollHeight > panel.clientHeight;
+        if (!isScrollable) {
+          e.preventDefault();
+          window.scrollBy(0, e.deltaY);
+          return;
+        }
+        const isAtBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2;
+        const isAtTop = panel.scrollTop <= 2;
+        if (e.deltaY > 0 && isAtBottom) {
+          e.preventDefault();
+          window.scrollBy(0, e.deltaY);
+        } else if (e.deltaY < 0 && isAtTop) {
+          e.preventDefault();
+          window.scrollBy(0, e.deltaY);
+        }
+      }
+    };
+    panels.forEach(p => p.addEventListener('wheel', handleWheel, { passive: false }));
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
+      panels.forEach(p => p.removeEventListener('wheel', handleWheel));
       observer.disconnect();
     };
   }, []);

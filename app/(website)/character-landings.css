@@ -5,7 +5,6 @@
   background-color: #1a1a1a;
   color: #f0efeb;
   font-family: 'Roboto', sans-serif;
-  overflow-x: hidden;
   min-height: 100vh;
   position: relative;
 }
@@ -110,7 +109,7 @@
 /* ─── HORIZONTAL SCROLL ─── */
 .cl-horizontal-container { position: relative; height: 300vh; background: #1a1a1a; }
 .cl-sticky-wrapper {
-  position: sticky; top: 0; height: 100dvh; width: 100%; overflow: hidden;
+  position: sticky; top: 120px; height: calc(100dvh - 120px); width: 100%; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-start;
 }
 .cl-horizontal-track {
