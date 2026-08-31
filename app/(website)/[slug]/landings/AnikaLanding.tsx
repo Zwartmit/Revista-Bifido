@@ -9,6 +9,7 @@ export default function AnikaLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
+  const stickyOffsetRef = useRef(120);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -18,6 +19,14 @@ export default function AnikaLanding() {
     const fill = fillRef.current;
     if (!container || !track || !fill) return;
 
+    function measureHeaderOffset() {
+      const header = document.querySelector('header');
+      const h = header ? header.getBoundingClientRect().height : 120;
+      stickyOffsetRef.current = h;
+      document.documentElement.style.setProperty('--cl-header-h', `${h}px`);
+    }
+    measureHeaderOffset();
+
     const labels = document.querySelectorAll<HTMLElement>('.anika-progress-label');
     const slideDots = document.querySelectorAll<HTMLElement>('.anika-slide-dot');
     const reveals = document.querySelectorAll<HTMLElement>('.anika-reveal');
@@ -26,7 +35,7 @@ export default function AnikaLanding() {
       if (window.innerWidth >= 900) {
         const rect = container!.getBoundingClientRect();
         const viewHeight = window.innerHeight;
-        const stickyOffset = 120;
+        const stickyOffset = stickyOffsetRef.current;
         if (rect.top <= stickyOffset && rect.bottom >= viewHeight) {
           const scrolled = -(rect.top - stickyOffset);
           const totalScrollable = rect.height - (viewHeight - stickyOffset);
@@ -56,8 +65,9 @@ export default function AnikaLanding() {
       } else { track!.style.transform = 'none'; }
     }
 
+    const handleResize = () => { measureHeaderOffset(); handleScroll(); };
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
+    window.addEventListener('resize', handleResize);
     handleScroll();
 
     labels.forEach((label) => {
@@ -119,10 +129,44 @@ export default function AnikaLanding() {
     };
     panels.forEach(p => p.addEventListener('wheel', handleWheel, { passive: false }));
 
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
+    const handleTouchMove = (e: TouchEvent) => {
+      if (window.innerWidth >= 900) {
+        const panel = e.currentTarget as HTMLElement;
+        const touchY = e.touches[0].clientY;
+        const deltaY = touchStartY - touchY;
+        touchStartY = touchY;
+        const isScrollable = panel.scrollHeight > panel.clientHeight;
+        if (!isScrollable) {
+          e.preventDefault();
+          window.scrollBy(0, deltaY);
+          return;
+        }
+        const isAtBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2;
+        const isAtTop = panel.scrollTop <= 2;
+        if (deltaY > 0 && isAtBottom) {
+          e.preventDefault();
+          window.scrollBy(0, deltaY);
+        } else if (deltaY < 0 && isAtTop) {
+          e.preventDefault();
+          window.scrollBy(0, deltaY);
+        }
+      }
+    };
+    panels.forEach(p => {
+      p.addEventListener('touchstart', handleTouchStart, { passive: true });
+      p.addEventListener('touchmove', handleTouchMove, { passive: false });
+    });
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-      panels.forEach(p => p.removeEventListener('wheel', handleWheel));
+      window.removeEventListener('resize', handleResize);
+      panels.forEach(p => {
+        p.removeEventListener('wheel', handleWheel);
+        p.removeEventListener('touchstart', handleTouchStart);
+        p.removeEventListener('touchmove', handleTouchMove);
+      });
       observer.disconnect();
     };
   }, []);
@@ -137,7 +181,7 @@ export default function AnikaLanding() {
       {/* ─── HERO ─── */}
       <section className="cl-hero">
         <div className="cl-hero-bg-wrap">
-          <video className="cl-hero-bg-video" autoPlay loop muted playsInline>
+          <video className="cl-hero-bg-video" autoPlay loop muted playsInline preload="metadata">
             <source src="/videos/characters/anika-video.mp4" type="video/mp4" />
           </video>
           <div className="cl-hero-bg-overlay" />
@@ -214,7 +258,7 @@ export default function AnikaLanding() {
                     </div>
                   </div>
                   <div className="cl-mapa-placeholder cl-reveal anika-reveal">
-                    <video autoPlay loop muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
+                    <video autoPlay loop muted playsInline preload="metadata" style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
                       <source src="/videos/characters/anika-v.mp4" type="video/mp4" />
                     </video>
                   </div>
