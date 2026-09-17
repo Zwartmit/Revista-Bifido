@@ -1,5 +1,5 @@
 import { buildConfig } from 'payload';
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
+import { resendAdapter } from '@payloadcms/email-resend';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { s3Storage } from '@payloadcms/storage-s3';
@@ -116,19 +116,12 @@ export default buildConfig({
         push: true,
     }),
     sharp,
-    ...(process.env.SMTP_USER
+    ...(process.env.RESEND_API_KEY
         ? {
-              email: nodemailerAdapter({
-                  defaultFromAddress: process.env.SMTP_USER,
+              email: resendAdapter({
+                  defaultFromAddress: process.env.RESEND_FROM || 'onboarding@resend.dev',
                   defaultFromName: 'Revista Bífido',
-                  transportOptions: {
-                      host: 'smtp.gmail.com',
-                      port: 587,
-                      auth: {
-                          user: process.env.SMTP_USER,
-                          pass: process.env.SMTP_PASS,
-                      },
-                  },
+                  apiKey: process.env.RESEND_API_KEY,
               }),
           }
         : {}),
