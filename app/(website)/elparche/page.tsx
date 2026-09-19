@@ -936,7 +936,7 @@ export default function ElParchePage() {
                                     </div>
 
                                     {/* Bottom Navigation (Member Navigation) - Desktop Only */}
-                                    <div className="hidden md:flex w-full md:border-t md:pt-4 md:mt-4 items-center justify-between text-gray-400 font-sans text-sm flex-shrink-0 order-4">
+                                    <div className="hidden md:flex w-full md:border-t md:pt-4 md:mt-4 px-4 items-center justify-between text-gray-400 font-sans text-sm flex-shrink-0 order-4">
                                         <button
                                             onClick={() => {
                                                 const currentIndex = team.findIndex(m => m.id === selectedMember.id);
