@@ -9,6 +9,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
     ],
   },
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],

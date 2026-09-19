@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
@@ -35,7 +35,7 @@ const renderRichText = (content: any, characterColor: string) => {
 
             case 'paragraph':
                 return (
-                    <p key={index} className="mb-4 text-gray-800 leading-relaxed">
+                    <p key={index} className="mb-4 text-gray-300 leading-relaxed">
                         {node.children?.map((child: any, i: number) => renderNode(child, i))}
                     </p>
                 );
@@ -43,14 +43,14 @@ const renderRichText = (content: any, characterColor: string) => {
             case 'heading':
                 const Tag = node.tag as keyof JSX.IntrinsicElements; // h1, h2, h3...
                 return (
-                    <Tag key={index} className="font-display font-bold mt-8 mb-4">
+                    <Tag key={index} className="font-display font-bold mt-8 mb-4 text-white">
                         {node.children?.map((child: any, i: number) => renderNode(child, i))}
                     </Tag>
                 );
 
             case 'quote':
                 return (
-                    <blockquote key={index} className="border-l-4 pl-4 italic my-6 text-gray-700" style={{ borderColor: characterColor }}>
+                    <blockquote key={index} className="border-l-4 pl-4 italic my-6 text-gray-400" style={{ borderColor: characterColor }}>
                         {node.children?.map((child: any, i: number) => renderNode(child, i))}
                     </blockquote>
                 );
@@ -87,7 +87,10 @@ const renderRichText = (content: any, characterColor: string) => {
 export default function ArticleClient({ article, character }: ArticleClientProps) {
     const contentRef = useRef<HTMLDivElement>(null);
 
+    const [shareUrl, setShareUrl] = useState('');
+
     useEffect(() => {
+        setShareUrl(window.location.href);
         if (contentRef.current) {
             gsap.fromTo(
                 contentRef.current,
@@ -97,24 +100,11 @@ export default function ArticleClient({ article, character }: ArticleClientProps
         }
     }, []);
 
-    const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
-
     if (!character) return <div>Character not found</div>;
     const { primary: charPrimary, dark: charDark } = getCharacterColors(character.slug);
 
     return (
-        <article className="min-h-screen pt-24 md:pt-52">
-            {/* Back Button */}
-            <div className="container mx-auto px-4 py-6">
-                <Link
-                    href={`/${character.slug}/articulos`}
-                    className="inline-flex items-center text-gray-600 hover:text-bifido-black transition-colors"
-                >
-                    <ArrowLeft size={20} className="mr-2" />
-                    Volver a {character.name}
-                </Link>
-            </div>
-
+        <article className="min-h-screen">
             {/* Featured Image */}
             <div className="relative w-full h-[400px] md:h-[600px] mb-8">
                 <div className="absolute inset-0 bg-gray-900" /> {/* Fallback color */}
@@ -133,15 +123,16 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                         background: `linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)`,
                     }}
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                <div className="absolute bottom-0 left-0 right-0 py-8 text-white">
                     <div className="container mx-auto">
-                        <div
-                            className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
-                            style={{ backgroundColor: charPrimary }}
+                        <Link
+                            href={`/${character.slug}/articulos`}
+                            className="inline-flex items-center px-4 py-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-white hover:bg-black/70 transition-all text-sm font-medium mb-4"
                         >
-                            {character.name}
-                        </div>
-                        <h1 className="font-display text-4xl md:text-6xl mb-4 max-w-4xl">
+                            <ArrowLeft size={16} className="mr-2" />
+                            Volver a {character.name}
+                        </Link>
+                        <h1 className="font-display text-4xl md:text-6xl mb-4">
                             {article.title}
                         </h1>
                     </div>
@@ -149,12 +140,12 @@ export default function ArticleClient({ article, character }: ArticleClientProps
             </div>
 
             {/* Article Content */}
-            <div ref={contentRef} className="container mx-auto px-4 max-w-4xl pb-20">
+            <div ref={contentRef} className="container mx-auto pb-20 mt-12">
                 {/* Meta Information */}
-                <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-200">
+                <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-800">
                     <div>
-                        <p className="text-lg font-semibold">{article.author}</p>
-                        <p className="text-gray-600">{formatDate(article.publishedAt)}</p>
+                        <p className="text-lg font-semibold text-white">{article.author}</p>
+                        <p className="text-gray-400">{formatDate(article.publishedAt)}</p>
                     </div>
 
                     {/* Share Buttons */}
@@ -163,7 +154,7 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                             href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-900 transition-colors"
                             aria-label="Compartir en Facebook"
                         >
                             <Facebook size={20} />
@@ -172,7 +163,7 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(article.title)}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-900 transition-colors"
                             aria-label="Compartir en Twitter"
                         >
                             <Twitter size={20} />
@@ -187,7 +178,7 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                                     });
                                 }
                             }}
-                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-900 transition-colors"
                             aria-label="Compartir"
                         >
                             <Share2 size={20} />
