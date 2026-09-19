@@ -309,7 +309,7 @@ export default function MalandraLanding() {
           <p className="cl-cta-sub">Las ediciones de Bífido ya están disponibles. Malandra habla de lo que el sistema preferiría que no nombráramos. Sin filtros. Sin complacencia.</p>
         </div>
         <div className="cl-cta-btns cl-reveal mal-reveal">
-          <Link href="/malandra/articulos" className="cl-btn cl-btn-primary">Leer la revista <span className="cl-btn-arrow">→</span></Link>
+          <Link href="/malandra/articulos" className="cl-btn cl-btn-primary">Leer artículos <span className="cl-btn-arrow">→</span></Link>
           <Link href="/elparche" className="cl-btn cl-btn-secondary">Conocer al resto del parche <span className="cl-btn-arrow">→</span></Link>
         </div>
       </section>
