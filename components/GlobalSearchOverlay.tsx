@@ -189,7 +189,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                   </h3>
                   <div className="flex flex-col gap-3">
                     {results.articles.map((article) => (
-                      <Link href={`/${article.section}/${article.slug}`} key={article.id} onClick={onClose} className="group flex gap-4 p-3 border-l-2 border-transparent hover:border-[#b8ff00] hover:bg-white/5 transition-all duration-200">
+                      <Link href={`/${article.section}/articulos/${article.slug}`} key={article.id} onClick={onClose} className="group flex gap-4 p-3 border-l-2 border-transparent hover:border-[#b8ff00] hover:bg-white/5 transition-all duration-200">
                         <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-zinc-900 relative overflow-hidden hidden sm:block">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" />

@@ -126,7 +126,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                             return (
                                 <Link
                                     key={article.id}
-                                    href={`/${article.section}/${article.slug}`}
+                                    href={`/${article.section}/articulos/${article.slug}`}
                                     className="group flex flex-col bg-bifido-gray/50 border border-bifido-gray/30 rounded-xl overflow-hidden hover:border-bifido-neon transition-all duration-300"
                                 >
                                     <div className="relative h-48 w-full overflow-hidden">

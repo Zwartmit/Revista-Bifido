@@ -13,7 +13,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
   const character = getCharacterById(article.characterId);
 
   return (
-    <Link href={`/${article.section}/${article.slug}`} className="group block">
+    <Link href={`/${article.section}/articulos/${article.slug}`} className="group block">
       <article className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
         <div className="relative h-48 overflow-hidden">
           <Image

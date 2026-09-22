@@ -85,6 +85,9 @@ export default buildConfig({
                     path: '@/payload/components/LogoutButton#LogoutButton',
                 },
             },
+            afterLogin: [
+                '@/payload/components/BackToSiteButton#BackToSiteButton',
+            ],
             providers: [
                 '@/payload/components/PasswordToggleProvider#PasswordToggleProvider',
             ],

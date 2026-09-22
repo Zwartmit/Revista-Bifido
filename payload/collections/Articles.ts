@@ -29,8 +29,33 @@ export const Articles: CollectionConfig = {
             type: 'text',
             required: true,
             unique: true,
+            hooks: {
+                beforeValidate: [
+                    ({ data, value }) => {
+                        // Si el slug está vacío y hay un título, generar el slug
+                        if ((!value || value === '') && data?.title) {
+                            return data.title
+                                .normalize('NFD') // Quitar tildes
+                                .replace(/[\u0300-\u036f]/g, '')
+                                .toLowerCase()
+                                .replace(/[^a-z0-9]+/g, '-') // Reemplazar caracteres especiales por guiones
+                                .replace(/(^-|-$)+/g, ''); // Quitar guiones al principio o al final
+                        }
+                        // Si ya tiene valor, limpiarlo de todas formas
+                        if (value && typeof value === 'string') {
+                            return value
+                                .normalize('NFD')
+                                .replace(/[\u0300-\u036f]/g, '')
+                                .toLowerCase()
+                                .replace(/[^a-z0-9]+/g, '-')
+                                .replace(/(^-|-$)+/g, '');
+                        }
+                        return value;
+                    },
+                ],
+            },
             admin: {
-                description: 'Versión amigable para URL del título',
+                description: 'Se genera automáticamente desde el título si lo dejas en blanco.',
             },
         },
         {
