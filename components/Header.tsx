@@ -62,6 +62,7 @@ export default function Header() {
                                 src="/icons/bifido_w.png"
                                 alt="Revista Bífido"
                                 fill
+                                sizes="(max-width: 1024px) 192px, 224px"
                                 className="object-contain"
                                 priority
                             />
@@ -73,20 +74,22 @@ export default function Header() {
                                 className="p-1 hover:scale-110 transition-transform"
                                 aria-label="Open search"
                             >
-                                <Image src="/icons/search.svg" alt="Search" width={24} height={24} className="object-contain" />
+                                <svg viewBox="0 0 107.9 108.93" className="w-6 h-6 shrink-0 fill-bifido-neon">
+                                    <path d="M82.45,41.62c-.12,4.06-.91,9.13-2.88,13.94-1.16,2.84-.6,5.02,1.67,7.16,8.34,7.87,16.55,15.89,24.83,23.82,2.27,2.17,2.48,3.28.35,5.45-4.98,5.08-10.01,10.13-15.14,15.07-2.69,2.59-3.74,2.46-6.49-.19-6.34-6.11-12.6-12.3-19.02-18.32-2.14-2.01-2.03-3.54.03-5.37,1.47-1.32,8.13-7.68,8.76-8.58.34-.49-22.63,6.32-29.05,7.13C23.75,84.46,2.48,67.65.23,45.77-2.24,21.79,15.73,1.07,39.9.04c22.52-.97,42.36,17.91,42.55,41.58ZM41.43,17.96c-12.95-.13-23.22,9.96-23.31,22.91-.09,12.82,9.96,23.09,22.71,23.21,12.8.11,23.41-10.26,23.47-22.93.06-12.68-10.18-23.06-22.87-23.19Z"/>
+                                </svg>
                             </button>
                             <button
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                                 className="p-1 hover:scale-110 transition-transform"
                                 aria-label="Toggle menu"
                             >
-                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <Image src="/icons/navmobil.svg" alt="Menu" width={32} height={32} className="object-contain" />}
+                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <img src="/icons/navmobil.svg" alt="Menu" className="object-contain w-8 h-8 shrink-0" />}
                             </button>
                          </div>
                     </div>
 
                     {/* Desktop Layout - Logo left, Links center/right */}
-                    <div className="hidden lg:flex items-center justify-between">
+                    <div className="hidden lg:flex items-center justify-between gap-8">
                         <Link href="/" className="flex items-center flex-shrink-0">
                             <Image
                                 src="/icons/bifido_w.png"
@@ -94,23 +97,27 @@ export default function Header() {
                                 width={180}
                                 height={50}
                                 priority
-                                className="object-contain"
+                                className="object-contain w-[180px] h-[50px]"
                             />
                         </Link>
                         {/* Desktop Navigation */}
-                        <div className="flex items-center gap-4 lg:gap-6 h-10">
+                        <div className="flex items-center gap-4 lg:gap-6 h-10 whitespace-nowrap">
                             <button
                                 onClick={() => setIsSearchOpen(true)}
                                 className="p-1 hover:scale-110 transition-transform"
                                 aria-label="Open search"
                             >
-                                <Image src="/icons/search.svg" alt="Search" width={24} height={24} className="object-contain" />
+                                <svg viewBox="0 0 107.9 108.93" className="w-6 h-6 shrink-0 fill-bifido-neon">
+                                    <path d="M82.45,41.62c-.12,4.06-.91,9.13-2.88,13.94-1.16,2.84-.6,5.02,1.67,7.16,8.34,7.87,16.55,15.89,24.83,23.82,2.27,2.17,2.48,3.28.35,5.45-4.98,5.08-10.01,10.13-15.14,15.07-2.69,2.59-3.74,2.46-6.49-.19-6.34-6.11-12.6-12.3-19.02-18.32-2.14-2.01-2.03-3.54.03-5.37,1.47-1.32,8.13-7.68,8.76-8.58.34-.49-22.63,6.32-29.05,7.13C23.75,84.46,2.48,67.65.23,45.77-2.24,21.79,15.73,1.07,39.9.04c22.52-.97,42.36,17.91,42.55,41.58ZM41.43,17.96c-12.95-.13-23.22,9.96-23.31,22.91-.09,12.82,9.96,23.09,22.71,23.21,12.8.11,23.41-10.26,23.47-22.93.06-12.68-10.18-23.06-22.87-23.19Z"/>
+                                </svg>
                             </button>
 
                             <svg width="2" height="16" className="shrink-0 opacity-80" shapeRendering="crispEdges"><rect width="2" height="16" fill="#b8ff00" /></svg>
 
                             <Link href="/" className={`flex items-center gap-2 font-display tracking-wider text-lg transition-colors uppercase px-2 ${pathname === '/' ? 'text-bifido-neon' : 'text-white hover:text-bifido-neon'}`}>
-                                <Image src="/icons/home.svg" alt="Inicio" width={20} height={20} className="object-contain" />
+                                <svg viewBox="0 0 121.64 113.24" className="w-5 h-5 shrink-0 fill-current">
+                                    <path d="M.03,85.06C.03,76.95.08,68.84,0,60.72c-.02-1.93.57-3.39,1.93-4.74,14.99-14.96,29.94-29.95,44.9-44.94,3.15-3.15,6.4-6.2,9.4-9.48,2.08-2.28,3.68-1.9,5.65.08,6.27,6.32,12.65,12.54,18.96,18.83,11.85,11.8,23.65,23.65,35.55,35.4,1.9,1.88,2.79,3.88,2.77,6.55-.09,15.53-.06,31.07-.1,46.6,0,3.7-.47,4.17-4.06,4.18-11.78.02-23.56.02-35.33,0-3.62,0-3.92-.32-3.93-3.87-.02-9.3-.11-18.6.04-27.9.05-2.89-.94-3.75-3.76-3.7-7.92.15-15.84.14-23.75,0-2.64-.05-3.41.88-3.38,3.44.11,9.4-.03,18.8.07,28.2.03,2.77-.89,3.89-3.76,3.87-12.47-.11-24.94-.11-37.41-.02-2.82.02-3.78-.96-3.73-3.82.16-8.11.06-16.23.06-24.34-.03,0-.05,0-.08,0ZM85.02,56.39v-.02c-4.05,0-8.1-.05-12.14.03-1.16.02-2.9-.75-3.3.98-.33,1.4.18,2.95,1.42,3.99,9.09,7.59,18.19,15.17,27.3,22.73.57.47,1.15,1.35,2.01.84.64-.38.4-1.26.4-1.93,0-7.9-.06-15.79,0-23.69.02-2.14-.76-3.02-2.95-2.96-4.24.11-8.49.03-12.74.03Z"/>
+                                </svg>
                                 INICIO
                             </Link>
 
@@ -173,6 +180,7 @@ export default function Header() {
                                     src="/icons/bifido.svg"
                                     alt="Revista Bífido"
                                     fill
+                                    sizes="(max-width: 1024px) 192px, 224px"
                                     className="object-contain"
                                     priority
                                 />
@@ -240,7 +248,7 @@ export default function Header() {
                                     <span style={{ fontFamily: 'var(--font-jack, "JackInput", monospace)' }} className="text-black text-sm md:text-base tracking-[0.25em] px-8 pt-[2px]">
                                         PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES
                                     </span>
-                                    <Image src="/icons/arrow.svg" alt="separator" width={14} height={14} className="w-5 h-5 object-contain opacity-90" />
+                                    <img src="/icons/arrow.svg" alt="separator" className="w-[14px] h-[14px] object-contain opacity-90 shrink-0 mx-4" />
                                 </div>
                             ))}
                         </div>

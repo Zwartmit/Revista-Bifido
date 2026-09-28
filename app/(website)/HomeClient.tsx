@@ -53,6 +53,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                     src="/hero/desk.png"
                     alt="La Manada Bífido"
                     fill
+                    sizes="100vw"
                     className="hidden lg:block object-cover object-bottom"
                     priority
                 />
@@ -61,6 +62,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                     src="/hero/movil.png"
                     alt="La Manada Bífido"
                     fill
+                    sizes="100vw"
                     className="block lg:hidden object-cover object-[center_90%] md:object-[center_70%]"
                     priority
                 />
@@ -71,12 +73,10 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                         <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover/btn:opacity-100 transition duration-1000 group-hover/btn:duration-200"></div>
                         <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#fe5e00] rounded-full font-display text-xl md:text-3xl text-white transition-all duration-300 group-hover/btn:border-[#fe5e00] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
                             CONOCE EL PARCHE
-                            <Image
+                            <img
                                 src="/icons/arrow_o.svg"
                                 alt="arrow"
-                                width={28}
-                                height={24}
-                                className="object-contain md:w-[32px] md:h-[28px] transition-transform duration-300 group-hover/btn:translate-x-2 animate-pulse"
+                                className="w-7 h-6 object-contain md:w-[32px] md:h-[28px] transition-transform duration-300 group-hover/btn:translate-x-2 animate-pulse"
                             />
                         </div>
                     </Link>
@@ -129,12 +129,13 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                                     href={`/${article.section}/articulos/${article.slug}`}
                                     className="group flex flex-col bg-bifido-gray/50 border border-bifido-gray/30 rounded-xl overflow-hidden hover:border-bifido-neon transition-all duration-300"
                                 >
-                                    <div className="relative h-48 w-full overflow-hidden">
+                                    <div className="relative aspect-video w-full overflow-hidden">
                                         {article.featuredImage && (
                                             <Image
                                                 src={article.featuredImage}
                                                 alt={article.title}
                                                 fill
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                 className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
                                             />
                                         )}

@@ -548,7 +548,7 @@ export default function ElParchePage() {
                                         alt="Equipo"
                                         width={30}
                                         height={30}
-                                        className="flex-shrink-0"
+                                        className="flex-shrink-0 w-[30px] h-[30px]"
                                     />
                                     <span className="font-anton text-lg md:text-3xl tracking-normal text-[#fe5e00] uppercase leading-none">
                                         DESDE ADENTRO
@@ -621,10 +621,10 @@ export default function ElParchePage() {
                                                             alt={member.name}
                                                             width={82}
                                                             height={82}
-                                                            className="object-contain"
+                                                            className="object-contain w-[82px] h-[82px] shrink-0"
                                                         />
                                                         {/* Truco: Precargamos la versión de alta resolución en secreto para que el Modal abra al instante */}
-                                                        <div className="absolute w-0 h-0 overflow-hidden opacity-0 pointer-events-none">
+                                                        <div className="absolute w-px h-px overflow-hidden opacity-0 pointer-events-none">
                                                             <Image
                                                                 src={member.profileImage}
                                                                 alt={`${member.name} preload`}
@@ -840,7 +840,7 @@ export default function ElParchePage() {
                                                 alt="Manifiesto"
                                                 width={28}
                                                 height={28}
-                                                className="flex-shrink-0"
+                                                className="flex-shrink-0 w-7 h-7"
                                                 style={{ filter: 'brightness(0) saturate(100%) invert(53%) sepia(98%) saturate(1831%) hue-rotate(348deg) brightness(101%) contrast(96%)' }}
                                             />
                                             <h2 className="text-3xl md:text-5xl font-display uppercase tracking-widest text-orange-500 leading-none mt-2">
@@ -947,7 +947,7 @@ export default function ElParchePage() {
                                             className="group flex items-center gap-3 transition-colors"
                                         >
                                             <div className="flex items-center mt-[2px] rotate-180 group-hover:-translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
-                                                <Image src="/icons/arrow_o.svg" alt="Anterior" width={24} height={24} />
+                                                <img src="/icons/arrow_o.svg" alt="Anterior" className="w-6 h-6 shrink-0" />
                                             </div>
                                             <span className="text-white mt-[2px] group-hover:text-orange-500 transition-colors">Anterior</span>
                                         </button>
@@ -963,7 +963,7 @@ export default function ElParchePage() {
                                         >
                                             <span className="text-white mt-[2px] group-hover:text-orange-500 transition-colors">Siguiente</span>
                                             <div className="flex items-center mt-[2px] group-hover:translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
-                                                <Image src="/icons/arrow_o.svg" alt="Siguiente" width={24} height={24} />
+                                                <img src="/icons/arrow_o.svg" alt="Siguiente" className="w-6 h-6 shrink-0" />
                                             </div>
                                         </button>
                                     </div>

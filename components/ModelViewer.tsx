@@ -4,6 +4,7 @@ import React, { Suspense, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF, OrbitControls, Center, Html, useProgress, ContactShadows } from '@react-three/drei';
+import ErrorBoundary from './ErrorBoundary';
 
 // Componente de carga personalizado
 function Loader({ primaryColor = '#b8ff00', secondaryColor = '#fe5e00' }: { primaryColor?: string, secondaryColor?: string }) {
@@ -133,13 +134,19 @@ export default function ModelViewer({
           }}
         />
       )}
-      <Canvas
-        shadows={!transparent}
-        camera={{ position: [0, 0, 6], fov: 16 }} // Zoom extremo (FOV 16)
-        style={{ pointerEvents: 'auto' }}
-        dpr={[1, 1.5]}
-        gl={{ powerPreference: "high-performance" }}
-      >
+      <ErrorBoundary fallback={
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-bifido-neon font-display tracking-widest bg-black/80 z-10 p-4">
+          <p className="text-2xl mb-2 text-center text-red-500">ERROR 404</p>
+          <p className="text-sm text-center">EL MODELO 3D SE ENCUENTRA FUERA DE COBERTURA</p>
+        </div>
+      }>
+        <Canvas
+          shadows={!transparent}
+          camera={{ position: [0, 0, 6], fov: 16 }} // Zoom extremo (FOV 16)
+          style={{ pointerEvents: 'auto' }}
+          dpr={[1, 1.5]}
+          gl={{ powerPreference: "high-performance" }}
+        >
         {/* Iluminación */}
         {transparent ? (
           <ambientLight intensity={3} /> // Luz plana pura sin brillos
@@ -170,7 +177,8 @@ export default function ModelViewer({
             target={[0, 0, 0]} // Objetivo centrado
           />
         </Suspense>
-      </Canvas>
+        </Canvas>
+      </ErrorBoundary>
 
       {/* Indicador de Interactividad 3D */}
       <div

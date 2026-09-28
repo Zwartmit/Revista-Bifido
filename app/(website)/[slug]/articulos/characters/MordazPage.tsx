@@ -97,7 +97,7 @@ export default function MordazPage({ section, character, articles }: Props) {
                                 <div className="flex flex-col lg:flex-row">
                                     <div className="relative w-full lg:w-[55%] aspect-[16/9] lg:min-h-[380px] overflow-hidden flex-shrink-0">
                                         {featuredArticle.featuredImage ? (
-                                            <Image src={featuredArticle.featuredImage} alt={featuredArticle.title} fill
+                                            <Image src={featuredArticle.featuredImage} alt={featuredArticle.title} fill sizes="(max-width: 768px) 100vw, 50vw"
                                                 className="object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-700" />
                                         ) : (
                                             <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: `${dark}40` }}>
@@ -141,7 +141,7 @@ export default function MordazPage({ section, character, articles }: Props) {
                                         style={{ borderLeftWidth: 2, borderLeftColor: `${primary}30` }}>
                                         <div className="relative w-full aspect-[4/3] overflow-hidden">
                                             {article.featuredImage ? (
-                                                <Image src={article.featuredImage} alt={article.title} fill
+                                                <Image src={article.featuredImage} alt={article.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                     className="object-cover opacity-60 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500" />
                                             ) : (
                                                 <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: `${dark}30` }}>

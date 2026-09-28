@@ -113,7 +113,7 @@ export default function Footer() {
 
           {/* Right: Logo */}
           <div className="flex justify-center items-start">
-            <Image src="/icons/bifido.svg" alt="Revista Bífido" width={240} height={60} className="object-contain max-w-full" />
+            <Image src="/icons/bifido.svg" alt="Revista Bífido" width={240} height={60} className="object-contain max-w-full w-[240px] h-[60px]" />
           </div>
 
         </div>

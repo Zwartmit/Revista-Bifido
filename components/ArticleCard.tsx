@@ -15,11 +15,12 @@ export default function ArticleCard({ article }: ArticleCardProps) {
   return (
     <Link href={`/${article.section}/articulos/${article.slug}`} className="group block">
       <article className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative aspect-video w-full overflow-hidden">
           <Image
             src={article.featuredImage}
             alt={article.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
           {character && (
