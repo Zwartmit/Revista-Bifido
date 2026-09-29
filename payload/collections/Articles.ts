@@ -1,4 +1,11 @@
 import type { CollectionConfig } from 'payload';
+import { RichTextBlock } from '../blocks/RichTextBlock';
+import { ImageBlock } from '../blocks/ImageBlock';
+import { VideoBlock } from '../blocks/VideoBlock';
+import { TwoColumnsBlock } from '../blocks/TwoColumnsBlock';
+import { GalleryBlock } from '../blocks/GalleryBlock';
+import { PullQuoteBlock } from '../blocks/PullQuoteBlock';
+import { SeparatorBlock } from '../blocks/SeparatorBlock';
 
 export const Articles: CollectionConfig = {
     slug: 'articles',
@@ -68,10 +75,22 @@ export const Articles: CollectionConfig = {
             },
         },
         {
-            name: 'content',
-            label: 'Contenido',
-            type: 'richText',
+            name: 'layout',
+            label: 'Contenido (Bloques)',
+            type: 'blocks',
             required: true,
+            admin: {
+                description: 'Construye el contenido del artículo agregando y reordenando bloques.',
+            },
+            blocks: [
+                RichTextBlock,
+                ImageBlock,
+                VideoBlock,
+                TwoColumnsBlock,
+                GalleryBlock,
+                PullQuoteBlock,
+                SeparatorBlock,
+            ],
         },
         {
             name: 'featuredImage',
@@ -88,6 +107,18 @@ export const Articles: CollectionConfig = {
             required: true,
             admin: {
                 description: 'Personaje de Bífido que publica este artículo',
+                position: 'sidebar',
+            },
+        },
+        {
+            name: 'categories',
+            label: 'Categorías',
+            type: 'relationship',
+            relationTo: 'categories',
+            hasMany: true,
+            admin: {
+                position: 'sidebar',
+                description: 'Clasifica este artículo (ej. Noticias, Opinión)',
             },
         },
         {

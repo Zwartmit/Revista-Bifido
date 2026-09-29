@@ -78,18 +78,33 @@ export async function getArticleBySlug(slug: string) {
 }
 
 /**
- * Obtener artículos por personaje (author)
+ * Obtener artículos por personaje (author), opcionalmente filtrados
  */
-export async function getArticlesByCharacter(characterSlug: string) {
-  const params = {
-    where: {
-      'author.slug': {
-        equals: characterSlug,
-      },
-      status: {
-        equals: 'published',
-      },
+export async function getArticlesByCharacter(characterSlug: string, search?: string, categorySlug?: string) {
+  const where: any = {
+    'author.slug': {
+      equals: characterSlug,
     },
+    status: {
+      equals: 'published',
+    },
+  };
+
+  if (search) {
+    where.or = [
+      { title: { like: search } },
+      { excerpt: { like: search } },
+    ];
+  }
+
+  if (categorySlug) {
+    where['categories.slug'] = {
+      equals: categorySlug,
+    };
+  }
+
+  const params = {
+    where,
     sort: '-publishedAt',
     depth: 1,
   };
@@ -121,7 +136,13 @@ export async function getCharacterBySlug(slug: string) {
   return data.docs[0] ? transformPayloadCharacter(data.docs[0]) : null;
 }
 
-
+/**
+ * Obtener todas las categorías
+ */
+export async function getCategories() {
+  const data = await fetchPayload('categories');
+  return data.docs.map(transformPayloadCategory);
+}
 
 /**
  * Buscar artículos
@@ -257,13 +278,14 @@ export function transformPayloadArticle(doc: any) {
     slug: doc.slug,
     title: doc.title,
     excerpt: doc.excerpt,
-    content: doc.content, // RichText JSON
+    layout: doc.layout || [], // Bloques de contenido (Opción 2)
     author: doc.author ? doc.author.name : 'Revista Bífido',
     publishedAt: doc.publishedAt,
     featuredImage: doc.featuredImage?.url || '/images/placeholder-article.jpg',
     // Section derived directly from the author (character)
     section: doc.author?.slug || 'general',
     characterId: doc.author?.slug || '',
+    categories: doc.categories?.map((c: any) => ({ name: c.name, slug: c.slug })) || [],
   };
 }
 
@@ -329,5 +351,13 @@ export function transformPayloadLiveArchiveMember(doc: any) {
     tags: doc.tags || [],
     photos: doc.photos?.map((p: any) => p.image?.url || '') || [],
     model3d: doc.model3d?.url || null,
+  };
+}
+
+export function transformPayloadCategory(doc: any) {
+  return {
+    id: doc.id,
+    name: doc.name,
+    slug: doc.slug,
   };
 }

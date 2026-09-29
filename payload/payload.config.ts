@@ -19,6 +19,7 @@ import { Events } from './collections/Events';
 import { Products } from './collections/Products';
 import { Media } from './collections/Media';
 import { Users } from './collections/Users';
+import { Categories } from './collections/Categories';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -105,8 +106,11 @@ export default buildConfig({
         Events,
         Products,
         Media,
+        Categories,
     ],
     plugins,
+    // El editor global es un fallback básico.
+    // Cada bloque que necesita richText define su propio editor en payload/blocks/.
     editor: lexicalEditor({}),
     secret: process.env.PAYLOAD_SECRET as string,
     typescript: {

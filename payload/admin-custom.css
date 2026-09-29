@@ -1,21 +1,28 @@
-:root {
+[data-theme="dark"], [data-theme="dark"] body {
   --theme-bg: #000000;
   --theme-text: #ffffff;
-  --theme-primary: #ccfd29; /* bifido-neon */
+  --theme-primary: #ccfd29;
   --theme-input-bg: #111111;
   --theme-input-border: #333333;
-  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-bg: color-mix(in srgb, var(--theme-text) 3%, transparent);
   --sidebar-bg: #050505;
+}
+[data-theme="light"], [data-theme="light"] body {
+  --theme-bg: #f3f4f6;
+  --theme-text: #1a1a1a;
+  --theme-primary: #8cb800; /* Darker green for contrast on light bg */
+  --theme-input-bg: #ffffff;
+  --theme-input-border: #d1d5db;
+  --card-bg: #ffffff;
+  --sidebar-bg: #0a0a0a; /* Sidebar is always dark */
 }
 
 /* Base Body Styles */
-body {
-    background-color: var(--theme-bg) !important;
-}
+body { background-color: var(--theme-bg) !important; color: var(--theme-text) !important; }
 
 /* Custom styles for authentication pages (Login, Forgot, Reset, etc.) */
 .template--auth {
-  background-color: #000 !important;
+  background-color: var(--theme-bg) !important;
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
@@ -25,14 +32,14 @@ body {
 /* Desktop background */
 @media (min-width: 768px) {
   .template--auth {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/backgrounds/team_desk.png') !important;
+    background-image: linear-gradient(color-mix(in srgb, var(--theme-bg) 70%, transparent), color-mix(in srgb, var(--theme-bg) 70%, transparent)), url('/backgrounds/team_desk.png') !important;
   }
 }
 
 /* Mobile background */
 @media (max-width: 767px) {
   .template--auth {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/backgrounds/team_movil.jpeg') !important;
+    background-image: linear-gradient(color-mix(in srgb, var(--theme-bg) 80%, transparent), color-mix(in srgb, var(--theme-bg) 80%, transparent)), url('/backgrounds/team_movil.jpeg') !important;
   }
 }
 
@@ -46,7 +53,7 @@ body {
 }
 
 .template--auth p {
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: color-mix(in srgb, var(--theme-text) 80%, transparent) !important;
   line-height: 1.6 !important;
   font-size: 1.1rem !important;
   max-width: 500px !important;
@@ -60,7 +67,7 @@ body {
 }
 
 .template--auth a:hover {
-  color: #fff !important;
+  color: var(--theme-text) !important;
   text-decoration: underline !important;
 }
 
@@ -71,7 +78,7 @@ body {
 
 .template--auth .btn--style-primary {
   background-color: var(--theme-primary) !important;
-  color: #000 !important;
+  color: var(--theme-bg) !important;
   border-radius: 4px !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
@@ -90,13 +97,16 @@ body {
 
 /* Sidebar Modernization */
 .nav {
+    --theme-text: #ffffff;
+    --theme-bg: var(--sidebar-bg);
+    color: var(--theme-text) !important;
     background-color: var(--sidebar-bg) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-right: 1px solid color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
     padding-top: 2rem !important;
 }
 
 .nav__group-label {
-    color: rgba(255, 255, 255, 0.3) !important;
+    color: color-mix(in srgb, var(--theme-text) 30%, transparent) !important;
     font-size: 0.7rem !important;
     text-transform: uppercase !important;
     letter-spacing: 0.2em !important;
@@ -104,7 +114,7 @@ body {
 }
 
 .nav__link {
-    color: rgba(255, 255, 255, 0.6) !important;
+    color: color-mix(in srgb, var(--theme-text) 60%, transparent) !important;
     border-radius: 8px !important;
     margin: 0.25rem 1rem !important;
     padding: 0.75rem 1rem !important;
@@ -127,22 +137,22 @@ body {
 .card {
     background: var(--card-bg) !important;
     backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
     border-radius: 16px !important;
     padding: 2rem !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 30px color-mix(in srgb, var(--theme-bg) 10%, transparent) !important;
 }
 
 .card:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
     transform: translateY(-5px) !important;
     border-color: rgba(204, 253, 41, 0.2) !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 10px 40px color-mix(in srgb, var(--theme-bg) 30%, transparent) !important;
 }
 
 .card__title {
-    color: #fff !important;
+    color: var(--theme-text) !important;
     font-size: 1.1rem !important;
     font-weight: 700 !important;
     font-family: 'Inter', system-ui, sans-serif !important; /* Cleaner font for legibility */
@@ -239,7 +249,7 @@ body {
 .card {
     background: var(--card-bg) !important;
     backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
     border-radius: 16px !important;
     padding: 2.5rem 1.5rem !important; /* Adjusted padding */
     min-height: 180px !important; /* Increased height for better centering */
@@ -249,12 +259,12 @@ body {
     justify-content: center !important; /* Vertical centering */
     text-align: center !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 30px color-mix(in srgb, var(--theme-bg) 10%, transparent) !important;
     width: auto !important;
 }
 
 .card__title {
-    color: #fff !important;
+    color: var(--theme-text) !important;
     font-size: 1rem !important;
     font-weight: 700 !important;
     font-family: 'Inter', system-ui, sans-serif !important;
@@ -297,7 +307,7 @@ body {
 /* Enhancing the Sidebar User Profile */
 .account {
     margin: 1rem !important;
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: color-mix(in srgb, var(--theme-text) 3%, transparent) !important;
     border-radius: 12px !important;
     padding: 0.5rem !important;
 }
@@ -324,8 +334,8 @@ body {
 
 /* List Controls (Search & Filters) */
 .list-controls {
-    background: rgba(255, 255, 255, 0.02) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: color-mix(in srgb, var(--theme-text) 2%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
     border-radius: 12px !important;
     padding: 1rem !important;
     margin-bottom: 2rem !important;
@@ -333,36 +343,36 @@ body {
 }
 
 .list-controls__search input {
-    background: rgba(0, 0, 0, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: color-mix(in srgb, var(--theme-bg) 30%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 10%, transparent) !important;
     border-radius: 8px !important;
     padding: 0.6rem 1rem !important;
 }
 
 /* Table Styling */
 .collection-list__table {
-    background: rgba(255, 255, 255, 0.01) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: color-mix(in srgb, var(--theme-text) 1%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
     border-radius: 16px !important;
     overflow: hidden !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--theme-bg) 20%, transparent) !important;
 }
 
 .collection-list__table thead th {
-    background: rgba(255, 255, 255, 0.03) !important;
-    color: rgba(255, 255, 255, 0.4) !important;
+    background: color-mix(in srgb, var(--theme-text) 3%, transparent) !important;
+    color: color-mix(in srgb, var(--theme-text) 40%, transparent) !important;
     text-transform: uppercase !important;
     font-size: 0.75rem !important;
     font-weight: 700 !important;
     letter-spacing: 0.15em !important;
     padding: 1.2rem 1.5rem !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
 }
 
 .collection-list__table tbody td {
     padding: 1.2rem 1.5rem !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
-    color: rgba(255, 255, 255, 0.8) !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--theme-text) 3%, transparent) !important;
+    color: color-mix(in srgb, var(--theme-text) 80%, transparent) !important;
     font-size: 0.95rem !important;
     vertical-align: middle !important;
 }
@@ -394,16 +404,16 @@ body {
 }
 
 .cell-status--draft {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: rgba(255, 255, 255, 0.5) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
+    color: color-mix(in srgb, var(--theme-text) 50%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 10%, transparent) !important;
 }
 
 /* Thumbnails in List */
 .thumbnail {
     border-radius: 8px !important;
     overflow: hidden !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 10%, transparent) !important;
 }
 
 /* Pagination */
@@ -415,9 +425,9 @@ body {
 }
 
 .paginator__button {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    color: #fff !important;
+    background: color-mix(in srgb, var(--theme-text) 3%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 5%, transparent) !important;
+    color: var(--theme-text) !important;
     border-radius: 8px !important;
     padding: 0.5rem 1rem !important;
     transition: all 0.2s ease !important;
@@ -425,7 +435,7 @@ body {
 
 .paginator__button:hover:not(:disabled) {
     background: var(--theme-primary) !important;
-    color: #000 !important;
+    color: var(--theme-bg) !important;
 }
 
 /* Scrollbar Styling */
@@ -434,7 +444,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #000 !important;
+    background: var(--theme-bg) !important;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -452,7 +462,7 @@ body {
     font-size: 2.5rem !important;
     letter-spacing: -0.02em !important;
     margin-bottom: 2rem !important;
-    background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.5)) !important;
+    background: linear-gradient(to right, var(--theme-text), color-mix(in srgb, var(--theme-text) 50%, transparent)) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
 }
@@ -466,7 +476,7 @@ body {
 
 .btn--style-primary {
     background: var(--theme-primary) !important;
-    color: #000 !important;
+    color: var(--theme-bg) !important;
     border: none !important;
 }
 
@@ -476,16 +486,16 @@ body {
 }
 
 .label {
-    color: rgba(255, 255, 255, 0.5) !important;
+    color: color-mix(in srgb, var(--theme-text) 50%, transparent) !important;
     margin-bottom: 0.5rem !important;
     font-size: 0.85rem !important;
 }
 
 input, textarea, select {
-    background-color: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background-color: color-mix(in srgb, var(--theme-text) 3%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 10%, transparent) !important;
     border-radius: 8px !important;
-    color: #fff !important;
+    color: var(--theme-text) !important;
     padding: 0.75rem 1rem !important;
 }
 
@@ -494,3 +504,6 @@ input:focus, textarea:focus {
     outline: none !important;
     box-shadow: 0 0 0 2px rgba(204, 253, 41, 0.1) !important;
 }
+
+
+

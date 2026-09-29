@@ -7,14 +7,16 @@ import { formatDate } from '@/lib/utils';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
+import ArticleFilters from '../ArticleFilters';
 
 interface Props {
     section: string;
     character: any;
     articles: any[];
+    categories?: any[];
 }
 
-export default function MalandraPage({ section, character, articles }: Props) {
+export default function MalandraPage({ section, character, articles, categories = [] }: Props) {
     const heroRef = useRef<HTMLDivElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
 

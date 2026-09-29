@@ -7,14 +7,16 @@ import { formatDate } from '@/lib/utils';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
+import ArticleFilters from '../ArticleFilters';
 
 interface Props {
     section: string;
     character: any;
     articles: any[];
+    categories?: any[];
 }
 
-export default function AnikaPage({ section, character, articles }: Props) {
+export default function AnikaPage({ section, character, articles, categories = [] }: Props) {
     const heroRef = useRef<HTMLDivElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
 
@@ -86,11 +88,14 @@ export default function AnikaPage({ section, character, articles }: Props) {
 
             {/* ── PUBLICACIONES ── */}
             <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20">
-                <div className="flex items-center gap-4 mb-12">
+                <div className="flex items-center gap-4 mb-8">
                     <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
                     <span className="font-display text-3xl tracking-[0.25em] uppercase">Muda de Piel</span>
                     <div className="flex-1 h-px bg-white/10" />
                 </div>
+
+                {/* FILTERS */}
+                <ArticleFilters categories={categories} primaryColor={primary} />
 
                 {articles.length === 0 ? (
                     <div className="text-center py-28 border border-[#1e1e1e]">

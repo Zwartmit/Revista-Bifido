@@ -1,4 +1,4 @@
-import { getCharacterBySlug as getCharacterBySlugFromAPI, getArticlesByCharacter } from '@/lib/api';
+import { getCharacterBySlug as getCharacterBySlugFromAPI, getArticlesByCharacter, getCategories } from '@/lib/api';
 import { getCharacterBySlug as getCharacterBySlugStatic } from '@/lib/characters';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -30,8 +30,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
 }
 
-export default async function ArticlesFeedPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ArticlesFeedPage({
+    params,
+    searchParams,
+}: {
+    params: Promise<{ slug: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
     const { slug } = await params;
+    const resolvedSearchParams = await searchParams;
+    const search = typeof resolvedSearchParams.search === 'string' ? resolvedSearchParams.search : undefined;
+    const category = typeof resolvedSearchParams.category === 'string' ? resolvedSearchParams.category : undefined;
 
     const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
 
@@ -39,9 +48,12 @@ export default async function ArticlesFeedPage({ params }: { params: Promise<{ s
         notFound();
     }
 
-    const articles = await getArticlesByCharacter(slug);
+    const [articles, categories] = await Promise.all([
+        getArticlesByCharacter(slug, search, category),
+        getCategories(),
+    ]);
 
     const PageComponent = CHARACTER_PAGES[character.id] || CHARACTER_PAGES[slug] || SectionClient;
 
-    return <PageComponent section={slug} character={character} articles={articles} />;
+    return <PageComponent section={slug} character={character} articles={articles} categories={categories} />;
 }

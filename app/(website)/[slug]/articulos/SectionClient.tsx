@@ -7,14 +7,16 @@ import { formatDate } from '@/lib/utils';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
+import ArticleFilters from './ArticleFilters';
 
 interface SectionClientProps {
     section: string;
     character: any;
     articles: any[];
+    categories?: any[];
 }
 
-export default function SectionClient({ section, character, articles }: SectionClientProps) {
+export default function SectionClient({ section, character, articles, categories = [] }: SectionClientProps) {
     const heroRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
