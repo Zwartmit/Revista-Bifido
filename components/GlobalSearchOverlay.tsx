@@ -66,7 +66,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
       } finally {
         setLoading(false);
       }
-    }, 400);
+    }, 800);
 
     return () => clearTimeout(timeoutId);
   }, [query]);
