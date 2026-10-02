@@ -7,6 +7,7 @@ import { formatDate } from '@/lib/utils';
 import { ArrowRight, ArrowLeft, Mic, Film, ImageIcon } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
+import FeaturedCarousel from '../FeaturedCarousel';
 
 interface Props {
     section: string;
@@ -18,8 +19,9 @@ export default function IncendiaPage({ section, character, articles }: Props) {
     const heroRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
-    const featuredArticle = articles.find((a: any) => a.characterFeatured) || null;
-    const regularArticles = articles.filter((a: any) => a.id !== featuredArticle?.id);
+    const featuredArticles = articles.filter((a: any) => a.characterFeatured);
+    const featuredArticleIds = featuredArticles.map((a: any) => a.id);
+    const regularArticles = articles.filter((a: any) => !featuredArticleIds.includes(a.id));
     const { primary, dark } = getCharacterColors(character.slug);
 
     useEffect(() => {
@@ -113,43 +115,14 @@ export default function IncendiaPage({ section, character, articles }: Props) {
                     </div>
                 ) : (
                     <>
-                        {featuredArticle && (
-                            <Link href={`/${section}/articulos/${featuredArticle.slug}`}
-                                className="group block mb-14 border border-[#1e1e1e] hover:border-white/20 transition-colors duration-300 overflow-hidden">
-                                <div className="flex flex-col lg:flex-row">
-                                    <div className="relative w-full lg:w-[55%] aspect-[16/9] lg:min-h-[360px] overflow-hidden flex-shrink-0">
-                                        {featuredArticle.featuredImage ? (
-                                            <Image src={featuredArticle.featuredImage} alt={featuredArticle.title} fill sizes="(max-width: 768px) 100vw, 50vw"
-                                                className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700" />
-                                        ) : (
-                                            <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: `${dark}60` }}>
-                                                <span className="font-display text-[8rem] opacity-10" style={{ color: primary }}>F</span>
-                                            </div>
-                                        )}
-                                        <span className="absolute top-4 left-4 font-display text-[10px] tracking-[0.4em] px-3 py-1 uppercase"
-                                            style={{ backgroundColor: primary, color: '#000' }}>Destacado</span>
-                                    </div>
-                                    <div className="flex flex-col justify-between p-8 lg:p-12 bg-[#080808] flex-1">
-                                        <div>
-                                            <span className="font-googlesans text-sm text-white/40 block mb-4">
-                                                {formatDate(featuredArticle.publishedAt)}
-                                            </span>
-                                            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-white uppercase leading-tight mb-5">
-                                                {featuredArticle.title}
-                                            </h2>
-                                            {featuredArticle.excerpt && (
-                                                <p className="font-googlesans text-gray-400 text-base md:text-lg leading-relaxed line-clamp-3">
-                                                    {featuredArticle.excerpt}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className="flex items-center gap-2 mt-8 font-googlesans text-base font-medium" style={{ color: primary }}>
-                                            <span>Leer artículo</span>
-                                            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
+                        {featuredArticles.length > 0 && (
+                            <FeaturedCarousel
+                                articles={featuredArticles}
+                                section={section}
+                                primaryColor={primary}
+                                darkColor={dark}
+                                letter={character.name[0]}
+                            />
                         )}
 
                         {regularArticles.length > 0 && (
@@ -203,21 +176,7 @@ export default function IncendiaPage({ section, character, articles }: Props) {
             </div>
 
             {/* ── SUPPORT BANNER ── */}
-            <div className="mx-6 sm:mx-10 lg:mx-16 xl:mx-24 mb-20 border border-[#1e1e1e]"
-                style={{ borderTopColor: `${primary}40` }}>
-                <div className="p-10 sm:p-14 text-center bg-[#080808]">
-                    <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-white uppercase mb-4 leading-tight">
-                        Apoya el periodismo libre
-                    </h2>
-                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-base md:text-lg leading-relaxed">
-                        Bífido existe porque hay personas que creen en el periodismo crudo y honesto.
-                    </p>
-                    <a href="#" className="inline-block font-display tracking-[0.25em] text-black text-base px-8 py-4 uppercase hover:opacity-90 transition-opacity"
-                        style={{ backgroundColor: primary }}>
-                        Colaborar
-                    </a>
-                </div>
-            </div>
+            <SupportBanner primaryColor={primary} />
         </div>
     );
 }

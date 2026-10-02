@@ -313,6 +313,8 @@ export function transformPayloadArticle(doc: any) {
     section: doc.author?.slug || 'general',
     characterId: doc.author?.slug || '',
     categories: doc.categories?.map((c: any) => ({ name: c.name, slug: c.slug })) || [],
+    featured: doc.featured || false,
+    characterFeatured: doc.characterFeatured || false,
   };
 }
 

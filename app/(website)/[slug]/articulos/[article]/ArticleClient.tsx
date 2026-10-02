@@ -237,7 +237,9 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
                 <div className="absolute bottom-0 left-0 right-0 py-8 text-white">
                     <div className="container mx-auto">
-                        <Link href={`/${character.slug}/articulos`} className="inline-flex items-center px-4 py-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-white hover:bg-black/70 transition-all text-sm font-medium mb-4">
+                        <Link href={`/${character.slug}/articulos`} 
+                            className="inline-flex items-center px-4 py-2 rounded-full border border-white/20 backdrop-blur-md hover:scale-105 transition-all text-sm font-medium mb-4"
+                            style={{ backgroundColor: charPrimary, color: '#000' }}>
                             <ArrowLeft size={16} className="mr-2" />
                             Volver a {character.name}
                         </Link>

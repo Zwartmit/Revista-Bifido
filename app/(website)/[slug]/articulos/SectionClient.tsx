@@ -8,6 +8,8 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
 import ArticleFilters from './ArticleFilters';
+import FeaturedCarousel from './FeaturedCarousel';
+import SupportBanner from './SupportBanner';
 
 interface SectionClientProps {
     section: string;
@@ -20,8 +22,9 @@ export default function SectionClient({ section, character, articles, categories
     const heroRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
-    const featuredArticle = articles.find((a: any) => a.characterFeatured) || null;
-    const regularArticles = articles.filter((a: any) => a.id !== featuredArticle?.id);
+    const featuredArticles = articles.filter((a: any) => a.characterFeatured);
+    const featuredArticleIds = featuredArticles.map((a: any) => a.id);
+    const regularArticles = articles.filter((a: any) => !featuredArticleIds.includes(a.id));
 
     useEffect(() => {
         const tl = gsap.timeline();
@@ -164,68 +167,14 @@ export default function SectionClient({ section, character, articles, categories
                 ) : (
                     <>
                         {/* ── Featured / Origin article ── */}
-                        {featuredArticle && (
-                            <Link
-                                href={`/${section}/articulos/${featuredArticle.slug}`}
-                                className="group block mb-14 border border-[#1e1e1e] hover:border-white/20 transition-colors duration-300 overflow-hidden"
-                            >
-                                <div className="flex flex-col lg:flex-row">
-                                    {/* Image */}
-                                    <div className="relative w-full lg:w-[55%] aspect-[16/9] lg:aspect-auto lg:min-h-[380px] overflow-hidden flex-shrink-0">
-                                        {featuredArticle.featuredImage ? (
-                                            <Image
-                                                src={featuredArticle.featuredImage}
-                                                alt={featuredArticle.title}
-                                                fill
-                                                className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
-                                            />
-                                        ) : (
-                                            <div
-                                                className="absolute inset-0 flex items-center justify-center"
-                                                style={{ backgroundColor: `${darkColor}60` }}
-                                            >
-                                                <span
-                                                    className="font-display text-[8rem] leading-none opacity-10"
-                                                    style={{ color: primaryColor }}
-                                                >
-                                                    B
-                                                </span>
-                                            </div>
-                                        )}
-                                        {/* DESTACADO badge */}
-                                        <span
-                                            className="absolute top-4 left-4 font-display text-[10px] tracking-[0.4em] px-3 py-1 uppercase"
-                                            style={{ backgroundColor: primaryColor, color: '#000' }}
-                                        >
-                                            Destacado
-                                        </span>
-                                    </div>
-
-                                    {/* Content */}
-                                    <div className="flex flex-col justify-between p-8 lg:p-12 bg-[#080808] flex-1">
-                                        <div>
-                                            <span className="font-googlesans text-sm text-white/40 tracking-wider block mb-4">
-                                                {formatDate(featuredArticle.publishedAt)}
-                                            </span>
-                                            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-6 uppercase group-hover:text-white/80 transition-colors">
-                                                {featuredArticle.title}
-                                            </h2>
-                                            {featuredArticle.excerpt && (
-                                                <p className="font-googlesans text-gray-400 text-base md:text-lg leading-relaxed line-clamp-3">
-                                                    {featuredArticle.excerpt}
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div
-                                            className="flex items-center gap-2 mt-8 font-googlesans text-base font-medium"
-                                            style={{ color: primaryColor }}
-                                        >
-                                            <span>Leer artículo</span>
-                                            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
+                        {featuredArticles.length > 0 && (
+                            <FeaturedCarousel
+                                articles={featuredArticles}
+                                section={section}
+                                primaryColor={primaryColor}
+                                darkColor={darkColor}
+                                letter={character.name[0]}
+                            />
                         )}
 
                         {/* ── Regular articles grid ── */}
@@ -291,33 +240,7 @@ export default function SectionClient({ section, character, articles, categories
             </div>
 
             {/* ─── 3. SUPPORT BANNER ─────────────────────────────────── */}
-            <div
-                className="mx-6 sm:mx-10 lg:mx-16 xl:mx-24 mb-20 border border-[#1e1e1e] overflow-hidden"
-                style={{ borderTopColor: `${primaryColor}40` }}
-            >
-                <div className="p-10 sm:p-14 text-center bg-[#080808]">
-                    <span
-                        className="font-display text-xs tracking-[0.5em] uppercase block mb-4"
-                        style={{ color: primaryColor }}
-                    >
-                        Periodismo independiente
-                    </span>
-                    <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-white uppercase mb-4 leading-tight">
-                        Apoya el periodismo libre
-                    </h2>
-                    <p className="font-googlesans text-gray-500 max-w-lg mx-auto mb-8 text-base md:text-lg leading-relaxed">
-                        Bífido existe porque hay personas que creen en el periodismo crudo y honesto.
-                        Si lo que lees te mueve, considera apoyarnos.
-                    </p>
-                    <a
-                        href="#"
-                        className="inline-block font-display tracking-[0.25em] text-black text-base px-8 py-4 uppercase hover:opacity-90 transition-opacity"
-                        style={{ backgroundColor: primaryColor }}
-                    >
-                        Colaborar
-                    </a>
-                </div>
-            </div>
+            <SupportBanner primaryColor={primaryColor} />
 
         </div>
     );
