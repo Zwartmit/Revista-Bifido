@@ -18,8 +18,8 @@ export default function PunkibriPage({ section, character, articles }: Props) {
     const heroRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
-    const featuredArticle = articles[0] || null;
-    const regularArticles = articles.slice(1);
+    const featuredArticle = articles.find((a: any) => a.characterFeatured) || null;
+    const regularArticles = articles.filter((a: any) => a.id !== featuredArticle?.id);
     const { primary, dark } = getCharacterColors(character.slug);
 
     useEffect(() => {

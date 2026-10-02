@@ -14,10 +14,12 @@ interface SearchOverlayProps {
 
 export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<{ articles: any[]; events: any[]; characters: any[] }>({
+  const [results, setResults] = useState<{ articles: any[]; events: any[]; characters: any[]; liveArchive: any[]; categories: any[] }>({
     articles: [],
     events: [],
-    characters: []
+    characters: [],
+    liveArchive: [],
+    categories: []
   });
   const [loading, setLoading] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -50,7 +52,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
   // Debounce search
   useEffect(() => {
     if (!query || query.trim() === '') {
-      setResults({ articles: [], events: [], characters: [] });
+      setResults({ articles: [], events: [], characters: [], liveArchive: [], categories: [] });
       return;
     }
 
@@ -80,7 +82,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
 
   if (!isOpen) return null;
 
-  const hasResults = results.articles.length > 0 || results.events.length > 0 || results.characters.length > 0;
+  const hasResults = results.articles.length > 0 || results.events.length > 0 || results.characters.length > 0 || results.liveArchive?.length > 0 || results.categories?.length > 0;
   const isSearching = query.trim().length > 0;
 
   return (
@@ -158,6 +160,22 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
           {hasResults && (
             <div className="flex flex-col gap-12 mt-4 animate-in fade-in slide-in-from-bottom-8 duration-500">
 
+              {/* Categories Results */}
+              {results.categories?.length > 0 && (
+                <div>
+                  <h3 className="font-mono text-xs uppercase tracking-[0.3em] text-[#b8ff00] mb-4 flex items-center gap-2">
+                    <FileText size={14} /> CATEGORÍAS <span className="opacity-50">({results.categories.length})</span>
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {results.categories.map((cat) => (
+                      <Link href={`/categorias/${cat.slug}`} key={cat.id} onClick={onClose} className="px-4 py-2 border border-[#b8ff00] text-[#b8ff00] hover:bg-[#b8ff00] hover:text-black font-mono text-sm tracking-widest uppercase transition-colors">
+                        {cat.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Characters Results */}
               {results.characters.length > 0 && (
                 <div>
@@ -227,6 +245,30 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
 
                         <div className="flex-shrink-0 hidden md:flex items-center gap-2 text-xs font-mono text-white/40 ml-4 z-10 w-32 justify-end">
                           <span className="truncate">{ev.location}</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Live Archive Results */}
+              {results.liveArchive?.length > 0 && (
+                <div>
+                  <h3 className="font-mono text-xs uppercase tracking-[0.3em] text-[#b8ff00] mb-4 flex items-center gap-2">
+                    <User size={14} /> ARCHIVO VIVO <span className="opacity-50">({results.liveArchive.length})</span>
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {results.liveArchive.map((member) => (
+                      <Link href={`/archivo-vivo/${member.slug}`} key={member.id} onClick={onClose} className="group block border border-white/5 hover:border-[#E63946] bg-white/5 overflow-hidden transition-all duration-300">
+                        <div className="aspect-square relative w-full overflow-hidden bg-black/50">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={member.profileImage} alt={member.name} className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 scale-100 group-hover:scale-110" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                          <div className="absolute bottom-3 left-3 right-3">
+                            <p className="font-display text-lg uppercase leading-none drop-shadow-md text-white group-hover:text-[#E63946] transition-colors line-clamp-1">{member.name}</p>
+                            <p className="font-mono text-[10px] uppercase text-white/50 mt-1 truncate">{member.profession || 'Archivo Vivo'}</p>
+                          </div>
                         </div>
                       </Link>
                     ))}

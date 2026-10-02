@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
@@ -20,8 +20,27 @@ export default function AnikaPage({ section, character, articles, categories = [
     const heroRef = useRef<HTMLDivElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
 
-    const featuredArticle = articles[0] || null;
-    const regularArticles = articles.slice(1);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [currentCategory, setCurrentCategory] = useState('');
+
+    const filteredArticles = articles.filter(article => {
+        if (currentCategory) {
+            const hasCat = article.categories?.some((c: any) => 
+                c === currentCategory || c.slug === currentCategory
+            );
+            if (!hasCat) return false;
+        }
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            const title = article.title?.toLowerCase() || '';
+            const excerpt = article.excerpt?.toLowerCase() || '';
+            if (!title.includes(q) && !excerpt.includes(q)) return false;
+        }
+        return true;
+    });
+
+    const featuredArticle = filteredArticles.find(a => a.characterFeatured) || null;
+    const regularArticles = filteredArticles.filter(a => a.id !== featuredArticle?.id);
     const { primary, dark } = getCharacterColors(character.slug);
 
     useEffect(() => {
@@ -95,9 +114,17 @@ export default function AnikaPage({ section, character, articles, categories = [
                 </div>
 
                 {/* FILTERS */}
-                <ArticleFilters categories={categories} primaryColor={primary} />
+                <ArticleFilters 
+                    categories={categories} 
+                    primaryColor={primary} 
+                    currentCategory={currentCategory}
+                    onFilterChange={(s, c) => {
+                        setSearchQuery(s);
+                        setCurrentCategory(c);
+                    }}
+                />
 
-                {articles.length === 0 ? (
+                {filteredArticles.length === 0 ? (
                     <div className="text-center py-28 border border-[#1e1e1e]">
                         <p className="font-display text-3xl text-white/10 tracking-widest uppercase">Sin publicaciones aún</p>
                     </div>

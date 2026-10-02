@@ -38,9 +38,6 @@ export default async function ArticlesFeedPage({
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
     const { slug } = await params;
-    const resolvedSearchParams = await searchParams;
-    const search = typeof resolvedSearchParams.search === 'string' ? resolvedSearchParams.search : undefined;
-    const category = typeof resolvedSearchParams.category === 'string' ? resolvedSearchParams.category : undefined;
 
     const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
 
@@ -48,8 +45,10 @@ export default async function ArticlesFeedPage({
         notFound();
     }
 
+    // El servidor ahora descarga TODOS los artículos (hasta el límite permitido)
+    // para que el cliente pueda filtrar en tiempo real sin recargar la página.
     const [articles, categories] = await Promise.all([
-        getArticlesByCharacter(slug, search, category),
+        getArticlesByCharacter(slug),
         getCategories(),
     ]);
 

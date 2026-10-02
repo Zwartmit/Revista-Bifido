@@ -51,6 +51,7 @@ export async function getArticles(limit?: number) {
   const params = {
     sort: '-publishedAt', // Descending
     limit: limit || 10,
+    depth: 1,
     where: {
       status: {
         equals: 'published',
@@ -107,6 +108,7 @@ export async function getArticlesByCharacter(characterSlug: string, search?: str
     where,
     sort: '-publishedAt',
     depth: 1,
+    limit: 100,
   };
   const data = await fetchPayload('articles', params);
   return data.docs.map(transformPayloadArticle);
@@ -116,7 +118,8 @@ export async function getArticlesByCharacter(characterSlug: string, search?: str
  * Obtener todas los personajes
  */
 export async function getCharacters() {
-  const data = await fetchPayload('characters');
+  const params = { depth: 1 };
+  const data = await fetchPayload('characters', params);
   return data.docs.map(transformPayloadCharacter);
 }
 
@@ -140,7 +143,8 @@ export async function getCharacterBySlug(slug: string) {
  * Obtener todas las categorías
  */
 export async function getCategories() {
-  const data = await fetchPayload('categories');
+  const params = { depth: 1 };
+  const data = await fetchPayload('categories', params);
   return data.docs.map(transformPayloadCategory);
 }
 
@@ -175,7 +179,7 @@ export async function searchArticles(query: string) {
  * Búsqueda Global: artículos, eventos y personajes
  */
 export async function globalSearch(query: string) {
-  if (!query || query.trim() === '') return { articles: [], events: [], characters: [] };
+  if (!query || query.trim() === '') return { articles: [], events: [], characters: [], liveArchive: [], categories: [] };
 
   const articleParams = {
     where: {
@@ -208,24 +212,46 @@ export async function globalSearch(query: string) {
     limit: 4,
   };
 
+  const liveArchiveParams = {
+    where: {
+      or: [
+        { name: { like: query } },
+        { lema: { like: query } },
+        { biography: { like: query } },
+      ]
+    },
+    limit: 4,
+  };
+
+  const categoryParams = {
+    where: {
+      name: { like: query },
+    },
+    limit: 4,
+  };
+
   try {
-    const [articlesRes, eventsRes, charactersRes] = await Promise.all([
+    const [articlesRes, eventsRes, charactersRes, liveArchiveRes, categoriesRes] = await Promise.all([
       fetchPayload('articles', articleParams),
       fetchPayload('events', eventParams),
-      fetchPayload('characters', characterParams)
+      fetchPayload('characters', characterParams),
+      fetchPayload('live-archive', liveArchiveParams),
+      fetchPayload('categories', categoryParams)
     ]).catch((e) => {
       console.warn("One or more search endpoints failed, returning empty arrays", e);
-      return [{ docs: [] }, { docs: [] }, { docs: [] }];
+      return [{ docs: [] }, { docs: [] }, { docs: [] }, { docs: [] }, { docs: [] }];
     });
 
     return {
       articles: articlesRes?.docs ? articlesRes.docs.map(transformPayloadArticle) : [],
       events: eventsRes?.docs ? eventsRes.docs.map(transformPayloadEvent) : [],
-      characters: charactersRes?.docs ? charactersRes.docs.map(transformPayloadCharacter) : []
+      characters: charactersRes?.docs ? charactersRes.docs.map(transformPayloadCharacter) : [],
+      liveArchive: liveArchiveRes?.docs ? liveArchiveRes.docs.map(transformPayloadLiveArchiveMember) : [],
+      categories: categoriesRes?.docs ? categoriesRes.docs.map(transformPayloadCategory) : []
     };
   } catch (error) {
     console.error('Error en globalSearch:', error);
-    return { articles: [], events: [], characters: [] };
+    return { articles: [], events: [], characters: [], liveArchive: [], categories: [] };
   }
 }
 
@@ -265,6 +291,7 @@ export async function getEventBySlug(slug: string) {
 export async function getLiveArchiveMembers() {
   const params = {
     sort: 'name', // Ascending alphabetically by name
+    depth: 1, // Include relations for images and 3D models
   };
   const data = await fetchPayload('live-archive', params);
   return data.docs.map(transformPayloadLiveArchiveMember);

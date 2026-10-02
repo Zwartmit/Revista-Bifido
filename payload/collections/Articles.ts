@@ -34,8 +34,11 @@ export const Articles: CollectionConfig = {
             name: 'slug',
             label: 'Slug',
             type: 'text',
-            required: true,
             unique: true,
+            index: true,
+            admin: {
+                hidden: true,
+            },
             hooks: {
                 beforeValidate: [
                     ({ data, value }) => {
@@ -131,6 +134,15 @@ export const Articles: CollectionConfig = {
             },
         },
         {
+            name: 'characterFeatured',
+            label: 'Destacado del Personaje',
+            type: 'checkbox',
+            defaultValue: false,
+            admin: {
+                description: 'Mostrar este artículo como el principal gigante en la página de su personaje.',
+            },
+        },
+        {
             name: 'tags',
             label: 'Etiquetas',
             type: 'array',
@@ -171,6 +183,16 @@ export const Articles: CollectionConfig = {
             name: 'publishedAt',
             label: 'Fecha de Publicación',
             type: 'date',
+            hooks: {
+                beforeChange: [
+                    ({ data, value }) => {
+                        if (data?.status === 'published' && !value) {
+                            return new Date().toISOString();
+                        }
+                        return value;
+                    },
+                ],
+            },
             admin: {
                 date: {
                     pickerAppearance: 'dayAndTime',

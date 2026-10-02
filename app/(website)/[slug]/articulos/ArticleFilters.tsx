@@ -7,32 +7,22 @@ import { Search } from 'lucide-react';
 interface ArticleFiltersProps {
     categories: any[];
     primaryColor: string;
+    currentCategory?: string;
+    onFilterChange?: (search: string, category: string) => void;
 }
 
-export default function ArticleFilters({ categories, primaryColor }: ArticleFiltersProps) {
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
-    const currentSearch = searchParams.get('search') || '';
-    const currentCategory = searchParams.get('category') || '';
-
-    const [searchValue, setSearchValue] = useState(currentSearch);
+export default function ArticleFilters({ categories, primaryColor, currentCategory = '', onFilterChange }: ArticleFiltersProps) {
+    const [searchValue, setSearchValue] = useState('');
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        updateFilters(searchValue, currentCategory);
+        if (onFilterChange) onFilterChange(searchValue, currentCategory);
     };
 
     const updateFilters = (search: string, category: string) => {
-        const params = new URLSearchParams(searchParams.toString());
-        if (search) params.set('search', search);
-        else params.delete('search');
-
-        if (category) params.set('category', category);
-        else params.delete('category');
-
-        router.push(`${pathname}?${params.toString()}`);
+        if (onFilterChange) {
+            onFilterChange(search, category);
+        }
     };
 
     return (

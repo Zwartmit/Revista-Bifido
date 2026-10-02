@@ -9,6 +9,10 @@ export const Categories: CollectionConfig = {
     admin: {
         useAsTitle: 'name',
         description: 'Categorías para clasificar los artículos (ej. Noticias, Entrevistas, Opinión).',
+        hidden: true, // Ocultar del menú lateral (se gestionará desde Artículos)
+    },
+    access: {
+        read: () => true,
     },
     fields: [
         {
@@ -21,7 +25,11 @@ export const Categories: CollectionConfig = {
             name: 'slug',
             label: 'Slug (URL)',
             type: 'text',
-            required: true,
+            unique: true,
+            index: true,
+            admin: {
+                hidden: true, // Ocultar completamente de la interfaz
+            },
             hooks: {
                 beforeValidate: [
                     ({ value, originalDoc, data }) => {
@@ -44,9 +52,6 @@ export const Categories: CollectionConfig = {
                         return value;
                     },
                 ],
-            },
-            admin: {
-                description: 'Se genera automáticamente desde el nombre si lo dejas en blanco.',
             },
         },
     ],
