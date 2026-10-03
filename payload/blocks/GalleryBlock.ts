@@ -19,8 +19,6 @@ export const GalleryBlock: Block = {
                 singular: 'Imagen',
                 plural: 'Imágenes',
             },
-    imageURL: '/thumbnails/gallery.svg',
-    imageAltText: 'Miniatura del bloque',
             fields: [
                 {
                     name: 'image',
