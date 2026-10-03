@@ -328,6 +328,7 @@ export function transformPayloadArticle(doc: any) {
     slug: doc.slug,
     title: doc.title,
     excerpt: doc.excerpt,
+    socialExcerpt: doc.socialExcerpt || doc.excerpt || '',
     layout: doc.layout || [], // Bloques de contenido (Opción 2)
     author: doc.author ? doc.author.name : 'Revista Bífido',
     publishedAt: doc.publishedAt,
