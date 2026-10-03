@@ -6,6 +6,8 @@ export const VideoBlock: Block = {
         singular: 'Video (YouTube / Vimeo)',
         plural: 'Bloques de Video',
     },
+    imageURL: '/thumbnails/video.svg',
+    imageAltText: 'Miniatura del bloque',
     fields: [
         {
             name: 'url',
@@ -23,3 +25,4 @@ export const VideoBlock: Block = {
         },
     ],
 };
+

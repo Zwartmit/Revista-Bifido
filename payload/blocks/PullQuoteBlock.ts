@@ -6,6 +6,8 @@ export const PullQuoteBlock: Block = {
         singular: 'Cita Destacada',
         plural: 'Citas Destacadas',
     },
+    imageURL: '/thumbnails/quote.svg',
+    imageAltText: 'Miniatura del bloque',
     fields: [
         {
             name: 'quote',
@@ -26,3 +28,4 @@ export const PullQuoteBlock: Block = {
         },
     ],
 };
+

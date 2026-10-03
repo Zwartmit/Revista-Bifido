@@ -24,12 +24,154 @@ export const Articles: CollectionConfig = {
         delete: ({ req: { user } }) => ['admin', 'editor'].includes(user?.role as string),
     },
     fields: [
+        // ── ROW 1: Título (izquierda) + Imagen, Personaje, Categorías (derecha) ──
         {
-            name: 'title',
-            label: 'Título',
-            type: 'text',
-            required: true,
+            type: 'row',
+            fields: [
+                {
+                    name: 'title',
+                    label: 'Título',
+                    type: 'text',
+                    required: true,
+                    admin: {
+                        style: { flex: 2 }
+                    },
+                },
+                {
+                    name: 'featuredImage',
+                    label: 'Imagen Destacada',
+                    type: 'upload',
+                    relationTo: 'media',
+                    required: true,
+                    admin: {
+                        style: { flex: 1 }
+                    },
+                },
+                {
+                    name: 'author',
+                    label: 'Personaje',
+                    type: 'relationship',
+                    relationTo: 'characters',
+                    required: true,
+                    admin: {
+                        style: { flex: 1 },
+                        description: 'Personaje de Bífido que publica este artículo',
+                    },
+                },
+                {
+                    name: 'categories',
+                    label: 'Categorías',
+                    type: 'relationship',
+                    relationTo: 'categories',
+                    hasMany: true,
+                    admin: {
+                        style: { flex: 1 },
+                        description: 'Clasifica este artículo (ej. Noticias, Opinión)',
+                    },
+                },
+            ],
         },
+
+        // ── ROW 2: Fecha + Estado + Destacado + Destacado del Personaje ──
+        {
+            type: 'row',
+            fields: [
+                {
+                    name: 'publishedAt',
+                    label: 'Fecha de Publicación',
+                    type: 'date',
+                    hooks: {
+                        beforeChange: [
+                            ({ data, value }) => {
+                                if (data?.status === 'published' && !value) {
+                                    return new Date().toISOString();
+                                }
+                                return value;
+                            },
+                        ],
+                    },
+                    admin: {
+                        width: '25%',
+                        date: {
+                            pickerAppearance: 'dayAndTime',
+                        },
+                    },
+                },
+                {
+                    name: 'status',
+                    label: 'Estado',
+                    type: 'select',
+                    required: true,
+                    defaultValue: 'draft',
+                    options: [
+                        {
+                            label: 'Borrador',
+                            value: 'draft',
+                        },
+                        {
+                            label: 'Publicado',
+                            value: 'published',
+                        },
+                        {
+                            label: 'Archivado',
+                            value: 'archived',
+                        },
+                    ],
+                    admin: {
+                        width: '25%',
+                    },
+                },
+                {
+                    name: 'featured',
+                    label: 'Destacado',
+                    type: 'checkbox',
+                    defaultValue: false,
+                    admin: {
+                        width: '25%',
+                        description: 'Mostrar en secciones destacadas de la página de inicio',
+                    },
+                },
+                {
+                    name: 'characterFeatured',
+                    label: 'Destacado del Personaje',
+                    type: 'checkbox',
+                    defaultValue: false,
+                    admin: {
+                        width: '25%',
+                        description: 'Mostrar como el artículo principal gigante en la página del personaje.',
+                    },
+                },
+            ],
+        },
+
+        // ── ROW 3: Extracto Web + Extracto Redes Sociales (lado a lado) ──
+        {
+            type: 'row',
+            fields: [
+                {
+                    name: 'excerpt',
+                    label: 'Extracto Web',
+                    type: 'textarea',
+                    required: true,
+                    admin: {
+                        width: '50%',
+                        description: 'Descripción corta que aparece en las tarjetas y grillas de la página',
+                    },
+                },
+                {
+                    name: 'socialExcerpt',
+                    label: 'Extracto Redes Sociales',
+                    type: 'textarea',
+                    required: false,
+                    admin: {
+                        width: '50%',
+                        description: 'Para previsualizaciones en WhatsApp, Twitter, Facebook. Si lo dejas vacío, usará el Extracto Web.',
+                    },
+                },
+            ],
+        },
+
+        // ── SLUG (oculto, se autogenera) ──
         {
             name: 'slug',
             label: 'Slug',
@@ -43,16 +185,14 @@ export const Articles: CollectionConfig = {
             hooks: {
                 beforeValidate: [
                     ({ data, value }) => {
-                        // Si el slug está vacío y hay un título, generar el slug
                         if ((!value || value === '') && data?.title) {
                             return data.title
-                                .normalize('NFD') // Quitar tildes
+                                .normalize('NFD')
                                 .replace(/[\u0300-\u036f]/g, '')
                                 .toLowerCase()
-                                .replace(/[^a-z0-9]+/g, '-') // Reemplazar caracteres especiales por guiones
-                                .replace(/(^-|-$)+/g, ''); // Quitar guiones al principio o al final
+                                .replace(/[^a-z0-9]+/g, '-')
+                                .replace(/(^-|-$)+/g, '');
                         }
-                        // Si ya tiene valor, limpiarlo de todas formas
                         if (value && typeof value === 'string') {
                             return value
                                 .normalize('NFD')
@@ -66,15 +206,8 @@ export const Articles: CollectionConfig = {
                 ],
             },
         },
-        {
-            name: 'excerpt',
-            label: 'Extracto',
-            type: 'textarea',
-            required: true,
-            admin: {
-                description: 'Descripción corta para previsualizaciones y redes sociales',
-            },
-        },
+
+        // ── CONTENIDO (bloques) — ocupa todo el ancho ──
         {
             name: 'layout',
             label: 'Contenido (Bloques)',
@@ -91,132 +224,6 @@ export const Articles: CollectionConfig = {
                 GalleryBlock,
                 PullQuoteBlock,
                 SeparatorBlock,
-            ],
-        },
-        {
-            name: 'featuredImage',
-            label: 'Imagen Destacada',
-            type: 'upload',
-            relationTo: 'media',
-            required: true,
-        },
-        {
-            name: 'author',
-            label: 'Personaje',
-            type: 'relationship',
-            relationTo: 'characters',
-            required: true,
-            admin: {
-                description: 'Personaje de Bífido que publica este artículo',
-                position: 'sidebar',
-            },
-        },
-        {
-            name: 'categories',
-            label: 'Categorías',
-            type: 'relationship',
-            relationTo: 'categories',
-            hasMany: true,
-            admin: {
-                position: 'sidebar',
-                description: 'Clasifica este artículo (ej. Noticias, Opinión)',
-            },
-        },
-        {
-            name: 'featured',
-            label: 'Destacado',
-            type: 'checkbox',
-            defaultValue: false,
-            admin: {
-                description: 'Mostrar este artículo en secciones destacadas de la página de inicio',
-            },
-        },
-        {
-            name: 'characterFeatured',
-            label: 'Destacado del Personaje',
-            type: 'checkbox',
-            defaultValue: false,
-            admin: {
-                description: 'Mostrar este artículo como el principal gigante en la página de su personaje.',
-            },
-        },
-        {
-            name: 'tags',
-            label: 'Etiquetas',
-            type: 'array',
-            labels: {
-                singular: 'Etiqueta',
-                plural: 'Etiquetas',
-            },
-            fields: [
-                {
-                    name: 'tag',
-                    label: 'Etiqueta',
-                    type: 'text',
-                },
-            ],
-        },
-        {
-            name: 'status',
-            label: 'Estado',
-            type: 'select',
-            required: true,
-            defaultValue: 'draft',
-            options: [
-                {
-                    label: 'Borrador',
-                    value: 'draft',
-                },
-                {
-                    label: 'Publicado',
-                    value: 'published',
-                },
-                {
-                    label: 'Archivado',
-                    value: 'archived',
-                },
-            ],
-        },
-        {
-            name: 'publishedAt',
-            label: 'Fecha de Publicación',
-            type: 'date',
-            hooks: {
-                beforeChange: [
-                    ({ data, value }) => {
-                        if (data?.status === 'published' && !value) {
-                            return new Date().toISOString();
-                        }
-                        return value;
-                    },
-                ],
-            },
-            admin: {
-                date: {
-                    pickerAppearance: 'dayAndTime',
-                },
-            },
-        },
-        {
-            name: 'seo',
-            label: 'SEO',
-            type: 'group',
-            fields: [
-                {
-                    name: 'metaTitle',
-                    label: 'Meta Título',
-                    type: 'text',
-                },
-                {
-                    name: 'metaDescription',
-                    label: 'Meta Descripción',
-                    type: 'textarea',
-                },
-                {
-                    name: 'keywords',
-                    label: 'Palabras Clave',
-                    type: 'text',
-                },
             ],
         },
     ],

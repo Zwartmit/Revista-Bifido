@@ -7,6 +7,8 @@ export const RichTextBlock: Block = {
         singular: 'Texto Enriquecido',
         plural: 'Bloques de Texto',
     },
+    imageURL: '/thumbnails/richtext.svg',
+    imageAltText: 'Miniatura del bloque',
     fields: [
         {
             name: 'content',
@@ -61,3 +63,4 @@ export const RichTextBlock: Block = {
         },
     ],
 };
+

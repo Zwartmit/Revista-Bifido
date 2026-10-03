@@ -6,6 +6,8 @@ export const SeparatorBlock: Block = {
         singular: 'Separador',
         plural: 'Separadores',
     },
+    imageURL: '/thumbnails/separator.svg',
+    imageAltText: 'Miniatura del bloque',
     fields: [
         {
             name: 'style',
@@ -20,3 +22,4 @@ export const SeparatorBlock: Block = {
         },
     ],
 };
+

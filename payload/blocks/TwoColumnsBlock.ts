@@ -6,6 +6,8 @@ export const TwoColumnsBlock: Block = {
         singular: 'Dos Columnas (Imagen + Texto)',
         plural: 'Bloques de Dos Columnas',
     },
+    imageURL: '/thumbnails/twocolumns.svg',
+    imageAltText: 'Miniatura del bloque',
     fields: [
         {
             name: 'imagePosition',
@@ -51,3 +53,4 @@ export const TwoColumnsBlock: Block = {
         },
     ],
 };
+

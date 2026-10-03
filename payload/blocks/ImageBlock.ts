@@ -6,6 +6,8 @@ export const ImageBlock: Block = {
         singular: 'Imagen',
         plural: 'Bloques de Imagen',
     },
+    imageURL: '/thumbnails/image.svg',
+    imageAltText: 'Miniatura del bloque',
     fields: [
         {
             name: 'image',
@@ -45,3 +47,4 @@ export const ImageBlock: Block = {
         },
     ],
 };
+

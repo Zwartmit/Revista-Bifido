@@ -448,7 +448,7 @@ html:has(.template--auth) {
     background: color-mix(in srgb, var(--theme-bg) 30%, transparent) !important;
     border: 1px solid color-mix(in srgb, var(--theme-text) 10%, transparent) !important;
     border-radius: 8px !important;
-    padding: 0.6rem 1rem !important;
+    padding: 0.6rem 1rem 0.6rem 3rem !important;
 }
 
 /* Table Styling */
@@ -583,40 +583,17 @@ html:has(.template--auth) {
 }
 
 /* Form Styles */
-/* Limit width of forms so they don't stretch too far */
 form {
-    max-width: 1200px !important;
+    max-width: 100% !important;
 }
 
+/* Fields: block by default, controlled spacing */
 .field-type {
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 1.25rem !important;
+    /* DO NOT use inline-block or width hacks here —
+       Payload's row-field system handles layout */
 }
 
-/* Two-column layout for standard fields on desktop */
-@media (min-width: 768px) {
-    .field-type {
-        display: inline-block !important;
-        width: calc(50% - 1rem) !important;
-        vertical-align: top !important;
-        margin-right: 1rem !important;
-    }
-    
-    /* Revert complex or large fields to full width */
-    .field-type:has(textarea),
-    .field-type:has(.rich-text),
-    .field-type:has(.lexical),
-    .field-type:has(.array-field),
-    .field-type:has(.blocks-field),
-    .field-type:has(.tabs-field),
-    .field-type:has(.group-field),
-    .field-type:has(table),
-    .field-type:has(.upload-field),
-    .field-type.group-field {
-        width: 100% !important;
-        margin-right: 0 !important;
-        display: block !important;
-    }
-}
 
 /* Specific styling for group/row fields if they exist to act as cards */
 .group-field {
@@ -635,7 +612,10 @@ form {
     display: block !important;
 }
 
-input, textarea, select {
+/* Style standard inputs, but exclude React-Select hidden inputs and checkboxes */
+input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]), 
+textarea, 
+select {
     background-color: color-mix(in srgb, var(--theme-bg) 50%, transparent) !important;
     border: 1px solid color-mix(in srgb, var(--theme-text) 15%, transparent) !important;
     border-radius: 8px !important;
@@ -646,7 +626,9 @@ input, textarea, select {
     transition: all 0.2s ease !important;
 }
 
-input:focus, textarea:focus, select:focus {
+input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):focus, 
+textarea:focus, 
+select:focus {
     border-color: var(--theme-primary) !important;
     background-color: var(--theme-bg) !important;
     outline: none !important;
@@ -676,5 +658,77 @@ html:has(.template--auth) button[type="button"] svg {
     stroke: #ffffff !important;
 }
 
+
+
+
+/* =========================================================================
+   ARTICLE EDITOR — FULL-WIDTH CUSTOM LAYOUT
+   ========================================================================= */
+
+/* 1 — Remove Payload max-width clamp on forms */
+.collection-edit form,
+.document-fields form,
+form {
+    max-width: 100% !important;
+}
+
+/* 6 — Date picker calendar icon */
+.field-type--date input {
+    padding-right: 2.5rem !important;
+}
+
+/* 7 — Labels: no clip */
+.field-type > .field-label,
+.field-type > label {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* 8 — Blocks always full width */
+.field-type--blocks {
+    width: 100% !important;
+}
+
+
+
+/* 9 — Lexical rich-text editor full width, no text-justify */
+.rich-text-lexical,
+.rich-text-lexical .editor-input,
+.rich-text-lexical .ContentEditable__root {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.ContentEditable__root,
+.ContentEditable__root p,
+[contenteditable="true"],
+[contenteditable="true"] p {
+    text-align: left !important;
+    word-break: break-word !important;
+    hyphens: none !important;
+    white-space: pre-wrap !important;
+}
+
+/* 10 — Full-width template wrapper for the admin edit pages */
+.template-default__wrap {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* 11 — The collection-edit main area: full width */
+.collection-edit__main,
+.collection-edit__main-wrapper,
+.collection-edit__form {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* 12 — group-field inside login form: no weird bg */
+html:has(.template--auth) .group-field {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
 
 

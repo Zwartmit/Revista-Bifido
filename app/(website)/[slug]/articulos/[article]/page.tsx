@@ -10,7 +10,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const articleData = await getArticleBySlug(article);
     return {
         title: articleData ? `${articleData.title} | Revista Bífido` : 'Artículo | Revista Bífido',
-        description: articleData?.excerpt,
+        description: articleData?.socialExcerpt || articleData?.excerpt,
+        openGraph: {
+            title: articleData?.title,
+            description: articleData?.socialExcerpt || articleData?.excerpt,
+        }
     };
 }
 
