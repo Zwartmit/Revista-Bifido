@@ -7,7 +7,7 @@ import { formatDate } from '@/lib/utils';
 // import { Article } from '@/types'; // Removing explicit type import to direct usage or let inference handle it if needed
 import gsap from 'gsap';
 import { ArrowRight, Newspaper, Calendar, Clock } from 'lucide-react';
-import { getCharacterBySlug } from '@/lib/characters'; // Still using local helper for character colors/info if applicable, or pass from server?
+import { getCharacterColors } from '@/lib/character-colors';
 
 // Interface for props
 interface HomeClientProps {
@@ -41,7 +41,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
         }
     }, []);
 
-    // Helper to get character data (color, etc) from the passed characters list
+    // Helper to get character data (name, etc) from the passed characters list
     const getCharacter = (slug: string) => characters.find((m: any) => m.slug === slug) || characters[0];
 
     return (
@@ -120,8 +120,8 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
 
                     <div ref={recentRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {recentArticles.map((article: any) => {
-                            const character = getCharacter(article.section);
-                            const color = character?.color?.primary || '#b8ff00';
+                            const character = getCharacter(article.characterId || article.section);
+                            const { primary: color, label: textColor } = getCharacterColors(article.characterId || article.section);
 
                             return (
                                 <Link
@@ -140,8 +140,8 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                                             />
                                         )}
                                         <div
-                                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold text-black bg-white/80 shadow-lg text-white"
-                                            style={{ backgroundColor: color }}
+                                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow-lg"
+                                            style={{ backgroundColor: color, color: textColor }}
                                         >
                                             {character?.name || article.section}
                                         </div>

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-export default function ArchivoVivoRedirect() {
-    // Redirigimos a la página de El Parche, donde vive el Archivo Vivo
-    redirect('/elparche');
+export default function ArchivoVivoRedirect({ params }: { params: { slug: string } }) {
+    // Redirigimos a la página de El Parche con el parámetro para abrir el modal automáticamente
+    redirect(`/elparche?member=${params.slug}`);
 }

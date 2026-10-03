@@ -115,6 +115,29 @@ export async function getArticlesByCharacter(characterSlug: string, search?: str
 }
 
 /**
+ * Obtener artículos por categoría (de cualquier personaje)
+ */
+export async function getArticlesByCategory(categorySlug: string) {
+  const where: any = {
+    'categories.slug': {
+      equals: categorySlug,
+    },
+    status: {
+      equals: 'published',
+    },
+  };
+
+  const params = {
+    where,
+    sort: '-publishedAt',
+    depth: 1,
+    limit: 100,
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs.map(transformPayloadArticle);
+}
+
+/**
  * Obtener todas los personajes
  */
 export async function getCharacters() {

@@ -1,16 +1,49 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
+import { getArticlesByCategory } from '@/lib/api';
+import { formatDate } from '@/lib/utils';
+import { getCharacterColors } from '@/lib/character-colors';
 
-export default function CategoriaPage({ params }: { params: { slug: string } }) {
+import CategoryClient from './CategoryClient';
+
+export default async function CategoriaPage({ params }: { params: { slug: string } }) {
+    const articles = await getArticlesByCategory(params.slug);
+    const categoryName = params.slug.replace(/-/g, ' ');
+
     return (
-        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 text-center">
-            <h1 className="font-display text-5xl md:text-7xl text-[#b8ff00] uppercase mb-6">Categoría: {params.slug}</h1>
-            <p className="font-googlesans text-gray-400 max-w-xl text-lg mb-12 leading-relaxed">
-                Estamos construyendo el índice global de esta categoría. Por ahora, puedes filtrar artículos por categoría directamente en la sección (La Manada) de cada uno de nuestros personajes.
-            </p>
-            <Link href="/" className="inline-flex items-center px-6 py-3 border border-[#b8ff00] text-[#b8ff00] hover:bg-[#b8ff00] hover:text-black transition-colors font-display tracking-widest uppercase">
-                <ArrowLeft className="mr-2" size={20} /> Volver al Inicio
-            </Link>
+        <div className="min-h-screen bg-black text-white flex flex-col">
+            
+            {/* Header */}
+            <div className="pt-12 pb-4 px-6 sm:px-10 lg:px-16 xl:px-24 border-b border-[#1e1e1e]">
+                <span className="font-display text-[#b8ff00] text-sm tracking-[0.5em] uppercase mb-4 block">Categoría</span>
+                <h1 className="font-display text-5xl md:text-7xl text-white uppercase leading-none">
+                    {categoryName}
+                </h1>
+                <p className="text-gray-400 font-googlesans max-w-full text-lg">
+                    Explora todos los artículos, podcasts y reportajes publicados bajo la categoría <strong>{categoryName}</strong> en Revista Bífido.
+                </p>
+                
+                <Link href="/" className="inline-flex items-center mt-4 text-[#b8ff00] hover:text-white transition-colors font-mono text-sm tracking-widest uppercase">
+                    <ArrowLeft className="mr-2" size={16} /> Volver al Inicio
+                </Link>
+            </div>
+
+            {/* Content */}
+            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20 flex-1">
+                {articles.length === 0 ? (
+                    <div className="text-center py-28 border border-[#1e1e1e]">
+                        <p className="font-display text-3xl text-white/10 tracking-widest uppercase mb-3">
+                            Sin publicaciones aún
+                        </p>
+                        <p className="font-googlesans text-white/25 text-sm">
+                            Aún no hay artículos publicados en esta categoría.
+                        </p>
+                    </div>
+                ) : (
+                    <CategoryClient initialArticles={articles} />
+                )}
+            </div>
         </div>
     );
 }

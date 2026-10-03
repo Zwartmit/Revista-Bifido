@@ -6,6 +6,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import { X, Search, FileText, Calendar, User } from 'lucide-react';
 import { globalSearch } from '@/lib/api';
+import LiveArchiveModal from '@/components/LiveArchiveModal';
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
     categories: []
   });
   const [loading, setLoading] = useState(false);
+  const [selectedArchiveMember, setSelectedArchiveMember] = useState<any | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,6 +48,12 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
       }, 500);
     } else {
       document.body.style.overflow = 'auto';
+      // Limpiamos la búsqueda al cerrar
+      setTimeout(() => {
+        setQuery('');
+        setResults({ articles: [], events: [], characters: [], liveArchive: [], categories: [] });
+        setSelectedArchiveMember(null);
+      }, 300);
     }
   }, [isOpen]);
 
@@ -187,7 +195,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                       <Link href={`/${char.slug}`} key={char.id} onClick={onClose} className="group block border border-white/5 hover:border-white/20 bg-white/5 overflow-hidden transition-all duration-300">
                         <div className="aspect-square relative w-full overflow-hidden bg-black/50">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={char.image} alt={char.name} className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 scale-100 group-hover:scale-110" />
+                          <img src={char.image} alt={char.name} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 scale-100 group-hover:scale-110" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                           <div className="absolute bottom-3 left-3 right-3">
                             <p className="font-display text-lg uppercase leading-none drop-shadow-md text-white group-hover:text-[#b8ff00] transition-colors line-clamp-1">{char.name}</p>
@@ -210,7 +218,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                       <Link href={`/${article.section}/articulos/${article.slug}`} key={article.id} onClick={onClose} className="group flex gap-4 p-3 border-l-2 border-transparent hover:border-[#b8ff00] hover:bg-white/5 transition-all duration-200">
                         <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-zinc-900 relative overflow-hidden hidden sm:block">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" />
+                          <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-300" />
                         </div>
                         <div className="flex flex-col justify-center flex-1">
                           <span className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">{article.section}</span>
@@ -260,17 +268,21 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {results.liveArchive.map((member) => (
-                      <Link href={`/archivo-vivo/${member.slug}`} key={member.id} onClick={onClose} className="group block border border-white/5 hover:border-[#E63946] bg-white/5 overflow-hidden transition-all duration-300">
+                      <button 
+                        key={member.id} 
+                        onClick={() => setSelectedArchiveMember(member)} 
+                        className="group block border border-white/5 hover:border-[#E63946] bg-white/5 overflow-hidden transition-all duration-300 text-left"
+                      >
                         <div className="aspect-square relative w-full overflow-hidden bg-black/50">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={member.profileImage} alt={member.name} className="absolute inset-0 w-full h-full object-cover filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 scale-100 group-hover:scale-110" />
+                          <img src={member.profileImage} alt={member.name} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 scale-100 group-hover:scale-110" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                           <div className="absolute bottom-3 left-3 right-3">
                             <p className="font-display text-lg uppercase leading-none drop-shadow-md text-white group-hover:text-[#E63946] transition-colors line-clamp-1">{member.name}</p>
                             <p className="font-mono text-[10px] uppercase text-white/50 mt-1 truncate">{member.profession || 'Archivo Vivo'}</p>
                           </div>
                         </div>
-                      </Link>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -281,6 +293,13 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
 
         </div>
       </div>
+      
+      {/* Live Archive Modal */}
+      <LiveArchiveModal
+        selectedMember={selectedArchiveMember}
+        setSelectedMember={setSelectedArchiveMember}
+        team={results.liveArchive}
+      />
     </div>
   );
 }
