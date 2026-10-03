@@ -33,19 +33,13 @@ export const Articles: CollectionConfig = {
                     label: 'Título',
                     type: 'text',
                     required: true,
-                    admin: {
-                        style: { flex: 2 }
-                    },
                 },
                 {
                     name: 'featuredImage',
-                    label: 'Imagen Destacada',
+                    label: 'Portada',
                     type: 'upload',
                     relationTo: 'media',
                     required: true,
-                    admin: {
-                        style: { flex: 1 }
-                    },
                 },
                 {
                     name: 'author',
@@ -53,10 +47,6 @@ export const Articles: CollectionConfig = {
                     type: 'relationship',
                     relationTo: 'characters',
                     required: true,
-                    admin: {
-                        style: { flex: 1 },
-                        description: 'Personaje de Bífido que publica este artículo',
-                    },
                 },
                 {
                     name: 'categories',
@@ -64,10 +54,6 @@ export const Articles: CollectionConfig = {
                     type: 'relationship',
                     relationTo: 'categories',
                     hasMany: true,
-                    admin: {
-                        style: { flex: 1 },
-                        description: 'Clasifica este artículo (ej. Noticias, Opinión)',
-                    },
                 },
             ],
         },
@@ -78,7 +64,7 @@ export const Articles: CollectionConfig = {
             fields: [
                 {
                     name: 'publishedAt',
-                    label: 'Fecha de Publicación',
+                    label: 'Fecha de publicación',
                     type: 'date',
                     hooks: {
                         beforeChange: [
@@ -123,23 +109,15 @@ export const Articles: CollectionConfig = {
                 },
                 {
                     name: 'featured',
-                    label: 'Destacado',
+                    label: 'Destacar en home',
                     type: 'checkbox',
                     defaultValue: false,
-                    admin: {
-                        width: '25%',
-                        description: 'Mostrar en secciones destacadas de la página de inicio',
-                    },
                 },
                 {
                     name: 'characterFeatured',
-                    label: 'Destacado del Personaje',
+                    label: 'Destacar en personaje',
                     type: 'checkbox',
                     defaultValue: false,
-                    admin: {
-                        width: '25%',
-                        description: 'Mostrar como el artículo principal gigante en la página del personaje.',
-                    },
                 },
             ],
         },
@@ -150,7 +128,7 @@ export const Articles: CollectionConfig = {
             fields: [
                 {
                     name: 'excerpt',
-                    label: 'Extracto Web',
+                    label: 'Extracto web',
                     type: 'textarea',
                     required: true,
                     admin: {
@@ -160,12 +138,12 @@ export const Articles: CollectionConfig = {
                 },
                 {
                     name: 'socialExcerpt',
-                    label: 'Extracto Redes Sociales',
+                    label: 'Extracto redes sociales',
                     type: 'textarea',
                     required: false,
                     admin: {
                         width: '50%',
-                        description: 'Para previsualizaciones en WhatsApp, Twitter, Facebook. Si lo dejas vacío, usará el Extracto Web.',
+                        description: 'Para previsualizaciones al compartir. Si se deja vacío, usará el extracto web.',
                     },
                 },
             ],
@@ -180,7 +158,6 @@ export const Articles: CollectionConfig = {
             index: true,
             admin: {
                 hidden: true,
-                description: 'Se genera automáticamente desde el título si lo dejas en blanco.',
             },
             hooks: {
                 beforeValidate: [
@@ -210,12 +187,9 @@ export const Articles: CollectionConfig = {
         // ── CONTENIDO (bloques) — ocupa todo el ancho ──
         {
             name: 'layout',
-            label: 'Contenido (Bloques)',
+            label: 'Contenido del artículo',
             type: 'blocks',
             required: true,
-            admin: {
-                description: 'Construye el contenido del artículo agregando y reordenando bloques.',
-            },
             blocks: [
                 RichTextBlock,
                 ImageBlock,

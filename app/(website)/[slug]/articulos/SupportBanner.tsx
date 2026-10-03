@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import abstractBg from '@/public/backgrounds/abstract.png';
+import abstractBg from '@/public/backgrounds/apoyo.png';
 interface SupportBannerProps {
     primaryColor: string;
 }
@@ -17,7 +17,7 @@ export default function SupportBanner({ primaryColor }: SupportBannerProps) {
                     src={abstractBg}
                     alt="Apoya el periodismo libre"
                     fill
-                    className="object-cover group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
+                    className="object-cover group-hover:scale-105 transition-all duration-700"
                 />
                 {/* Gradient Overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/60 to-transparent" />

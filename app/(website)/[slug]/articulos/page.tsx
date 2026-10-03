@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
     return {
-        title: character ? `${character.name} — Artículos | Revista Bífido` : 'Artículos | Revista Bífido',
+        title: character ? `Artículos de ${character.name}` : 'Artículos',
         description: character?.description,
     };
 }

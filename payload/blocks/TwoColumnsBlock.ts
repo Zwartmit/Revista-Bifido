@@ -36,9 +36,6 @@ export const TwoColumnsBlock: Block = {
             label: 'Texto de la columna',
             type: 'textarea',
             required: true,
-            admin: {
-                description: 'El texto que aparecerá al lado de la imagen.',
-            },
         },
         {
             name: 'columnRatio',

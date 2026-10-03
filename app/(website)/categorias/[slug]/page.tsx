@@ -21,10 +21,6 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
                 <h1 className="font-display text-5xl md:text-7xl text-white uppercase leading-none">
                     {categoryName}
                 </h1>
-                <p className="text-gray-400 font-googlesans max-w-full text-lg">
-                    Explora todos los artículos, podcasts y reportajes publicados bajo la categoría <strong>{categoryName}</strong> en Revista Bífido.
-                </p>
-                
                 <Link href="/" className="inline-flex items-center mt-4 text-[#b8ff00] hover:text-white transition-colors font-mono text-sm tracking-widest uppercase">
                     <ArrowLeft className="mr-2" size={16} /> Volver al Inicio
                 </Link>

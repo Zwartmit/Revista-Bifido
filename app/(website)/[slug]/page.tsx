@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
     return {
-        title: character ? `${character.name} | Revista Bífido` : 'Personaje | Revista Bífido',
+        title: character ? character.name : 'Personaje',
         description: character?.description,
         openGraph: {
             title: character?.name,

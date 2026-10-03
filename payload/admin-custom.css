@@ -1,3 +1,25 @@
+/* ───────────────────────────────────────────────────────────────────
+   AUTOFILL DETECTION KEYFRAMES
+   Estas animaciones son intencionalmente vacías. Su único propósito es
+   disparar el evento 'animationstart' en JavaScript cuando Chrome aplica
+   o cancela el autocompletado, permitiendo override de estilos inline.
+   ─────────────────────────────────────────────────────────────────── */
+@keyframes onAutofillStart { from {} to {} }
+@keyframes onAutofillCancel { from {} to {} }
+
+input:-webkit-autofill {
+  animation-name: onAutofillStart !important;
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+}
+
+input:not(:-webkit-autofill) {
+  animation-name: onAutofillCancel !important;
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+}
+/* ─────────────────────────────────────────────────────────────────── */
+
 [data-theme="dark"], [data-theme="dark"] body {
   --theme-bg: #000000;
   --theme-text: #ffffff;
@@ -21,12 +43,17 @@
 body { background-color: var(--theme-bg) !important; color: var(--theme-text) !important; }
 
 /* Custom styles for authentication pages (Login, Forgot, Reset, etc.) */
-html:has(.template--auth) {
-  --theme-bg: #000000;
-  --theme-text: #ffffff;
-  --theme-primary: #ccfd29;
-  --theme-input-bg: #111111;
-  --theme-input-border: #333333;
+html:has(.template--auth),
+html:has(.template--auth) body,
+html[data-theme="light"]:has(.template--auth),
+html[data-theme="light"]:has(.template--auth) body,
+html[data-theme="dark"]:has(.template--auth),
+html[data-theme="dark"]:has(.template--auth) body {
+  --theme-bg: #000000 !important;
+  --theme-text: #ffffff !important;
+  --theme-primary: #ccfd29 !important;
+  --theme-input-bg: #111111 !important;
+  --theme-input-border: #333333 !important;
 }
 
 .template--auth {
@@ -633,6 +660,32 @@ select:focus {
     background-color: var(--theme-bg) !important;
     outline: none !important;
     box-shadow: 0 0 0 3px rgba(204, 253, 41, 0.15) !important;
+}
+
+/* Fix for Chrome/Edge autofill styles overriding background but keeping white text */
+/* Fix for Chrome/Edge autofill styles overriding background but keeping white text */
+/* Restricted exclusively to auth pages via html:has() */
+html:has(.template--auth) input:-webkit-autofill,
+html:has(.template--auth) input:-webkit-autofill:hover, 
+html:has(.template--auth) input:-webkit-autofill:focus, 
+html:has(.template--auth) input:-webkit-autofill:active,
+html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):-webkit-autofill,
+html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):-webkit-autofill:hover, 
+html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):-webkit-autofill:focus, 
+html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #111111 inset !important;
+    box-shadow: 0 0 0 1000px #111111 inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    color: #ffffff !important;
+    caret-color: #ffffff !important;
+    background-color: #111111 !important;
+    color-scheme: dark !important;
+    transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s, box-shadow 5000s ease-in-out 0s !important;
+}
+
+/* Force dark color scheme natively on all auth inputs so Chrome defaults to dark autofill */
+html:has(.template--auth) input {
+    color-scheme: dark !important;
 }
 
 /* =========================================================================

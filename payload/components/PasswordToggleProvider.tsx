@@ -3,27 +3,49 @@ import React, { useEffect } from 'react';
 
 export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
-    // Función para añadir el botón de toggle a los inputs de contraseña
+
+    // ─── FIX AUTOFILL ────────────────────────────────────────────────────────────
+    // Chrome aplica sus estilos de autocompletado a través de una animación CSS interna.
+    // La técnica más confiable es detectarla con animationstart y aplicar estilos inline
+    // directamente sobre el elemento (que tienen la mayor prioridad posible).
+    const handleAutofill = (e: AnimationEvent) => {
+      const input = e.target as HTMLInputElement;
+      if (!input || input.tagName !== 'INPUT') return;
+
+      if (e.animationName === 'onAutofillStart') {
+        input.style.setProperty('background-color', '#111111', 'important');
+        input.style.setProperty('color', '#ffffff', 'important');
+        input.style.setProperty('-webkit-text-fill-color', '#ffffff', 'important');
+        input.style.setProperty('caret-color', '#ffffff', 'important');
+        input.style.setProperty('box-shadow', '0 0 0 1000px #111111 inset', 'important');
+      } else if (e.animationName === 'onAutofillCancel') {
+        input.style.removeProperty('background-color');
+        input.style.removeProperty('color');
+        input.style.removeProperty('-webkit-text-fill-color');
+        input.style.removeProperty('caret-color');
+        input.style.removeProperty('box-shadow');
+      }
+    };
+
+    document.addEventListener('animationstart', handleAutofill as EventListener, true);
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    // ─── PASSWORD TOGGLE ─────────────────────────────────────────────────────────
     const injectToggles = () => {
       const passwordInputs = document.querySelectorAll('input[type="password"]:not([data-has-toggle="true"])');
       
       passwordInputs.forEach((input: any) => {
-        // Marcar el input para no repetir el proceso
         input.setAttribute('data-has-toggle', 'true');
         
-        // El contenedor del input en Payload suele ser un div
         const container = input.parentElement;
         if (!container) return;
 
-        // Asegurar que el contenedor sea relativo para posicionar el botón
         container.style.position = 'relative';
         
-        // Crear el botón
         const button = document.createElement('button');
         button.type = 'button';
         button.ariaLabel = 'Mostrar/Ocultar contraseña';
         
-        // Estilo del botón (Premium Dark / Neon)
         Object.assign(button.style, {
           position: 'absolute',
           right: '12px',
@@ -32,7 +54,7 @@ export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = (
           background: 'none',
           border: 'none',
           cursor: 'pointer',
-          color: '#ccfd29', // Neon Bífido
+          color: '#ccfd29',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -40,10 +62,9 @@ export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = (
           zIndex: '10',
           transition: 'all 0.2s ease',
           opacity: '0.7',
-          marginTop: '4px' // Ajuste fino para centrar con el label si existe
+          marginTop: '4px'
         });
 
-        // Iconos SVG (Eye y EyeOff)
         const eyeIcon = `
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -60,7 +81,6 @@ export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = (
 
         button.innerHTML = eyeIcon;
 
-        // Lógica de toggle
         button.onclick = (e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -70,7 +90,6 @@ export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = (
           button.style.color = isPassword ? '#fff' : '#ccfd29';
         };
 
-        // Efecto hover
         button.onmouseenter = () => { button.style.opacity = '1'; };
         button.onmouseleave = () => { button.style.opacity = '0.7'; };
 
@@ -78,8 +97,7 @@ export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = (
       });
     };
 
-    // Usar MutationObserver para detectar cambios en el DOM (navegación SPA de Payload)
-    const observer = new MutationObserver((mutations) => {
+    const observer = new MutationObserver(() => {
       injectToggles();
     });
 
@@ -88,10 +106,13 @@ export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = (
       subtree: true
     });
 
-    // Ejecución inicial
     injectToggles();
+    // ─────────────────────────────────────────────────────────────────────────────
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('animationstart', handleAutofill as EventListener, true);
+    };
   }, []);
 
   return <>{children}</>;

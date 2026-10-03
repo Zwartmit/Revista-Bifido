@@ -14,9 +14,6 @@ export const VideoBlock: Block = {
             label: 'URL del Video',
             type: 'text',
             required: true,
-            admin: {
-                description: 'Pega el enlace completo del video de YouTube o Vimeo (ej: https://www.youtube.com/watch?v=xxx)',
-            },
         },
         {
             name: 'caption',

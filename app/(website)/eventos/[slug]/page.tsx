@@ -1,7 +1,7 @@
 import { getEventBySlug } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { Calendar, Clock, MapPin, ArrowLeft } from 'lucide-react';
+import { Calendar, Clock, MapPin, ArrowLeft, Video } from 'lucide-react';
 import Link from 'next/link';
 // Assuming we have a RichText renderer or we just render JSON safely?
 // For now, if description is RichText object, we might need a parser.
@@ -17,6 +17,15 @@ import Link from 'next/link';
 // Let's stick to simple layout first.
 
 export const dynamic = 'force-dynamic';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const event = await getEventBySlug(slug);
+    return {
+        title: event ? event.title : 'Evento',
+    };
+}
 
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -27,85 +36,70 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
     }
 
     return (
-        <div className="min-h-screen bg-black pt-6 pb-20">
-            <div className="container mx-auto px-4 max-w-4xl">
-                {/* Back Button */}
-                <Link
-                    href="/eventos"
-                    className="inline-flex items-center gap-2 text-bifido-lightgray hover:text-white mb-8 transition-colors group"
-                >
-                    <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                    Volver a Eventos
-                </Link>
-
-                {/* Hero */}
-                <div className="relative h-[400px] md:h-[500px] w-full rounded-2xl overflow-hidden mb-8 shadow-2xl bg-[#0a0a0a]">
-                    <div 
-                        className="absolute inset-0 bg-cover bg-center opacity-30 blur-3xl grayscale-[30%]"
-                        style={{ backgroundImage: `url('${event.image || '/images/placeholder-article.jpg'}')` }}
-                    />
-                    <Image
-                        src={event.image || '/images/placeholder-article.jpg'}
-                        alt={event.title}
-                        fill
-                        className="object-contain md:p-4 z-10"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-20" />
-                    <div className="absolute bottom-0 left-0 p-8 z-30">
-                        <span className="bg-bifido-red text-white px-4 py-1 rounded-full text-sm font-bold mb-4 inline-block">
-                            {({
-                                concert: 'Concierto',
-                                workshop: 'Taller',
-                                talk: 'Charla',
-                                festival: 'Festival',
-                                exhibition: 'Exposición',
-                                other: 'Otro'
-                            } as Record<string, string>)[event.category] || 'Evento'}
-                        </span>
-                        <h1 className="font-display text-4xl md:text-6xl text-white mb-2">
-                            {event.title}
-                        </h1>
+        <article className="min-h-screen bg-black pb-20">
+            {/* Featured Image Header (Full Width) */}
+            <div className="relative w-full h-[400px] md:h-[600px] mb-8 bg-gray-900">
+                {/* Blurred Background for aspect ratio preservation */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center opacity-40 blur-2xl"
+                    style={{ backgroundImage: `url('${event.image || '/images/placeholder-article.jpg'}')` }}
+                />
+                
+                {/* Main Image */}
+                <Image
+                    src={event.image || '/images/placeholder-article.jpg'}
+                    alt={event.title}
+                    fill
+                    className="object-contain z-10"
+                    priority
+                />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 z-20" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }} />
+                
+                {/* Title & Back Button Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 py-8 text-white z-30">
+                    <div className="container mx-auto">
+                        <Link href="/eventos" 
+                            className="inline-flex items-center px-4 py-2 rounded-full border border-black/10 hover:scale-105 transition-all text-sm font-medium mb-4 bg-bifido-neon text-black">
+                            <ArrowLeft size={16} className="mr-2" />
+                            Volver a Eventos
+                        </Link>
+                        <h1 className="font-display text-4xl md:text-6xl mb-4">{event.title}</h1>
                     </div>
                 </div>
+            </div>
 
-                {/* Info Bar - Redesigned */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 py-10 border-y border-white/10 mb-16">
-                    {/* Date */}
-                    <div className="flex flex-col gap-3">
+            {/* Main Content Container */}
+            <div className="container mx-auto">
+                {/* Info Bar */}
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 py-8 border-y border-white/10 mb-12">
+                    {/* Date & Time */}
+                    <div className="flex flex-col items-start text-left gap-3 order-1">
                         <div className="flex items-center gap-2 text-bifido-red">
                             <Calendar size={18} />
-                            <span className="text-xs font-bold uppercase tracking-widest">Fecha</span>
+                            <span className="text-xs font-bold uppercase tracking-widest">Fecha y Hora</span>
                         </div>
                         <div className="text-white">
-                            <p className="text-gray-400 text-sm flex flex-col">
+                            <p className="text-gray-400 text-sm flex flex-col items-start">
+                                <span>{new Date(event.date).toLocaleDateString('es-CO', { weekday: 'long' })}</span>
                                 <span className="text-white font-semibold text-lg">{new Date(event.date).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                                <span >{new Date(event.date).toLocaleDateString('es-CO', { weekday: 'long' })}</span>
+                                <span className="text-white text-sm">{event.time}</span>
                             </p>
                         </div>
                     </div>
 
-                    {/* Time */}
-                    <div className="flex flex-col gap-3">
-                        <div className="flex items-center gap-2 text-bifido-red">
-                            <Clock size={18} />
-                            <span className="text-xs font-bold uppercase tracking-widest">Hora</span>
-                        </div>
-                        <div className="text-white">
-                            <p className="text-gray-400 text-sm text-lg font-semibold text-white">{event.time}</p>
-                        </div>
-                    </div>
-
                     {/* Location */}
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col items-start text-left lg:items-center lg:text-center gap-3 order-3 lg:order-2 col-span-2 lg:col-span-1 pt-4 lg:pt-0 border-t border-white/5 lg:border-none">
                         <div className="flex items-center gap-2 text-bifido-red">
                             <MapPin size={18} />
                             <span className="text-xs font-bold uppercase tracking-widest">Ubicación</span>
                         </div>
-                        <div className="text-white text-sm text-gray-400 space-y-1">
-                            <p className="font-semibold text-white text-lg leading-tight">{event.location}</p>
+                        <div className="text-white text-sm text-gray-400 flex flex-col items-start lg:items-center">
                             <p className="leading-tight">{event.address}{event.city ? `, ${event.city}` : ''}</p>
                             {event.virtualLink && (
-                                <a href={event.virtualLink} target="_blank" rel="noopener noreferrer" className="inline-block text-bifido-red font-bold text-xs uppercase tracking-wider mt-2 hover:text-white transition-colors">
+                                <a href={event.virtualLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-bifido-neon text-black font-bold text-xs uppercase tracking-widest mt-3 px-4 py-2 hover:bg-white transition-colors w-fit whitespace-nowrap rounded-full">
+                                    <Video size={14} />
                                     Ver evento online
                                 </a>
                             )}
@@ -113,12 +107,12 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                     </div>
 
                     {/* Price & Ticket */}
-                    <div className="flex flex-col gap-3">
-                        <div className="flex items-center gap-2 text-bifido-red">
+                    <div className="flex flex-col items-end text-right gap-3 order-2 lg:order-3">
+                        <div className="flex items-center justify-end gap-1 text-bifido-red">
                             <span className="font-bold text-lg leading-none">$</span>
                             <span className="text-xs font-bold uppercase tracking-widest">Entrada</span>
                         </div>
-                        <div className="flex flex-col items-start gap-4">
+                        <div className="flex flex-col items-end gap-3">
                             <div>
                                 <p className="text-lg font-semibold text-white">
                                     {event.price?.isFree ? 'Gratis' : `$${event.price?.amount?.toLocaleString() || '0'} ${event.price?.currency || 'COP'}`}
@@ -166,6 +160,6 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                     </div>
                 )}
             </div>
-        </div>
+        </article>
     );
 }

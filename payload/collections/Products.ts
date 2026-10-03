@@ -47,7 +47,7 @@ export const Products: CollectionConfig = {
         },
         {
             name: 'featuredImage',
-            label: 'Imagen Destacada',
+            label: 'Imagen destacada',
             type: 'upload',
             relationTo: 'media',
             required: true,
@@ -133,7 +133,7 @@ export const Products: CollectionConfig = {
         },
         {
             name: 'purchaseLink',
-            label: 'Enlace de Compra',
+            label: 'Enlace de compra',
             type: 'text',
             admin: {
                 description: 'Enlace para comprar o contactar al vendedor',

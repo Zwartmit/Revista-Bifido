@@ -14,17 +14,11 @@ export const PullQuoteBlock: Block = {
             label: 'Cita',
             type: 'textarea',
             required: true,
-            admin: {
-                description: 'La frase o cita que se mostrará en grande.',
-            },
         },
         {
             name: 'attribution',
             label: 'Atribución (¿quién lo dijo?)',
             type: 'text',
-            admin: {
-                description: 'Nombre de la persona o fuente. Aparece debajo de la cita.',
-            },
         },
     ],
 };
