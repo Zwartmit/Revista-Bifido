@@ -73,9 +73,11 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                         <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover/btn:opacity-100 transition duration-1000 group-hover/btn:duration-200"></div>
                         <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#fe5e00] rounded-full font-display text-xl md:text-3xl text-white transition-all duration-300 group-hover/btn:border-[#fe5e00] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
                             CONOCE EL PARCHE
-                            <img
+                            <Image
                                 src="/icons/arrow_o.svg"
                                 alt="arrow"
+                                width={32}
+                                height={28}
                                 className="w-7 h-6 object-contain md:w-[32px] md:h-[28px] transition-transform duration-300 group-hover/btn:translate-x-2 animate-pulse"
                             />
                         </div>
@@ -121,7 +123,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                     <div ref={recentRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {recentArticles.map((article: any) => {
                             const character = getCharacter(article.characterId || article.section);
-                            const { primary: color, label: textColor } = getCharacterColors(article.characterId || article.section);
+                            const { primary: color } = getCharacterColors(article.characterId || article.section);
 
                             return (
                                 <Link
@@ -140,8 +142,8 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                                             />
                                         )}
                                         <div
-                                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow-lg"
-                                            style={{ backgroundColor: color, color: textColor }}
+                                            className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold shadow-lg text-white"
+                                            style={{ backgroundColor: color }}
                                         >
                                             {character?.name || article.section}
                                         </div>

@@ -83,7 +83,7 @@ export default function Header() {
                                 className="p-1 hover:scale-110 transition-transform"
                                 aria-label="Toggle menu"
                             >
-                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <img src="/icons/navmobil.svg" alt="Menu" className="object-contain w-8 h-8 shrink-0" />}
+                                {isMenuOpen ? <X size={28} className="text-bifido-neon" /> : <Image src="/icons/navmobil.svg" alt="Menu" width={32} height={32} className="object-contain w-8 h-8 shrink-0" />}
                             </button>
                          </div>
                     </div>
@@ -248,7 +248,7 @@ export default function Header() {
                                     <span style={{ fontFamily: 'var(--font-jack, "JackInput", monospace)' }} className="text-black text-sm md:text-base tracking-[0.25em] px-8 pt-[2px]">
                                         PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES
                                     </span>
-                                    <img src="/icons/arrow.svg" alt="separator" className="w-[14px] h-[14px] object-contain opacity-90 shrink-0 mx-4" />
+                                    <Image src="/icons/arrow.svg" alt="separator" width={14} height={14} className="w-[14px] h-[14px] object-contain opacity-90 shrink-0 mx-4" />
                                 </div>
                             ))}
                         </div>

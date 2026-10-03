@@ -178,7 +178,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
 
 const PullQuoteBlockRenderer = ({ block, color }: { block: any; color: string }) => (
     <div className="my-14 clear-both text-center px-4 md:px-16">
-        <span className="text-7xl font-display leading-none select-none opacity-20" style={{ color }}>"</span>
+        <span className="text-7xl font-display leading-none select-none opacity-20" style={{ color }}>&quot;</span>
         <p className="font-display text-2xl md:text-4xl font-bold leading-tight -mt-4 mb-5" style={{ color }}>
             {block.quote}
         </p>

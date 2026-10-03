@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import SupportBanner from '../SupportBanner';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { ArrowRight, ArrowLeft, Music, Youtube } from 'lucide-react';
@@ -144,7 +145,7 @@ export default function PunkibriPage({ section, character, articles }: Props) {
                                             <span className="font-googlesans text-xs text-white/30 tracking-wider mb-2 block">
                                                 {formatDate(article.publishedAt)}
                                             </span>
-                                            <h3 className="font-display text-2xl text-white uppercase leading-tight mb-3 flex-1 group-hover:text-white/70 transition-colors">
+                                            <h3 className="font-display text-2xl text-white uppercase leading-[1.1] pt-1 mb-3 flex-1 group-hover:text-white/70 transition-colors">
                                                 {article.title}
                                             </h3>
                                             <div className="flex items-center gap-2 text-sm font-googlesans font-medium mt-auto" style={{ color: primary }}>

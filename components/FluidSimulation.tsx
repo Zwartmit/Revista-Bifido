@@ -267,7 +267,7 @@ export default function FluidSimulation({
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [color, opacity]);
+  }, [color, opacity, isMobile]);
 
   if (isMobile) {
     return <div className={`w-full h-full block ${className}`} style={{ background: 'transparent' }} />;

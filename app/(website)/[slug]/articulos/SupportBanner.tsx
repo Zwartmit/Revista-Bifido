@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import abstractBg from '@/public/backgrounds/abstract.png';
 interface SupportBannerProps {
     primaryColor: string;
@@ -32,10 +33,10 @@ export default function SupportBanner({ primaryColor }: SupportBannerProps) {
                 <p className="font-googlesans text-gray-300 max-w-full mx-auto mb-8 text-base md:text-lg leading-relaxed">
                     Bífido existe porque hay personas que creen en el periodismo crudo y honesto. Si lo que lees te mueve, considera apoyarnos.
                 </p>
-                <a href="/elparche" className="inline-block font-display tracking-[0.25em] text-black text-md px-8 py-4 uppercase hover:scale-105 transition-all shadow-lg"
+                <Link href="/elparche" className="inline-block font-display tracking-[0.25em] text-black text-md px-8 py-4 uppercase hover:scale-105 transition-all shadow-lg"
                     style={{ backgroundColor: primaryColor }}>
                     Colaborar
-                </a>
+                </Link>
             </div>
         </div>
     );

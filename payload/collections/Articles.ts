@@ -38,6 +38,7 @@ export const Articles: CollectionConfig = {
             index: true,
             admin: {
                 hidden: true,
+                description: 'Se genera automáticamente desde el título si lo dejas en blanco.',
             },
             hooks: {
                 beforeValidate: [
@@ -63,9 +64,6 @@ export const Articles: CollectionConfig = {
                         return value;
                     },
                 ],
-            },
-            admin: {
-                description: 'Se genera automáticamente desde el título si lo dejas en blanco.',
             },
         },
         {

@@ -236,7 +236,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                         className="group flex items-center gap-3 transition-colors"
                                     >
                                         <div className="flex items-center mt-[2px] rotate-180 group-hover:-translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
-                                            <img src="/icons/arrow_o.svg" alt="Anterior" className="w-6 h-6 shrink-0" />
+                                            <Image src="/icons/arrow_o.svg" alt="Anterior" width={24} height={24} className="w-6 h-6 shrink-0" />
                                         </div>
                                         <span className="text-white mt-[2px] group-hover:text-orange-500 transition-colors">Anterior</span>
                                     </button>
@@ -252,7 +252,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                     >
                                         <span className="text-white mt-[2px] group-hover:text-orange-500 transition-colors">Siguiente</span>
                                         <div className="flex items-center mt-[2px] group-hover:translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
-                                            <img src="/icons/arrow_o.svg" alt="Siguiente" className="w-6 h-6 shrink-0" />
+                                            <Image src="/icons/arrow_o.svg" alt="Siguiente" width={24} height={24} className="w-6 h-6 shrink-0" />
                                         </div>
                                     </button>
                                 </div>

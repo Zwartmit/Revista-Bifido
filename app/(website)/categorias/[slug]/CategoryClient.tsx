@@ -133,7 +133,7 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
                                         </span>
                                     </div>
 
-                                    <h3 className="font-display text-2xl text-white uppercase leading-tight mb-3 flex-1 transition-colors line-clamp-3">
+                                    <h3 className="font-display text-2xl text-white uppercase leading-[1.1] pt-1 mb-3 flex-1 transition-colors line-clamp-3">
                                         {article.title}
                                     </h3>
 

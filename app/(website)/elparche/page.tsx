@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -19,7 +19,7 @@ const ModelViewer = dynamic(() => import('@/components/ModelViewer'), { ssr: fal
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-export default function ElParchePage() {
+function ElParcheContent() {
     // ── Refs ──────────────────────────────────────────────────────────
     const pageRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -756,5 +756,13 @@ export default function ElParchePage() {
                 team={team}
             />
         </div>
+    );
+}
+
+export default function ElParchePage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-black" />}>
+            <ElParcheContent />
+        </Suspense>
     );
 }

@@ -7,9 +7,10 @@ import { getCharacterColors } from '@/lib/character-colors';
 
 import CategoryClient from './CategoryClient';
 
-export default async function CategoriaPage({ params }: { params: { slug: string } }) {
-    const articles = await getArticlesByCategory(params.slug);
-    const categoryName = params.slug.replace(/-/g, ' ');
+export default async function CategoriaPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const articles = await getArticlesByCategory(slug);
+    const categoryName = slug.replace(/-/g, ' ');
 
     return (
         <div className="min-h-screen bg-black text-white flex flex-col">

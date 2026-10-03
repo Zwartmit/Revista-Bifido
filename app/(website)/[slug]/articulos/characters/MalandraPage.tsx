@@ -126,7 +126,7 @@ export default function MalandraPage({ section, character, articles, categories 
                                             <span className="font-googlesans text-xs text-white/30 tracking-wider block mb-2">
                                                 {formatDate(article.publishedAt)}
                                             </span>
-                                            <h3 className="font-display text-2xl text-white uppercase leading-tight mb-4 group-hover:text-white/80 transition-colors line-clamp-2">
+                                            <h3 className="font-display text-2xl text-white uppercase leading-[1.1] pt-1 mb-4 group-hover:text-white/80 transition-colors line-clamp-2">
                                                 {article.title}
                                             </h3>
                                             <div className="mt-auto flex items-center gap-2 font-googlesans text-sm font-medium" style={{ color: primary }}>

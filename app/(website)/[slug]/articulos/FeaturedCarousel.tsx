@@ -92,7 +92,7 @@ export default function FeaturedCarousel({ articles, section, primaryColor, dark
                             <span className="font-googlesans text-sm text-white/40 block mb-4">
                                 {formatDate(currentArticle.publishedAt)}
                             </span>
-                            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-white uppercase leading-tight mb-5 line-clamp-3">
+                            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-white uppercase leading-[1.1] pt-2 mb-5 line-clamp-3">
                                 {currentArticle.title}
                             </h2>
                             {currentArticle.excerpt && (
