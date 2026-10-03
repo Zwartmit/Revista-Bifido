@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
-import { Facebook, Twitter, Share2, ArrowLeft } from 'lucide-react';
+import { Share2, ArrowLeft, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
 
@@ -160,38 +161,126 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
 };
 
 const GalleryBlockRenderer = ({ block }: { block: any }) => {
+    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => { setMounted(true); }, []);
+
     if (!block.images?.length) return null;
+    const images = block.images.filter((item: any) => item.image?.url);
     const gridClass = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-2';
+
+    const openLightbox = (i: number) => setLightboxIndex(i);
+    const closeLightbox = () => setLightboxIndex(null);
+    const goPrev = (e: React.MouseEvent) => { e.stopPropagation(); setLightboxIndex(i => i !== null ? (i - 1 + images.length) % images.length : null); };
+    const goNext = (e: React.MouseEvent) => { e.stopPropagation(); setLightboxIndex(i => i !== null ? (i + 1) % images.length : null); };
+
+    const lightbox = lightboxIndex !== null && mounted ? createPortal(
+        <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+            onClick={closeLightbox}
+        >
+            {/* Close */}
+            <button
+                onClick={closeLightbox}
+                className="fixed top-4 right-4 z-[10000] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                aria-label="Cerrar"
+            >
+                <X size={24} />
+            </button>
+
+            {/* Counter */}
+            <span className="fixed top-5 left-1/2 -translate-x-1/2 text-white/50 text-sm font-mono z-[10000]">
+                {lightboxIndex + 1} / {images.length}
+            </span>
+
+            {/* Prev */}
+            {images.length > 1 && (
+                <button
+                    onClick={goPrev}
+                    className="fixed left-3 md:left-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-[10000]"
+                    aria-label="Anterior"
+                >
+                    <ChevronLeft size={28} />
+                </button>
+            )}
+
+            {/* Image */}
+            <div className="flex items-center justify-center w-full h-full px-16 py-12" onClick={e => e.stopPropagation()}>
+                <Image
+                    src={images[lightboxIndex].image.url}
+                    alt={images[lightboxIndex].caption || images[lightboxIndex].image.filename || ''}
+                    width={images[lightboxIndex].image.width || 1200}
+                    height={images[lightboxIndex].image.height || 900}
+                    className="object-contain max-h-[80vh] max-w-full w-auto h-auto rounded-xl shadow-2xl"
+                />
+            </div>
+
+            {images[lightboxIndex].caption && (
+                <p className="fixed bottom-6 left-1/2 -translate-x-1/2 text-center text-sm text-white/60 z-[10000] bg-black/50 px-4 py-1 rounded-full">{images[lightboxIndex].caption}</p>
+            )}
+
+            {/* Next */}
+            {images.length > 1 && (
+                <button
+                    onClick={goNext}
+                    className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-[10000]"
+                    aria-label="Siguiente"
+                >
+                    <ChevronRight size={28} />
+                </button>
+            )}
+        </div>,
+        document.body
+    ) : null;
+
     return (
-        <div className={`grid ${gridClass} gap-3 my-10 clear-both`}>
-            {block.images.map((item: any, i: number) => (
-                item.image?.url && (
-                    <figure key={i} className="overflow-hidden rounded-xl group cursor-pointer">
-                        <Image src={item.image.url} alt={item.caption || item.image.filename || `foto ${i + 1}`} width={item.image.width || 800} height={item.image.height || 600} className="object-cover w-full h-48 md:h-64 group-hover:scale-105 transition-transform duration-300" />
+        <>
+            <div className={`grid ${gridClass} gap-3 my-10 clear-both`}>
+                {images.map((item: any, i: number) => (
+                    <figure
+                        key={i}
+                        className="overflow-hidden rounded-xl group cursor-zoom-in"
+                        onClick={() => openLightbox(i)}
+                    >
+                        <Image
+                            src={item.image.url}
+                            alt={item.caption || item.image.filename || `foto ${i + 1}`}
+                            width={item.image.width || 800}
+                            height={item.image.height || 600}
+                            className="object-cover w-full h-48 md:h-64 group-hover:scale-105 transition-transform duration-300"
+                        />
                         {item.caption && <figcaption className="text-center text-xs text-gray-500 mt-1 pb-1">{item.caption}</figcaption>}
                     </figure>
-                )
-            ))}
-        </div>
+                ))}
+            </div>
+            {lightbox}
+        </>
     );
 };
 
 const PullQuoteBlockRenderer = ({ block, color }: { block: any; color: string }) => (
     <div className="my-14 clear-both text-center px-4 md:px-16">
-        <span className="text-7xl font-display leading-none select-none opacity-20" style={{ color }}>&quot;</span>
-        <p className="font-display text-2xl md:text-4xl font-bold leading-tight -mt-4 mb-5" style={{ color }}>
+        <p className="font-display text-2xl md:text-4xl font-bold leading-tight mb-5" style={{ color }}>
+            <span className="opacity-60 mr-1" style={{ color }}>“</span>
             {block.quote}
+            <span className="opacity-60 ml-1" style={{ color }}>”</span>
         </p>
         {block.attribution && (
-            <p className="text-sm text-gray-500 uppercase tracking-widest">— {block.attribution}</p>
+            <p className="text-sm text-gray-400 uppercase tracking-widest">— {block.attribution}</p>
         )}
     </div>
 );
 
 const SeparatorBlockRenderer = ({ block }: { block: any }) => {
-    if (block.style === 'space') return <div className="my-12 clear-both" />;
-    if (block.style === 'dots') return <div className="my-12 clear-both text-center text-gray-600 text-2xl tracking-[1rem]">···</div>;
-    return <hr className="my-12 clear-both border-white/15" />;
+    if (block.style === 'space') return <div className="my-14 clear-both" />;
+    if (block.style === 'dots')
+        return <div className="my-12 clear-both text-center text-white/50 text-2xl tracking-[1.5rem] select-none">···</div>;
+    if (block.style === 'fade')
+        return <div className="my-12 clear-both h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />;
+    // default: line
+    return <hr className="my-12 clear-both border-white/40" />;
 };
 
 // ─── Main block router ────────────────────────────────────────────────────────
@@ -256,10 +345,14 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                         <p className="text-lg font-semibold text-white">{article.author}</p>
                         <p className="text-gray-400">{formatDate(article.publishedAt)}</p>
                     </div>
-                    <div className="flex items-center space-x-3">
-                        <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-900 transition-colors" aria-label="Compartir en Facebook"><Facebook size={20} /></a>
-                        <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(article.title)}`} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-900 transition-colors" aria-label="Compartir en Twitter"><Twitter size={20} /></a>
-                        <button onClick={() => navigator.share?.({ title: article.title, text: article.excerpt, url: shareUrl })} className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-900 transition-colors" aria-label="Compartir"><Share2 size={20} /></button>
+                    <div className="flex items-center">
+                        <button
+                            onClick={() => navigator.share?.({ title: article.title, text: article.excerpt, url: shareUrl })}
+                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-900 transition-colors"
+                            aria-label="Compartir"
+                        >
+                            <Share2 size={20} />
+                        </button>
                     </div>
                 </div>
 

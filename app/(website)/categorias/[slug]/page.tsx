@@ -1,16 +1,23 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import { getArticlesByCategory } from '@/lib/api';
-import { formatDate } from '@/lib/utils';
-import { getCharacterColors } from '@/lib/character-colors';
-
+import { getArticlesByCategory, getCategories } from '@/lib/api';
+import Link from 'next/link';
 import CategoryClient from './CategoryClient';
+
+export const dynamic = 'force-dynamic';
 
 export default async function CategoriaPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
+
+    // Validate that the category actually exists in the DB
+    const allCategories = await getCategories();
+    const category = allCategories.find((c: any) => c.slug === slug);
+    if (!category) {
+        notFound();
+    }
+
     const articles = await getArticlesByCategory(slug);
-    const categoryName = slug.replace(/-/g, ' ');
+    const categoryName = category.name || slug.replace(/-/g, ' ');
 
     return (
         <div className="min-h-screen bg-black text-white flex flex-col">

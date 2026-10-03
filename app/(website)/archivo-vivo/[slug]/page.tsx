@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
-export default async function ArchivoVivoRedirect({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params;
-    // Redirigimos a la página de El Parche con el parámetro para abrir el modal automáticamente
-    redirect(`/elparche?member=${slug}`);
+// Esta ruta ya no tiene propósito: los miembros del Archivo Vivo
+// se abren como modal directamente desde el buscador global o desde /elparche.
+export default async function ArchivoVivoPage() {
+    notFound();
 }

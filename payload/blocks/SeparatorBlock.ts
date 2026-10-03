@@ -17,7 +17,8 @@ export const SeparatorBlock: Block = {
             options: [
                 { label: 'Línea', value: 'line' },
                 { label: 'Espacio en blanco', value: 'space' },
-                { label: 'Tres puntos (···)', value: 'dots' },
+                { label: 'Tres puntos', value: 'dots' },
+                { label: 'Línea difuminada', value: 'fade' },
             ],
         },
     ],

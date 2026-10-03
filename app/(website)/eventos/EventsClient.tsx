@@ -217,7 +217,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                         <span className="text-[#b8ff00] truncate">EVENTO DESTACADO</span>
                                     </div>
 
-                                    <h2 className="font-display text-4xl lg:text-5xl text-white uppercase leading-[0.9] mb-6 glitch-title break-words" data-text={featuredEvent.title}>
+                                    <h2 className="font-display text-4xl lg:text-5xl text-white uppercase leading-[0.9] mb-6" data-text={featuredEvent.title}>
                                         {featuredEvent.title}
                                     </h2>
 
