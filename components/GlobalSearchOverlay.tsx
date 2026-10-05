@@ -242,13 +242,18 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                       <Link href={`/eventos/${ev.slug}`} key={ev.id} onClick={onClose} className="group flex items-center justify-between p-4 border border-white/10 hover:border-[#b8ff00] bg-black/40 transition-all duration-300 relative overflow-hidden">
                         <div className="absolute inset-0 bg-[#b8ff00] opacity-0 group-hover:opacity-5 transition-opacity" />
 
-                        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 flex-1 min-w-0 z-10">
-                          {ev.date && (
-                            <div className="flex-shrink-0 font-mono text-sm tracking-widest bg-white/10 px-3 py-1 text-white/70 group-hover:bg-[#b8ff00] group-hover:text-black transition-colors w-max">
-                              {new Date(ev.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }).toUpperCase()}
-                            </div>
+                        <div className="flex flex-col flex-1 min-w-0 z-10">
+                          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                            {ev.date && (
+                              <div className="flex-shrink-0 font-mono text-sm tracking-widest bg-white/10 px-3 py-1 text-white/70 group-hover:bg-[#b8ff00] group-hover:text-black transition-colors w-max">
+                                {new Date(ev.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }).toUpperCase()}
+                              </div>
+                            )}
+                            <h4 className="font-display text-xl md:text-2xl uppercase truncate text-white leading-none">{ev.title}</h4>
+                          </div>
+                          {ev.excerpt && (
+                            <p className="font-sans text-sm text-gray-400 line-clamp-1 hidden md:block mt-2">{ev.excerpt}</p>
                           )}
-                          <h4 className="font-display text-xl md:text-2xl uppercase truncate text-white leading-none">{ev.title}</h4>
                         </div>
 
                         <div className="flex-shrink-0 hidden md:flex items-center gap-2 text-xs font-mono text-white/40 ml-4 z-10 w-32 justify-end">

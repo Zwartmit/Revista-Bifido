@@ -9,6 +9,8 @@ import React from 'react'
 import { handleServerFunctions } from '../../node_modules/@payloadcms/next/dist/utilities/handleServerFunctions'
 import { importMap } from './admin/importMap'
 
+import { ScrollToTop } from './ScrollToTop'
+
 const serverFunction = async (payload: any) => {
     'use server'
     return handleServerFunctions({
@@ -20,6 +22,7 @@ const serverFunction = async (payload: any) => {
 const Layout = ({ children }: { children: React.ReactNode }) => (
     <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
         {children}
+        <ScrollToTop />
     </RootLayout>
 )
 

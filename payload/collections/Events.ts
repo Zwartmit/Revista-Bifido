@@ -1,4 +1,12 @@
 import type { CollectionConfig } from 'payload';
+import { RichTextBlock } from '../blocks/RichTextBlock';
+import { ImageBlock } from '../blocks/ImageBlock';
+import { VideoBlock } from '../blocks/VideoBlock';
+import { GalleryBlock } from '../blocks/GalleryBlock';
+import { TwoColumnsBlock } from '../blocks/TwoColumnsBlock';
+import { PullQuoteBlock } from '../blocks/PullQuoteBlock';
+import { SeparatorBlock } from '../blocks/SeparatorBlock';
+import { ButtonLinksBlock } from '../blocks/ButtonLinksBlock';
 
 export const Events: CollectionConfig = {
     slug: 'events',
@@ -8,97 +16,172 @@ export const Events: CollectionConfig = {
     },
     admin: {
         useAsTitle: 'name',
-        defaultColumns: ['name', 'date', 'category', 'locationType'],
-    },
-    hooks: {
-        // Se removió el hook afterChange porque ahora usamos validate para prevenir el guardado y mostrar el aviso
+        defaultColumns: ['name', 'date', 'category', 'locationType', 'isFeatured'],
     },
     access: {
         read: () => true,
     },
     fields: [
+        // ── ROW 1: Nombre (grande) + Imagen destacada ──
         {
             type: 'row',
             fields: [
                 {
                     name: 'name',
-                    label: 'Nombre',
+                    label: 'Nombre del Evento',
                     type: 'text',
                     required: true,
-                    admin: { width: '100%' },
+                    admin: { style: { flex: 2 } },
                 },
-            ]
+                {
+                    name: 'featuredImage',
+                    label: 'Imagen Destacada',
+                    type: 'upload',
+                    relationTo: 'media',
+                    required: true,
+                    admin: { style: { flex: 1 } },
+                },
+            ],
         },
+
+        // ── ROW 2: Categoría + Tipo de ubicación + ¿Destacado? ──
         {
             type: 'row',
             fields: [
                 {
                     name: 'category',
                     label: 'Categoría',
-                    type: 'select',
+                    type: 'relationship',
+                    relationTo: 'event-categories',
+                    hasMany: false,
                     required: true,
-                    admin: { width: '50%' },
-                    options: [
-                        { label: 'Concierto', value: 'concert' },
-                        { label: 'Taller', value: 'workshop' },
-                        { label: 'Charla', value: 'talk' },
-                        { label: 'Festival', value: 'festival' },
-                        { label: 'Exposición', value: 'exhibition' },
-                        { label: 'Otro', value: 'other' },
-                    ],
+                    admin: { style: { flex: 1 } },
                 },
                 {
-                    name: 'otherCategoryName',
-                    label: 'Nombre de la categoría personalizada',
-                    type: 'text',
+                    name: 'locationType',
+                    label: 'Modalidad',
+                    type: 'relationship',
+                    relationTo: 'event-modalities',
+                    hasMany: false,
+                    required: true,
+                    admin: { style: { flex: 1 } },
+                },
+                {
+                    name: 'isFeatured',
+                    label: '¿Destacar?',
+                    type: 'checkbox',
+                    defaultValue: false,
+                },
+            ],
+        },
+
+        // ── ROW 3: Fecha y hora + Link tickets + ¿Es gratis? ──
+        {
+            type: 'row',
+            fields: [
+                {
+                    name: 'date',
+                    label: 'Fecha y hora',
+                    type: 'date',
+                    required: true,
                     admin: {
-                        width: '50%',
-                        condition: (_, siblingData) => siblingData?.category === 'other',
+                        style: { flex: 1 },
+                        date: { pickerAppearance: 'dayAndTime' },
+                    },
+                },
+                {
+                    name: 'ticketLink',
+                    label: 'Link de registro / compra',
+                    type: 'text',
+                    required: true,
+                    admin: { style: { flex: 1 } },
+                },
+                {
+                    name: 'isFree',
+                    label: '¿Es gratis?',
+                    type: 'checkbox',
+                    defaultValue: true,
+                    admin: { style: { flex: 0.5 } },
+                },
+                {
+                    name: 'priceAmount',
+                    label: 'Valor',
+                    type: 'number',
+                    admin: {
+                        style: { flex: 0.5 },
+                        condition: (_, siblingData) => !siblingData?.isFree,
                     },
                     validate: (value: any, { siblingData }: any) => {
-                        if (siblingData?.category === 'other' && !value) {
-                            return 'Por favor ingresa el nombre de la categoría.';
+                        if (!siblingData?.isFree && (value === null || value === undefined)) {
+                            return 'El valor es obligatorio si no es gratis.';
                         }
                         return true;
                     },
                 },
             ],
         },
-        {
-            name: 'isFeatured',
-            label: '¿Destacar este evento?',
-            type: 'checkbox',
-            defaultValue: false,
-            admin: {
-                position: 'sidebar',
-                description: 'Solo puede haber un evento destacado a la vez.',
-            },
-            validate: async (value: any, { req, id }: any) => {
-                if (value && req && req.payload) {
-                    const featuredEvents = await req.payload.find({
-                        collection: 'events',
-                        where: {
-                            isFeatured: { equals: true },
-                            ...(id ? { id: { not_equals: id } } : {}),
-                        },
-                        limit: 1,
-                    });
 
-                    if (featuredEvents.docs.length > 0) {
-                        return `Recuerda que ya tienes destacado "${featuredEvents.docs[0].name}".`;
-                    }
-                }
-                return true;
-            },
+        // ── ROW 4: Dirección + Ciudad (solo si es presencial o híbrido) ──
+        {
+            type: 'row',
+            fields: [
+                {
+                    name: 'address',
+                    label: 'Dirección',
+                    type: 'text',
+                    admin: { style: { flex: 1 } },
+                },
+                {
+                    name: 'city',
+                    label: 'Ciudad',
+                    type: 'text',
+                    admin: { style: { flex: 1 } },
+                },
+                {
+                    name: 'virtualLink',
+                    label: 'Link de transmisión',
+                    type: 'text',
+                    admin: { style: { flex: 1 } },
+                },
+            ],
         },
+
+        // ── ROW 5: Extracto Web + Extracto Redes Sociales (lado a lado) ──
+        {
+            type: 'row',
+            fields: [
+                {
+                    name: 'excerpt',
+                    label: 'Extracto web',
+                    type: 'textarea',
+                    required: true,
+                    admin: {
+                        width: '50%',
+                        description: 'Descripción corta que aparece en las tarjetas y grillas de la página',
+                    },
+                },
+                {
+                    name: 'socialExcerpt',
+                    label: 'Extracto redes sociales',
+                    type: 'textarea',
+                    required: false,
+                    admin: {
+                        width: '50%',
+                        description: 'Para previsualizaciones al compartir. Si se deja vacío, usará el extracto web.',
+                    },
+                },
+            ],
+        },
+
+        // ── Slug (oculto, se autogenera) ──
         {
             name: 'slug',
             label: 'Slug',
             type: 'text',
             unique: true,
+            index: true,
             admin: {
-                position: 'sidebar',
-                readOnly: true,
+                hidden: true,
             },
             hooks: {
                 beforeValidate: [
@@ -114,153 +197,29 @@ export const Events: CollectionConfig = {
                                 .replace(/-+/g, '-');
                         }
                         return value;
-                    }
-                ]
-            }
-        },
-        {
-            type: 'row',
-            fields: [
-                {
-                    name: 'date',
-                    label: 'Fecha y hora',
-                    type: 'date',
-                    required: true,
-                    admin: {
-                        date: {
-                            pickerAppearance: 'dayAndTime',
-                        },
-                        width: '50%',
                     },
-                },
-                {
-                    name: 'locationType',
-                    label: 'Tipo de ubicación',
-                    type: 'select',
-                    required: true,
-                    admin: { width: '50%' },
-                    options: [
-                        { label: 'Presencial', value: 'physical' },
-                        { label: 'Virtual', value: 'virtual' },
-                        { label: 'Híbrido', value: 'hybrid' },
-                    ],
-                },
-            ],
-        },
-        {
-            type: 'row',
-            fields: [
-                {
-                    name: 'address',
-                    label: 'Dirección',
-                    type: 'text',
-                    admin: {
-                        width: '50%',
-                        condition: (_, siblingData) => siblingData?.locationType === 'physical' || siblingData?.locationType === 'hybrid',
-                    },
-                    validate: (value: any, { siblingData }: any) => {
-                        if ((siblingData?.locationType === 'physical' || siblingData?.locationType === 'hybrid') && !value) {
-                            return 'La dirección es obligatoria.';
-                        }
-                        return true;
-                    },
-                },
-                {
-                    name: 'city',
-                    label: 'Ciudad',
-                    type: 'text',
-                    admin: {
-                        width: '50%',
-                        condition: (_, siblingData) => siblingData?.locationType === 'physical' || siblingData?.locationType === 'hybrid',
-                    },
-                    validate: (value: any, { siblingData }: any) => {
-                        if ((siblingData?.locationType === 'physical' || siblingData?.locationType === 'hybrid') && !value) {
-                            return 'La ciudad es obligatoria.';
-                        }
-                        return true;
-                    },
-                },
-            ],
-        },
-        {
-            name: 'virtualLink',
-            label: 'Link de transmisión',
-            type: 'text',
-            admin: {
-                condition: (_, siblingData) => siblingData?.locationType === 'virtual' || siblingData?.locationType === 'hybrid',
+                ],
             },
-            validate: (value: any, { siblingData }: any) => {
-                if ((siblingData?.locationType === 'virtual' || siblingData?.locationType === 'hybrid') && !value) {
-                    return 'El link de transmisión es obligatorio.';
-                }
-                return true;
-            },
-        },
-        {
-            type: 'row',
-            fields: [
-                {
-                    name: 'ticketLink',
-                    label: 'Link de registro/compra',
-                    type: 'text',
-                    required: true,
-                    admin: { width: '50%' },
-                },
-                {
-                    name: 'isFree',
-                    label: '¿Es gratis?',
-                    type: 'checkbox',
-                    defaultValue: true,
-                    admin: { width: '50%' },
-                },
-            ],
-        },
-        {
-            type: 'row',
-            fields: [
-                {
-                    name: 'priceAmount',
-                    label: 'Valor',
-                    type: 'number',
-                    admin: {
-                        width: '100%',
-                        condition: (_, siblingData) => !siblingData?.isFree,
-                    },
-                    validate: (value: any, { siblingData }: any) => {
-                        if (!siblingData?.isFree && (value === null || value === undefined)) {
-                            return 'El valor es obligatorio si no es gratis.';
-                        }
-                        return true;
-                    },
-                },
-            ],
-        },
-        {
-            name: 'featuredImage',
-            label: 'Imagen destacada',
-            type: 'upload',
-            relationTo: 'media',
-            required: true,
-        },
-        {
-            name: 'description',
-            label: 'Descripción',
-            type: 'textarea',
-            required: true,
-        },
-        {
-            name: 'gallery',
-            label: 'Galería',
-            type: 'array',
-            fields: [
-                {
-                    name: 'image',
-                    label: 'Imagen',
-                    type: 'upload',
-                    relationTo: 'media',
-                },
-            ],
         },
 
+        // ── Contenido enriquecido (bloques) ── ocupa todo el ancho ──
+        {
+            name: 'layout',
+            label: 'Contenido (Bloques)',
+            type: 'blocks',
+            admin: {
+                description: 'Agrega secciones de texto, imágenes, videos y galerías al evento.',
+            },
+            blocks: [
+                RichTextBlock,
+                ImageBlock,
+                VideoBlock,
+                TwoColumnsBlock,
+                GalleryBlock,
+                PullQuoteBlock,
+                SeparatorBlock,
+                ButtonLinksBlock,
+            ],
+        },
     ],
 };

@@ -5,7 +5,8 @@ import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
-import { Share2, ArrowLeft, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Share2, ArrowLeft, X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { FaSpotify, FaYoutube, FaInstagram, FaVimeoV, FaGlobe, FaTiktok, FaSoundcloud, FaTwitter, FaFacebook, FaApple } from 'react-icons/fa';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
 
@@ -283,6 +284,55 @@ const SeparatorBlockRenderer = ({ block }: { block: any }) => {
     return <hr className="my-12 clear-both border-white/40" />;
 };
 
+const ButtonLinksBlockRenderer = ({ block, color }: { block: any; color: string }) => {
+    if (!block.buttons?.length) return null;
+    
+    return (
+        <div className="my-14 clear-both flex flex-wrap justify-center gap-4">
+            {block.buttons.map((btn: any, i: number) => {
+                const btnColor = (!btn.color || btn.color === 'character') ? color : btn.color;
+                
+                let Icon = FaGlobe;
+                if (btn.platform === 'spotify') Icon = FaSpotify;
+                else if (btn.platform === 'youtube') Icon = FaYoutube;
+                else if (btn.platform === 'vimeo') Icon = FaVimeoV;
+                else if (btn.platform === 'instagram') Icon = FaInstagram;
+                else if (btn.platform === 'tiktok') Icon = FaTiktok;
+                else if (btn.platform === 'soundcloud') Icon = FaSoundcloud;
+                else if (btn.platform === 'twitter') Icon = FaTwitter;
+                else if (btn.platform === 'facebook') Icon = FaFacebook;
+                else if (btn.platform === 'apple') Icon = FaApple;
+                
+                return (
+                    <a 
+                        key={i} 
+                        href={btn.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-6 py-3 rounded-full border-2 transition-all hover:scale-105 group"
+                        style={{ 
+                            borderColor: btnColor,
+                            color: '#fff',
+                            backgroundColor: 'transparent'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = btnColor;
+                            e.currentTarget.style.color = '#000';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                            e.currentTarget.style.color = '#fff';
+                        }}
+                    >
+                        <Icon size={18} className="mr-3 shrink-0" />
+                        <span className="font-display tracking-widest uppercase">{btn.label}</span>
+                    </a>
+                );
+            })}
+        </div>
+    );
+};
+
 // ─── Main block router ────────────────────────────────────────────────────────
 const renderBlocks = (layout: any[], characterColor: string) => {
     if (!layout?.length) return <p className="text-gray-500 italic">Sin contenido aún.</p>;
@@ -295,6 +345,7 @@ const renderBlocks = (layout: any[], characterColor: string) => {
             case 'galleryBlock':    return <GalleryBlockRenderer     key={i} block={block} />;
             case 'pullQuoteBlock':  return <PullQuoteBlockRenderer   key={i} block={block} color={characterColor} />;
             case 'separatorBlock':  return <SeparatorBlockRenderer   key={i} block={block} />;
+            case 'buttonLinksBlock': return <ButtonLinksBlockRenderer key={i} block={block} color={characterColor} />;
             default:                return null;
         }
     });

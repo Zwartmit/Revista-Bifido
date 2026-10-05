@@ -20,6 +20,8 @@ import { Products } from './collections/Products';
 import { Media } from './collections/Media';
 import { Users } from './collections/Users';
 import { Categories } from './collections/Categories';
+import { EventCategories } from './collections/EventCategories';
+import { EventModalities } from './collections/EventModalities';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -107,6 +109,8 @@ export default buildConfig({
         Products,
         Media,
         Categories,
+        EventCategories,
+        EventModalities,
     ],
     plugins,
     // El editor global es un fallback básico.

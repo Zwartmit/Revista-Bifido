@@ -219,7 +219,7 @@ export async function globalSearch(query: string) {
     where: {
       or: [
         { name: { like: query } },
-        { description: { like: query } },
+        { excerpt: { like: query } },
       ],
     },
     limit: 6,
@@ -360,25 +360,34 @@ export function transformPayloadEvent(doc: any) {
   return {
     id: doc.id,
     slug: doc.slug,
-    title: doc.name,
+    name: doc.name,                    // nombre real del evento
+    title: doc.name,                   // alias para compatibilidad
     isFeatured: doc.isFeatured || false,
     date: doc.date,
     time: doc.date ? new Date(doc.date).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) : '',
-    location: doc.locationType === 'virtual' ? 'Virtual' : (doc.locationType === 'hybrid' ? 'Híbrido' : 'Presencial'),
+    category: typeof doc.category === 'object' ? doc.category?.name : (doc.category || 'other'),
+    locationType: typeof doc.locationType === 'object' ? doc.locationType?.slug : doc.locationType,
+    location: typeof doc.locationType === 'object' ? doc.locationType?.name : 'Presencial',
     address: doc.address || '',
     city: doc.city || '',
     virtualLink: doc.virtualLink,
-    description: doc.description,
-    category: doc.category || 'other',
-    otherCategoryName: doc.otherCategoryName,
+    ticketLink: doc.ticketLink,
+    isFree: doc.isFree ?? true,
+    priceAmount: doc.priceAmount,
+    // Legacy price object for compatibility
     price: {
       isFree: doc.isFree,
       amount: doc.priceAmount,
       currency: 'COP'
     },
-    ticketLink: doc.ticketLink,
-    // Prioritize constructed URL
+    excerpt: doc.excerpt,
+    socialExcerpt: doc.socialExcerpt || doc.excerpt || '',
+    // Imagen destacada: url directa o placeholder
+    featuredImage: doc.featuredImage ? { url: doc.featuredImage.url || doc.featuredImage } : null,
     image: doc.featuredImage?.url || '/images/placeholder-article.jpg',
+    // Bloques de contenido enriquecido
+    layout: doc.layout || [],
+    // Galería legacy (puede ya no existir en nuevos eventos)
     gallery: doc.gallery?.map((item: any) => ({
       id: item.id,
       url: item.image?.url || '',
@@ -386,6 +395,7 @@ export function transformPayloadEvent(doc: any) {
     })) || [],
   };
 }
+
 
 export function transformPayloadLiveArchiveMember(doc: any) {
   return {

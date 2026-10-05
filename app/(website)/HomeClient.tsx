@@ -151,9 +151,9 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
             {featuredArticles.length > 0 && (
                 <section className="pt-12 pb-8 bg-black relative z-10">
                     <div className="container mx-auto px-4">
-                        <div className="flex items-center gap-4 mb-12 justify-center">
-                            <Star className="text-white" size={32} />
-                            <h2 className="font-display text-4xl text-white tracking-widest uppercase">Destacados</h2>
+                        <div className="flex flex-row items-center gap-3 md:gap-4 mb-12 justify-center">
+                            <Star className="text-white flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />
+                            <h2 className="font-display text-[clamp(1.3rem,6vw,2.25rem)] text-white tracking-widest uppercase text-left whitespace-nowrap">Artículos destacados</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -166,9 +166,9 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
             {/* Recent Articles Section */}
             <section className="pt-8 pb-20 md:pt-16 bg-black relative z-10">
                 <div className="container mx-auto px-4">
-                    <div className="flex items-center gap-4 mb-12 justify-center">
-                        <Clock className="text-white" size={32} />
-                        <h2 className="font-display text-4xl text-white tracking-widest uppercase">Lo más fresquito</h2>
+                    <div className="flex flex-row items-center gap-3 md:gap-4 mb-12 justify-center">
+                        <Clock className="text-white flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />
+                        <h2 className="font-display text-[clamp(1.3rem,6vw,2.25rem)] text-white tracking-widest uppercase text-left whitespace-nowrap">Lo más fresquito</h2>
                     </div>
 
                     <div ref={recentRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -6,6 +6,7 @@ import { TwoColumnsBlock } from '../blocks/TwoColumnsBlock';
 import { GalleryBlock } from '../blocks/GalleryBlock';
 import { PullQuoteBlock } from '../blocks/PullQuoteBlock';
 import { SeparatorBlock } from '../blocks/SeparatorBlock';
+import { ButtonLinksBlock } from '../blocks/ButtonLinksBlock';
 
 export const Articles: CollectionConfig = {
     slug: 'articles',
@@ -198,6 +199,7 @@ export const Articles: CollectionConfig = {
                 GalleryBlock,
                 PullQuoteBlock,
                 SeparatorBlock,
+                ButtonLinksBlock,
             ],
         },
     ],

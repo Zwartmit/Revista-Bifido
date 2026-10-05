@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { Calendar, MapPin, Clock, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, Clock, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import gsap from 'gsap';
 
 interface Event {
@@ -29,34 +29,114 @@ interface EventsClientProps {
     events: Event[];
 }
 
+const FeaturedEventsCarousel = ({ events, formatDate }: { events: Event[], formatDate: (date: string) => string }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+
+    const nextSlide = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % events.length);
+    }, [events.length]);
+
+    const prevSlide = useCallback(() => {
+        setCurrentIndex((prev) => (prev - 1 + events.length) % events.length);
+    }, [events.length]);
+
+    useEffect(() => {
+        if (events.length <= 1 || isHovered) return;
+        const timer = setInterval(nextSlide, 5000);
+        return () => clearInterval(timer);
+    }, [events.length, isHovered, nextSlide]);
+
+    if (!events || events.length === 0) return null;
+
+    const featuredEvent = events[currentIndex];
+
+    return (
+        <div className="mb-16 relative flex justify-center w-full"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <Link href={`/eventos/${featuredEvent.slug || '#'}`} className="relative group overflow-hidden bg-[#080808] border border-white/10 hover:border-[#b8ff00] transition-all duration-300 w-full md:w-fit md:max-w-[95vw] flex flex-col md:flex-row md:min-h-[400px] mx-auto">
+                <div className="relative w-full md:w-fit flex flex-col justify-center shrink-0 bg-black">
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\\'40\\' height=\\'40\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z\\' fill=\\'%23111\\' fill-opacity=\\'0.4\\' fill-rule=\\'evenodd\\'/%3E%3C/svg%3E')] z-10 opacity-30 pointer-events-none mix-blend-overlay" />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        key={featuredEvent.id}
+                        src={featuredEvent.image || '/images/placeholder-article.jpg'}
+                        alt={featuredEvent.title}
+                        className="w-full h-auto max-h-[60vh] md:w-auto md:h-[400px] object-contain filter grayscale-[100%] brightness-75 contrast-125 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 z-20 animate-in fade-in zoom-in-95"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#080808] to-transparent z-30 pointer-events-none"></div>
+                </div>
+
+                <div className="p-6 md:py-10 md:px-12 w-full md:w-fit md:max-w-[500px] shrink-0 flex flex-col justify-center relative z-20" key={`content-${featuredEvent.id}`}>
+                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/10 to-transparent"></div>
+
+                    <div className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] mb-6 shadow-sm truncate max-w-full">
+                        <span className="w-2 h-2 shrink-0 rounded-full bg-[#E63946] animate-pulse"></span>
+                        <span className="text-[#b8ff00] truncate">EVENTO DESTACADO</span>
+                    </div>
+
+                    <h2 className="font-display text-4xl lg:text-5xl text-white uppercase leading-[0.9] mb-6" data-text={featuredEvent.title}>
+                        {featuredEvent.title}
+                    </h2>
+
+                    <div className="font-mono text-sm text-gray-400 space-y-2 mb-8 border-l-2 border-[#E63946] pl-4 py-1">
+                        <p className="text-white font-bold">{formatDate(featuredEvent.date).toUpperCase()}</p>
+                        <p className="truncate">{featuredEvent.location} · {featuredEvent.time}</p>
+                        <p>{featuredEvent.price?.isFree ? 'ENTRADA LIBRE' : (featuredEvent.price?.amount ? '$ ' + featuredEvent.price.amount.toLocaleString('es-CO') + ' ' + (featuredEvent.price?.currency || 'COP') : 'ENTRADA PAGA')}</p>
+                    </div>
+
+                    <div className="mt-auto">
+                        <button className="font-mono text-sm font-bold bg-white text-black px-6 py-3 uppercase tracking-widest group-hover:bg-[#b8ff00] transition-colors w-full md:w-auto text-center md:text-left">
+                            VER DETALLES →
+                        </button>
+                    </div>
+                </div>
+            </Link>
+
+            {events.length > 1 && (
+                <>
+                    <button 
+                        onClick={(e) => { e.preventDefault(); prevSlide(); }}
+                        className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white/10 border-2 border-white/40 text-white rounded-full hover:bg-[#b8ff00] hover:text-black hover:border-[#b8ff00] hover:scale-110 transition-all z-40 backdrop-blur-md shadow-lg"
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
+                    <button 
+                        onClick={(e) => { e.preventDefault(); nextSlide(); }}
+                        className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white/10 border-2 border-white/40 text-white rounded-full hover:bg-[#b8ff00] hover:text-black hover:border-[#b8ff00] hover:scale-110 transition-all z-40 backdrop-blur-md shadow-lg"
+                    >
+                        <ChevronRight size={24} />
+                    </button>
+
+                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-40">
+                        {events.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={(e) => { e.preventDefault(); setCurrentIndex(idx); }}
+                                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 opacity-100 bg-[#b8ff00]' : 'w-2 opacity-30 hover:opacity-60 bg-white'}`}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+};
+
 export default function EventsClient({ events }: EventsClientProps) {
     const [filter, setFilter] = useState('all');
 
-    const baseFilters = [
-        { id: 'all', label: 'Todos' },
-        { id: 'concert', label: 'Conciertos' },
-        { id: 'workshop', label: 'Talleres' },
-        { id: 'talk', label: 'Charlas' },
-        { id: 'festival', label: 'Festivales' },
-        { id: 'exhibition', label: 'Exposiciones' },
+    const baseFilters = [{ id: 'all', label: 'Todos' }];
+    const uniqueCategories = Array.from(new Set(events.map(e => e.category).filter(Boolean)));
+    
+    // Si queremos pluralizar o mantener el nombre exacto de la categoría.
+    // Usaremos el nombre exacto que venga de la base de datos.
+    const filters = [
+        ...baseFilters,
+        ...uniqueCategories.map(cat => ({ id: cat as string, label: cat as string }))
     ];
-
-    const customCategoriesMap = new Map<string, string>();
-    events.forEach(e => {
-        if (e.category === 'other' && e.otherCategoryName) {
-            const id = `custom-${e.otherCategoryName.toLowerCase().trim().replace(/\s+/g, '-')}`;
-            if (!customCategoriesMap.has(id)) {
-                customCategoriesMap.set(id, e.otherCategoryName);
-            }
-        }
-    });
-
-    const customFilters = Array.from(customCategoriesMap.entries()).map(([id, label]) => ({ id, label }));
-    const filters = [...baseFilters, ...customFilters];
-
-    if (events.some(e => e.category === 'other' && !e.otherCategoryName)) {
-        filters.push({ id: 'other', label: 'Otros' });
-    }
 
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -72,17 +152,10 @@ export default function EventsClient({ events }: EventsClientProps) {
 
     const filteredEvents = filter === 'all'
         ? events
-        : events.filter(event => {
-            if (filter.startsWith('custom-')) {
-                return event.category === 'other' &&
-                    event.otherCategoryName &&
-                    `custom-${event.otherCategoryName.toLowerCase().trim().replace(/\s+/g, '-')}` === filter;
-            }
-            return event.category === filter;
-        });
+        : events.filter(event => event.category === filter);
 
-    const featuredEvent = filteredEvents.find(e => e.isFeatured) || null;
-    const gridEvents = filteredEvents.filter(e => e.id !== featuredEvent?.id);
+    const featuredEvents = filteredEvents.filter(e => e.isFeatured);
+    const gridEvents = filteredEvents.filter(e => !e.isFeatured);
 
     const formatDayMonth = (dateString: string) => {
         if (!dateString) return { day: '00', month: '---' };
@@ -188,53 +261,9 @@ export default function EventsClient({ events }: EventsClientProps) {
                 </div>
 
                 <div ref={contentRef}>
-                    {/* Featured Event */}
-                    {featuredEvent && (
-                        <div className="mb-16 relative flex justify-center w-full">
-                            <Link href={`/eventos/${featuredEvent.slug || '#'}`} className="relative group overflow-hidden bg-[#080808] border border-white/10 hover:border-[#b8ff00] transition-all duration-300 w-full md:w-fit md:max-w-[95vw] flex flex-col md:flex-row md:min-h-[400px] mx-auto">
-                                {/* Image Section */}
-                                <div className="relative w-full md:w-fit flex flex-col justify-center shrink-0 bg-black">
-                                    {/* Textura */}
-                                    <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\\'40\\' height=\\'40\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z\\' fill=\\'%23111\\' fill-opacity=\\'0.4\\' fill-rule=\\'evenodd\\'/%3E%3C/svg%3E')] z-10 opacity-30 pointer-events-none mix-blend-overlay" />
-
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                        src={featuredEvent.image || '/images/placeholder-article.jpg'}
-                                        alt={featuredEvent.title}
-                                        className="w-full h-auto max-h-[60vh] md:w-auto md:h-[400px] object-contain filter grayscale-[100%] brightness-75 contrast-125 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 z-20"
-                                    />
-
-                                    {/* Overlay gradient to blend img and content */}
-                                    <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#080808] to-transparent z-30 pointer-events-none"></div>
-                                </div>
-
-                                {/* Content Section */}
-                                <div className="p-6 md:py-10 md:px-12 w-full md:w-fit md:max-w-[500px] shrink-0 flex flex-col justify-center relative z-20">
-                                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/10 to-transparent"></div>
-
-                                    <div className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.2em] mb-6 shadow-sm truncate max-w-full">
-                                        <span className="w-2 h-2 shrink-0 rounded-full bg-[#E63946] animate-pulse"></span>
-                                        <span className="text-[#b8ff00] truncate">EVENTO DESTACADO</span>
-                                    </div>
-
-                                    <h2 className="font-display text-4xl lg:text-5xl text-white uppercase leading-[0.9] mb-6" data-text={featuredEvent.title}>
-                                        {featuredEvent.title}
-                                    </h2>
-
-                                    <div className="font-mono text-sm text-gray-400 space-y-2 mb-8 border-l-2 border-[#E63946] pl-4 py-1">
-                                        <p className="text-white font-bold">{formatDate(featuredEvent.date).toUpperCase()}</p>
-                                        <p className="truncate">{featuredEvent.location} · {featuredEvent.time}</p>
-                                        <p>{featuredEvent.price?.isFree ? 'ENTRADA LIBRE' : (featuredEvent.price?.amount ? '$ ' + featuredEvent.price.amount.toLocaleString('es-CO') + ' ' + (featuredEvent.price?.currency || 'COP') : 'ENTRADA PAGA')}</p>
-                                    </div>
-
-                                    <div className="mt-auto">
-                                        <button className="font-mono text-sm font-bold bg-white text-black px-6 py-3 uppercase tracking-widest group-hover:bg-[#b8ff00] transition-colors w-full md:w-auto text-center md:text-left">
-                                            VER DETALLES →
-                                        </button>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
+                    {/* Featured Events Carousel */}
+                    {featuredEvents.length > 0 && (
+                        <FeaturedEventsCarousel events={featuredEvents} formatDate={formatDate} />
                     )}
 
                     {/* Grid Events (Papel Rasgado Collage) */}
