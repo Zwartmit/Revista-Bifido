@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const event = await getEventBySlug(slug);
     return {
-        title: event ? `${event.name || event.title} | Eventos | Revista Bífido` : 'Evento | Revista Bífido',
+        title: event ? (event.name || event.title) : 'Evento',
         description: event?.socialExcerpt || event?.excerpt,
     };
 }

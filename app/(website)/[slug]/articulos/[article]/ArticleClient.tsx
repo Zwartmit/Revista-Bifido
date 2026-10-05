@@ -369,40 +369,45 @@ export default function ArticleClient({ article, character }: ArticleClientProps
     return (
         <article className="min-h-screen">
             {/* Featured Image */}
-            <div className="relative w-full h-[400px] md:h-[600px] mb-8">
-                <div className="absolute inset-0 bg-gray-900" />
+            <div className="relative w-full h-[50vh] md:h-[70vh] min-h-[400px] bg-black">
                 {article.featuredImage && (
-                    <Image src={article.featuredImage} alt={article.title} fill className="object-cover" priority />
+                    <Image src={article.featuredImage} alt={article.title} fill className="object-cover object-center opacity-60 z-10" priority />
                 )}
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
-                <div className="absolute bottom-0 left-0 right-0 py-8 text-white">
-                    <div className="container mx-auto">
+                {/* Gradient that smoothly blends into the black background below */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 md:via-black/20 to-transparent z-20" />
+                
+                <div className="absolute bottom-0 left-0 right-0 py-8 md:py-16 text-white z-30">
+                    <div className="container mx-auto px-4">
                         <Link href={`/${character.slug}/articulos`} 
-                            className="inline-flex items-center px-4 py-2 rounded-full border border-white/20 backdrop-blur-md hover:scale-105 transition-all text-sm font-medium mb-4"
+                            className="inline-flex items-center px-4 py-2 hover:bg-white hover:text-black transition-all text-xs font-mono font-bold tracking-widest uppercase mb-6 rounded-full"
                             style={{ backgroundColor: charPrimary, color: '#000' }}>
                             <ArrowLeft size={16} className="mr-2" />
                             Volver a {character.name}
                         </Link>
-                        <h1 className="font-display text-4xl md:text-6xl mb-4">{article.title}</h1>
+                        <h1 className="font-display text-5xl md:text-7xl lg:text-8xl mb-2 leading-[0.9] uppercase drop-shadow-xl">{article.title}</h1>
                     </div>
                 </div>
             </div>
 
             {/* Article Content */}
-            <div ref={contentRef} className="container mx-auto pb-20 mt-12">
+            <div ref={contentRef} className="container mx-auto pb-20 mt-12 px-4">
                 {/* Meta */}
-                <div className="flex items-center justify-between mb-10 pb-6 border-b border-gray-800">
-                    <div>
-                        <p className="text-lg font-semibold text-white">{article.author}</p>
-                        <p className="text-gray-400">{formatDate(article.publishedAt)}</p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12 pb-8 border-b border-white/10">
+                    <div className="flex flex-col items-start gap-2">
+                        <div className="flex items-center gap-2" style={{ color: charPrimary }}>
+                            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em]">Escrito por</span>
+                        </div>
+                        <p className="font-display text-2xl text-white">{article.author || 'Redacción'}</p>
+                        <p className="font-mono text-gray-400 text-sm">{formatDate(article.publishedAt)}</p>
                     </div>
                     <div className="flex items-center">
                         <button
                             onClick={() => navigator.share?.({ title: article.title, text: article.excerpt, url: shareUrl })}
-                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-900 transition-colors"
+                            className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/10 font-mono text-xs font-bold uppercase tracking-widest"
                             aria-label="Compartir"
                         >
-                            <Share2 size={20} />
+                            <Share2 size={16} />
+                            Compartir
                         </button>
                     </div>
                 </div>

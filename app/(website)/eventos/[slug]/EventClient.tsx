@@ -296,88 +296,87 @@ export default function EventClient({ event }: EventClientProps) {
     return (
         <article className="min-h-screen bg-black pb-20">
             {/* Hero */}
-            <div className="relative w-full h-[400px] md:h-[600px] mb-8 bg-gray-900">
-                <div
-                    className="absolute inset-0 bg-cover bg-center opacity-40 blur-2xl scale-110"
-                    style={{ backgroundImage: image ? `url('${image}')` : undefined }}
-                />
+            <div className="relative w-full h-[50vh] md:h-[70vh] min-h-[400px] bg-black">
                 {image && (
-                    <Image src={image} alt={name} fill className="object-contain z-10" priority />
+                    <Image src={image} alt={name} fill className="object-cover object-center opacity-60 z-10" priority />
                 )}
-                <div className="absolute inset-0 z-20" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }} />
-                <div className="absolute bottom-0 left-0 right-0 py-8 text-white z-30">
-                    <div className="container mx-auto">
+                {/* Gradient that smoothly blends into the black background below */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 md:via-black/20 to-transparent z-20" />
+                
+                <div className="absolute bottom-0 left-0 right-0 py-8 md:py-16 text-white z-30">
+                    <div className="container mx-auto px-4">
                         <Link
                             href="/eventos"
-                            className="inline-flex items-center px-4 py-2 rounded-full border border-black/10 hover:scale-105 transition-all text-sm font-medium mb-4 bg-bifido-neon text-black"
+                            className="inline-flex items-center px-4 py-2 hover:bg-white hover:text-black transition-all text-xs font-mono font-bold tracking-widest uppercase mb-6 bg-bifido-neon text-black rounded-full"
                         >
                             <ArrowLeft size={16} className="mr-2" />
                             Volver a Eventos
                         </Link>
-                        <h1 className="font-display text-4xl md:text-6xl mb-4">{name}</h1>
+                        <h1 className="font-display text-5xl md:text-7xl lg:text-8xl mb-2 leading-[0.9] uppercase drop-shadow-xl">{name}</h1>
                     </div>
                 </div>
             </div>
 
             {/* Info Bar */}
-            <div className="container mx-auto">
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 py-8 border-y border-white/10 mb-12">
+            <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 py-12 border-t border-white/10 mb-16">
                     {/* Date */}
-                    <div className="flex flex-col items-start gap-3 order-1">
-                        <div className="flex items-center gap-2 text-bifido-red">
-                            <Calendar size={18} />
-                            <span className="text-xs font-bold uppercase tracking-widest">Fecha y Hora</span>
+                    <div className="flex flex-col items-start gap-4">
+                        <div className="flex items-center gap-3 text-bifido-neon">
+                            <Calendar size={24} />
+                            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em]">Fecha y Hora</span>
                         </div>
                         {event.date && (
                             <div className="text-white">
-                                <p className="text-gray-400 text-sm flex flex-col items-start">
-                                    <span className="text-white font-semibold text-lg">{formatEventDate(event.date)}</span>
-                                    <span className="text-white text-sm">{formatEventTime(event.date)}</span>
-                                </p>
+                                <p className="font-display text-2xl mb-1">{formatEventDate(event.date)}</p>
+                                <p className="font-mono text-gray-400 text-sm">{formatEventTime(event.date)}</p>
                             </div>
                         )}
                     </div>
 
                     {/* Location */}
-                    <div className="flex flex-col items-start text-left lg:items-center lg:text-center gap-3 order-3 lg:order-2 col-span-2 lg:col-span-1 pt-4 lg:pt-0 border-t border-white/5 lg:border-none">
-                        <div className="flex items-center gap-2 text-bifido-red">
-                            <MapPin size={18} />
-                            <span className="text-xs font-bold uppercase tracking-widest">Ubicación</span>
+                    <div className="flex flex-col items-start gap-4">
+                        <div className="flex items-center gap-3 text-bifido-neon">
+                            <MapPin size={24} />
+                            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em]">Ubicación</span>
                         </div>
-                        <div className="text-gray-400 text-sm flex flex-col items-start lg:items-center">
+                        <div className="flex flex-col items-start text-white">
                             {(event.address || event.city) && (
-                                <p className="leading-tight text-white">{event.address}{event.city ? `, ${event.city}` : ''}</p>
+                                <p className="font-display text-2xl mb-1 leading-tight">{event.address || event.city}</p>
+                            )}
+                            {(event.address && event.city) && (
+                                <p className="font-mono text-gray-400 text-sm">{event.city}</p>
                             )}
                             {event.virtualLink && (
                                 <a
                                     href={event.virtualLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center gap-2 bg-bifido-neon text-black font-bold text-xs uppercase tracking-widest mt-3 px-4 py-2 hover:bg-white transition-colors w-fit whitespace-nowrap rounded-full"
+                                    className="inline-flex items-center justify-center gap-2 bg-transparent border border-bifido-neon text-bifido-neon font-mono text-xs uppercase tracking-widest mt-4 px-6 py-2 hover:bg-bifido-neon hover:text-black transition-colors rounded-full"
                                 >
-                                    <Video size={14} />
-                                    Ver evento online
+                                    <Video size={16} />
+                                    Ver transmisión
                                 </a>
                             )}
                         </div>
                     </div>
 
                     {/* Price & Ticket */}
-                    <div className="flex flex-col items-end text-right gap-3 order-2 lg:order-3">
-                        <div className="flex items-center justify-end gap-1 text-bifido-red">
-                            <span className="font-bold text-lg leading-none">$</span>
-                            <span className="text-xs font-bold uppercase tracking-widest">Entrada</span>
+                    <div className="flex flex-col items-start gap-4">
+                        <div className="flex items-center gap-3 text-bifido-neon">
+                            <span className="font-display text-2xl leading-none">$</span>
+                            <span className="text-xs font-mono font-bold uppercase tracking-[0.2em]">Entrada</span>
                         </div>
-                        <div className="flex flex-col items-end gap-3">
-                            <p suppressHydrationWarning className="text-lg font-semibold text-white">
-                                {isFree ? 'Gratis' : price ? `$${Number(price).toLocaleString()} COP` : 'Consultar'}
+                        <div className="flex flex-col items-start">
+                            <p suppressHydrationWarning className="font-display text-3xl text-white mb-4">
+                                {isFree ? 'ENTRADA LIBRE' : price ? `$${Number(price).toLocaleString()} COP` : 'Consultar'}
                             </p>
                             {event.ticketLink && (
                                 <a
                                     href={event.ticketLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-white text-xs font-bold px-4 py-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-all duration-300"
+                                    className="bg-white text-black font-mono text-xs font-bold px-8 py-3 uppercase tracking-widest hover:bg-bifido-neon transition-colors rounded-full"
                                 >
                                     {isFree ? 'Inscribirse' : 'Comprar Ticket'}
                                 </a>

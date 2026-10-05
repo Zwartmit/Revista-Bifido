@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
 
     return {
-        title: `${articleData.title} | Revista Bífido`,
+        title: articleData.title,
         description: articleData.socialExcerpt || articleData.excerpt,
         openGraph: {
             title: articleData.title,

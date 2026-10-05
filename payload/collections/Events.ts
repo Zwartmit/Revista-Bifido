@@ -93,7 +93,7 @@ export const Events: CollectionConfig = {
                     name: 'ticketLink',
                     label: 'Link de registro / compra',
                     type: 'text',
-                    required: true,
+                    required: false,
                     admin: { style: { flex: 1 } },
                 },
                 {
