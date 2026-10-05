@@ -9,7 +9,7 @@ export const ScrollToTop = () => {
         const toggleVisibility = () => {
             // Find the main scrolling container in Payload. Often it's the document root, but it can be a specific div.
             // We can check both window and the main payload element.
-            const scrolled = window.scrollY > 300 || (document.querySelector('.payload-app') && document.querySelector('.payload-app')!.scrollTop > 300);
+            const scrolled = window.scrollY > 300 || (document.querySelector('.payload-app')?.scrollTop || 0) > 300;
             setIsVisible(scrolled);
         };
 
