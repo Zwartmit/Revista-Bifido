@@ -55,14 +55,28 @@ export const BackToSiteButton: React.FC = () => {
                     margin-left: 0 !important;
                 }
 
-                /* Arreglar el fondo blanco horrible del Autocompletar de Chrome */
+                /* Arreglar el fondo blanco/celeste (#E8F0FE) del Autocompletar de Chrome */
                 input:-webkit-autofill,
                 input:-webkit-autofill:hover, 
                 input:-webkit-autofill:focus, 
-                input:-webkit-autofill:active {
-                    -webkit-box-shadow: 0 0 0 30px #111111 inset !important;
-                    -webkit-text-fill-color: white !important;
-                    transition: background-color 5000s ease-in-out 0s !important;
+                input:-webkit-autofill:active,
+                input:-internal-autofill-selected,
+                input:autofill,
+                input:autofill:hover,
+                input:autofill:focus,
+                input:autofill:active {
+                    -webkit-box-shadow: 0 0 0 1000px #111111 inset !important;
+                    box-shadow: 0 0 0 1000px #111111 inset !important;
+                    -webkit-text-fill-color: #ffffff !important;
+                    color: #ffffff !important;
+                    caret-color: #ffffff !important;
+                    background-color: #111111 !important;
+                    color-scheme: dark !important;
+                    transition: background-color 5000000s ease-in-out 0s, color 5000000s ease-in-out 0s, box-shadow 5000000s ease-in-out 0s !important;
+                }
+
+                input {
+                    color-scheme: dark !important;
                 }
 
                 /* Hacer que el ojito de la contraseña (y otros iconos) sea más visible */

@@ -1,26 +1,31 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useField } from '@payloadcms/ui';
 
 export const ColorPicker: React.FC<{ path: string }> = ({ path }) => {
     const { value, setValue } = useField<string>({ path });
     const [localValue, setLocalValue] = useState(value || '');
+    // Use a ref for setValue to avoid stale closure issues without adding it to dep array
+    const setValueRef = useRef(setValue);
+    useEffect(() => { setValueRef.current = setValue; }, [setValue]);
 
     // Sync local value if value changes from outside
     useEffect(() => {
         setLocalValue(value || '');
     }, [value]);
 
-    // Debounce the Payload setValue so it doesn't lag while dragging the color picker
+    // Debounce the Payload setValue so it doesn't lag while dragging the color picker.
+    // Only dispatch if the user actually changed localValue (not on initial mount).
     useEffect(() => {
         const handler = setTimeout(() => {
             if (localValue !== (value || '')) {
-                setValue(localValue);
+                setValueRef.current(localValue);
             }
         }, 150);
         return () => clearTimeout(handler);
-    }, [localValue, value, setValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [localValue]); // intentionally omit `value` to avoid triggering on external value sync
 
     const handleClear = () => {
         setLocalValue('');

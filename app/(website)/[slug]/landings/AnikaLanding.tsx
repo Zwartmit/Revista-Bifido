@@ -1,175 +1,17 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
 
 import { getCharacterColors } from '@/lib/character-colors';
+import { useHorizontalLanding } from '@/lib/useHorizontalLanding';
 
 export default function AnikaLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
-  const stickyOffsetRef = useRef(120);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    const container = containerRef.current;
-    const track = trackRef.current;
-    const fill = fillRef.current;
-    if (!container || !track || !fill) return;
-
-    function measureHeaderOffset() {
-      const header = document.querySelector('header');
-      const h = header ? header.getBoundingClientRect().height : 120;
-      stickyOffsetRef.current = h;
-      document.documentElement.style.setProperty('--cl-header-h', `${h}px`);
-    }
-    measureHeaderOffset();
-
-    const labels = document.querySelectorAll<HTMLElement>('.anika-progress-label');
-    const slideDots = document.querySelectorAll<HTMLElement>('.anika-slide-dot');
-    const reveals = document.querySelectorAll<HTMLElement>('.anika-reveal');
-
-    function handleScroll() {
-      if (window.innerWidth >= 900) {
-        const rect = container!.getBoundingClientRect();
-        const viewHeight = window.innerHeight;
-        const stickyOffset = stickyOffsetRef.current;
-        if (rect.top <= stickyOffset && rect.bottom >= viewHeight) {
-          const scrolled = -(rect.top - stickyOffset);
-          const totalScrollable = rect.height - (viewHeight - stickyOffset);
-          const pct = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
-          const maxTranslate = track!.scrollWidth - window.innerWidth;
-          track!.style.transform = `translateX(-${pct * maxTranslate}px)`;
-          fill!.style.width = `${pct * 100}%`;
-          let activeIndex = 0;
-          if (pct >= 0.33 && pct < 0.66) activeIndex = 1;
-          else if (pct >= 0.66) activeIndex = 2;
-          labels.forEach((label, index) => label.classList.toggle('active', index === activeIndex));
-          slideDots.forEach((d, i) => { d.classList.toggle('active', i === activeIndex); d.setAttribute('aria-selected', i === activeIndex ? 'true' : 'false'); });
-          const activePanel = document.querySelectorAll('.anika-slide-panel')[activeIndex];
-          if (activePanel) activePanel.querySelectorAll<HTMLElement>('.anika-reveal').forEach(el => el.classList.add('visible'));
-        } else if (rect.top > stickyOffset) {
-          track!.style.transform = 'translateX(0px)'; fill!.style.width = '0%';
-          labels.forEach((l, i) => l.classList.toggle('active', i === 0));
-          slideDots.forEach((d, i) => { d.classList.toggle('active', i === 0); d.setAttribute('aria-selected', i === 0 ? 'true' : 'false'); });
-          document.querySelectorAll('.anika-slide-panel')[0]?.querySelectorAll<HTMLElement>('.anika-reveal').forEach(el => el.classList.add('visible'));
-        } else if (rect.bottom < viewHeight) {
-          const maxTranslate = track!.scrollWidth - window.innerWidth;
-          track!.style.transform = `translateX(-${maxTranslate}px)`; fill!.style.width = '100%';
-          labels.forEach((l, i) => l.classList.toggle('active', i === 2));
-          slideDots.forEach((d, i) => { d.classList.toggle('active', i === 2); d.setAttribute('aria-selected', i === 2 ? 'true' : 'false'); });
-          document.querySelectorAll('.anika-slide-panel')[2]?.querySelectorAll<HTMLElement>('.anika-reveal').forEach(el => el.classList.add('visible'));
-        }
-      } else { track!.style.transform = 'none'; }
-    }
-
-    const handleResize = () => { measureHeaderOffset(); handleScroll(); };
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-    handleScroll();
-
-    labels.forEach((label) => {
-      label.addEventListener('click', () => {
-        if (window.innerWidth >= 900) {
-          const index = parseInt(label.getAttribute('data-index') || '0');
-          const containerTop = window.scrollY + container!.getBoundingClientRect().top;
-          const totalScrollable = container!.offsetHeight - window.innerHeight;
-          window.scrollTo({ top: containerTop + (index / 2) * totalScrollable, behavior: 'smooth' });
-        }
-      });
-    });
-
-    slideDots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        const idx = parseInt(dot.getAttribute('data-idx') || '0');
-        if (window.innerWidth >= 900 && container) {
-          const cTop = window.scrollY + container.getBoundingClientRect().top;
-          const total = container.offsetHeight - window.innerHeight;
-          window.scrollTo({ top: cTop + (idx / 2) * total, behavior: 'smooth' });
-        }
-      });
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const isInsideHorizontal = entry.target.closest('.cl-horizontal-container');
-        if (entry.isIntersecting && (!isInsideHorizontal || window.innerWidth < 900)) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-    reveals.forEach((el, i) => {
-      observer.observe(el);
-      (el as HTMLElement).style.transitionDelay = `${(i % 4) * 0.08}s`;
-    });
-
-    const panels = document.querySelectorAll<HTMLElement>('.anika-slide-panel');
-    const handleWheel = (e: WheelEvent) => {
-      if (window.innerWidth >= 900) {
-        const panel = e.currentTarget as HTMLElement;
-        const isScrollable = panel.scrollHeight > panel.clientHeight;
-        if (!isScrollable) {
-          e.preventDefault();
-          window.scrollBy(0, e.deltaY);
-          return;
-        }
-        const isAtBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2;
-        const isAtTop = panel.scrollTop <= 2;
-        if (e.deltaY > 0 && isAtBottom) {
-          e.preventDefault();
-          window.scrollBy(0, e.deltaY);
-        } else if (e.deltaY < 0 && isAtTop) {
-          e.preventDefault();
-          window.scrollBy(0, e.deltaY);
-        }
-      }
-    };
-    panels.forEach(p => p.addEventListener('wheel', handleWheel, { passive: false }));
-
-    let touchStartY = 0;
-    const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
-    const handleTouchMove = (e: TouchEvent) => {
-      if (window.innerWidth >= 900) {
-        const panel = e.currentTarget as HTMLElement;
-        const touchY = e.touches[0].clientY;
-        const deltaY = touchStartY - touchY;
-        touchStartY = touchY;
-        const isScrollable = panel.scrollHeight > panel.clientHeight;
-        if (!isScrollable) {
-          e.preventDefault();
-          window.scrollBy(0, deltaY);
-          return;
-        }
-        const isAtBottom = panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2;
-        const isAtTop = panel.scrollTop <= 2;
-        if (deltaY > 0 && isAtBottom) {
-          e.preventDefault();
-          window.scrollBy(0, deltaY);
-        } else if (deltaY < 0 && isAtTop) {
-          e.preventDefault();
-          window.scrollBy(0, deltaY);
-        }
-      }
-    };
-    panels.forEach(p => {
-      p.addEventListener('touchstart', handleTouchStart, { passive: true });
-      p.addEventListener('touchmove', handleTouchMove, { passive: false });
-    });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-      panels.forEach(p => {
-        p.removeEventListener('wheel', handleWheel);
-        p.removeEventListener('touchstart', handleTouchStart);
-        p.removeEventListener('touchmove', handleTouchMove);
-      });
-      observer.disconnect();
-    };
-  }, []);
+  useHorizontalLanding({ containerRef, trackRef, fillRef });
 
   return (
     <div

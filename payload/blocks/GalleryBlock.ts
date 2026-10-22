@@ -14,7 +14,6 @@ export const GalleryBlock: Block = {
             label: 'Imágenes',
             type: 'array',
             required: true,
-            minRows: 2,
             labels: {
                 singular: 'Imagen',
                 plural: 'Imágenes',

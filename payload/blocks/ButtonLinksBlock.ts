@@ -13,7 +13,6 @@ export const ButtonLinksBlock: Block = {
             name: 'buttons',
             label: 'Botones',
             type: 'array',
-            minRows: 1,
             labels: {
                 singular: 'Botón',
                 plural: 'Botones',

@@ -1,24 +1,7 @@
 /* ───────────────────────────────────────────────────────────────────
-   AUTOFILL DETECTION KEYFRAMES
-   Estas animaciones son intencionalmente vacías. Su único propósito es
-   disparar el evento 'animationstart' en JavaScript cuando Chrome aplica
-   o cancela el autocompletado, permitiendo override de estilos inline.
+   Revista Bífido - Payload CMS Custom Styles
    ─────────────────────────────────────────────────────────────────── */
-@keyframes onAutofillStart { from {} to {} }
-@keyframes onAutofillCancel { from {} to {} }
 
-input:-webkit-autofill {
-  animation-name: onAutofillStart !important;
-  animation-duration: 1ms !important;
-  animation-iteration-count: 1 !important;
-}
-
-input:not(:-webkit-autofill) {
-  animation-name: onAutofillCancel !important;
-  animation-duration: 1ms !important;
-  animation-iteration-count: 1 !important;
-}
-/* ─────────────────────────────────────────────────────────────────── */
 
 [data-theme="dark"], [data-theme="dark"] body {
   --theme-bg: #000000;
@@ -43,12 +26,20 @@ input:not(:-webkit-autofill) {
 body { background-color: var(--theme-bg) !important; color: var(--theme-text) !important; }
 
 /* Custom styles for authentication pages (Login, Forgot, Reset, etc.) */
+html:has(.template-minimal),
+html:has(.template-minimal) body,
+html:has(.login),
+html:has(.login) body,
 html:has(.template--auth),
 html:has(.template--auth) body,
-html[data-theme="light"]:has(.template--auth),
-html[data-theme="light"]:has(.template--auth) body,
-html[data-theme="dark"]:has(.template--auth),
-html[data-theme="dark"]:has(.template--auth) body {
+html[data-theme="light"]:has(.template-minimal),
+html[data-theme="light"]:has(.template-minimal) body,
+html[data-theme="light"]:has(.login),
+html[data-theme="light"]:has(.login) body,
+html[data-theme="dark"]:has(.template-minimal),
+html[data-theme="dark"]:has(.template-minimal) body,
+html[data-theme="dark"]:has(.login),
+html[data-theme="dark"]:has(.login) body {
   --theme-bg: #000000 !important;
   --theme-text: #ffffff !important;
   --theme-primary: #ccfd29 !important;
@@ -56,6 +47,8 @@ html[data-theme="dark"]:has(.template--auth) body {
   --theme-input-border: #333333 !important;
 }
 
+.template-minimal,
+.login,
 .template--auth {
   background-color: var(--theme-bg) !important;
   background-size: cover !important;
@@ -66,6 +59,8 @@ html[data-theme="dark"]:has(.template--auth) body {
 
 /* Desktop background */
 @media (min-width: 768px) {
+  .template-minimal,
+  .login,
   .template--auth {
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/backgrounds/team_desk.png') !important;
   }
@@ -73,11 +68,15 @@ html[data-theme="dark"]:has(.template--auth) body {
 
 /* Mobile background */
 @media (max-width: 767px) {
+  .template-minimal,
+  .login,
   .template--auth {
     background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/backgrounds/team_movil.jpeg') !important;
   }
 }
 
+.template-minimal h1,
+.login h1,
 .template--auth h1 {
   color: var(--theme-primary) !important;
   font-family: 'Anton', sans-serif !important;
@@ -87,6 +86,8 @@ html[data-theme="dark"]:has(.template--auth) body {
   margin-bottom: 1.5rem !important;
 }
 
+.template-minimal p,
+.login p,
 .template--auth p {
   color: color-mix(in srgb, var(--theme-text) 80%, transparent) !important;
   line-height: 1.6 !important;
@@ -94,6 +95,8 @@ html[data-theme="dark"]:has(.template--auth) body {
   max-width: 500px !important;
 }
 
+.template-minimal a,
+.login a,
 .template--auth a {
   color: var(--theme-primary) !important;
   text-decoration: none !important;
@@ -101,16 +104,22 @@ html[data-theme="dark"]:has(.template--auth) body {
   transition: all 0.2s ease !important;
 }
 
+.template-minimal a:hover,
+.login a:hover,
 .template--auth a:hover {
   color: var(--theme-text) !important;
   text-decoration: underline !important;
 }
 
 /* Specifically for the "Email Sent" or "Check your email" view */
+.template-minimal .form-header,
+.login .form-header,
 .template--auth .form-header {
     margin-bottom: 2rem !important;
 }
 
+.template-minimal .btn--style-primary,
+.login .btn--style-primary,
 .template--auth .btn--style-primary {
   background-color: var(--theme-primary) !important;
   color: var(--theme-bg) !important;
@@ -122,6 +131,8 @@ html[data-theme="dark"]:has(.template--auth) body {
   border: none !important;
 }
 
+.template-minimal .btn--style-primary:hover,
+.login .btn--style-primary:hover,
 .template--auth .btn--style-primary:hover {
   background-color: #ffffff !important;
   transform: translateY(-2px) !important;
@@ -662,17 +673,25 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(204, 253, 41, 0.15) !important;
 }
 
-/* Fix for Chrome/Edge autofill styles overriding background but keeping white text */
-/* Fix for Chrome/Edge autofill styles overriding background but keeping white text */
-/* Restricted exclusively to auth pages via html:has() */
-html:has(.template--auth) input:-webkit-autofill,
-html:has(.template--auth) input:-webkit-autofill:hover, 
-html:has(.template--auth) input:-webkit-autofill:focus, 
-html:has(.template--auth) input:-webkit-autofill:active,
-html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):-webkit-autofill,
-html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):-webkit-autofill:hover, 
-html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):-webkit-autofill:focus, 
-html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([class*="rs__"]):not([id^="react-select"]):-webkit-autofill:active {
+/* =========================================================================
+   AUTOFILL FIX FOR CHROME / EDGE / SAFARI / FIREFOX
+   Evita que el navegador pinte el fondo celeste #E8F0FE con texto blanco #FEFBFE.
+   Forzamos fondo oscuro #111111 con box-shadow inset masivo y texto blanco nítido.
+   ========================================================================= */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active,
+input:-internal-autofill-selected,
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+textarea:autofill {
     -webkit-box-shadow: 0 0 0 1000px #111111 inset !important;
     box-shadow: 0 0 0 1000px #111111 inset !important;
     -webkit-text-fill-color: #ffffff !important;
@@ -680,11 +699,29 @@ html:has(.template--auth) input:not([type="checkbox"]):not([type="radio"]):not([
     caret-color: #ffffff !important;
     background-color: #111111 !important;
     color-scheme: dark !important;
-    transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s, box-shadow 5000s ease-in-out 0s !important;
+    transition: background-color 5000000s ease-in-out 0s, color 5000000s ease-in-out 0s, box-shadow 5000000s ease-in-out 0s !important;
+}
+
+/* En caso de inputs en tema claro dentro del panel de control interno */
+html[data-theme="light"]:not(:has(.template-minimal)):not(:has(.login)) input:-webkit-autofill,
+html[data-theme="light"]:not(:has(.template-minimal)):not(:has(.login)) input:-internal-autofill-selected,
+html[data-theme="light"]:not(:has(.template-minimal)):not(:has(.login)) input:autofill {
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+    -webkit-text-fill-color: #111111 !important;
+    color: #111111 !important;
+    caret-color: #111111 !important;
+    background-color: #ffffff !important;
+    color-scheme: light !important;
 }
 
 /* Force dark color scheme natively on all auth inputs so Chrome defaults to dark autofill */
-html:has(.template--auth) input {
+html:has(.template-minimal) input,
+html:has(.login) input,
+html:has(.template--auth) input,
+.template-minimal input,
+.login input,
+.template--auth input {
     color-scheme: dark !important;
 }
 
@@ -692,11 +729,15 @@ html:has(.template--auth) input {
    AUTHENTICATION PAGE SPECIFIC OVERRIDES 
    (Must be at the bottom to override all .field-type definitions)
    ========================================================================= */
+html:has(.template-minimal) form,
+html:has(.login) form,
 html:has(.template--auth) form {
     max-width: 450px !important;
     margin: 0 auto !important;
 }
 
+html:has(.template-minimal) .field-type,
+html:has(.login) .field-type,
 html:has(.template--auth) .field-type {
     width: 100% !important;
     display: block !important;
@@ -704,7 +745,11 @@ html:has(.template--auth) .field-type {
 }
 
 /* Ensure the password eye is easily visible against the dark inputs */
+html:has(.template-minimal) .password-field__toggle,
+html:has(.login) .password-field__toggle,
 html:has(.template--auth) .password-field__toggle, 
+html:has(.template-minimal) button[type="button"] svg,
+html:has(.login) button[type="button"] svg,
 html:has(.template--auth) button[type="button"] svg {
     color: #ffffff !important;
     opacity: 0.8 !important;
@@ -778,6 +823,8 @@ form {
 }
 
 /* 12 — group-field inside login form: no weird bg */
+html:has(.template-minimal) .group-field,
+html:has(.login) .group-field,
 html:has(.template--auth) .group-field {
     background: transparent !important;
     border: none !important;

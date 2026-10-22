@@ -3,32 +3,7 @@ import React, { useEffect } from 'react';
 
 export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
-
-    // ─── FIX AUTOFILL ────────────────────────────────────────────────────────────
-    // Chrome aplica sus estilos de autocompletado a través de una animación CSS interna.
-    // La técnica más confiable es detectarla con animationstart y aplicar estilos inline
-    // directamente sobre el elemento (que tienen la mayor prioridad posible).
-    const handleAutofill = (e: AnimationEvent) => {
-      const input = e.target as HTMLInputElement;
-      if (!input || input.tagName !== 'INPUT') return;
-
-      if (e.animationName === 'onAutofillStart') {
-        input.style.setProperty('background-color', '#111111', 'important');
-        input.style.setProperty('color', '#ffffff', 'important');
-        input.style.setProperty('-webkit-text-fill-color', '#ffffff', 'important');
-        input.style.setProperty('caret-color', '#ffffff', 'important');
-        input.style.setProperty('box-shadow', '0 0 0 1000px #111111 inset', 'important');
-      } else if (e.animationName === 'onAutofillCancel') {
-        input.style.removeProperty('background-color');
-        input.style.removeProperty('color');
-        input.style.removeProperty('-webkit-text-fill-color');
-        input.style.removeProperty('caret-color');
-        input.style.removeProperty('box-shadow');
-      }
-    };
-
-    document.addEventListener('animationstart', handleAutofill as EventListener, true);
-    // ─────────────────────────────────────────────────────────────────────────────
+    // ─── PASSWORD TOGGLE ─────────────────────────────────────────────────────────
 
     // ─── PASSWORD TOGGLE ─────────────────────────────────────────────────────────
     const injectToggles = () => {
@@ -111,7 +86,6 @@ export const PasswordToggleProvider: React.FC<{ children: React.ReactNode }> = (
 
     return () => {
       observer.disconnect();
-      document.removeEventListener('animationstart', handleAutofill as EventListener, true);
     };
   }, []);
 
