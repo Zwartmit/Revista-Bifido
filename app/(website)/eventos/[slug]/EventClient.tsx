@@ -161,14 +161,91 @@ const VideoBlockRenderer = ({ block }: { block: any }) => {
 const GalleryBlockRenderer = ({ block }: { block: any }) => {
     const images: any[] = block.images ?? [];
     if (!images.length) return null;
-    const colsClass = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-2';
+
+    const isMasonry = block.layout === 'masonry';
+    const gridCols = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
+
+    const aspectMap: Record<string, string> = {
+        square: 'aspect-square w-full',
+        landscape: 'aspect-video w-full',
+        classic: 'aspect-[4/3] w-full',
+        portrait: 'aspect-[3/4] w-full',
+        natural: 'w-full h-auto',
+    };
+    const aspectRatio = block.aspectRatio || 'square';
+    const isNatural = aspectRatio === 'natural';
+    const aspectClass = aspectMap[aspectRatio] || 'aspect-square w-full';
+    const imageFit = (block.imageFit || 'contain') as 'cover' | 'contain';
+
+    if (isMasonry) {
+        return (
+            <div className="columns-1 sm:columns-2 md:columns-3 gap-4 mb-10 [column-fill:_balance]">
+                {images.map((img: any, i: number) => {
+                    const imgData = img.image ?? img;
+                    return (
+                        <figure key={i} className="break-inside-avoid mb-4 flex flex-col">
+                            <FlipImageCard
+                                image={imgData}
+                                caption={img.caption}
+                                enableFlip={img.enableFlip}
+                                flipContentType={img.flipContentType}
+                                flipTitle={img.flipTitle}
+                                flipText={img.flipText}
+                                flipImage={img.flipImage}
+                                flipImageCaption={img.flipImageCaption}
+                                fill={false}
+                                width={imgData.width || 800}
+                                height={imgData.height || 600}
+                                imageClassName="rounded-xl w-full h-auto object-cover"
+                                imageFit="cover"
+                            />
+                            {img.caption && (
+                                <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                    {img.caption}
+                                </figcaption>
+                            )}
+                        </figure>
+                    );
+                })}
+            </div>
+        );
+    }
+
     return (
-        <div className={`grid ${colsClass} gap-4 mb-10`}>
+        <div className={`grid ${gridCols} gap-4 mb-10`}>
             {images.map((img: any, i: number) => {
                 const imgData = img.image ?? img;
+
+                if (isNatural) {
+                    return (
+                        <figure key={i} className="flex flex-col">
+                            <FlipImageCard
+                                image={imgData}
+                                caption={img.caption}
+                                enableFlip={img.enableFlip}
+                                flipContentType={img.flipContentType}
+                                flipTitle={img.flipTitle}
+                                flipText={img.flipText}
+                                flipImage={img.flipImage}
+                                flipImageCaption={img.flipImageCaption}
+                                fill={false}
+                                width={imgData.width || 800}
+                                height={imgData.height || 600}
+                                imageClassName="rounded-xl w-full h-auto object-cover"
+                                imageFit="cover"
+                            />
+                            {img.caption && (
+                                <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                    {img.caption}
+                                </figcaption>
+                            )}
+                        </figure>
+                    );
+                }
+
                 return (
                     <figure key={i} className="flex flex-col">
-                        <div className="relative aspect-square w-full">
+                        <div className={`relative ${aspectClass}`}>
                             <FlipImageCard
                                 image={imgData}
                                 caption={img.caption}
@@ -179,8 +256,9 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                 flipImage={img.flipImage}
                                 flipImageCaption={img.flipImageCaption}
                                 fill={true}
-                                aspectRatioClass="aspect-square w-full"
-                                imageClassName="object-cover rounded-xl"
+                                aspectRatioClass={aspectClass}
+                                imageFit={imageFit}
+                                imageClassName="rounded-xl"
                             />
                         </div>
                         {img.caption && (

@@ -20,6 +20,7 @@ interface FlipImageCardProps {
     className?: string;
     imageClassName?: string;
     alt?: string;
+    imageFit?: 'cover' | 'contain';
     onZoomClick?: () => void;
     onClick?: () => void;
 }
@@ -40,6 +41,7 @@ export default function FlipImageCard({
     className = '',
     imageClassName = 'rounded-2xl object-cover w-full h-auto',
     alt,
+    imageFit = 'cover',
     onZoomClick,
     onClick,
 }: FlipImageCardProps) {
@@ -61,20 +63,40 @@ export default function FlipImageCard({
         )
     );
 
+    // Ajuste de clases según si es contain o cover
+    const isContain = imageFit === 'contain';
+    const baseFitClass = isContain
+        ? imageClassName.replace('object-cover', 'object-contain').concat(' object-contain')
+        : imageClassName;
+
     // Caso estándar: Sin efecto flip
     if (!hasFlip) {
         if (fill) {
             return (
                 <div 
-                    className={`relative ${aspectRatioClass || 'w-full h-full'} ${className} ${onClick ? 'cursor-pointer' : ''}`}
+                    className={`relative ${aspectRatioClass || 'w-full h-full'} ${className} ${onClick ? 'cursor-pointer' : ''} bg-[#0d0d0d] rounded-2xl overflow-hidden border border-white/10 group`}
                     onClick={onClick}
                 >
                     <Image
                         src={imageUrl}
                         alt={finalAlt}
                         fill
-                        className={imageClassName}
+                        className={`${baseFitClass} ${isContain ? 'p-2' : ''} transition-transform duration-300 group-hover:scale-105`}
                     />
+                    {onZoomClick && (
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onZoomClick();
+                            }}
+                            className="absolute top-3 left-3 bg-black/75 hover:bg-black/95 backdrop-blur-md p-1.5 rounded-full border border-white/20 text-white/90 hover:text-bifido-neon transition-all z-20"
+                            aria-label="Ver imagen ampliada"
+                            title="Ver en grande"
+                        >
+                            <ZoomIn size={16} />
+                        </button>
+                    )}
                 </div>
             );
         }
@@ -88,7 +110,7 @@ export default function FlipImageCard({
                     alt={finalAlt}
                     width={width}
                     height={height}
-                    className={imageClassName}
+                    className={baseFitClass}
                 />
             </div>
         );
@@ -123,13 +145,13 @@ export default function FlipImageCard({
                 }}
             >
                 {/* ── Cara Frontal ── */}
-                <div className="bifido-flip-face relative w-full h-full rounded-2xl border border-white/10 hover:border-bifido-neon/50 transition-colors shadow-2xl bg-black">
+                <div className="bifido-flip-face relative w-full h-full rounded-2xl border border-white/10 hover:border-bifido-neon/50 transition-colors shadow-2xl bg-[#0d0d0d] overflow-hidden">
                     {fill ? (
                         <Image
                             src={imageUrl}
                             alt={finalAlt}
                             fill
-                            className={`${imageClassName} rounded-2xl select-none`}
+                            className={`${baseFitClass} ${isContain ? 'p-2' : ''} rounded-2xl select-none`}
                         />
                     ) : (
                         <Image
@@ -137,7 +159,7 @@ export default function FlipImageCard({
                             alt={finalAlt}
                             width={width}
                             height={height}
-                            className={`${imageClassName} rounded-2xl select-none block`}
+                            className={`${baseFitClass} rounded-2xl select-none block`}
                         />
                     )}
 
@@ -168,7 +190,7 @@ export default function FlipImageCard({
 
                 {/* ── Cara Trasera (Reverso 3D) ── */}
                 <div
-                    className="bifido-flip-back absolute inset-0 w-full h-full rounded-2xl border border-bifido-neon/40 bg-[#0d0d0d] flex flex-col justify-center items-center p-5 md:p-6 text-center z-20 shadow-2xl"
+                    className="bifido-flip-back absolute inset-0 w-full h-full rounded-2xl border border-bifido-neon/40 bg-[#0d0d0d] flex flex-col justify-center items-center p-5 md:p-6 text-center z-20 shadow-2xl overflow-hidden"
                 >
                     {flipContentType === 'image' && backImageUrl ? (
                         <div className="relative w-full h-full flex flex-col items-center justify-center">
@@ -176,7 +198,7 @@ export default function FlipImageCard({
                                 src={backImageUrl}
                                 alt={flipImageCaption || 'Imagen al reverso'}
                                 fill
-                                className="object-cover rounded-2xl select-none"
+                                className={`${isContain ? 'object-contain p-2' : 'object-cover'} rounded-2xl select-none`}
                             />
                             {flipImageCaption && (
                                 <div className="absolute bottom-3 inset-x-3 bg-black/85 backdrop-blur-md py-1.5 px-3 rounded-lg text-xs text-gray-300 font-sans z-10">

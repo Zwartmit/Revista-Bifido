@@ -196,7 +196,22 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
 
     if (!block.images?.length) return null;
     const images = block.images.filter((item: any) => item.image?.url);
-    const gridClass = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-2';
+
+    const isMasonry = block.layout === 'masonry';
+    const gridCols = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
+
+    // Proporciones disponibles para modo cuadrícula
+    const aspectMap: Record<string, string> = {
+        square: 'aspect-square w-full',
+        landscape: 'aspect-video w-full',
+        classic: 'aspect-[4/3] w-full',
+        portrait: 'aspect-[3/4] w-full',
+        natural: 'w-full h-auto',
+    };
+    const aspectRatio = block.aspectRatio || 'square';
+    const isNatural = aspectRatio === 'natural';
+    const aspectClass = aspectMap[aspectRatio] || 'aspect-square w-full';
+    const imageFit = (block.imageFit || 'contain') as 'cover' | 'contain';
 
     const openLightbox = (i: number) => setLightboxIndex(i);
     const closeLightbox = () => setLightboxIndex(null);
@@ -263,9 +278,55 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
         document.body
     ) : null;
 
+    if (isMasonry) {
+        return (
+            <>
+                <div className="columns-1 sm:columns-2 md:columns-3 gap-4 my-10 clear-both [column-fill:_balance]">
+                    {images.map((item: any, i: number) => {
+                        const hasFlip = Boolean(
+                            item.enableFlip && (
+                                (item.flipText && item.flipText.trim().length > 0) ||
+                                (item.flipTitle && item.flipTitle.trim().length > 0) ||
+                                item.flipImage?.url ||
+                                (typeof item.flipImage === 'string' && item.flipImage.length > 0)
+                            )
+                        );
+                        return (
+                            <figure key={i} className="break-inside-avoid mb-4 flex flex-col">
+                                <FlipImageCard
+                                    image={item.image}
+                                    caption={item.caption}
+                                    enableFlip={item.enableFlip}
+                                    flipContentType={item.flipContentType}
+                                    flipTitle={item.flipTitle}
+                                    flipText={item.flipText}
+                                    flipImage={item.flipImage}
+                                    flipImageCaption={item.flipImageCaption}
+                                    fill={false}
+                                    width={item.image.width || 800}
+                                    height={item.image.height || 600}
+                                    imageClassName="rounded-xl w-full h-auto object-cover"
+                                    imageFit="cover"
+                                    onZoomClick={() => openLightbox(i)}
+                                    onClick={!hasFlip ? () => openLightbox(i) : undefined}
+                                />
+                                {item.caption && (
+                                    <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                        {item.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        );
+                    })}
+                </div>
+                {lightbox}
+            </>
+        );
+    }
+
     return (
         <>
-            <div className={`grid ${gridClass} gap-4 my-10 clear-both`}>
+            <div className={`grid ${gridCols} gap-4 my-10 clear-both`}>
                 {images.map((item: any, i: number) => {
                     const hasFlip = Boolean(
                         item.enableFlip && (
@@ -275,9 +336,39 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                             (typeof item.flipImage === 'string' && item.flipImage.length > 0)
                         )
                     );
+
+                    if (isNatural) {
+                        return (
+                            <figure key={i} className="flex flex-col">
+                                <FlipImageCard
+                                    image={item.image}
+                                    caption={item.caption}
+                                    enableFlip={item.enableFlip}
+                                    flipContentType={item.flipContentType}
+                                    flipTitle={item.flipTitle}
+                                    flipText={item.flipText}
+                                    flipImage={item.flipImage}
+                                    flipImageCaption={item.flipImageCaption}
+                                    fill={false}
+                                    width={item.image.width || 800}
+                                    height={item.image.height || 600}
+                                    imageClassName="rounded-xl w-full h-auto object-cover"
+                                    imageFit="cover"
+                                    onZoomClick={() => openLightbox(i)}
+                                    onClick={!hasFlip ? () => openLightbox(i) : undefined}
+                                />
+                                {item.caption && (
+                                    <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                        {item.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        );
+                    }
+
                     return (
                         <figure key={i} className="flex flex-col">
-                            <div className="relative w-full h-48 md:h-64">
+                            <div className={`relative ${aspectClass}`}>
                                 <FlipImageCard
                                     image={item.image}
                                     caption={item.caption}
@@ -288,8 +379,9 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     flipImage={item.flipImage}
                                     flipImageCaption={item.flipImageCaption}
                                     fill={true}
-                                    aspectRatioClass="w-full h-48 md:h-64"
-                                    imageClassName="object-cover rounded-xl"
+                                    aspectRatioClass={aspectClass}
+                                    imageFit={imageFit}
+                                    imageClassName="rounded-xl"
                                     onZoomClick={() => openLightbox(i)}
                                     onClick={!hasFlip ? () => openLightbox(i) : undefined}
                                 />
