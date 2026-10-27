@@ -20,7 +20,7 @@ const serverFunction = async (payload: any) => {
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
-    <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
+    <RootLayout config={config} importMap={importMap} serverFunction={serverFunction} htmlProps={{ suppressHydrationWarning: true }}>
         {children}
         <ScrollToTop />
     </RootLayout>
