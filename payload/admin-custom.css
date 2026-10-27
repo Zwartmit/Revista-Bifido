@@ -831,4 +831,229 @@ html:has(.template--auth) .group-field {
     padding: 0 !important;
 }
 
+/* =========================================================================
+   13 — LIVE PREVIEW EN LA PARTE INFERIOR (FULL WIDTH EDITOR)
+   Reubica la previsualización debajo del formulario para no romper la UI
+   de columnas, tarjetas y bloques de contenido.
+   ========================================================================= */
+
+/* Contenedor principal: apilar verticalmente en columna sin separación excesiva */
+.collection-edit--is-live-previewing .collection-edit__main-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0 !important;
+}
+
+/* Formulario: 100% ancho completo sin compresión */
+.collection-edit--is-live-previewing .collection-edit__main {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 auto !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.collection-edit--is-live-previewing .collection-edit__form {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Eliminar el padding inferior excesivo (--spacing-view-bottom) de Payload al previsualizar */
+.collection-edit--is-live-previewing .document-fields__edit,
+.collection-edit--is-live-previewing .document-fields__main {
+    padding-bottom: 0 !important;
+}
+
+/* Eliminar margen inferior del contenedor de campo que aloja el botón */
+.collection-edit--is-live-previewing .field-type:has(.bifido-bottom-preview-wrapper),
+.field-type:has(.bifido-bottom-preview-wrapper) {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Eliminar gradiente lateral de Payload */
+.collection-edit__main--is-live-previewing::after {
+    display: none !important;
+}
+
+/* Ventana de Live Preview: pegada inmediatamente debajo del botón */
+.collection-edit--is-live-previewing .live-preview-window {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+    position: relative !important;
+    top: auto !important;
+    height: 850px !important;
+    min-height: 80vh !important;
+    margin-top: 0.35rem !important;
+    margin-bottom: 3rem !important;
+    border-radius: 12px !important;
+    border: 1px solid color-mix(in srgb, var(--theme-text) 15%, transparent) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+    overflow: hidden !important;
+    background: #000000 !important;
+}
+
+.collection-edit--is-live-previewing .live-preview-window .live-preview-window__wrapper {
+    height: 100% !important;
+}
+
+/* Barra de herramientas de Live Preview: fondo oscuro con contraste nítido */
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar {
+    background: #18181b !important;
+    border-bottom: 1px solid #27272a !important;
+    color: #f4f4f5 !important;
+}
+
+/* Forzar legibilidad blanca/clara en todo el texto de la barra */
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar *,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls * {
+    color: #f4f4f5 !important;
+}
+
+/* Botones de presets ("Responsive") y zoom ("100%") */
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls__breakpoint,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls__zoom,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls button,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls .popup-button {
+    color: #f4f4f5 !important;
+    font-weight: 500 !important;
+}
+
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls button:hover,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls button:hover *,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls a:hover,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls a:hover * {
+    color: var(--theme-primary, #ccfd29) !important;
+}
+
+/* Inputs numéricos de ancho y alto (ej: 1173 x 813) */
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar input,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls__size {
+    background-color: #27272a !important;
+    color: #ffffff !important;
+    border: 1px solid #3f3f46 !important;
+    border-radius: 4px !important;
+    width: 60px !important;
+    height: 28px !important;
+    padding: 0 4px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    box-shadow: none !important;
+}
+
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar input:focus,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls__size:focus {
+    border-color: var(--theme-primary, #ccfd29) !important;
+    background-color: #323238 !important;
+    color: #ffffff !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(204, 253, 41, 0.25) !important;
+}
+
+/* Iconos SVG (flechas, cruz de medidas, enlace externo) */
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar svg,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls svg {
+    color: #d4d4d8 !important;
+}
+
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar svg .stroke,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls svg .stroke {
+    stroke: #d4d4d8 !important;
+}
+
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls button:hover svg .stroke,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls a:hover svg .stroke {
+    stroke: var(--theme-primary, #ccfd29) !important;
+}
+
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar-controls__size-divider {
+    color: #a1a1aa !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 4px !important;
+}
+
+/* Dropdown emergente al abrir menú de resoluciones o zoom */
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar .popup__content {
+    background: #18181b !important;
+    border: 1px solid #3f3f46 !important;
+    color: #f4f4f5 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar .popup__content button {
+    color: #e4e4e7 !important;
+    background: transparent !important;
+}
+
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar .popup__content button:hover,
+.collection-edit--is-live-previewing .live-preview-window .live-preview-toolbar .popup__content button.popup-list__button--active {
+    background: #27272a !important;
+    color: var(--theme-primary, #ccfd29) !important;
+}
+
+/* =========================================================================
+   14 — BOTÓN INFERIOR DE VISTA PREVIA (SUTIL Y SIN CONTENEDOR PESADO)
+   ========================================================================= */
+
+.bifido-bottom-preview-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.35rem !important;
+    padding: 0 !important;
+}
+
+.bifido-btn-bottom-preview {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 0.55rem 1.25rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    outline: none !important;
+    line-height: 1.2 !important;
+    text-decoration: none !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.bifido-btn-bottom-preview:hover {
+    background: #374151 !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25) !important;
+}
+
+.bifido-btn-bottom-preview--active {
+    background: #1f2937 !important;
+    color: #f3f4f6 !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+.bifido-btn-bottom-preview--active:hover {
+    background: #374151 !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+}
+
+
+
+
+
 

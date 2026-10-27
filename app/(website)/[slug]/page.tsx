@@ -1,6 +1,6 @@
-import { getCharacterBySlug as getCharacterBySlugFromAPI } from '@/lib/api';
+import { getCharacterBySlug as getCharacterBySlugFromAPI, getCharacterById } from '@/lib/api';
 import { getCharacterBySlug as getCharacterBySlugStatic } from '@/lib/characters';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import AnikaLanding from './landings/AnikaLanding';
 import IncendiaLanding from './landings/IncendiaLanding';
@@ -26,9 +26,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function CharacterLandingPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
+    let character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
 
     if (!character) {
+        const charById = await getCharacterById(slug);
+        if (charById?.slug) {
+            redirect(`/${charById.slug}`);
+        }
         notFound();
     }
 

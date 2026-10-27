@@ -10,6 +10,14 @@ function getPayloadURL(path: string = '') {
   return `${PAYLOAD_URL}${path}`;
 }
 
+export const KNOWN_CHARACTER_SLUGS: Record<string | number, { name: string; slug: string }> = {
+  1: { name: 'Punkibrí', slug: 'punkibri' },
+  2: { name: 'Ánika', slug: 'anika' },
+  3: { name: 'Mordáz', slug: 'mordaz' },
+  4: { name: 'Malandra', slug: 'malandra' },
+  5: { name: 'Incendia', slug: 'incendia' },
+};
+
 /**
  * Función genérica para hacer llamadas a la API de Payload de forma segura
  */
@@ -66,13 +74,31 @@ export async function getArticles(limit?: number) {
  * Obtener un artículo por su slug
  */
 export async function getArticleBySlug(slug: string) {
+  const decoded = decodeURIComponent(slug);
+  const where = slug === decoded
+    ? { slug: { equals: slug } }
+    : { or: [{ slug: { equals: slug } }, { slug: { equals: decoded } }] };
   const params = {
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
+    where,
     limit: 1,
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs[0] ? transformPayloadArticle(data.docs[0]) : null;
+}
+
+/**
+ * Obtener un artículo por su slug sin filtro de status (para preview/borradores)
+ */
+export async function getArticleBySlugForPreview(slug: string) {
+  const decoded = decodeURIComponent(slug);
+  const where = slug === decoded
+    ? { slug: { equals: slug } }
+    : { or: [{ slug: { equals: slug } }, { slug: { equals: decoded } }] };
+  const params = {
+    where,
+    limit: 1,
+    depth: 2,
+    // Sin filtro de status: permite ver borradores
   };
   const data = await fetchPayload('articles', params);
   return data.docs[0] ? transformPayloadArticle(data.docs[0]) : null;
@@ -160,6 +186,31 @@ export async function getCharacterBySlug(slug: string) {
   };
   const data = await fetchPayload('characters', params);
   return data.docs[0] ? transformPayloadCharacter(data.docs[0]) : null;
+}
+
+/**
+ * Obtener un personaje por su ID o slug (soporta IDs numéricos de Payload)
+ */
+export async function getCharacterById(id: string | number) {
+  const known = KNOWN_CHARACTER_SLUGS[id];
+  if (known) {
+    const char = await getCharacterBySlug(known.slug);
+    if (char) return char;
+  }
+
+  const url = `${getPayloadURL(`/api/characters/${encodeURIComponent(String(id))}?depth=1`)}`;
+  try {
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    const doc = await res.json();
+    return doc ? transformPayloadCharacter(doc) : null;
+  } catch (error) {
+    console.error(`Error fetching character by id ${id}:`, error);
+    return null;
+  }
 }
 
 /**
@@ -323,6 +374,13 @@ export async function getLiveArchiveMembers() {
 // Transformadores de datos (Payload -> Frontend Interface)
 
 export function transformPayloadArticle(doc: any) {
+  const authorObj = typeof doc.author === 'object' && doc.author !== null ? doc.author : null;
+  const authorId = !authorObj && doc.author ? doc.author : (authorObj?.id || null);
+  const authorKnown = authorId ? KNOWN_CHARACTER_SLUGS[authorId] : null;
+
+  const authorName = authorObj?.name || authorKnown?.name || 'Revista Bífido';
+  const authorSlug = authorObj?.slug || authorKnown?.slug || (typeof authorId === 'string' && isNaN(Number(authorId)) ? authorId : 'general');
+
   return {
     id: doc.id,
     slug: doc.slug,
@@ -330,12 +388,12 @@ export function transformPayloadArticle(doc: any) {
     excerpt: doc.excerpt,
     socialExcerpt: doc.socialExcerpt || doc.excerpt || '',
     layout: doc.layout || [], // Bloques de contenido (Opción 2)
-    author: doc.author ? doc.author.name : 'Revista Bífido',
+    author: authorName,
     publishedAt: doc.publishedAt,
     featuredImage: doc.featuredImage?.url || '/images/placeholder-article.jpg',
     // Section derived directly from the author (character)
-    section: doc.author?.slug || 'general',
-    characterId: doc.author?.slug || '',
+    section: authorSlug,
+    characterId: authorSlug,
     categories: doc.categories?.map((c: any) => ({ name: c.name, slug: c.slug })) || [],
     featured: doc.featured || false,
     characterFeatured: doc.characterFeatured || false,

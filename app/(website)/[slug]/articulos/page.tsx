@@ -1,6 +1,6 @@
-import { getCharacterBySlug as getCharacterBySlugFromAPI, getArticlesByCharacter, getCategories } from '@/lib/api';
+import { getCharacterBySlug as getCharacterBySlugFromAPI, getCharacterById, getArticlesByCharacter, getCategories } from '@/lib/api';
 import { getCharacterBySlug as getCharacterBySlugStatic } from '@/lib/characters';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 
 import MalandraPage from './characters/MalandraPage';
@@ -39,9 +39,13 @@ export default async function ArticlesFeedPage({
 }) {
     const { slug } = await params;
 
-    const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
+    let character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
 
     if (!character) {
+        const charById = await getCharacterById(slug);
+        if (charById?.slug) {
+            redirect(`/${charById.slug}/articulos`);
+        }
         notFound();
     }
 

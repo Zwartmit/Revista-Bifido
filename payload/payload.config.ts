@@ -74,6 +74,19 @@ export default buildConfig({
                 },
             ],
         },
+        // Live Preview global: define el serverURL y breakpoints del iframe de preview
+        livePreview: {
+            url: ({ data, collectionConfig }) => {
+                const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+                return serverURL;
+            },
+            collections: ['articles'],
+            breakpoints: [
+                { label: 'Mobile', name: 'mobile', width: 375, height: 812 },
+                { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+                { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+            ],
+        },
         components: {
             graphics: {
                 Logo: {
