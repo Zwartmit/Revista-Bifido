@@ -625,17 +625,17 @@ function ElParcheContent() {
                                             key={member.id}
                                             className="bg-transparent flex flex-col group w-full max-w-[320px] mx-auto mt-12 border-2 border-bifido-neon rounded-3xl shadow-2xl hover:shadow-bifido-neon/40 transition-all duration-300"
                                         >
-                                            {/* Avatar (Original Bífido) */}
-                                            <div className="flex justify-center pt-7 pb-4 px-4">
-                                                <div className="relative w-28 h-28 rounded-full overflow-hidden border-[3px] border-white flex-shrink-0 bg-white flex items-center justify-center group-hover:border-bifido-neon transition-colors duration-300">
-                                                    {/* Foto de Perfil Base */}
-                                                    <div className={`transition-opacity duration-300 ${member.identifierImage ? 'group-hover:opacity-0' : ''} flex items-center justify-center w-full h-full`}>
+                                            {/* Avatar (3D Flip con imagen identificador) */}
+                                            <div className="flex justify-center pt-7 pb-4 px-4 [perspective:1000px]">
+                                                <div className={`relative w-28 h-28 rounded-full border-[3px] border-white flex-shrink-0 bg-white flex items-center justify-center group-hover:border-bifido-neon transition-transform duration-700 [transform-style:preserve-3d] ${member.identifierImage ? 'group-hover:[transform:rotateY(180deg)]' : ''}`}>
+                                                    {/* Foto de Perfil Base (Frente) */}
+                                                    <div className="absolute inset-0 rounded-full overflow-hidden flex items-center justify-center [backface-visibility:hidden]">
                                                         <Image
                                                             src={member.profileImage}
                                                             alt={member.name}
                                                             width={82}
                                                             height={82}
-                                                            className="object-contain w-[82px] h-[82px] shrink-0"
+                                                            className="object-contain w-[82px] h-[82px] shrink-0 select-none"
                                                         />
                                                         {/* Truco: Precargamos la versión de alta resolución en secreto para que el Modal abra al instante */}
                                                         <div className="absolute w-px h-px overflow-hidden opacity-0 pointer-events-none">
@@ -649,15 +649,15 @@ function ElParcheContent() {
                                                         </div>
                                                     </div>
 
-                                                    {/* Imagen Identificador (Hover) */}
+                                                    {/* Imagen Identificador (Reverso al rotar 180deg) */}
                                                     {member.identifierImage && (
-                                                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                                        <div className="absolute inset-0 rounded-full overflow-hidden bg-white flex items-center justify-center [backface-visibility:hidden] [transform:rotateY(180deg)]">
                                                             <Image
                                                                 src={member.identifierImage}
                                                                 alt={`${member.name} - Identificador`}
                                                                 width={82}
                                                                 height={82}
-                                                                className="object-contain"
+                                                                className="object-contain w-[82px] h-[82px] shrink-0 select-none"
                                                             />
                                                         </div>
                                                     )}

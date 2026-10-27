@@ -112,14 +112,29 @@ const RichTextBlockRenderer = ({ block, color }: { block: any; color: string }) 
     </div>
 );
 
+import FlipImageCard from '@/components/FlipImageCard';
+
 const ImageBlockRenderer = ({ block }: { block: any }) => {
     if (!block.image?.url) return null;
     const al = block.alignment || 'center';
     const sizeMap: Record<string, string> = { small: 'max-w-[40%]', medium: 'max-w-[60%]', large: 'max-w-[80%]', full: 'max-w-full' };
     const alignClass = al === 'full' ? 'w-full my-8' : al === 'left' ? `${sizeMap[block.size || 'medium']} float-left mr-6 mb-4 clear-left` : al === 'right' ? `${sizeMap[block.size || 'medium']} float-right ml-6 mb-4 clear-right` : `${sizeMap[block.size || 'medium']} mx-auto my-8 clear-both`;
+
     return (
         <figure className={`${alignClass}`}>
-            <Image src={block.image.url} alt={block.caption || block.image.filename || 'imagen'} width={block.image.width || 1200} height={block.image.height || 800} className="rounded-xl object-cover w-full h-auto" />
+            <FlipImageCard
+                image={block.image}
+                caption={block.caption}
+                enableFlip={block.enableFlip}
+                flipContentType={block.flipContentType}
+                flipTitle={block.flipTitle}
+                flipText={block.flipText}
+                flipImage={block.flipImage}
+                flipImageCaption={block.flipImageCaption}
+                width={block.image.width || 1200}
+                height={block.image.height || 800}
+                imageClassName="rounded-2xl object-cover w-full h-auto"
+            />
             {block.caption && <figcaption className="text-center text-sm text-gray-500 mt-3">{block.caption}</figcaption>}
         </figure>
     );
@@ -150,7 +165,19 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
         <div className={`flex flex-col md:flex-row gap-6 my-10 clear-both items-start ${imgRight ? 'md:flex-row-reverse' : ''}`}>
             {block.image?.url && (
                 <figure className={`${imgW} shrink-0`}>
-                    <Image src={block.image.url} alt={block.imageCaption || block.image.filename || 'imagen'} width={block.image.width || 800} height={block.image.height || 600} className="rounded-xl object-cover w-full h-auto" />
+                    <FlipImageCard
+                        image={block.image}
+                        caption={block.imageCaption}
+                        enableFlip={block.enableFlip}
+                        flipContentType={block.flipContentType}
+                        flipTitle={block.flipTitle}
+                        flipText={block.flipText}
+                        flipImage={block.flipImage}
+                        flipImageCaption={block.flipImageCaption}
+                        width={block.image.width || 800}
+                        height={block.image.height || 600}
+                        imageClassName="rounded-xl object-cover w-full h-auto"
+                    />
                     {block.imageCaption && <figcaption className="text-center text-xs text-gray-500 mt-2">{block.imageCaption}</figcaption>}
                 </figure>
             )}
@@ -238,23 +265,43 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
 
     return (
         <>
-            <div className={`grid ${gridClass} gap-3 my-10 clear-both`}>
-                {images.map((item: any, i: number) => (
-                    <figure
-                        key={i}
-                        className="overflow-hidden rounded-xl group cursor-zoom-in"
-                        onClick={() => openLightbox(i)}
-                    >
-                        <Image
-                            src={item.image.url}
-                            alt={item.caption || item.image.filename || `foto ${i + 1}`}
-                            width={item.image.width || 800}
-                            height={item.image.height || 600}
-                            className="object-cover w-full h-48 md:h-64 group-hover:scale-105 transition-transform duration-300"
-                        />
-                        {item.caption && <figcaption className="text-center text-xs text-gray-500 mt-1 pb-1">{item.caption}</figcaption>}
-                    </figure>
-                ))}
+            <div className={`grid ${gridClass} gap-4 my-10 clear-both`}>
+                {images.map((item: any, i: number) => {
+                    const hasFlip = Boolean(
+                        item.enableFlip && (
+                            (item.flipText && item.flipText.trim().length > 0) ||
+                            (item.flipTitle && item.flipTitle.trim().length > 0) ||
+                            item.flipImage?.url ||
+                            (typeof item.flipImage === 'string' && item.flipImage.length > 0)
+                        )
+                    );
+                    return (
+                        <figure key={i} className="flex flex-col">
+                            <div className="relative w-full h-48 md:h-64">
+                                <FlipImageCard
+                                    image={item.image}
+                                    caption={item.caption}
+                                    enableFlip={item.enableFlip}
+                                    flipContentType={item.flipContentType}
+                                    flipTitle={item.flipTitle}
+                                    flipText={item.flipText}
+                                    flipImage={item.flipImage}
+                                    flipImageCaption={item.flipImageCaption}
+                                    fill={true}
+                                    aspectRatioClass="w-full h-48 md:h-64"
+                                    imageClassName="object-cover rounded-xl"
+                                    onZoomClick={() => openLightbox(i)}
+                                    onClick={!hasFlip ? () => openLightbox(i) : undefined}
+                                />
+                            </div>
+                            {item.caption && (
+                                <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                    {item.caption}
+                                </figcaption>
+                            )}
+                        </figure>
+                    );
+                })}
             </div>
             {lightbox}
         </>

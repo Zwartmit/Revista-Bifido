@@ -114,14 +114,28 @@ const RichTextBlockRenderer = ({ block }: { block: any }) => {
     );
 };
 
+import FlipImageCard from '@/components/FlipImageCard';
+
 const ImageBlockRenderer = ({ block }: { block: any }) => {
     const src = block.image?.url ?? block.image;
     if (!src) return null;
+
     return (
         <figure className="mb-10">
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden">
-                <Image src={src} alt={block.caption ?? 'Imagen del evento'} fill className="object-cover" />
-            </div>
+            <FlipImageCard
+                image={src}
+                caption={block.caption}
+                enableFlip={block.enableFlip}
+                flipContentType={block.flipContentType}
+                flipTitle={block.flipTitle}
+                flipText={block.flipText}
+                flipImage={block.flipImage}
+                flipImageCaption={block.flipImageCaption}
+                fill={true}
+                aspectRatioClass="aspect-video"
+                imageClassName="object-cover rounded-2xl"
+                alt={block.caption ?? 'Imagen del evento'}
+            />
             {block.caption && (
                 <figcaption className="text-center text-sm text-gray-500 mt-3 italic">{block.caption}</figcaption>
             )}
@@ -151,11 +165,30 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
     return (
         <div className={`grid ${colsClass} gap-4 mb-10`}>
             {images.map((img: any, i: number) => {
-                const src = img.image?.url ?? img.url ?? img;
+                const imgData = img.image ?? img;
                 return (
-                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden">
-                        <Image src={src} alt={img.caption ?? `Imagen ${i + 1}`} fill className="object-cover hover:scale-105 transition-transform duration-500" />
-                    </div>
+                    <figure key={i} className="flex flex-col">
+                        <div className="relative aspect-square w-full">
+                            <FlipImageCard
+                                image={imgData}
+                                caption={img.caption}
+                                enableFlip={img.enableFlip}
+                                flipContentType={img.flipContentType}
+                                flipTitle={img.flipTitle}
+                                flipText={img.flipText}
+                                flipImage={img.flipImage}
+                                flipImageCaption={img.flipImageCaption}
+                                fill={true}
+                                aspectRatioClass="aspect-square w-full"
+                                imageClassName="object-cover rounded-xl"
+                            />
+                        </div>
+                        {img.caption && (
+                            <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                {img.caption}
+                            </figcaption>
+                        )}
+                    </figure>
                 );
             })}
         </div>
@@ -174,7 +207,19 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
         <div className={`flex flex-col md:flex-row gap-6 my-10 clear-both items-start ${imgRight ? 'md:flex-row-reverse' : ''}`}>
             {block.image?.url && (
                 <figure className={`${imgW} shrink-0`}>
-                    <Image src={block.image.url} alt={block.imageCaption || block.image.filename || 'imagen'} width={block.image.width || 800} height={block.image.height || 600} className="rounded-xl object-cover w-full h-auto" />
+                    <FlipImageCard
+                        image={block.image}
+                        caption={block.imageCaption}
+                        enableFlip={block.enableFlip}
+                        flipContentType={block.flipContentType}
+                        flipTitle={block.flipTitle}
+                        flipText={block.flipText}
+                        flipImage={block.flipImage}
+                        flipImageCaption={block.flipImageCaption}
+                        width={block.image.width || 800}
+                        height={block.image.height || 600}
+                        imageClassName="rounded-xl object-cover w-full h-auto"
+                    />
                     {block.imageCaption && <figcaption className="text-center text-xs text-gray-500 mt-2">{block.imageCaption}</figcaption>}
                 </figure>
             )}

@@ -17,6 +17,35 @@ export const Events: CollectionConfig = {
     admin: {
         useAsTitle: 'name',
         defaultColumns: ['name', 'date', 'category', 'locationType', 'isFeatured'],
+        // Botón "Ver en sitio": abre el evento en nueva pestaña
+        preview: async (doc) => {
+            const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+            const eventSlug = doc?.slug;
+            if (eventSlug) {
+                return `${serverURL}/eventos/${eventSlug}`;
+            }
+            return null;
+        },
+        // Live Preview: iframe dentro del admin con cambios en tiempo real
+        livePreview: {
+            url: async ({ data }) => {
+                const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+                const previewSecret = process.env.PAYLOAD_PREVIEW_SECRET || process.env.PAYLOAD_SECRET || '';
+                const eventSlug = data?.slug || (typeof data?.name === 'string'
+                    ? data.name
+                        .toLowerCase()
+                        .trim()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .replace(/[^a-z0-9 -]/g, '')
+                        .replace(/\s+/g, '-')
+                        .replace(/-+/g, '-')
+                    : null);
+                if (!eventSlug) return `${serverURL}/eventos`;
+                const eventUrl = `/eventos/${eventSlug}`;
+                return `${serverURL}/api/preview?secret=${previewSecret}&url=${encodeURIComponent(eventUrl)}`;
+            },
+        },
     },
     access: {
         read: () => true,
@@ -220,6 +249,17 @@ export const Events: CollectionConfig = {
                 SeparatorBlock,
                 ButtonLinksBlock,
             ],
+        },
+
+        // ── BOTÓN Y CONTROLES DE VISTA PREVIA INFERIOR ──
+        {
+            name: 'bottomPreviewToggle',
+            type: 'ui',
+            admin: {
+                components: {
+                    Field: '@/payload/components/BottomPreviewToggle#BottomPreviewToggle',
+                },
+            },
         },
     ],
 };

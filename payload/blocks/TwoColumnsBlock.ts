@@ -1,4 +1,5 @@
 import type { Block } from 'payload';
+import { flipCardFields } from './flipFields';
 
 export const TwoColumnsBlock: Block = {
     slug: 'twoColumnsBlock',
@@ -48,6 +49,7 @@ export const TwoColumnsBlock: Block = {
                 { label: '60% imagen / 40% texto', value: '60-40' },
             ],
         },
+        flipCardFields,
     ],
 };
 

@@ -1,4 +1,5 @@
 import type { Block } from 'payload';
+import { flipCardFields } from './flipFields';
 
 export const ImageBlock: Block = {
     slug: 'imageBlock',
@@ -45,6 +46,7 @@ export const ImageBlock: Block = {
                 { label: 'Completo (100%)', value: 'full' },
             ],
         },
+        flipCardFields,
     ],
 };
 

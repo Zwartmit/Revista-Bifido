@@ -1,4 +1,5 @@
 import type { Block } from 'payload';
+import { flipCardFields } from './flipFields';
 
 export const GalleryBlock: Block = {
     slug: 'galleryBlock',
@@ -31,6 +32,7 @@ export const GalleryBlock: Block = {
                     label: 'Leyenda (opcional)',
                     type: 'text',
                 },
+                flipCardFields,
             ],
         },
         {
