@@ -80,7 +80,7 @@ export default function PunkibriLanding() {
                     <p className="cl-section-label">02 — Territorio y amenazas</p>
                     <h2 className="cl-section-title">Donde todo<br /><em>florece lento</em></h2>
                     <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.5)', marginBottom: '8px' }}>Su hogar existe en un solo lugar del planeta y eso lo hace único, pero también frágil. Cuando el territorio cambia, Punkibrí también está en riesgo.</p>
-                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.35)', marginBottom: '32px' }}><em>Resiste en las alturas… pero incluso aquí, el mundo está cambiando.</em></p>
+                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.62)', marginBottom: '32px' }}><em>Resiste en las alturas… pero incluso aquí, el mundo está cambiando.</em></p>
                     <div className="cl-amenazas-lista">
                       <div className="cl-amenaza-item"><span className="cl-amenaza-num">01</span>Expansión agrícola en zonas de páramo</div>
                       <div className="cl-amenaza-item"><span className="cl-amenaza-num">02</span>Quemas e incendios de ecosistemas altoandinos</div>
@@ -119,9 +119,9 @@ export default function PunkibriLanding() {
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Medio ambiente &amp; territorio</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Cuidado. Colectivo. Sin neutralidad.</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Verde Páramo / Amarillo y Púrpura</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Chivito del Ruiz<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.35)' }}>Oxypogon stubelii</span></div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Chivito del Ruiz<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.62)' }}>Oxypogon stubelii</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Animismo &amp; defensa del territorio</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">127 años<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.35)' }}>(en años de colibrí)</span></div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">127 años<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.62)' }}>(en años de colibrí)</span></div></div>
                   </div>
                 </div>
               </section>

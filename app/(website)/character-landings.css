@@ -4,7 +4,7 @@
 .cl-wrap {
   background-color: #1a1a1a;
   color: #f0efeb;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-googlesans), system-ui, sans-serif;
   min-height: 100vh;
   position: relative;
 }
@@ -70,8 +70,8 @@
 }
 .cl-hero-nombre .acento { color: var(--cl-p1); }
 .cl-hero-tagline {
-  font-family: 'Roboto', sans-serif; font-style: italic;
-  font-size: clamp(1rem, 2vw, 1.25rem); color: rgba(255,255,255,0.6);
+  font-family: var(--font-googlesans), system-ui, sans-serif; font-style: italic;
+  font-size: clamp(1rem, 2vw, 1.25rem); color: rgba(255,255,255,0.78);
   margin-top: 28px; line-height: 1.6; max-width: 440px;
   opacity: 0; animation: cl-fadeUp 0.9s ease 0.4s forwards;
 }
@@ -82,8 +82,8 @@
 }
 .cl-meta-badge {
   font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 8px 16px; border: 1px solid rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.45); transition: all 0.3s ease;
+  padding: 8px 16px; border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7); transition: all 0.3s ease;
   cursor: default; position: relative; overflow: hidden;
 }
 .cl-meta-badge::before {
@@ -96,7 +96,7 @@
 .cl-scroll-cta {
   position: absolute; bottom: 80px; left: 80px;
   font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); display: flex; align-items: center; gap: 12px;
+  color: rgba(255,255,255,0.6); display: flex; align-items: center; gap: 12px;
   opacity: 0; animation: cl-fadeUp 0.8s ease 0.5s forwards;
   z-index: 3;
 }
@@ -129,6 +129,38 @@
 /* Slide content is moved by the page scroll (see lib/useHorizontalLanding.ts), never scrolled inside the panel */
 .cl-slide-panel > section { will-change: transform; transition: transform 0.1s ease-out; }
 .cl-slide-panel .cl-section-title { margin-bottom: 24px; }
+.cl-slide-panel::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 84px; z-index: 3;
+  background: linear-gradient(to top, #1a1a1a 18%, rgba(26,26,26,0));
+  pointer-events: none; opacity: 0; transition: opacity 0.3s ease;
+}
+.cl-slide-panel::before {
+  content: 'Sigue ↓'; position: absolute; left: 50%; bottom: 10px; z-index: 4;
+  transform: translateX(-50%); pointer-events: none; opacity: 0; transition: opacity 0.3s ease;
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cl-p1);
+}
+.cl-slide-panel.has-more::after, .cl-slide-panel.has-more::before { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .cl-slide-panel.has-more::before { animation: cl-nudge 1.8s ease-in-out infinite; }
+}
+@keyframes cl-nudge { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 4px); } }
+
+/* Slide 3 asimétrico: bio a la izquierda, fichas escalonadas a la derecha */
+@media (min-width: 1100px) {
+  .cl-slide-panel .cl-personaje-inner {
+    max-width: none; display: grid; align-items: start;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); column-gap: clamp(40px, 5vw, 88px);
+  }
+  .cl-slide-panel .cl-personaje-inner > .cl-section-label,
+  .cl-slide-panel .cl-personaje-inner > .cl-personaje-intro,
+  .cl-slide-panel .cl-personaje-inner > .cl-personaje-voz { grid-column: 1; }
+  .cl-slide-panel .cl-datos-personaje {
+    grid-column: 2; grid-row: 1 / span 3; align-self: center;
+    grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .cl-slide-panel .cl-dato-card { border-left: 2px solid var(--cl-p1); }
+  .cl-slide-panel .cl-dato-card:nth-child(even) { margin-top: 28px; }
+}
 @media (min-width: 900px) {
   .cl-slide-panel .cl-mapa-placeholder { max-height: calc(100dvh - var(--cl-header-h, 120px) - 200px); min-height: 260px; }
 }
@@ -174,7 +206,7 @@
 .cl-progress-labels { display: flex; justify-content: space-between; }
 .cl-progress-label {
   font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); cursor: pointer; transition: color 0.3s ease;
+  color: rgba(255,255,255,0.6); cursor: pointer; transition: color 0.3s ease;
 }
 .cl-progress-label.active { color: #f0efeb; font-weight: 600; }
 
@@ -192,7 +224,7 @@
   font-family: 'Anton', sans-serif; font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1.1; color: #f0efeb; margin-bottom: 40px;
 }
-.cl-section-title em { font-style: italic; color: rgba(255,255,255,0.45); }
+.cl-section-title em { font-style: italic; color: rgba(255,255,255,0.62); }
 .cl-especie-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
 .cl-especie-stat {
   padding: 18px 18px; background: rgba(255,255,255,0.03);
@@ -205,10 +237,10 @@
 }
 .cl-especie-stat .stat-label {
   font-size: 0.65rem; letter-spacing: 0.15em;
-  text-transform: uppercase; color: rgba(255,255,255,0.35);
+  text-transform: uppercase; color: rgba(255,255,255,0.62);
 }
 .cl-especie-texto { display: flex; flex-direction: column; gap: 20px; }
-.cl-especie-texto p { font-size: 0.9rem; line-height: 1.8; color: rgba(255,255,255,0.6); }
+.cl-especie-texto p { font-size: 0.9rem; line-height: 1.8; color: rgba(255,255,255,0.75); }
 .cl-especie-texto strong { color: #f0efeb; }
 .cl-alerta-box {
   margin-top: 20px; padding: 16px 20px;
@@ -218,7 +250,7 @@
   font-size: 0.6rem; font-weight: 600; letter-spacing: 0.25em;
   text-transform: uppercase; color: var(--cl-p1); margin-bottom: 8px;
 }
-.cl-alerta-box p { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,0.5); }
+.cl-alerta-box p { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,0.72); }
 
 /* ─── TERRITORIO ─── */
 .cl-section-territorio {
@@ -230,7 +262,7 @@
 .cl-amenaza-item {
   display: flex; align-items: center; gap: 16px; padding: 12px 16px;
   border: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem;
-  color: rgba(255,255,255,0.5); letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.72); letter-spacing: 0.05em;
   transition: all 0.3s ease; cursor: default;
 }
 .cl-amenaza-item:hover { border-color: rgba(255,255,255,0.25); color: #f0efeb; background: rgba(255,255,255,0.03); }
@@ -252,21 +284,21 @@
   position: relative; overflow: hidden;
 }
 .cl-personaje-bg-text {
-  position: absolute; top: -20px; left: -20px;
+  position: absolute; right: -1vw; bottom: -0.14em;
   font-family: 'Anton', sans-serif; font-size: 20vw;
-  color: rgba(255,255,255,0.012); letter-spacing: -0.05em;
+  color: rgba(255,255,255,0.04); color: color-mix(in srgb, var(--cl-p1) 5%, transparent); letter-spacing: -0.05em;
   pointer-events: none; white-space: nowrap; line-height: 1;
 }
 .cl-personaje-inner { position: relative; z-index: 2; max-width: 780px; }
 .cl-personaje-intro {
-  font-family: 'Roboto', sans-serif; font-size: clamp(1.4rem, 3vw, 2rem);
+  font-family: var(--font-googlesans), system-ui, sans-serif; font-size: clamp(1.4rem, 3vw, 2rem);
   line-height: 1.4; color: rgba(255,255,255,0.9); margin-bottom: 28px;
 }
-.cl-personaje-intro em { font-style: italic; color: rgba(255,255,255,0.4); }
+.cl-personaje-intro em { font-style: italic; color: rgba(255,255,255,0.6); }
 .cl-personaje-voz { padding-left: 32px; border-left: 2px solid var(--cl-p1); margin-bottom: 28px; }
 .cl-personaje-voz p {
-  font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.1rem;
-  line-height: 1.75; color: rgba(255,255,255,0.65); margin-bottom: 10px;
+  font-family: var(--font-googlesans), system-ui, sans-serif; font-style: italic; font-size: 1.1rem;
+  line-height: 1.75; color: rgba(255,255,255,0.8); margin-bottom: 10px;
 }
 .cl-personaje-voz p:last-child { margin-bottom: 0; }
 .cl-personaje-voz strong { font-style: normal; color: #f0efeb; }
@@ -280,7 +312,7 @@
   font-size: 0.6rem; font-weight: 600; letter-spacing: 0.25em;
   text-transform: uppercase; color: var(--cl-p1); margin-bottom: 12px;
 }
-.cl-dato-card .dato-val { font-family: 'Roboto', sans-serif; font-size: 1.05rem; color: rgba(255,255,255,0.8); line-height: 1.4; }
+.cl-dato-card .dato-val { font-family: var(--font-googlesans), system-ui, sans-serif; font-size: 1.05rem; color: rgba(255,255,255,0.8); line-height: 1.4; }
 
 /* ─── MANIFIESTO ─── */
 .cl-section-manifiesto {
@@ -294,7 +326,7 @@
   pointer-events: none; z-index: 1;
 }
 .cl-manifiesto-wrap { max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 2; }
-.cl-manifiesto-sub { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 12px; }
+.cl-manifiesto-sub { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 12px; }
 .cl-manifiesto-quote {
   font-family: 'Anton', sans-serif; font-size: clamp(2.2rem, 5vw, 4.5rem);
   line-height: 1.05; letter-spacing: 0.02em; color: #f0efeb; margin: 40px 0;
@@ -303,7 +335,7 @@
 }
 .cl-manifiesto-wrap.visible .cl-manifiesto-quote { opacity: 1; transform: none; transition-delay: 0.25s; }
 .cl-manifiesto-quote .highlight { color: var(--cl-p1); display: block; }
-.cl-manifiesto-author { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.18); }
+.cl-manifiesto-author { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
 
 /* ─── DIVISOR ─── */
 .cl-divisor { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); margin: 0 80px; }
@@ -325,7 +357,7 @@
 .cl-tema-card:hover::before { transform: scaleX(1); }
 .cl-tema-num { font-family: 'Anton', sans-serif; font-size: 4rem; color: rgba(255,255,255,0.035); line-height: 1; margin-bottom: 20px; }
 .cl-tema-title { font-family: 'Anton', sans-serif; font-size: 1.3rem; color: #f0efeb; margin-bottom: 12px; }
-.cl-tema-desc { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,0.4); }
+.cl-tema-desc { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,0.68); }
 
 /* ─── CTA ─── */
 .cl-section-cta {
@@ -335,11 +367,11 @@
 .cl-cta-left { max-width: 520px; }
 .cl-cta-title { font-family: 'Anton', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.95; color: #f0efeb; margin-bottom: 20px; }
 .cl-cta-title span { color: var(--cl-p1); }
-.cl-cta-sub { font-size: 0.85rem; line-height: 1.8; color: rgba(255,255,255,0.4); }
+.cl-cta-sub { font-size: 0.85rem; line-height: 1.8; color: rgba(255,255,255,0.68); }
 .cl-cta-btns { display: flex; flex-direction: column; gap: 12px; }
 .cl-btn {
   display: inline-flex; align-items: center; gap: 12px; padding: 16px 32px;
-  font-family: 'Roboto', sans-serif; font-size: 0.7rem; font-weight: 600;
+  font-family: var(--font-googlesans), system-ui, sans-serif; font-size: 0.7rem; font-weight: 600;
   letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none;
   cursor: pointer; border: none; transition: all 0.3s ease; position: relative; overflow: hidden;
 }
@@ -387,6 +419,7 @@
   .cl-horizontal-track { display: flex; flex-direction: column; width: 100% !important; height: auto !important; transform: none !important; }
   .cl-slide-panel { width: 100% !important; height: auto !important; padding: 60px 32px !important; }
   .cl-slide-panel > section { transform: none !important; }
+  .cl-slide-panel::before, .cl-slide-panel::after { display: none; }
   .cl-progress-container { display: none !important; }
 }
 @media (max-width: 600px) {

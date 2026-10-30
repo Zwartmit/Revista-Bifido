@@ -79,8 +79,8 @@ export default function IncendiaLanding() {
                   <div className="cl-reveal inc-reveal">
                     <p className="cl-section-label">02 — Territorio y amenazas</p>
                     <h2 className="cl-section-title">El territorio<br /><em>también arde</em></h2>
-                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.55)', marginBottom: '8px' }}>Adaptarse no significa ser invencible. La deforestación y la expansión de ciudades reducen los espacios donde puede moverse libremente.</p>
-                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.35)', marginBottom: '32px' }}><em>Sé adaptarme. Pero incluso los más astutos necesitan territorio para sobrevivir.</em></p>
+                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.74)', marginBottom: '8px' }}>Adaptarse no significa ser invencible. La deforestación y la expansión de ciudades reducen los espacios donde puede moverse libremente.</p>
+                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.62)', marginBottom: '32px' }}><em>Sé adaptarme. Pero incluso los más astutos necesitan territorio para sobrevivir.</em></p>
                     <div className="cl-amenazas-lista">
                       <div className="cl-amenaza-item"><span className="cl-amenaza-num">01</span>Deforestación y pérdida de hábitat</div>
                       <div className="cl-amenaza-item"><span className="cl-amenaza-num">02</span>Expansión urbana y agrícola</div>
@@ -120,7 +120,7 @@ export default function IncendiaLanding() {
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Género, diversidad &amp; equidad</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Fuego. Argumentos. Sin filtro.</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Naranja Fuego / Malva y Terracota</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Zorra cangrejera<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.35)' }}>Cerdocyon thous</span></div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Zorra cangrejera<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.62)' }}>Cerdocyon thous</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Feminismo &amp; libertad de ser</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">36 años</div></div>
                   </div>

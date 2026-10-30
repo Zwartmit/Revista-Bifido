@@ -41,6 +41,7 @@ export function useHorizontalLanding({ containerRef, trackRef, fillRef }: Refs) 
     const labels = Array.from(container.querySelectorAll<HTMLElement>('.cl-progress-label'));
     const dots = Array.from(container.querySelectorAll<HTMLElement>('.cl-slide-dot'));
     const lastIndex = panels.length - 1;
+    const chrome = Array.from(container.querySelectorAll<HTMLElement>('.cl-slide-dots, .cl-progress-container'));
 
     const isDesktop = () => window.innerWidth >= DESKTOP_MIN_WIDTH;
 
@@ -70,6 +71,8 @@ export function useHorizontalLanding({ containerRef, trackRef, fillRef }: Refs) 
       container!.style.height = '';
       track!.style.transform = '';
       fill!.style.width = '';
+      chrome.forEach(el => { el.style.opacity = ''; });
+      panels.forEach(p => p.classList.remove('has-more'));
       sections.forEach(s => { if (s) s.style.transform = ''; });
       container!.querySelectorAll<HTMLElement>('.cl-reveal').forEach(el => el.classList.add('visible'));
     }
@@ -122,13 +125,18 @@ export function useHorizontalLanding({ containerRef, trackRef, fillRef }: Refs) 
 
       const maxX = track!.scrollWidth - sticky!.clientWidth;
       track!.style.transform = `translateX(${-(p / lastIndex) * maxX}px)`;
+      const current = Math.round(p);
       sections.forEach((section, i) => {
         if (!section) return;
         const y = Math.min(Math.max(s - segStart[i] - pad, 0), overflow[i]);
         section.style.transform = y ? `translateY(${-y}px)` : '';
+        panels[i].classList.toggle('has-more', i === current && overflow[i] - y > 8);
       });
       fill!.style.width = `${total ? (s / total) * 100 : 0}%`;
-      setActive(Math.round(p));
+      // the slide dots / progress bar fade out during the final pause, before the section unpins
+      const tail = Math.min(Math.max((total - s) / pad, 0), 1);
+      chrome.forEach(el => { el.style.opacity = tail < 1 ? String(tail) : ''; });
+      setActive(current);
     }
 
     function schedule() {

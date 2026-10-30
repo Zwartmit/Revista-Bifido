@@ -85,10 +85,10 @@ export default function AnikaLanding() {
                   <div className="cl-reveal anika-reveal">
                     <p className="cl-section-label">02 — Territorio y amenazas</p>
                     <h2 className="cl-section-title">Donde el cuidado<br /><em>no llega</em></h2>
-                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.55)', marginBottom: '8px' }}>
+                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.74)', marginBottom: '8px' }}>
                       Habita en las mismas zonas donde las comunidades viven. Eso la convierte en un riesgo real para humanos con poco acceso a información y atención médica. La desinformación mata más que el veneno.
                     </p>
-                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.35)', marginBottom: '32px' }}>
+                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.62)', marginBottom: '32px' }}>
                       <em>Estoy donde siempre estuve. El problema no soy yo. Es que no hay información sobre cómo convivir.</em>
                     </p>
                     <div className="cl-amenazas-lista">
@@ -129,7 +129,7 @@ export default function AnikaLanding() {
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Reducción de riesgos y daños</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Claro. Sin pánico. Sin moral.</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Cian / Menta y Lavanda</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Mapaná / Talla X<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.35)' }}>Bothrops asper</span></div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Mapaná / Talla X<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.62)' }}>Bothrops asper</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">El cuidado como resistencia</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">28 años</div></div>
                   </div>
