@@ -1,9 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { ShoppingBag, Tag, Store } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 
 // Dummy data for products
 const products = [
@@ -66,30 +64,38 @@ export default function MercadoPage() {
         ? products.filter(p => p.category === selectedCategory)
         : products;
 
+    const chipClass = (active: boolean) =>
+        `px-5 py-2 text-xs font-bold uppercase tracking-[0.18em] border transition-colors ${active
+            ? 'bg-bifido-neon border-bifido-neon text-bifido-black'
+            : 'border-white/25 text-gray-300 hover:border-bifido-neon hover:text-bifido-neon'
+        }`;
+
     return (
-        <div className="min-h-screen bg-black pt-24 md:pt-52 pb-20">
+        <div className="min-h-screen bg-black pt-24 md:pt-40 pb-20">
             <div className="container mx-auto px-4">
                 {/* Header */}
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-bifido-gray rounded-full mb-4">
-                        <Store className="text-white" size={32} />
-                    </div>
-                    <h1 className="font-display text-5xl md:text-6xl mb-4 text-white">
-                        Mercado Bífido
+                <div className="text-center md:text-left mb-12 md:mb-14 max-w-3xl">
+                    <span className="font-jack text-xs tracking-[0.3em] uppercase text-bifido-neon block mb-4">
+                        Tienda · vista previa
+                    </span>
+                    <h1 className="font-display text-6xl md:text-8xl leading-[0.9] uppercase text-white">
+                        Mercado <span className="text-bifido-neon">Bífido</span>
                     </h1>
-                    <p className="text-xl text-bifido-lightgray italic max-w-2xl mx-auto">
+                    <div className="w-20 h-[3px] bg-bifido-neon my-6 mx-auto md:mx-0" />
+                    <p className="text-xl text-bifido-lightgray italic">
                         &quot;Lleva la resistencia contigo&quot;
+                    </p>
+                    <p className="text-sm text-gray-400 mt-3">
+                        Colección de muestra: la tienda abre pronto.
                     </p>
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-wrap justify-center gap-4 mb-12">
+                <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-12" role="group" aria-label="Filtrar por categoría">
                     <button
                         onClick={() => setSelectedCategory(null)}
-                        className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${selectedCategory === null
-                            ? 'bg-white text-bifido-black'
-                            : 'bg-bifido-gray text-gray-300 hover:bg-gray-700'
-                            }`}
+                        aria-pressed={selectedCategory === null}
+                        className={chipClass(selectedCategory === null)}
                     >
                         Todos
                     </button>
@@ -97,10 +103,8 @@ export default function MercadoPage() {
                         <button
                             key={category}
                             onClick={() => setSelectedCategory(category)}
-                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${selectedCategory === category
-                                ? 'bg-white text-bifido-black'
-                                : 'bg-bifido-gray text-gray-300 hover:bg-gray-700'
-                                }`}
+                            aria-pressed={selectedCategory === category}
+                            className={chipClass(selectedCategory === category)}
                         >
                             {category}
                         </button>
@@ -108,47 +112,41 @@ export default function MercadoPage() {
                 </div>
 
                 {/* Products Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredProducts.map((product) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredProducts.map((product, i) => (
                         <div
                             key={product.id}
-                            className="group bg-bifido-gray rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-800 flex flex-col"
+                            style={{ animationDelay: `${i * 70}ms` }}
+                            className="group relative bg-[#0c0c0c] border border-white/10 hover:border-bifido-neon/60 transition-colors duration-300 flex flex-col animate-slide-up [animation-fill-mode:backwards] motion-reduce:animate-none overflow-hidden"
                         >
+                            {/* Accent bar */}
+                            <div className="absolute top-0 left-0 h-[3px] w-full bg-bifido-neon scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 z-10" />
+
                             {/* Image */}
-                            <div className="relative h-64 w-full bg-black overflow-hidden">
-                                {/* Placeholder visual if image fails or is placeholder */}
-                                <div className="absolute inset-0 flex items-center justify-center text-gray-700">
-                                    <ShoppingBag size={48} />
+                            <div className="relative h-64 w-full bg-black overflow-hidden bg-[repeating-linear-gradient(135deg,transparent_0_14px,rgba(184,255,0,0.05)_14px_15px)]">
+                                {/* Placeholder visual until real product photos are available */}
+                                <div className="absolute inset-0 flex items-center justify-center text-white/25">
+                                    <ShoppingBag size={48} strokeWidth={1.25} />
                                 </div>
-                                {/* Actual Image */}
-                                {/* Uncomment when real images are available
-                                <Image
-                                src={product.image}
-                                alt={product.name}
-                                fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                />
-                                */}
-                                <div className="absolute top-4 right-4 bg-black/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-white shadow-sm flex items-center gap-1">
-                                    <Tag size={12} />
+                                <span className="absolute top-4 left-4 border border-bifido-neon/60 bg-black/80 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-bifido-neon">
                                     {product.category}
-                                </div>
+                                </span>
                             </div>
 
                             {/* Content */}
                             <div className="p-6 flex-grow flex flex-col">
-                                <h3 className="font-display text-2xl mb-2 text-white group-hover:text-bifido-red transition-colors">
+                                <h3 className="font-display text-3xl leading-none mb-3 text-white uppercase group-hover:text-bifido-neon transition-colors">
                                     {product.name}
                                 </h3>
                                 <p className="text-gray-300 text-sm mb-4 flex-grow">
                                     {product.description}
                                 </p>
 
-                                <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
-                                    <span className="text-xl font-bold text-white">
-                                        ${product.price.toLocaleString()} COP
+                                <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                                    <span className="font-display text-3xl text-bifido-neon leading-none">
+                                        ${product.price.toLocaleString('es-CO')} <span className="text-sm text-gray-400">COP</span>
                                     </span>
-                                    <button className="bg-white text-bifido-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors flex items-center gap-2">
+                                    <button className="bg-bifido-neon text-bifido-black px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] hover:brightness-110 transition flex items-center gap-2">
                                         <ShoppingBag size={16} />
                                         Comprar
                                     </button>
@@ -161,10 +159,10 @@ export default function MercadoPage() {
                 {/* Empty State */}
                 {filteredProducts.length === 0 && (
                     <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">No se encontraron productos en esta categoría.</p>
+                        <p className="text-gray-400 text-lg">No se encontraron productos en esta categoría.</p>
                         <button
                             onClick={() => setSelectedCategory(null)}
-                            className="mt-4 text-bifido-red hover:underline font-medium"
+                            className="mt-4 text-bifido-neon hover:underline font-medium"
                         >
                             Ver todos los productos
                         </button>
