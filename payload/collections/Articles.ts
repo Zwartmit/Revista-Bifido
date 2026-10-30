@@ -15,6 +15,7 @@ const CHARACTER_ID_TO_SLUG: Record<string, string> = {
     '3': 'mordaz',
     '4': 'malandra',
     '5': 'incendia',
+    '6': 'incendia',
     punkibri: 'punkibri',
     anika: 'anika',
     mordaz: 'mordaz',
@@ -91,13 +92,18 @@ export const Articles: CollectionConfig = {
     admin: {
         useAsTitle: 'title',
         defaultColumns: ['title', 'author', 'publishedAt', 'status', 'featured'],
-        // Botón "Ver en sitio": abre el artículo publicado en nueva pestaña
+        // Botón "Ver en sitio": abre el artículo publicado en nueva pestaña (activa draftMode si es borrador)
         preview: async (doc, { req }) => {
             const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+            const previewSecret = process.env.PAYLOAD_PREVIEW_SECRET || process.env.PAYLOAD_SECRET || '';
             const authorSlug = await resolveCharacterSlug(doc?.author, req?.payload);
             const articleSlug = doc?.slug;
             if (articleSlug && authorSlug) {
-                return `${serverURL}/${authorSlug}/articulos/${articleSlug}`;
+                const articleUrl = `/${authorSlug}/articulos/${articleSlug}`;
+                if (doc?.status === 'draft' && previewSecret) {
+                    return `${serverURL}/api/preview?secret=${previewSecret}&url=${encodeURIComponent(articleUrl)}`;
+                }
+                return `${serverURL}${articleUrl}`;
             }
             return null;
         },
@@ -318,4 +324,3 @@ export const Articles: CollectionConfig = {
         },
     ],
 };
-

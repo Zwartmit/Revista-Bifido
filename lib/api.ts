@@ -16,6 +16,12 @@ export const KNOWN_CHARACTER_SLUGS: Record<string | number, { name: string; slug
   3: { name: 'Mordáz', slug: 'mordaz' },
   4: { name: 'Malandra', slug: 'malandra' },
   5: { name: 'Incendia', slug: 'incendia' },
+  6: { name: 'Incendia', slug: 'incendia' },
+  punkibri: { name: 'Punkibrí', slug: 'punkibri' },
+  anika: { name: 'Ánika', slug: 'anika' },
+  mordaz: { name: 'Mordáz', slug: 'mordaz' },
+  malandra: { name: 'Malandra', slug: 'malandra' },
+  incendia: { name: 'Incendia', slug: 'incendia' },
 };
 
 /**
@@ -53,6 +59,50 @@ async function fetchPayload(collection: string, params: any = {}, options: Reque
 }
 
 /**
+ * Asegura que relaciones críticas como la imagen destacada y el autor
+ * estén resueltas como objetos completos aunque Payload devuelva solo IDs
+ */
+async function ensureArticleRelations(doc: any) {
+  if (!doc) return doc;
+
+  // 1. Si featuredImage no vino poblado y es solo un ID
+  if (doc.featuredImage && typeof doc.featuredImage !== 'object') {
+    const mediaId = String(doc.featuredImage);
+    if (!mediaId.startsWith('http') && !mediaId.startsWith('/')) {
+      try {
+        const res = await fetch(getPayloadURL(`/api/media/${encodeURIComponent(mediaId)}`), {
+          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+        });
+        if (res.ok) {
+          doc.featuredImage = await res.json();
+        }
+      } catch (e) {
+        console.warn('Error fetching media fallback for article:', e);
+      }
+    }
+  }
+
+  // 2. Si author no vino poblado y es solo un ID
+  if (doc.author && typeof doc.author !== 'object') {
+    const authorId = String(doc.author);
+    try {
+      const res = await fetch(getPayloadURL(`/api/characters/${encodeURIComponent(authorId)}`), {
+        headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
+      });
+      if (res.ok) {
+        doc.author = await res.json();
+      }
+    } catch (e) {
+      console.warn('Error fetching character fallback for article:', e);
+    }
+  }
+
+  return doc;
+}
+
+/**
  * Obtener todos los artículos
  */
 export async function getArticles(limit?: number) {
@@ -71,7 +121,7 @@ export async function getArticles(limit?: number) {
 }
 
 /**
- * Obtener un artículo por su slug
+ * Obtener un artículo por su slug (con depth 2 para cargar bloques, imágenes y autor)
  */
 export async function getArticleBySlug(slug: string) {
   const decoded = decodeURIComponent(slug);
@@ -81,9 +131,12 @@ export async function getArticleBySlug(slug: string) {
   const params = {
     where,
     limit: 1,
+    depth: 2,
   };
   const data = await fetchPayload('articles', params);
-  return data.docs[0] ? transformPayloadArticle(data.docs[0]) : null;
+  if (!data.docs?.[0]) return null;
+  const doc = await ensureArticleRelations(data.docs[0]);
+  return transformPayloadArticle(doc);
 }
 
 /**
@@ -101,7 +154,9 @@ export async function getArticleBySlugForPreview(slug: string) {
     // Sin filtro de status: permite ver borradores
   };
   const data = await fetchPayload('articles', params);
-  return data.docs[0] ? transformPayloadArticle(data.docs[0]) : null;
+  if (!data.docs?.[0]) return null;
+  const doc = await ensureArticleRelations(data.docs[0]);
+  return transformPayloadArticle(doc);
 }
 
 /**
@@ -250,6 +305,145 @@ export async function searchArticles(query: string) {
 }
 
 /**
+ * Artículos destacados para la página de inicio
+ */
+export async function getFeaturedArticles() {
+  const params = {
+    where: {
+      featured: {
+        equals: true,
+      },
+      status: {
+        equals: 'published',
+      },
+    },
+    limit: 5,
+    sort: '-publishedAt',
+    depth: 1,
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs.map(transformPayloadArticle);
+}
+
+/**
+ * Artículo destacado principal del personaje (o el más reciente)
+ */
+export async function getCharacterFeaturedArticle(characterSlug: string) {
+  // 1. Intentar buscar el que tenga el check 'characterFeatured' activado
+  const featuredParams = {
+    where: {
+      and: [
+        {
+          'author.slug': {
+            equals: characterSlug,
+          },
+        },
+        {
+          characterFeatured: {
+            equals: true,
+          },
+        },
+      ],
+      status: {
+        equals: 'published',
+      },
+    },
+    limit: 1,
+    sort: '-publishedAt',
+    depth: 1,
+  };
+  const featuredData = await fetchPayload('articles', featuredParams);
+  if (featuredData.docs.length > 0) {
+    return transformPayloadArticle(featuredData.docs[0]);
+  }
+
+  // 2. Si no hay ninguno marcado explícitamente, traer el más reciente publicado
+  const recentParams = {
+    where: {
+      'author.slug': {
+        equals: characterSlug,
+      },
+      status: {
+        equals: 'published',
+      },
+    },
+    limit: 1,
+    sort: '-publishedAt',
+    depth: 1,
+  };
+  const recentData = await fetchPayload('articles', recentParams);
+  return recentData.docs[0] ? transformPayloadArticle(recentData.docs[0]) : null;
+}
+
+/**
+ * Artículos destacados para un personaje (excluyendo uno específico)
+ */
+export async function getCharacterArticles(characterSlug: string, excludeSlug?: string, limit: number = 3) {
+  const where: any = {
+    'author.slug': {
+      equals: characterSlug,
+    },
+    status: {
+      equals: 'published',
+    },
+  };
+
+  if (excludeSlug) {
+    where.slug = {
+      not_equals: excludeSlug,
+    };
+  }
+
+  const params = {
+    where,
+    limit,
+    sort: '-publishedAt',
+    depth: 1,
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs.map(transformPayloadArticle);
+}
+
+/**
+ * Artículos relacionados (misma categoría o autor, excluyendo el actual)
+ */
+export async function getRelatedArticles(currentSlug: string, characterSlug: string, categoryIds: string[] = [], limit: number = 3) {
+  const params = {
+    limit,
+    sort: '-publishedAt',
+    depth: 1,
+    where: {
+      and: [
+        {
+          slug: {
+            not_equals: currentSlug,
+          },
+        },
+        {
+          or: [
+            {
+              'author.slug': {
+                equals: characterSlug,
+              },
+            },
+            {
+              'categories.id': {
+                in: categoryIds,
+              },
+            },
+          ],
+        },
+      ],
+      status: {
+        equals: 'published',
+      },
+    },
+  };
+  const data = await fetchPayload('articles', params);
+  return data.docs.map(transformPayloadArticle);
+}
+
+/**
  * Búsqueda Global: artículos, eventos y personajes
  */
 export async function globalSearch(query: string) {
@@ -353,7 +547,7 @@ export async function getEventBySlug(slug: string) {
       },
     },
     limit: 1,
-    depth: 1, // Include relations
+    depth: 2, // Include relations and layout block media
   };
   const data = await fetchPayload('events', params);
   return data.docs[0] ? transformPayloadEvent(data.docs[0]) : null;
@@ -381,6 +575,15 @@ export function transformPayloadArticle(doc: any) {
   const authorName = authorObj?.name || authorKnown?.name || 'Revista Bífido';
   const authorSlug = authorObj?.slug || authorKnown?.slug || (typeof authorId === 'string' && isNaN(Number(authorId)) ? authorId : 'general');
 
+  let featuredImageUrl = '/images/placeholder-article.jpg';
+  if (doc.featuredImage) {
+    if (typeof doc.featuredImage === 'object' && doc.featuredImage?.url) {
+      featuredImageUrl = doc.featuredImage.url;
+    } else if (typeof doc.featuredImage === 'string' && (doc.featuredImage.startsWith('http') || doc.featuredImage.startsWith('/'))) {
+      featuredImageUrl = doc.featuredImage;
+    }
+  }
+
   return {
     id: doc.id,
     slug: doc.slug,
@@ -390,7 +593,7 @@ export function transformPayloadArticle(doc: any) {
     layout: doc.layout || [], // Bloques de contenido (Opción 2)
     author: authorName,
     publishedAt: doc.publishedAt,
-    featuredImage: doc.featuredImage?.url || '/images/placeholder-article.jpg',
+    featuredImage: featuredImageUrl,
     // Section derived directly from the author (character)
     section: authorSlug,
     characterId: authorSlug,
@@ -453,7 +656,6 @@ export function transformPayloadEvent(doc: any) {
     })) || [],
   };
 }
-
 
 export function transformPayloadLiveArchiveMember(doc: any) {
   return {
