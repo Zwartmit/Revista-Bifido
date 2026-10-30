@@ -221,7 +221,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                           <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-300" />
                         </div>
                         <div className="flex flex-col justify-center flex-1">
-                          <span className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1">{article.section}</span>
+                          <span className="font-mono text-[10px] uppercase tracking-widest text-white/60 mb-1">{article.section}</span>
                           <h4 className="font-display text-xl md:text-2xl text-white group-hover:text-white transition-colors leading-[1.1] mb-2 line-clamp-2">{article.title}</h4>
                           <p className="font-sans text-sm text-gray-400 line-clamp-1 hidden md:block">{article.excerpt}</p>
                         </div>
@@ -256,7 +256,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                           )}
                         </div>
 
-                        <div className="flex-shrink-0 hidden md:flex items-center gap-2 text-xs font-mono text-white/40 ml-4 z-10 w-32 justify-end">
+                        <div className="flex-shrink-0 hidden md:flex items-center gap-2 text-xs font-mono text-white/60 ml-4 z-10 w-32 justify-end">
                           <span className="truncate">{ev.location}</span>
                         </div>
                       </Link>

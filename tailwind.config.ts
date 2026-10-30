@@ -56,7 +56,7 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-googlesans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-bebas)', 'sans-serif'],
         jack: ['var(--font-jack)', 'monospace'],
         anton: ['var(--font-anton)', 'sans-serif'],

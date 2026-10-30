@@ -95,7 +95,7 @@ export default function SectionClient({ section, character, articles, categories
                     {/* Back link */}
                     <Link
                         href="/elparche"
-                        className="hero-anim inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/40 hover:text-white/70 uppercase mb-10 transition-colors"
+                        className="hero-anim inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/60 hover:text-white uppercase mb-10 transition-colors"
                     >
                         <ArrowLeft size={14} /> Volver a El Parche
                     </Link>
@@ -149,7 +149,7 @@ export default function SectionClient({ section, character, articles, categories
                         Publicaciones
                     </span>
                     <div className="flex-1 h-px bg-white/10" />
-                    <span className="font-googlesans text-white/30 text-sm tracking-widest">
+                    <span className="font-googlesans text-white/55 text-sm tracking-widest">
                         {articles.length} artículos
                     </span>
                 </div>
@@ -157,10 +157,10 @@ export default function SectionClient({ section, character, articles, categories
                 {articles.length === 0 ? (
                     /* Empty state */
                     <div className="text-center py-28 border border-[#1e1e1e]">
-                        <p className="font-display text-3xl text-white/10 tracking-widest uppercase mb-3">
+                        <p className="font-display text-3xl text-white/45 tracking-widest uppercase mb-3">
                             Sin publicaciones aún
                         </p>
-                        <p className="font-googlesans text-white/25 text-sm">
+                        <p className="font-googlesans text-white/50 text-sm">
                             El contenido de {character.name} llegará pronto.
                         </p>
                     </div>
@@ -212,14 +212,14 @@ export default function SectionClient({ section, character, articles, categories
 
                                         {/* Content */}
                                         <div className="flex flex-col flex-1 p-5">
-                                            <span className="font-googlesans text-xs text-white/30 tracking-wider mb-2 block">
+                                            <span className="font-googlesans text-xs text-white/55 tracking-wider mb-2 block">
                                                 {formatDate(article.publishedAt)}
                                             </span>
                                             <h3 className="font-display text-2xl text-white uppercase leading-[1.1] pt-1 mb-3 flex-1 group-hover:text-white/70 transition-colors">
                                                 {article.title}
                                             </h3>
                                             {article.excerpt && (
-                                                <p className="font-googlesans text-gray-500 text-base leading-relaxed line-clamp-2 mb-4">
+                                                <p className="font-googlesans text-gray-400 text-base leading-relaxed line-clamp-2 mb-4">
                                                     {article.excerpt}
                                                 </p>
                                             )}

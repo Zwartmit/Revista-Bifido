@@ -37,10 +37,10 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
             <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20 flex-1">
                 {articles.length === 0 ? (
                     <div className="text-center py-28 border border-[#1e1e1e]">
-                        <p className="font-display text-3xl text-white/10 tracking-widest uppercase mb-3">
+                        <p className="font-display text-3xl text-white/45 tracking-widest uppercase mb-3">
                             Sin publicaciones aún
                         </p>
-                        <p className="font-googlesans text-white/25 text-sm">
+                        <p className="font-googlesans text-white/50 text-sm">
                             Aún no hay artículos publicados en esta categoría.
                         </p>
                     </div>

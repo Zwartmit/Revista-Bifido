@@ -89,7 +89,7 @@ export default function FeaturedCarousel({ articles, section, primaryColor, dark
                     
                     <div className="flex flex-col justify-between p-8 lg:p-10 bg-[#080808] flex-1 z-10">
                         <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                            <span className="font-googlesans text-sm text-white/40 block mb-4">
+                            <span className="font-googlesans text-sm text-white/60 block mb-4">
                                 {formatDate(currentArticle.publishedAt)}
                             </span>
                             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl text-white uppercase leading-[1.1] pt-2 mb-5 line-clamp-3">

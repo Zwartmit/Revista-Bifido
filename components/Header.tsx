@@ -13,9 +13,19 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isCharacterMenuOpen, setIsCharacterMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [isCompact, setIsCompact] = useState(false);
     const pathname = usePathname();
     const menuRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Compact header once the page is scrolled: gives content back ~55px of height.
+    // Hysteresis (96 / 24) avoids flicker around the threshold.
+    useEffect(() => {
+        const onScroll = () => setIsCompact(prev => window.scrollY > (prev ? 24 : 96));
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -54,7 +64,7 @@ export default function Header() {
             <header
                 className="fixed top-0 left-0 right-0 z-50 border-b-2 border-bifido-neon bg-black transition-colors duration-500"
             >
-                <nav className="container mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 py-4 relative z-[70]" ref={menuRef}>
+                <nav className={`container mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 relative z-[70] transition-[padding] duration-300 ${isCompact ? 'py-2' : 'py-4'}`} ref={menuRef}>
                     {/* Mobile Layout - Logo and Menu Button side by side */}
                     <div className="flex lg:hidden items-center justify-between">
                         <Link href="/" className="relative h-12 w-48 lg:h-14 lg:w-56" onClick={() => setIsMenuOpen(false)}>
@@ -239,7 +249,7 @@ export default function Header() {
                 </nav>
 
                 {/* Scrolling Marquee Tape */}
-                <div className="w-full bg-bifido-neon overflow-hidden flex">
+                <div aria-hidden={isCompact} className={`w-full bg-bifido-neon overflow-hidden flex transition-[max-height] duration-300 ${isCompact ? 'max-h-0' : 'max-h-12'}`}>
                     <div className="whitespace-nowrap animate-marquee flex w-max py-[6px]">
                         {/* First exact half */}
                         <div className="flex items-center justify-around flex-shrink-0">

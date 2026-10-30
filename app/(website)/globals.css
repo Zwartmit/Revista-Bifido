@@ -135,3 +135,15 @@
     -webkit-transform: rotateY(180deg);
 }
 
+
+/* Accesibilidad: foco visible con el lime de la marca (especificidad 0: no pisa estilos propios) */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid #b8ff00;
+    outline-offset: 3px;
+}
+
+/* Movimiento reducido: detiene el ticker y el scroll suave */
+@media (prefers-reduced-motion: reduce) {
+    .animate-marquee { animation: none !important; }
+    html { scroll-behavior: auto !important; }
+}

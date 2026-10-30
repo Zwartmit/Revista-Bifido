@@ -36,7 +36,7 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
                 {/* Search */}
                 <div className="relative w-full sm:w-96">
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60">
                         <Search size={18} />
                     </div>
                     <input
@@ -49,7 +49,7 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
                     {searchQuery && (
                         <button 
                             onClick={() => setSearchQuery('')}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
                         >
                             <X size={16} />
                         </button>
@@ -59,7 +59,7 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
                 {/* Filter */}
                 {authors.length > 0 && (
                     <div className="flex items-center gap-3 w-full sm:w-auto">
-                        <Filter size={18} className="text-white/40" />
+                        <Filter size={18} className="text-white/60" />
                         <select
                             value={selectedAuthor || ''}
                             onChange={(e) => setSelectedAuthor(e.target.value || null)}
@@ -128,7 +128,7 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
                                         >
                                             {article.author}
                                         </span>
-                                        <span className="font-googlesans text-xs text-white/30 tracking-wider">
+                                        <span className="font-googlesans text-xs text-white/55 tracking-wider">
                                             {formatDate(article.publishedAt)}
                                         </span>
                                     </div>
@@ -137,7 +137,7 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
                                         {article.title}
                                     </h3>
 
-                                    <p className="font-googlesans text-gray-500 text-sm line-clamp-2 mt-auto">
+                                    <p className="font-googlesans text-gray-400 text-sm line-clamp-2 mt-auto">
                                         {article.excerpt}
                                     </p>
                                 </div>

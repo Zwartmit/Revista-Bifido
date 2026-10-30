@@ -66,7 +66,7 @@ export default function IncendiaPage({ section, character, articles }: Props) {
                 )}
 
                 <div className="relative z-10 w-full lg:w-[58%] px-6 sm:px-10 lg:px-16 xl:px-24 pb-32 pt-20 xl:pb-48">
-                    <Link href="/elparche" className="ha inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/40 hover:text-white/70 uppercase mb-10 transition-colors">
+                    <Link href="/elparche" className="ha inline-flex items-center gap-2 font-googlesans text-xs tracking-[0.25em] text-white/60 hover:text-white uppercase mb-10 transition-colors">
                         <ArrowLeft size={14} /> Volver a El Parche
                     </Link>
                     <h1 className="ha font-display text-6xl sm:text-7xl lg:text-8xl text-white leading-none mb-4 uppercase">
@@ -95,7 +95,7 @@ export default function IncendiaPage({ section, character, articles }: Props) {
                             </div>
                             <div>
                                 <p className="font-display text-sm tracking-widest uppercase text-white">{m.label}</p>
-                                <p className="font-googlesans text-xs text-white/30 leading-snug mt-1">{m.desc}</p>
+                                <p className="font-googlesans text-xs text-white/55 leading-snug mt-1">{m.desc}</p>
                             </div>
                         </div>
                     ))}
@@ -112,7 +112,7 @@ export default function IncendiaPage({ section, character, articles }: Props) {
 
                 {articles.length === 0 ? (
                     <div className="text-center py-28 border border-[#1e1e1e]">
-                        <p className="font-display text-3xl text-white/10 tracking-widest uppercase">Sin publicaciones aún</p>
+                        <p className="font-display text-3xl text-white/45 tracking-widest uppercase">Sin publicaciones aún</p>
                     </div>
                 ) : (
                     <>
@@ -142,7 +142,7 @@ export default function IncendiaPage({ section, character, articles }: Props) {
                                             )}
                                         </div>
                                         <div className="flex flex-col flex-1 p-5">
-                                            <span className="font-googlesans text-xs text-white/30 tracking-wider mb-2 block">
+                                            <span className="font-googlesans text-xs text-white/55 tracking-wider mb-2 block">
                                                 {formatDate(article.publishedAt)}
                                             </span>
                                             <h3 className="font-display text-2xl text-white uppercase leading-[1.1] pt-1 mb-3 flex-1 group-hover:text-white/70 transition-colors">
@@ -170,7 +170,7 @@ export default function IncendiaPage({ section, character, articles }: Props) {
                     <h2 className="font-display text-4xl sm:text-5xl text-white uppercase mb-4">
                         Conmemoración 8M
                     </h2>
-                    <p className="font-googlesans text-gray-500 text-base md:text-lg leading-relaxed max-w-xl">
+                    <p className="font-googlesans text-gray-400 text-base md:text-lg leading-relaxed max-w-xl">
                         Cobertura especial del Día Internacional de la Mujer con podcast, galería y video documental. Próximamente.
                     </p>
                 </div>
