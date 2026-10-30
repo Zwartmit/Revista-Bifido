@@ -40,3 +40,8 @@ next-env.d.ts
 # payload uploads
 public/media/*
 !public/media/.gitkeep
+
+# Skills de IA instaladas con `npx skills add` (herramientas locales, no parte del laboratorio)
+.agents/
+.claude/
+skills-lock.json
