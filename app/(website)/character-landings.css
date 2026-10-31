@@ -2,7 +2,7 @@
 /* Color variables (--cl-p1, --cl-p2) are injected per-component via style prop */
 
 .cl-wrap {
-  background-color: #1a1a1a;
+  background-color: #000000;
   color: #f0efeb;
   font-family: var(--font-googlesans), system-ui, sans-serif;
   min-height: 100vh;
@@ -44,7 +44,7 @@
 }
 .cl-hero-bg-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to right, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.8) 35%, rgba(26,26,26,0.2) 70%, rgba(26,26,26,0.6) 100%);
+  background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 35%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0.6) 100%);
 }
 .cl-hero-left {
   display: flex; flex-direction: column; justify-content: flex-start;
@@ -107,7 +107,7 @@
 }
 
 /* ─── HORIZONTAL SCROLL ─── */
-.cl-horizontal-container { position: relative; height: 300vh; background: #1a1a1a; }
+.cl-horizontal-container { position: relative; height: 300vh; background: #000000; }
 .cl-sticky-wrapper {
   position: sticky; top: var(--cl-header-h, 120px); height: calc(100dvh - var(--cl-header-h, 120px)); width: 100%; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-start;
@@ -131,7 +131,7 @@
 .cl-slide-panel .cl-section-title { margin-bottom: 24px; }
 .cl-slide-panel::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 84px; z-index: 3;
-  background: linear-gradient(to top, #1a1a1a 18%, rgba(26,26,26,0));
+  background: linear-gradient(to top, #000000 18%, rgba(0,0,0,0));
   pointer-events: none; opacity: 0; transition: opacity 0.3s ease;
 }
 .cl-slide-panel::before {
@@ -322,7 +322,7 @@
 }
 .cl-section-manifiesto::before {
   content: ''; position: absolute; inset: 0;
-  background: linear-gradient(rgba(26,26,26,0.85), rgba(26,26,26,0.85));
+  background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85));
   pointer-events: none; z-index: 1;
 }
 .cl-manifiesto-wrap { max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 2; }
@@ -382,7 +382,7 @@
   transform: skewX(-20deg); transition: left 0.55s ease; pointer-events: none;
 }
 .cl-btn:hover::after { left: 140%; }
-.cl-btn-primary { background: var(--cl-p1); color: #1a1a1a; }
+.cl-btn-primary { background: var(--cl-p1); color: #000000; }
 .cl-btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); }
 .cl-btn-secondary { background: transparent; color: #f0efeb; border: 1px solid rgba(255,255,255,0.18); }
 .cl-btn-secondary:hover { border-color: #f0efeb; background: rgba(255,255,255,0.05); }
@@ -403,7 +403,7 @@
 }
 @media (max-width: 899px) {
   .cl-hero { grid-template-columns: 1fr; min-height: auto; }
-  .cl-hero-bg-overlay { background: linear-gradient(to bottom, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.75) 50%, rgba(26,26,26,0.95) 100%); }
+  .cl-hero-bg-overlay { background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.75) 50%, rgba(0,0,0,0.95) 100%); }
   .cl-hero-right { display: none; }
   .cl-hero-left { padding-left: 32px !important; padding-right: 60px !important; }
   .cl-section-especie { grid-template-columns: 1fr; padding: 60px 32px; gap: 40px; }

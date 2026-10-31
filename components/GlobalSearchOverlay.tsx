@@ -139,7 +139,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full bg-transparent border-b-2 border-white/10 hover:border-white/30 focus:border-[#b8ff00] text-white font-display text-4xl md:text-5xl py-4 pl-16 outline-none transition-colors"
+              className="w-full bg-transparent border-b-2 border-white/10 hover:border-white/30 focus:border-white/40 text-white font-display text-4xl md:text-5xl py-4 pl-16 outline-none focus:outline-none focus-visible:outline-none ring-0 focus:ring-0 focus-visible:ring-0 transition-colors"
               autoComplete="off"
               spellCheck="false"
               autoFocus
@@ -216,7 +216,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                   <div className="flex flex-col gap-3">
                     {results.articles.map((article) => (
                       <Link href={`/${article.section}/articulos/${article.slug}`} key={article.id} onClick={onClose} className="group flex gap-4 p-3 border-l-2 border-transparent hover:border-[#b8ff00] hover:bg-white/5 transition-all duration-200">
-                        <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-zinc-900 relative overflow-hidden hidden sm:block">
+                        <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 bg-black relative overflow-hidden hidden sm:block">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-300" />
                         </div>

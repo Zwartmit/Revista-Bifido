@@ -65,9 +65,9 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
                             onChange={(e) => setSelectedAuthor(e.target.value || null)}
                             className="bg-white/5 border border-white/10 hover:border-white/20 text-white font-mono text-sm py-3 px-4 outline-none transition-colors w-full sm:w-auto cursor-pointer appearance-none"
                         >
-                            <option value="" className="bg-[#111] text-white">Todos los autores</option>
+                            <option value="" className="bg-black text-white">Todos los autores</option>
                             {authors.map(author => (
-                                <option key={author} value={author} className="bg-[#111] text-white">{author}</option>
+                                <option key={author} value={author} className="bg-black text-white">{author}</option>
                             ))}
                         </select>
                     </div>
@@ -92,7 +92,7 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
                             <Link
                                 key={article.id}
                                 href={`/${article.section}/articulos/${article.slug}`}
-                                className="group flex flex-col border border-[#1e1e1e] hover:border-transparent transition-all duration-300 overflow-hidden bg-[#080808]"
+                                className="group flex flex-col border border-[#1e1e1e] hover:border-transparent transition-all duration-300 overflow-hidden bg-black"
                                 style={{ '--hover-border-color': charColor } as React.CSSProperties}
                             >
                                 <style>{`
@@ -113,7 +113,7 @@ export default function CategoryClient({ initialArticles }: { initialArticles: a
                                             className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                                         />
                                     ) : (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-[#111]">
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black">
                                             <span className="font-display text-6xl opacity-10 text-white">B</span>
                                         </div>
                                     )}

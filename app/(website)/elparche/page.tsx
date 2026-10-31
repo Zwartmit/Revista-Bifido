@@ -406,31 +406,33 @@ function ElParcheContent() {
                             {/* 1. Center Layout: Character, Text, Arrows, Button */}
                             <div className="flex flex-col items-center justify-center relative w-full lg:w-auto">
 
-                                <div className="relative z-10 h-[300px] sm:h-[350px] w-full sm:w-[400px] flex items-end justify-center mb-0 mx-auto">
+                                <div className="relative z-10 h-[360px] sm:h-[400px] md:h-[410px] w-full sm:w-[400px] flex items-end justify-center mb-0 mx-auto">
                                     {/* Left Arrow */}
-                                    <button onClick={handlePrev} className="absolute left-[-10px] sm:-left-10 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-20">
-                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                                    <button onClick={handlePrev} className="absolute -left-3 sm:-left-8 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-30" aria-label="Personaje anterior">
+                                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
                                     </button>
 
                                     {/* Character 3D Model or Fallback Image */}
-                                    <div className="w-full h-full max-w-[80%] sm:max-w-full relative z-20 animate-float">
+                                    <div className="w-full h-full relative z-20 animate-float">
                                         <ModelViewer
                                             modelUrl={activeCharacter.model3d}
                                             fallbackImage={`/icons/${activeCharacter.slug}.png`}
                                             transparent
                                             primaryColor={activeColors.primary}
                                             secondaryColor={activeColors.secondary}
+                                            cameraPosition={[0, 0, 6.4]}
+                                            cameraFov={16.5}
                                         />
                                     </div>
 
                                     {/* Right Arrow */}
-                                    <button onClick={handleNext} className="absolute right-[-10px] sm:-right-10 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-20">
-                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                                    <button onClick={handleNext} className="absolute -right-3 sm:-right-8 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-30" aria-label="Siguiente personaje">
+                                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
                                     </button>
                                 </div>
 
                                 {/* Base concentric circles */}
-                                <div className="absolute z-0 top-[270px] sm:top-[320px] left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none opacity-40">
+                                <div className="absolute z-0 top-[320px] sm:top-[360px] md:top-[370px] left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none opacity-40">
                                     <div className="w-[200px] sm:w-[300px] h-[34px] sm:h-[50px] rounded-[100%] border border-white absolute"></div>
                                     <div className="w-[140px] sm:w-[200px] h-[24px] sm:h-[34px] rounded-[100%] border border-white absolute"></div>
                                     <div className="w-[70px] sm:w-[100px] h-[12px] sm:h-[16px] rounded-[100%] border border-white absolute"></div>

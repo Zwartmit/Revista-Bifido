@@ -20,7 +20,7 @@ export default function SupportBanner({ primaryColor }: SupportBannerProps) {
                     className="object-cover group-hover:scale-105 transition-all duration-700"
                 />
                 {/* Gradient Overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
             </div>
 
             <div className="relative z-10 p-10 sm:p-14 text-center">

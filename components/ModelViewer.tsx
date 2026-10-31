@@ -79,13 +79,17 @@ export default function ModelViewer({
   fallbackImage,
   transparent = false,
   primaryColor = '#b8ff00',
-  secondaryColor = '#fe5e00'
+  secondaryColor = '#fe5e00',
+  cameraFov = 17,
+  cameraPosition = [0, 0, 6.6],
 }: {
   modelUrl?: string,
   fallbackImage?: string,
   transparent?: boolean,
   primaryColor?: string,
-  secondaryColor?: string
+  secondaryColor?: string,
+  cameraFov?: number,
+  cameraPosition?: [number, number, number],
 }) {
   const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -100,7 +104,7 @@ export default function ModelViewer({
 
   if (!modelUrl || imgError) {
     return (
-      <div className={`w-full h-full flex flex-col items-center justify-center ${transparent ? 'bg-transparent' : 'bg-zinc-950/80 rounded-[30px]'} border border-white/5`}>
+      <div className={`w-full h-full flex flex-col items-center justify-center ${transparent ? 'bg-transparent' : 'bg-black/80 rounded-[30px]'} border border-white/5`}>
         {fallbackImage && !imgError ? (
           <div className={`relative w-full h-full ${transparent ? 'drop-shadow-[0_20px_20px_rgba(0,0,0,0.6)]' : 'p-8 opacity-70 grayscale hover:grayscale-0 transition-all duration-500'}`}>
             <Image
@@ -127,7 +131,7 @@ export default function ModelViewer({
 
   return (
     <div
-      className={`w-full h-full cursor-grab active:cursor-grabbing relative ${transparent ? 'bg-transparent' : 'bg-zinc-950'}`}
+      className={`w-full h-full cursor-grab active:cursor-grabbing relative ${transparent ? 'bg-transparent' : 'bg-black'}`}
       onPointerEnter={() => setIsHovered(true)}
       onPointerLeave={() => setIsHovered(false)}
       onPointerDown={() => setIsHovered(true)}
@@ -142,7 +146,7 @@ export default function ModelViewer({
         />
       )}
       <ErrorBoundary fallback={
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-bifido-neon font-display tracking-widest bg-zinc-950/90 z-10 p-4 border border-white/5 rounded-[30px] backdrop-blur-md">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-bifido-neon font-display tracking-widest bg-black/90 z-10 p-4 border border-white/5 rounded-[30px] backdrop-blur-md">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-red-500/60 mb-4"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><line x1="12" x2="12" y1="9" y2="13" /><line x1="12" x2="12.01" y1="17" y2="17" /></svg>
           <p className="text-sm md:text-base mb-2 text-center text-white/80">ARCHIVO CORRUPTO</p>
           <p className="text-[10px] text-center text-white/80 font-mono tracking-widest">El modelo 3D no pudo ser sintetizado en este momento.</p>
@@ -150,7 +154,7 @@ export default function ModelViewer({
       }>
         <Canvas
           shadows={!transparent}
-          camera={{ position: [0, 0, 6], fov: 16 }} // Zoom extremo (FOV 16)
+          camera={{ position: cameraPosition, fov: cameraFov }}
           style={{ pointerEvents: 'auto' }}
           dpr={[1, 1.5]}
           gl={{ powerPreference: "high-performance" }}
@@ -175,14 +179,14 @@ export default function ModelViewer({
             <OrbitControls
               enablePan={false}
               enableZoom={true}
-              minDistance={4} // Evita que se metan dentro de la cabeza
-              maxDistance={10} // Evita que se alejen al infinito
+              minDistance={3.5}
+              maxDistance={12}
               autoRotate={!isHovered}
               autoRotateSpeed={1}
               minPolarAngle={Math.PI / 4}
               maxPolarAngle={Math.PI / 1.5}
               makeDefault
-              target={[0, 0, 0]} // Objetivo centrado
+              target={[0, 0, 0]}
             />
           </Suspense>
         </Canvas>
@@ -190,7 +194,7 @@ export default function ModelViewer({
 
       {/* Indicador de Interactividad 3D */}
       <div
-        className={`absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center gap-2 pointer-events-none transition-all duration-700 ease-out font-mono text-[9px] sm:text-[10px] tracking-[0.2em] uppercase z-50 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-white shadow-2xl ${(!isLoaded || isHovered) ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}
+        className={`absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center justify-center gap-2 pointer-events-none transition-all duration-700 ease-out font-mono text-[9px] sm:text-[10px] tracking-[0.2em] uppercase z-50 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-white shadow-2xl ${(!isLoaded || isHovered) ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}
       >
         <span className="text-center whitespace-nowrap">Gira y haz zoom para interactuar</span>
       </div>

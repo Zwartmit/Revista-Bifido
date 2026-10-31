@@ -3,7 +3,8 @@ import EventsClient from './EventsClient';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Eventos',
+    title: 'Eventos | Revista Bífido',
+    description: 'Espacios de encuentro, diálogo y resistencia.',
 };
 
 export const dynamic = 'force-dynamic';

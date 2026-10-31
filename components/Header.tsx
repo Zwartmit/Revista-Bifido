@@ -224,7 +224,7 @@ export default function Header() {
                                         const mColors = getCharacterColors(character.slug);
                                         const isActive = pathname === `/${character.slug}`;
                                         return (
-                                            <Link key={character.id} href={`/${character.slug}`} onClick={() => { setIsMenuOpen(false); setIsCharacterMenuOpen(false); }} className={`w-full border-b border-white/10 py-5 px-8 font-display text-2xl sm:text-3xl uppercase transition-colors flex items-center gap-4 bg-[#111] hover:bg-[#222] ${isActive ? 'text-bifido-neon' : 'text-white/60 hover:text-white'}`}>
+                                            <Link key={character.id} href={`/${character.slug}`} onClick={() => { setIsMenuOpen(false); setIsCharacterMenuOpen(false); }} className={`w-full border-b border-white/10 py-5 px-8 font-display text-2xl sm:text-3xl uppercase transition-colors flex items-center gap-4 bg-black hover:bg-white/5 ${isActive ? 'text-bifido-neon' : 'text-white/60 hover:text-white'}`}>
                                                 <div className="w-2 h-6 shrink-0 rounded-full" style={{ backgroundColor: mColors.primary }}></div>
                                                 {character.name}
                                             </Link>

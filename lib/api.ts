@@ -684,3 +684,50 @@ export function transformPayloadCategory(doc: any) {
     slug: doc.slug,
   };
 }
+
+// ─── Products / Mercado ────────────────────────────────────────────────────────
+
+export function transformPayloadProduct(doc: any) {
+  const CATEGORY_LABELS: Record<string, string> = {
+    merchandising: 'Merchandising',
+    art: 'Arte',
+    publications: 'Publicaciones',
+    music: 'Música',
+    other: 'Otro',
+  };
+
+  return {
+    id: doc.id,
+    name: doc.name,
+    slug: doc.slug,
+    description: doc.description,
+    price: doc.price,
+    currency: doc.currency || 'COP',
+    category: doc.category || 'other',
+    categoryLabel: CATEGORY_LABELS[doc.category] || doc.category || 'Otro',
+    featuredImage: doc.featuredImage?.url || '/images/placeholder-article.jpg',
+    gallery: doc.gallery?.map((item: any) => item.image?.url || '').filter(Boolean) || [],
+    available: doc.stock?.available ?? true,
+    quantity: doc.stock?.quantity ?? null,
+    purchaseLink: doc.purchaseLink || null,
+    seller: doc.seller?.name
+      ? { name: doc.seller.name, contact: doc.seller.contact || null }
+      : null,
+    tags: doc.tags?.map((t: any) => t.tag).filter(Boolean) || [],
+  };
+}
+
+export async function getProducts(): Promise<ReturnType<typeof transformPayloadProduct>[]> {
+  try {
+    const data = await fetchPayload('products', {
+      depth: 1,
+      limit: 100,
+      where: { 'stock.available': { equals: true } },
+      sort: 'name',
+    });
+    return (data?.docs || []).map(transformPayloadProduct);
+  } catch (err) {
+    console.error('getProducts error:', err);
+    return [];
+  }
+}

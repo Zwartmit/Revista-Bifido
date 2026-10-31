@@ -93,12 +93,29 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                 </div>
                             )}
 
-                            <div className="w-full aspect-[1/2] max-h-[60vh] md:max-h-full rounded-[100px] bg-white/5 overflow-hidden relative flex items-center justify-center border border-white/10">
-                                <ModelViewer
-                                    modelUrl={selectedMember.model3d}
-                                    fallbackImage={selectedMember.profileImage}
-                                    transparent={true}
-                                />
+                            <div className="w-full aspect-[9/16] max-h-[68vh] md:max-h-full rounded-[44px] md:rounded-[56px] bg-black overflow-hidden relative flex items-center justify-center border border-white/15">
+                                {/* Fondo gradiente verde con resplandor visible y equilibrado */}
+                                <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden bg-black">
+                                    <Image
+                                        src="/images/gradiente-verde.png"
+                                        alt="Aura verde de fondo"
+                                        fill
+                                        priority
+                                        className="object-cover opacity-50 mix-blend-screen scale-110"
+                                    />
+                                    {/* Viñeta radial suave para fundir con los bordes negros */}
+                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.55)_75%,#000000_100%)]" />
+                                </div>
+
+                                <div className="relative z-10 w-full h-full flex items-center justify-center">
+                                    <ModelViewer
+                                        modelUrl={selectedMember.model3d}
+                                        fallbackImage={selectedMember.profileImage}
+                                        transparent={true}
+                                        cameraPosition={[0, 0, 6.6]}
+                                        cameraFov={17}
+                                    />
+                                </div>
                             </div>
 
                             {/* Pagination indicator (Mobile Only) */}

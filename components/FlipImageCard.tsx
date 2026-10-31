@@ -74,7 +74,7 @@ export default function FlipImageCard({
         if (fill) {
             return (
                 <div 
-                    className={`relative ${aspectRatioClass || 'w-full h-full'} ${className} ${onClick ? 'cursor-pointer' : ''} bg-[#0d0d0d] rounded-2xl overflow-hidden border border-white/10 group`}
+                    className={`relative ${aspectRatioClass || 'w-full h-full'} ${className} ${onClick ? 'cursor-pointer' : ''} bg-black rounded-2xl overflow-hidden border border-white/10 group`}
                     onClick={onClick}
                 >
                     <Image
@@ -145,7 +145,7 @@ export default function FlipImageCard({
                 }}
             >
                 {/* ── Cara Frontal ── */}
-                <div className="bifido-flip-face relative w-full h-full rounded-2xl border border-white/10 hover:border-bifido-neon/50 transition-colors shadow-2xl bg-[#0d0d0d] overflow-hidden">
+                <div className="bifido-flip-face relative w-full h-full rounded-2xl border border-white/10 hover:border-bifido-neon/50 transition-colors shadow-2xl bg-black overflow-hidden">
                     {fill ? (
                         <Image
                             src={imageUrl}
@@ -190,7 +190,7 @@ export default function FlipImageCard({
 
                 {/* ── Cara Trasera (Reverso 3D) ── */}
                 <div
-                    className="bifido-flip-back absolute inset-0 w-full h-full rounded-2xl border border-bifido-neon/40 bg-[#0d0d0d] flex flex-col justify-center items-center p-5 md:p-6 text-center z-20 shadow-2xl overflow-hidden"
+                    className="bifido-flip-back absolute inset-0 w-full h-full rounded-2xl border border-bifido-neon/40 bg-black flex flex-col justify-center items-center p-5 md:p-6 text-center z-20 shadow-2xl overflow-hidden"
                 >
                     {flipContentType === 'image' && backImageUrl ? (
                         <div className="relative w-full h-full flex flex-col items-center justify-center">

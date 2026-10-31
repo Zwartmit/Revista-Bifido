@@ -184,7 +184,7 @@ export default function SectionClient({ section, character, articles, categories
                                     <Link
                                         key={article.id}
                                         href={`/${section}/articulos/${article.slug}`}
-                                        className="group flex flex-col border border-[#1e1e1e] hover:border-white/20 transition-all duration-300 overflow-hidden bg-[#080808]"
+                                        className="group flex flex-col border border-[#1e1e1e] hover:border-white/20 transition-all duration-300 overflow-hidden bg-black"
                                     >
                                         {/* Thumbnail */}
                                         <div className="relative w-full aspect-[4/3] overflow-hidden">

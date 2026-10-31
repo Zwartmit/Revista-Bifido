@@ -108,7 +108,7 @@ export default function MordazPage({ section, character, articles }: Props) {
                             <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                                 {regularArticles.map((article) => (
                                     <Link key={article.id} href={`/${section}/articulos/${article.slug}`}
-                                        className="group flex flex-col border border-[#1e1e1e] hover:border-white/20 transition-all duration-300 overflow-hidden bg-[#080808]"
+                                        className="group flex flex-col border border-[#1e1e1e] hover:border-white/20 transition-all duration-300 overflow-hidden bg-black"
                                         style={{ borderLeftWidth: 2, borderLeftColor: `${primary}30` }}>
                                         <div className="relative w-full aspect-[4/3] overflow-hidden">
                                             {article.featuredImage ? (

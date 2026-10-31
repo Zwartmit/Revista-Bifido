@@ -68,7 +68,7 @@ export default function FeaturedCarousel({ articles, section, primaryColor, dark
                 className="group block border border-[#1e1e1e] hover:border-white/20 transition-all duration-300 overflow-hidden relative"
             >
                 <div className="flex flex-col lg:flex-row">
-                    <div className="relative w-full lg:w-[50%] aspect-[16/9] lg:min-h-[320px] overflow-hidden flex-shrink-0 bg-[#080808]">
+                    <div className="relative w-full lg:w-[50%] aspect-[16/9] lg:min-h-[320px] overflow-hidden flex-shrink-0 bg-black">
                         {currentArticle.featuredImage ? (
                             <Image 
                                 key={currentArticle.featuredImage} // forces re-render/fade if desired, though Next image is fast
@@ -87,7 +87,7 @@ export default function FeaturedCarousel({ articles, section, primaryColor, dark
                             style={{ backgroundColor: primaryColor, color: '#000' }}>Destacado</span>
                     </div>
                     
-                    <div className="flex flex-col justify-between p-8 lg:p-10 bg-[#080808] flex-1 z-10">
+                    <div className="flex flex-col justify-between p-8 lg:p-10 bg-black flex-1 z-10">
                         <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                             <span className="font-googlesans text-sm text-white/60 block mb-4">
                                 {formatDate(currentArticle.publishedAt)}
