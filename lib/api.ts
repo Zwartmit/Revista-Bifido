@@ -1,13 +1,40 @@
 // API Service para integración con Payload CMS
 import qs from 'qs';
-
-const PAYLOAD_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+import { SITE_URL } from './seo';
 
 /**
- * Función genérica para construir URLs de Payload
+ * Bases desde las que se consulta la API de Payload.
+ * - Navegador: mismo origen ('' => ruta relativa). Evita CORS y que un NEXT_PUBLIC_SERVER_URL
+ *   obsoleto (p. ej. un dominio *.vercel.app que ya no existe) rompa las peticiones del cliente.
+ * - Servidor: PAYLOAD_INTERNAL_URL o NEXT_PUBLIC_SERVER_URL; si ese host no responde, se reintenta
+ *   con el dominio público para no caer silenciosamente a los datos estáticos.
  */
-function getPayloadURL(path: string = '') {
-  return `${PAYLOAD_URL}${path}`;
+function payloadBases(): string[] {
+  if (typeof window !== 'undefined') return [''];
+  const primary = process.env.PAYLOAD_INTERNAL_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+  const isLocal = /localhost|127\.0\.0\.1/.test(primary);
+  return isLocal || primary === SITE_URL ? [primary] : [primary, SITE_URL];
+}
+
+/** Un host caído o inexistente (5xx, o error de despliegue de Vercel) justifica reintentar con otra base. */
+function isDeadHost(res: Response) {
+  return res.status >= 500 || res.headers.has('x-vercel-error');
+}
+
+async function payloadFetch(path: string, init: RequestInit = {}): Promise<Response> {
+  const bases = payloadBases();
+  let lastError: unknown;
+  for (let i = 0; i < bases.length; i++) {
+    const isLast = i === bases.length - 1;
+    try {
+      const res = await fetch(`${bases[i]}${path}`, init);
+      if (isLast || !isDeadHost(res)) return res;
+    } catch (error) {
+      lastError = error;
+      if (isLast) throw error;
+    }
+  }
+  throw lastError ?? new Error('Payload API unreachable');
 }
 
 export const KNOWN_CHARACTER_SLUGS: Record<string | number, { name: string; slug: string }> = {
@@ -29,10 +56,10 @@ export const KNOWN_CHARACTER_SLUGS: Record<string | number, { name: string; slug
  */
 async function fetchPayload(collection: string, params: any = {}, options: RequestInit = {}) {
   const stringifiedParams = qs.stringify(params, { addQueryPrefix: true });
-  const url = `${getPayloadURL(`/api/${collection}`)}${stringifiedParams}`;
+  const path = `/api/${collection}${stringifiedParams}`;
 
   try {
-    const res = await fetch(url, {
+    const res = await payloadFetch(path, {
       ...options,
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +97,7 @@ async function ensureArticleRelations(doc: any) {
     const mediaId = String(doc.featuredImage);
     if (!mediaId.startsWith('http') && !mediaId.startsWith('/')) {
       try {
-        const res = await fetch(getPayloadURL(`/api/media/${encodeURIComponent(mediaId)}`), {
+        const res = await payloadFetch(`/api/media/${encodeURIComponent(mediaId)}`, {
           headers: { 'Content-Type': 'application/json' },
           cache: 'no-store',
         });
@@ -87,7 +114,7 @@ async function ensureArticleRelations(doc: any) {
   if (doc.author && typeof doc.author !== 'object') {
     const authorId = String(doc.author);
     try {
-      const res = await fetch(getPayloadURL(`/api/characters/${encodeURIComponent(authorId)}`), {
+      const res = await payloadFetch(`/api/characters/${encodeURIComponent(authorId)}`, {
         headers: { 'Content-Type': 'application/json' },
         cache: 'no-store',
       });
@@ -253,9 +280,9 @@ export async function getCharacterById(id: string | number) {
     if (char) return char;
   }
 
-  const url = `${getPayloadURL(`/api/characters/${encodeURIComponent(String(id))}?depth=1`)}`;
+  const path = `/api/characters/${encodeURIComponent(String(id))}?depth=1`;
   try {
-    const res = await fetch(url, {
+    const res = await payloadFetch(path, {
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store',
     });
