@@ -8,18 +8,18 @@ export const SITE_DESCRIPTION = 'Revista digital, cultural, alternativa e indepe
 
 /** Imagen por defecto para redes: 1200x630 JPG (~120 KB). Next no hereda la del layout si la página define su propio openGraph. */
 export const DEFAULT_OG_IMAGE = {
-    url: '/og-default.jpg',
+    url: '/og-home.jpg',
     width: 1200,
     height: 630,
-    alt: 'Revista Bífido. Cinco voces. Una manada. Periodismo crudo para sensibilidades frágiles.',
+    alt: 'Revista Bífido. Periodismo crudo para sensibilidades frágiles. Cultura, activismo, medio ambiente, género y diversidad.',
 };
 
-export type OgCardType = 'personaje' | 'articulo' | 'evento';
+export type OgCardType = 'personaje' | 'articulos' | 'articulo' | 'evento' | 'eventos' | 'parche' | 'contacto';
 
 /** Tarjeta social dinámica (app/og): el texto sale del CMS a partir del slug. */
-export function ogCard(type: OgCardType, slug: string, alt?: string) {
+export function ogCard(type: OgCardType, slug?: string, alt?: string) {
     return {
-        url: `/og/${type}?slug=${encodeURIComponent(slug)}`,
+        url: slug ? `/og/${type}?slug=${encodeURIComponent(slug)}` : `/og/${type}`,
         width: 1200,
         height: 630,
         alt: alt ?? DEFAULT_OG_IMAGE.alt,

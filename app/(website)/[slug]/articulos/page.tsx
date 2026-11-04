@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title: character ? `Artículos de ${character.name}` : 'Artículos',
         description: character?.description,
         path: `/${slug}/articulos`,
-        image: character ? ogCard('personaje', slug, `${character.name}, personaje de Revista Bífido`) : undefined,
+        image: character ? ogCard('articulos', slug, `Artículos de ${character.name} en Revista Bífido`) : undefined,
     });
 }
 
