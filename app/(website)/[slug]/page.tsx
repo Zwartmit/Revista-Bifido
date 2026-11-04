@@ -2,6 +2,7 @@ import { getCharacterBySlug as getCharacterBySlugFromAPI, getCharacterById } fro
 import { getCharacterBySlug as getCharacterBySlugStatic } from '@/lib/characters';
 import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import AnikaLanding from './landings/AnikaLanding';
 import IncendiaLanding from './landings/IncendiaLanding';
 import MalandraLanding from './landings/MalandraLanding';
@@ -13,15 +14,11 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
-    return {
+    return pageMetadata({
         title: character ? character.name : 'Personaje',
         description: character?.description,
-        openGraph: {
-            title: character?.name,
-            description: character?.description,
-            images: character?.image ? [character.image] : [],
-        },
-    };
+        path: `/${slug}`,
+    });
 }
 
 export default async function CharacterLandingPage({ params }: { params: Promise<{ slug: string }> }) {

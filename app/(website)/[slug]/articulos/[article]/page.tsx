@@ -4,6 +4,8 @@ import { notFound, redirect } from 'next/navigation';
 import { draftMode } from 'next/headers';
 import { Metadata } from 'next';
 import nextDynamic from 'next/dynamic';
+import JsonLd from '@/components/JsonLd';
+import { pageMetadata, SITE_URL, SITE_NAME } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,17 +20,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     
     // If article doesn't exist, return fallback
     if (!articleData) {
-        return { title: 'Artículo | Revista Bífido' };
+        return { title: 'Artículo' };
     }
 
-    return {
+    const image = articleData.featuredImage && !articleData.featuredImage.includes('placeholder')
+        ? articleData.featuredImage
+        : undefined;
+
+    return pageMetadata({
         title: articleData.title,
         description: articleData.socialExcerpt || articleData.excerpt,
-        openGraph: {
-            title: articleData.title,
-            description: articleData.socialExcerpt || articleData.excerpt,
-        }
-    };
+        path: `/${articleData.section && articleData.section !== 'general' ? articleData.section : slug}/articulos/${article}`,
+        image,
+        type: 'article',
+        publishedTime: articleData.publishedAt,
+    });
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string; article: string }> }) {
@@ -71,5 +77,25 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         );
     }
 
-    return <ArticleClient article={articleData} character={character} />;
+    const articleImage = articleData.featuredImage?.startsWith('/')
+        ? `${SITE_URL}${articleData.featuredImage}`
+        : articleData.featuredImage;
+
+    return (
+        <>
+            <JsonLd data={{
+                '@context': 'https://schema.org',
+                '@type': 'NewsArticle',
+                headline: articleData.title,
+                description: articleData.socialExcerpt || articleData.excerpt,
+                image: articleImage ? [articleImage] : undefined,
+                datePublished: articleData.publishedAt,
+                inLanguage: 'es',
+                mainEntityOfPage: `${SITE_URL}/${articleData.section}/articulos/${article}`,
+                author: { '@type': 'Person', name: articleData.author },
+                publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+            }} />
+            <ArticleClient article={articleData} character={character} />
+        </>
+    );
 }

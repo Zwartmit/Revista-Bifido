@@ -1,11 +1,13 @@
 import { getEvents } from '@/lib/api';
 import EventsClient from './EventsClient';
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-    title: 'Eventos | Revista Bífido',
+export const metadata: Metadata = pageMetadata({
+    title: 'Eventos',
     description: 'Espacios de encuentro, diálogo y resistencia.',
-};
+    path: '/eventos',
+});
 
 export const dynamic = 'force-dynamic';
 

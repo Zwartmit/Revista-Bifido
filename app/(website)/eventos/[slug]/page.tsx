@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { draftMode } from 'next/headers';
 import EventClient from './EventClient';
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import nextDynamic from 'next/dynamic';
 
 export const dynamic = 'force-dynamic';
@@ -13,10 +14,13 @@ const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     const event = await getEventBySlug(slug);
-    return {
+    const image = event?.image && !event.image.includes('placeholder') ? event.image : undefined;
+    return pageMetadata({
         title: event ? (event.name || event.title) : 'Evento',
         description: event?.socialExcerpt || event?.excerpt,
-    };
+        path: `/eventos/${slug}`,
+        image,
+    });
 }
 
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {

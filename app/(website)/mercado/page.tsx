@@ -1,11 +1,13 @@
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { getProducts } from '@/lib/api';
 import MercadoClient from './MercadoClient';
 
-export const metadata: Metadata = {
-    title: 'Mercado | Revista Bífido',
+export const metadata: Metadata = pageMetadata({
+    title: 'Mercado',
     description: 'Merch oficial de Revista Bífido. Lleva la resistencia contigo.',
-};
+    path: '/mercado',
+});
 
 export const dynamic = 'force-dynamic';
 

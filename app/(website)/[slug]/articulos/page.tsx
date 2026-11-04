@@ -2,6 +2,7 @@ import { getCharacterBySlug as getCharacterBySlugFromAPI, getCharacterById, getA
 import { getCharacterBySlug as getCharacterBySlugStatic } from '@/lib/characters';
 import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
 import MalandraPage from './characters/MalandraPage';
 import IncendiaPage from './characters/IncendiaPage';
@@ -24,10 +25,11 @@ const CHARACTER_PAGES: Record<string, React.ComponentType<any>> = {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
-    return {
+    return pageMetadata({
         title: character ? `Artículos de ${character.name}` : 'Artículos',
         description: character?.description,
-    };
+        path: `/${slug}/articulos`,
+    });
 }
 
 export default async function ArticlesFeedPage({
