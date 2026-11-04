@@ -7,7 +7,7 @@ export const BackToSiteButton: React.FC = () => {
         <div style={{ marginTop: '0.75rem', width: '100%', textAlign: 'center', display: 'flex', justifyContent: 'center' }}>
             <style dangerouslySetInnerHTML={{ __html: `
                 body {
-                    background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('/backgrounds/team_desk.png') !important;
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('/backgrounds/team_desk.webp') !important;
                     background-size: cover !important;
                     background-position: center !important;
                     background-repeat: no-repeat !important;
@@ -22,7 +22,7 @@ export const BackToSiteButton: React.FC = () => {
                 }
                 @media (max-width: 767px) {
                     body {
-                        background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('/backgrounds/team_movil.jpeg') !important;
+                        background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), url('/backgrounds/team_movil.webp') !important;
                     }
                 }
                 /* Also force logo and headers to be white/neon */

@@ -145,7 +145,7 @@ export default function PunkibriLanding() {
         </div>
       </div>
 
-      <section className="cl-section-manifiesto" style={{ backgroundImage: "url('/images/characters/punkibri-manifiesto.jpeg')" }}>
+      <section className="cl-section-manifiesto" style={{ backgroundImage: "url('/images/characters/punkibri-manifiesto.webp')" }}>
         <div className="cl-manifiesto-wrap cl-reveal punk-reveal">
           <p className="cl-manifiesto-sub">Manifiesto</p>
           <p className="cl-manifiesto-quote">

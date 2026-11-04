@@ -77,7 +77,7 @@ const FeaturedEventsCarousel = ({ events, formatDate }: { events: Event[]; forma
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         key={featuredEvent.id}
-                        src={featuredEvent.image || '/images/placeholder-article.jpg'}
+                        src={featuredEvent.image || '/images/placeholder-article.webp'}
                         alt={featuredEvent.title}
                         className="w-full h-auto max-h-[60vh] md:w-auto md:h-[400px] object-contain filter grayscale-[100%] brightness-75 contrast-125 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 z-20 animate-in fade-in zoom-in-95"
                     />
@@ -448,7 +448,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                             <div className="r-layer2" />
                                             <div
                                                 className="r-layer3"
-                                                style={{ backgroundImage: `url('${event.image || '/images/placeholder-article.jpg'}')` }}
+                                                style={{ backgroundImage: `url('${event.image || '/images/placeholder-article.webp'}')` }}
                                             />
 
                                             <div className="r-content">

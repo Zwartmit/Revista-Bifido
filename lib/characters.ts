@@ -14,7 +14,7 @@ export const characters: Character[] = [
     religion: 'Pragmatismo compasivo',
     age: '28 años',
     favoriteColor: 'Turquesa',
-    image: '/personajes/Anika.png',
+    image: '/personajes/Anika.webp',
   },
   {
     id: 'incendia',
@@ -24,7 +24,7 @@ export const characters: Character[] = [
     religion: 'Interseccionalidad',
     age: '31 años',
     favoriteColor: 'Naranja fuego',
-    image: '/personajes/Incendia.png',
+    image: '/personajes/Incendia.webp',
   },
   {
     id: 'malandra',
@@ -34,7 +34,7 @@ export const characters: Character[] = [
     religion: 'Culto a la creatividad',
     age: '33 años',
     favoriteColor: 'Púrpura oscuro',
-    image: '/personajes/Malandra.png',
+    image: '/personajes/Malandra.webp',
   },
   {
     id: 'mordaz',
@@ -44,7 +44,7 @@ export const characters: Character[] = [
     religion: 'Escepticismo militante',
     age: '42 años',
     favoriteColor: 'Rojo sangre',
-    image: '/personajes/Mordaz.png',
+    image: '/personajes/Mordaz.webp',
   },
   {
     id: 'punkibri',
@@ -54,7 +54,7 @@ export const characters: Character[] = [
     religion: 'Animismo',
     age: '127 años (en años de colibrí)',
     favoriteColor: 'Verde musgo',
-    image: '/personajes/Punkibri.png',
+    image: '/personajes/Punkibri.webp',
   },
 ];
 

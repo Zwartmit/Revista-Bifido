@@ -148,7 +148,7 @@ export default function MordazLanding() {
         </div>
       </div>
 
-      <section className="cl-section-manifiesto" style={{ backgroundImage: "url('/images/characters/mordaz-manifiesto.jpeg')" }}>
+      <section className="cl-section-manifiesto" style={{ backgroundImage: "url('/images/characters/mordaz-manifiesto.webp')" }}>
         <div className="cl-manifiesto-wrap cl-reveal mor-reveal">
           <p className="cl-manifiesto-sub">Manifiesto</p>
           <p className="cl-manifiesto-quote">

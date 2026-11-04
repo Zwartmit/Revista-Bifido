@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import abstractBg from '@/public/backgrounds/apoyo.png';
+import abstractBg from '@/public/backgrounds/apoyo.webp';
 interface SupportBannerProps {
     primaryColor: string;
 }

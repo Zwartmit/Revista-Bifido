@@ -104,7 +104,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
             <section className="relative w-full h-[55vh] md:h-[65vh] lg:h-[85vh] overflow-hidden mt-0 group">
                 {/* Desktop Hero */}
                 <Image
-                    src="/hero/desk.png"
+                    src="/hero/desk.webp"
                     alt="La Manada Bífido"
                     fill
                     sizes="100vw"
@@ -113,7 +113,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
                 />
                 {/* Mobile/Tablet Hero */}
                 <Image
-                    src="/hero/movil.png"
+                    src="/hero/movil.webp"
                     alt="La Manada Bífido"
                     fill
                     sizes="100vw"
@@ -185,7 +185,7 @@ export default function HomeClient({ articles, characters }: HomeClientProps) {
             <section className="pb-32 pt-24 relative overflow-hidden bg-black">
                 <div
                     className="absolute inset-0 z-0 bg-cover bg-center grayscale brightness-[0.25] opacity-90"
-                    style={{ backgroundImage: "url('/backgrounds/snake_scale.jpg')" }}
+                    style={{ backgroundImage: "url('/backgrounds/snake_scale.webp')" }}
                 ></div>
                 {/* Gradients to fade in/out */}
                 <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-0"></div>

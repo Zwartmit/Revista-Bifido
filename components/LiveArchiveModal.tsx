@@ -97,7 +97,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                 {/* Fondo gradiente verde con resplandor visible y equilibrado */}
                                 <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden bg-black">
                                     <Image
-                                        src="/images/gradiente-verde.png"
+                                        src="/images/gradiente-verde.webp"
                                         alt="Aura verde de fondo"
                                         fill
                                         priority

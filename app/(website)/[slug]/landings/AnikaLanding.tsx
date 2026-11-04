@@ -157,7 +157,7 @@ export default function AnikaLanding() {
       </div>
 
       {/* ─── MANIFIESTO ─── */}
-      <section className="cl-section-manifiesto" style={{ backgroundImage: "url('/images/characters/anika-manifiesto.jpeg')" }}>
+      <section className="cl-section-manifiesto" style={{ backgroundImage: "url('/images/characters/anika-manifiesto.webp')" }}>
         <div className="cl-manifiesto-wrap cl-reveal anika-reveal">
           <p className="cl-manifiesto-sub">Manifiesto</p>
           <p className="cl-manifiesto-quote">

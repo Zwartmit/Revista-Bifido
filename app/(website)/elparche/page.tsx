@@ -314,7 +314,7 @@ function ElParcheContent() {
                                         {/* Character Image */}
                                         {m.slug && (
                                             <Image
-                                                src={`/icons/${m.slug}.png`}
+                                                src={`/icons/${m.slug}.webp`}
                                                 alt={m.name}
                                                 width={400}
                                                 height={500}
@@ -383,7 +383,7 @@ function ElParcheContent() {
                                         <div className="w-12 h-12 rounded-full overflow-hidden border-2 transition-transform group-hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
                                             style={{ borderColor: mColors.primary }}>
                                             <Image
-                                                src={`/icons/${m.slug}.png`}
+                                                src={`/icons/${m.slug}.webp`}
                                                 alt={m.name}
                                                 width={48}
                                                 height={48}
@@ -416,7 +416,7 @@ function ElParcheContent() {
                                     <div className="w-full h-full relative z-20 animate-float">
                                         <ModelViewer
                                             modelUrl={activeCharacter.model3d}
-                                            fallbackImage={`/icons/${activeCharacter.slug}.png`}
+                                            fallbackImage={`/icons/${activeCharacter.slug}.webp`}
                                             transparent
                                             primaryColor={activeColors.primary}
                                             secondaryColor={activeColors.secondary}
@@ -528,7 +528,7 @@ function ElParcheContent() {
                         {/* Mobile Arrow Indicator */}
                         <div className="lg:hidden mt-10 animate-bounce">
                             <Image
-                                src="/icons/arrow_g.png"
+                                src="/icons/arrow_g.webp"
                                 alt="Flecha"
                                 width={26}
                                 height={62}

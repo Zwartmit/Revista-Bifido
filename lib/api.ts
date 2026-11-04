@@ -602,7 +602,7 @@ export function transformPayloadArticle(doc: any) {
   const authorName = authorObj?.name || authorKnown?.name || 'Revista Bífido';
   const authorSlug = authorObj?.slug || authorKnown?.slug || (typeof authorId === 'string' && isNaN(Number(authorId)) ? authorId : 'general');
 
-  let featuredImageUrl = '/images/placeholder-article.jpg';
+  let featuredImageUrl = '/images/placeholder-article.webp';
   if (doc.featuredImage) {
     if (typeof doc.featuredImage === 'object' && doc.featuredImage?.url) {
       featuredImageUrl = doc.featuredImage.url;
@@ -639,7 +639,7 @@ export function transformPayloadCharacter(doc: any) {
     religion: doc.religion || '',
     age: doc.age || '',
     favoriteColor: doc.favoriteColor || '',
-    image: doc.image?.url || '/images/placeholder.png',
+    image: doc.image?.url || '/images/placeholder.webp',
     model3d: doc.model3d?.url || null,
   };
 }
@@ -672,7 +672,7 @@ export function transformPayloadEvent(doc: any) {
     socialExcerpt: doc.socialExcerpt || doc.excerpt || '',
     // Imagen destacada: url directa o placeholder
     featuredImage: doc.featuredImage ? { url: doc.featuredImage.url || doc.featuredImage } : null,
-    image: doc.featuredImage?.url || '/images/placeholder-article.jpg',
+    image: doc.featuredImage?.url || '/images/placeholder-article.webp',
     // Bloques de contenido enriquecido
     layout: doc.layout || [],
     // Galería legacy (puede ya no existir en nuevos eventos)
@@ -692,7 +692,7 @@ export function transformPayloadLiveArchiveMember(doc: any) {
     lema: doc.lema,
     biography: doc.biography,
     profession: doc.profession || '',
-    profileImage: doc.profileImage?.url || '/images/placeholder-author.jpg',
+    profileImage: doc.profileImage?.url || '/images/placeholder-author.webp',
     identifierImage: doc.identifierImage?.url || '',
     email: doc.email,
     location: doc.location || '',
@@ -732,7 +732,7 @@ export function transformPayloadProduct(doc: any) {
     currency: doc.currency || 'COP',
     category: doc.category || 'other',
     categoryLabel: CATEGORY_LABELS[doc.category] || doc.category || 'Otro',
-    featuredImage: doc.featuredImage?.url || '/images/placeholder-article.jpg',
+    featuredImage: doc.featuredImage?.url || '/images/placeholder-article.webp',
     gallery: doc.gallery?.map((item: any) => item.image?.url || '').filter(Boolean) || [],
     available: doc.stock?.available ?? true,
     quantity: doc.stock?.quantity ?? null,

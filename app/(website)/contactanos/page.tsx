@@ -30,7 +30,7 @@ export default function ContactPage() {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/backgrounds/contact_bg.png"
+          src="/backgrounds/contact_bg.webp"
           alt="Background"
           fill
           className="object-cover"

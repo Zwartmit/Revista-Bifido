@@ -9,7 +9,7 @@ export default function NotFound() {
       <div className="absolute inset-0 z-0 flex items-center justify-center opacity-20 lg:opacity-40 pointer-events-none">
         {/* Desktop Image */}
         <Image 
-          src="/backgrounds/404desk.png" 
+          src="/backgrounds/404desk.webp" 
           alt="404 Background Desktop" 
           fill
           className="object-cover hidden sm:block"
@@ -18,7 +18,7 @@ export default function NotFound() {
         />
         {/* Mobile Image */}
         <Image 
-          src="/backgrounds/404movil.png" 
+          src="/backgrounds/404movil.webp" 
           alt="404 Background Mobile" 
           fill
           className="object-cover sm:hidden"

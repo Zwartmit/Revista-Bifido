@@ -97,7 +97,7 @@ export default function Footer() {
                         style={{ borderColor: cColors.primary }}
                       >
                         <Image
-                          src={`/icons/${character.slug}.png`}
+                          src={`/icons/${character.slug}.webp`}
                           alt={character.name}
                           width={48}
                           height={48}

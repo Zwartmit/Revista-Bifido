@@ -62,7 +62,7 @@ html[data-theme="dark"]:has(.login) body {
   .template-minimal,
   .login,
   .template--auth {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/backgrounds/team_desk.png') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/backgrounds/team_desk.webp') !important;
   }
 }
 
@@ -71,7 +71,7 @@ html[data-theme="dark"]:has(.login) body {
   .template-minimal,
   .login,
   .template--auth {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/backgrounds/team_movil.jpeg') !important;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/backgrounds/team_movil.webp') !important;
   }
 }
 

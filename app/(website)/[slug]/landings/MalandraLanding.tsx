@@ -145,7 +145,7 @@ export default function MalandraLanding() {
         </div>
       </div>
 
-      <section className="cl-section-manifiesto" style={{ backgroundImage: "url('/images/characters/malandra-manifiesto.jpeg')" }}>
+      <section className="cl-section-manifiesto" style={{ backgroundImage: "url('/images/characters/malandra-manifiesto.webp')" }}>
         <div className="cl-manifiesto-wrap cl-reveal mal-reveal">
           <p className="cl-manifiesto-sub">Manifiesto</p>
           <p className="cl-manifiesto-quote">

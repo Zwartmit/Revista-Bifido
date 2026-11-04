@@ -69,7 +69,7 @@ export default function Header() {
                     <div className="flex lg:hidden items-center justify-between">
                         <Link href="/" className="relative h-12 w-48 lg:h-14 lg:w-56" onClick={() => setIsMenuOpen(false)}>
                             <Image
-                                src="/icons/bifido_w.png"
+                                src="/icons/bifido_w.webp"
                                 alt="Revista Bífido"
                                 fill
                                 sizes="(max-width: 1024px) 192px, 224px"
@@ -102,7 +102,7 @@ export default function Header() {
                     <div className="hidden lg:flex items-center justify-between gap-8">
                         <Link href="/" className="flex items-center flex-shrink-0">
                             <Image
-                                src="/icons/bifido_w.png"
+                                src="/icons/bifido_w.webp"
                                 alt="Revista Bífido"
                                 width={180}
                                 height={50}
