@@ -95,6 +95,12 @@ export default function ModelViewer({
   const [isHovered, setIsHovered] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
+  // Si el .glb no se puede descargar (CORS, red, archivo ausente) se muestra la imagen de respaldo
+  const [modelFailed, setModelFailed] = useState(false);
+
+  useEffect(() => {
+    setModelFailed(false);
+  }, [modelUrl]);
 
   useEffect(() => {
     setMounted(true);
@@ -102,7 +108,7 @@ export default function ModelViewer({
 
   if (!mounted) return null;
 
-  if (!modelUrl || imgError) {
+  if (!modelUrl || imgError || modelFailed) {
     return (
       <div className={`w-full h-full flex flex-col items-center justify-center ${transparent ? 'bg-transparent' : 'bg-black/80 rounded-[30px]'} border border-white/5`}>
         {fallbackImage && !imgError ? (
@@ -145,7 +151,7 @@ export default function ModelViewer({
           }}
         />
       )}
-      <ErrorBoundary fallback={
+      <ErrorBoundary onError={() => setModelFailed(true)} fallback={
         <div className="absolute inset-0 flex flex-col items-center justify-center text-bifido-neon font-display tracking-widest bg-black/90 z-10 p-4 border border-white/5 rounded-[30px] backdrop-blur-md">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-red-500/60 mb-4"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><line x1="12" x2="12" y1="9" y2="13" /><line x1="12" x2="12.01" y1="17" y2="17" /></svg>
           <p className="text-sm md:text-base mb-2 text-center text-white/80">ARCHIVO CORRUPTO</p>

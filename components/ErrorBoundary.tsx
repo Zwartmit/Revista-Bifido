@@ -5,6 +5,8 @@ import React, { Component, ErrorInfo, ReactNode } from "react";
 interface Props {
   children?: ReactNode;
   fallback?: ReactNode;
+  /** Se invoca cuando un hijo lanza (p. ej. el modelo 3D no se pudo descargar). */
+  onError?: (error: Error) => void;
 }
 
 interface State {
@@ -22,6 +24,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error in 3D Model:", error, errorInfo);
+    this.props.onError?.(error);
   }
 
   public render() {
