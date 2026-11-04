@@ -4,13 +4,14 @@ import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
 import { characters } from '@/lib/characters';
 import { getCharacterColors } from '@/lib/character-colors';
-import { getArticleBySlug, getArticlesByCharacter, getEventBySlug, getEvents } from '@/lib/api';
+import { getArticleBySlug, getEventBySlug } from '@/lib/api';
 
 /**
  * Tarjetas para redes (Open Graph / Twitter), 1200x630.
  *   /og/default                    Home: qué es la revista
- *   /og/parche                     El Parche: la manada + Archivo Vivo
+ *   /og/parche                     El Parche: la manada (fondo: public/hero/desk.png). Se exporta a public/og-parche.jpg
  *   /og/eventos                    agenda de eventos
+ *   /og/mercado                    Mercado Bífido
  *   /og/contacto                   Contáctanos
  *   /og/personaje?slug=anika       página del personaje
  *   /og/articulos?slug=anika       feed de artículos del personaje
@@ -28,6 +29,7 @@ const BAR_H = 56;
 const OG_DIR = path.join(process.cwd(), 'app', 'og');
 const FONT_FILE = path.join(OG_DIR, 'fonts', 'Anton-Regular.ttf');
 const LOGO_FILE = path.join(OG_DIR, 'art', 'logo.png');
+const HERO_FILE = path.join(OG_DIR, 'art', 'hero.jpg');
 const artFile = (slug: string) => path.join(OG_DIR, 'art', `${slug}.png`);
 const KNOWN_ART = new Set(['anika', 'incendia', 'malandra', 'mordaz', 'punkibri']);
 
@@ -36,8 +38,8 @@ function load(file: string): Promise<Buffer> {
     if (!files.has(file)) files.set(file, readFile(file));
     return files.get(file)!;
 }
-async function dataUri(file: string) {
-    return `data:image/png;base64,${(await load(file)).toString('base64')}`;
+async function dataUri(file: string, mime = 'image/png') {
+    return `data:${mime};base64,${(await load(file)).toString('base64')}`;
 }
 
 function clamp(text: string, max: number) {
@@ -71,10 +73,20 @@ function dateParts(value?: string) {
 }
 
 /** Franja lime inferior: eco del ticker del sitio. */
-function Bar({ text = 'REVISTABIFIDO.COM  ·  PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES' }: { text?: string }) {
+function Bar({ text = 'REVISTABIFIDO.COM - PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES' }: { text?: string }) {
     return (
         <div style={{ display: 'flex', position: 'absolute', left: 0, right: 0, bottom: 0, height: BAR_H, background: LIME, alignItems: 'center', justifyContent: 'center' }}>
             <span style={{ fontFamily: 'Anton', fontSize: 25, letterSpacing: 5, color: '#000' }}>{text}</span>
+        </div>
+    );
+}
+
+/** Sello inclinado de dos líneas (misma forma que el bloque de fecha). */
+function StampBlock({ top, bottom }: { top: string; bottom: string }) {
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'absolute', right: 80, top: 130, width: 300, height: 330, background: LIME, color: '#000', transform: 'rotate(-4deg)' }}>
+            <span style={{ fontFamily: 'Anton', fontSize: 92, lineHeight: 1, letterSpacing: 2 }}>{top}</span>
+            <span style={{ fontFamily: 'Anton', fontSize: 62, lineHeight: 1, letterSpacing: 6, marginTop: 10 }}>{bottom}</span>
         </div>
     );
 }
@@ -122,37 +134,28 @@ async function homeCard(): Promise<React.ReactElement> {
                     </span>
                 ))}
             </div>
-            <Bar text="REVISTA DIGITAL, CULTURAL, ALTERNATIVA E INDEPENDIENTE  ·  REVISTABIFIDO.COM" />
+            <Bar text="REVISTABIFIDO.COM - REVISTA DIGITAL, CULTURAL, ALTERNATIVA E INDEPENDIENTE" />
         </div>
     );
 }
 
-/** El Parche: la manada (personajes) y el Archivo Vivo (el equipo). */
+/** El Parche: la manada, con la ilustración de portada del sitio (public/hero/desk.png) de fondo. */
 async function parcheCard(): Promise<React.ReactElement> {
     const logo = await dataUri(LOGO_FILE);
-    const order: [string, number][] = [['malandra', 255], ['incendia', 270], ['mordaz', 300], ['punkibri', 270], ['anika', 255]];
-    const arts = await Promise.all(order.map(([slug]) => dataUri(artFile(slug))));
+    const hero = await dataUri(HERO_FILE, 'image/jpeg');
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: W, height: H, background: '#000', position: 'relative', overflow: 'hidden' }}>
-            <Glow color={LIME} x="50%" y="92%" />
-            <div style={{ display: 'flex', position: 'absolute', left: 0, right: 0, bottom: BAR_H, justifyContent: 'center', alignItems: 'flex-end' }}>
-                {order.map(([slug, h], i) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img key={slug} src={arts[i]} width={Math.round(h * 0.8)} height={h} style={{ marginLeft: i === 0 ? 0 : -50 }} alt="" />
-                ))}
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={hero} width={1200} height={562} style={{ position: 'absolute', left: 0, bottom: 0 }} alt="" />
+            <div style={{ display: 'flex', position: 'absolute', left: 0, top: 0, width: W, height: 330, background: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%)' }} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logo} width={220} height={70} style={{ marginTop: 22 }} alt="" />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 6, fontFamily: 'Anton', fontSize: 100, lineHeight: 0.96, textTransform: 'uppercase', color: '#fff', textShadow: '0 6px 28px #000, 0 0 12px #000' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 6, fontFamily: 'Anton', fontSize: 98, lineHeight: 0.96, textTransform: 'uppercase', color: '#fff', textShadow: '0 6px 28px #000, 0 0 12px #000' }}>
                 <span>Cinco voces.</span>
                 <span style={{ color: LIME }}>Una manada.</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', marginTop: 12 }}>
-                <span style={{ fontFamily: 'Anton', fontSize: 30, letterSpacing: 3, background: LIME, color: '#000', padding: '5px 16px', textTransform: 'uppercase' }}>+ Archivo vivo</span>
-                <span style={{ fontFamily: 'Anton', fontSize: 30, letterSpacing: 3, color: '#fff', marginLeft: 16, textTransform: 'uppercase', textShadow: '0 2px 12px #000' }}>las personas detrás de la revista</span>
-            </div>
-            <Bar text="REVISTABIFIDO.COM/ELPARCHE  ·  NO SOMOS UN EQUIPO, SOMOS UN ARCHIVO VIVO" />
+            <Bar text="SOMOS UN ARCHIVO VIVO, NARRAMOS, SEÑALAMOS, REGISTRAMOS..." />
         </div>
     );
 }
@@ -163,8 +166,6 @@ async function leftColumnCard(opts: {
     title: string;
     titleSize: number;
     body?: string;
-    /** Lista corta (p. ej. últimas publicaciones), una por renglón. */
-    lines?: string[];
     meta?: string;
     right?: React.ReactNode;
     glow: string;
@@ -196,12 +197,6 @@ async function leftColumnCard(opts: {
                         {opts.body}
                     </span>
                 )}
-                {opts.lines?.map((line) => (
-                    <div key={line} style={{ display: 'flex', marginTop: 12 }}>
-                        <span style={{ fontFamily: 'Anton', fontSize: 30, color: opts.glow === LIME ? LIME : primary, marginRight: 14 }}>/</span>
-                        <span style={{ fontFamily: 'Anton', fontSize: 30, letterSpacing: 1, color: '#fff', textTransform: 'uppercase' }}>{line}</span>
-                    </div>
-                ))}
                 {opts.meta && (
                     <span style={{ fontFamily: 'Anton', fontSize: 28, letterSpacing: 4, color: 'rgba(255,255,255,0.7)', marginTop: 20, textTransform: 'uppercase' }}>
                         {opts.meta}
@@ -223,22 +218,26 @@ async function build(type: string, slug: string): Promise<React.ReactElement | n
     if (type === 'parche') return parcheCard();
 
     if (type === 'eventos') {
-        // Muestra el próximo evento real (si lo hay); si no, solo la portada de la agenda
-        const events: { date: string; name?: string; title?: string }[] = (await getEvents().catch(() => [])).filter((e: { date?: string }) => e.date);
-        const sorted = [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        const now = Date.now() - 24 * 3600 * 1000;
-        const next = sorted.find((e) => new Date(e.date).getTime() >= now);
-        const last = [...sorted].reverse().find((e) => new Date(e.date).getTime() < now);
-        const shown = next ?? last; // sin evento próximo, se muestra el más reciente
-        const dp = shown ? dateParts(shown.date) : null;
         return leftColumnCard({
             slug: 'default',
             label: 'La agenda',
             title: 'Eventos',
             titleSize: 150,
             body: 'Espacios de encuentro, diálogo y resistencia.',
-            meta: shown ? `${next ? 'Próximo' : 'Último'}  ·  ${clamp(shown.name || shown.title || '', 30)}` : undefined,
-            right: dp ? <DateBlock day={dp.day} month={dp.month} /> : undefined,
+            right: <DateBlock day="20" month="ABR" />,
+            glow: LIME,
+        });
+    }
+
+    if (type === 'mercado') {
+        return leftColumnCard({
+            slug: 'default',
+            label: 'La tienda',
+            title: 'Mercado Bífido',
+            titleSize: 108,
+            body: 'Lleva la resistencia contigo.',
+            meta: 'Ropa  ·  Accesorios  ·  Papelería  ·  Hogar',
+            right: <StampBlock top="MERCH" bottom="OFICIAL" />,
             glow: LIME,
         });
     }
@@ -270,20 +269,16 @@ async function build(type: string, slug: string): Promise<React.ReactElement | n
     }
 
     if (type === 'articulos') {
-        // Feed de publicaciones de un personaje: sus últimos títulos
+        // Feed de publicaciones de un personaje (distinto a su página de presentación)
         const c = characters.find((x) => x.slug === slug);
         if (!c) return null;
         const { primary } = getCharacterColors(c.slug);
-        const list: { title: string }[] = await getArticlesByCharacter(c.slug).catch(() => []);
-        const titles = list.slice(0, 3).map((a) => clamp(a.title, 42));
         return leftColumnCard({
             slug: c.slug,
             label: `${c.name}  ·  Publicaciones`,
             title: 'Artículos',
             titleSize: 130,
-            body: titles.length ? undefined : `Pronto: las primeras publicaciones de ${c.name}.`,
-            lines: titles,
-            meta: list.length ? `${list.length} ${list.length === 1 ? 'publicación' : 'publicaciones'}` : undefined,
+            body: `Todo lo que publica ${c.name} en la revista.`,
             glow: primary,
         });
     }

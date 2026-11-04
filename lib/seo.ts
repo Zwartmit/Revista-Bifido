@@ -14,7 +14,15 @@ export const DEFAULT_OG_IMAGE = {
     alt: 'Revista Bífido. Periodismo crudo para sensibilidades frágiles. Cultura, activismo, medio ambiente, género y diversidad.',
 };
 
-export type OgCardType = 'personaje' | 'articulos' | 'articulo' | 'evento' | 'eventos' | 'parche' | 'contacto';
+/** Tarjeta de El Parche: imagen estática (fondo fotográfico) generada desde /og/parche. */
+export const PARCHE_OG_IMAGE = {
+    url: '/og-parche.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'Cinco voces. Una manada. Somos un Archivo Vivo: narramos, señalamos, registramos.',
+};
+
+export type OgCardType = 'personaje' | 'articulos' | 'articulo' | 'evento' | 'eventos' | 'mercado' | 'parche' | 'contacto';
 
 /** Tarjeta social dinámica (app/og): el texto sale del CMS a partir del slug. */
 export function ogCard(type: OgCardType, slug?: string, alt?: string) {
