@@ -15,6 +15,10 @@ const nextConfig = {
       },
     ],
   },
+  // Tipografia e ilustraciones de las tarjetas sociales (app/og) se leen con fs: hay que incluirlas en el despliegue
+  outputFileTracingIncludes: {
+    '/og/[type]': ['./app/og/fonts/**/*', './app/og/art/**/*'],
+  },
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   experimental: {
     reactCompiler: false,

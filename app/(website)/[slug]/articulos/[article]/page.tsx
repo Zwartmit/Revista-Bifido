@@ -5,7 +5,7 @@ import { draftMode } from 'next/headers';
 import { Metadata } from 'next';
 import nextDynamic from 'next/dynamic';
 import JsonLd from '@/components/JsonLd';
-import { pageMetadata, SITE_URL, SITE_NAME } from '@/lib/seo';
+import { pageMetadata, ogCard, SITE_URL, SITE_NAME } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,15 +23,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         return { title: 'Artículo' };
     }
 
-    const image = articleData.featuredImage && !articleData.featuredImage.includes('placeholder')
-        ? articleData.featuredImage
-        : undefined;
-
     return pageMetadata({
         title: articleData.title,
         description: articleData.socialExcerpt || articleData.excerpt,
         path: `/${articleData.section && articleData.section !== 'general' ? articleData.section : slug}/articulos/${article}`,
-        image,
+        image: ogCard('articulo', article, articleData.title),
         type: 'article',
         publishedTime: articleData.publishedAt,
     });

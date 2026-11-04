@@ -2,7 +2,7 @@ import { getCharacterBySlug as getCharacterBySlugFromAPI, getCharacterById, getA
 import { getCharacterBySlug as getCharacterBySlugStatic } from '@/lib/characters';
 import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, ogCard } from '@/lib/seo';
 
 import MalandraPage from './characters/MalandraPage';
 import IncendiaPage from './characters/IncendiaPage';
@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title: character ? `Artículos de ${character.name}` : 'Artículos',
         description: character?.description,
         path: `/${slug}/articulos`,
+        image: character ? ogCard('personaje', slug, `${character.name}, personaje de Revista Bífido`) : undefined,
     });
 }
 

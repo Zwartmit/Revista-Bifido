@@ -11,8 +11,22 @@ export const DEFAULT_OG_IMAGE = {
     url: '/og-default.jpg',
     width: 1200,
     height: 630,
-    alt: 'Revista Bífido: los cinco personajes de la manada en un callejón urbano, con el lema Periodismo crudo para sensibilidades frágiles',
+    alt: 'Revista Bífido. Cinco voces. Una manada. Periodismo crudo para sensibilidades frágiles.',
 };
+
+export type OgCardType = 'personaje' | 'articulo' | 'evento';
+
+/** Tarjeta social dinámica (app/og): el texto sale del CMS a partir del slug. */
+export function ogCard(type: OgCardType, slug: string, alt?: string) {
+    return {
+        url: `/og/${type}?slug=${encodeURIComponent(slug)}`,
+        width: 1200,
+        height: 630,
+        alt: alt ?? DEFAULT_OG_IMAGE.alt,
+    };
+}
+
+type OgImage = typeof DEFAULT_OG_IMAGE;
 
 export const SOCIAL_PROFILES = [
     'https://www.facebook.com/revistabifido/',
@@ -26,8 +40,8 @@ interface PageSeo {
     description?: string;
     /** Ruta relativa canónica, p. ej. "/anika/articulos". */
     path: string;
-    /** Imagen para redes (URL absoluta o ruta relativa a metadataBase). Si falta, se usa opengraph-image. */
-    image?: string | null;
+    /** Imagen para redes: tarjeta dinámica (ogCard), URL absoluta o ruta relativa. Si falta, se usa la tarjeta base. */
+    image?: string | OgImage | null;
     type?: 'website' | 'article';
     publishedTime?: string;
 }
@@ -39,7 +53,8 @@ interface PageSeo {
  */
 export function pageMetadata({ title, description, path, image, type = 'website', publishedTime }: PageSeo): Metadata {
     const fullTitle = title ? `${title} | ${SITE_NAME}` : undefined;
-    const images = image ? [{ url: image }] : [DEFAULT_OG_IMAGE];
+    const img: OgImage | { url: string } = typeof image === 'string' ? { url: image } : image ?? DEFAULT_OG_IMAGE;
+    const images = [img];
 
     const openGraph: NonNullable<Metadata['openGraph']> =
         type === 'article'
@@ -63,7 +78,7 @@ export function pageMetadata({ title, description, path, image, type = 'website'
             card: 'summary_large_image',
             title: fullTitle,
             description,
-            images: image ? [image] : [DEFAULT_OG_IMAGE],
+            images: [img],
         },
     };
 }
