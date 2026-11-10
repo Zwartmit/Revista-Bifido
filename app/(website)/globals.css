@@ -108,7 +108,6 @@
     transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.bifido-flip-container:hover .bifido-flip-inner,
 .bifido-flip-inner.is-flipped {
     transform: rotateY(180deg);
     -webkit-transform: rotateY(180deg);

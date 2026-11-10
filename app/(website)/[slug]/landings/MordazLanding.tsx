@@ -36,7 +36,6 @@ export default function MordazLanding() {
             <span className="cl-meta-badge">Opinión</span>
             <span className="cl-meta-badge">42 años</span>
           </div>
-          <p className="cl-scroll-cta">Scroll para conocerlo</p>
         </div>
         <div className="cl-hero-right" />
       </section>

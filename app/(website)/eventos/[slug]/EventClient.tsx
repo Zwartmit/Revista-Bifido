@@ -213,7 +213,7 @@ const ImageBlockRenderer = ({ block }: { block: any }) => {
                     imageClassName="object-cover rounded-2xl"
                     alt={block.caption ?? 'Imagen del evento'}
                     onZoomClick={() => setIsZoomOpen(true)}
-                    onClick={!hasFlip ? () => setIsZoomOpen(true) : undefined}
+                    onClick={() => setIsZoomOpen(true)}
                 />
                 {block.caption && (
                     <figcaption className="text-center text-sm text-gray-500 mt-3 italic">{block.caption}</figcaption>
@@ -255,11 +255,15 @@ const VideoBlockRenderer = ({ block }: { block: any }) => {
 const GalleryBlockRenderer = ({ block }: { block: any }) => {
     const images: any[] = block.images ?? [];
     const [carouselIndex, setCarouselIndex] = useState(0);
+    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
     if (!images.length) return null;
 
     const isCarousel = block.layout === 'carousel';
     const isMasonry = block.layout === 'masonry';
-    const gridCols = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
+    const gridCols = block.layout === 'grid-3' ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2';
 
     const aspectMap: Record<string, string> = {
         square: 'aspect-square w-full',
@@ -273,6 +277,11 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
     const aspectClass = aspectMap[aspectRatio] || 'aspect-video w-full';
     const imageFit = (block.imageFit || 'contain') as 'cover' | 'contain';
 
+    const openLightbox = (i: number) => setLightboxIndex(i);
+    const closeLightbox = () => setLightboxIndex(null);
+    const goPrev = (e: React.MouseEvent) => { e.stopPropagation(); setLightboxIndex(i => i !== null ? (i - 1 + images.length) % images.length : null); };
+    const goNext = (e: React.MouseEvent) => { e.stopPropagation(); setLightboxIndex(i => i !== null ? (i + 1) % images.length : null); };
+
     const prevCarouselSlide = (e?: React.MouseEvent) => {
         if (e) e.stopPropagation();
         setCarouselIndex((prev) => (prev - 1 + images.length) % images.length);
@@ -283,125 +292,287 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
         setCarouselIndex((prev) => (prev + 1) % images.length);
     };
 
+    const currentLightboxItem = lightboxIndex !== null ? images[lightboxIndex] : null;
+    const currentLightboxSrc = currentLightboxItem
+        ? (currentLightboxItem.image?.url || (typeof currentLightboxItem.image === 'string' ? currentLightboxItem.image : (typeof currentLightboxItem === 'string' ? currentLightboxItem : '')))
+        : '';
+
+    const lightbox = lightboxIndex !== null && mounted ? createPortal(
+        <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+            onClick={closeLightbox}
+        >
+            <button
+                onClick={closeLightbox}
+                className="fixed top-4 right-4 z-[10000] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                aria-label="Cerrar"
+            >
+                <X size={24} />
+            </button>
+
+            <span className="fixed top-5 left-1/2 -translate-x-1/2 text-white/50 text-sm font-mono z-[10000]">
+                {lightboxIndex + 1} / {images.length}
+            </span>
+
+            {images.length > 1 && (
+                <button
+                    onClick={goPrev}
+                    className="fixed left-3 md:left-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-[10000]"
+                    aria-label="Anterior"
+                >
+                    <ChevronLeft size={28} />
+                </button>
+            )}
+
+            <div className="flex items-center justify-center w-full h-full px-16 py-12" onClick={e => e.stopPropagation()}>
+                {currentLightboxSrc && (
+                    <Image
+                        src={currentLightboxSrc}
+                        alt={currentLightboxItem?.caption || 'Imagen del evento'}
+                        width={1600}
+                        height={1200}
+                        className="object-contain max-h-[80vh] max-w-full w-auto h-auto rounded-xl shadow-2xl"
+                    />
+                )}
+            </div>
+
+            {currentLightboxItem?.caption && (
+                <p className="fixed bottom-6 left-1/2 -translate-x-1/2 text-center text-sm text-white/60 z-[10000] bg-black/50 px-4 py-1 rounded-full">{currentLightboxItem.caption}</p>
+            )}
+
+            {images.length > 1 && (
+                <button
+                    onClick={goNext}
+                    className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-[10000]"
+                    aria-label="Siguiente"
+                >
+                    <ChevronRight size={28} />
+                </button>
+            )}
+        </div>,
+        document.body
+    ) : null;
+
     if (isCarousel) {
         const currentItem = images[carouselIndex] || images[0];
         const currentData = currentItem?.image ?? currentItem;
 
         return (
-            <div className="relative my-12 clear-both max-w-4xl mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-black shadow-2xl">
-                {/* Viewport: altura fija/adaptable con imagen 100% contenida sin recortes */}
-                <div className="relative w-full h-[460px] sm:h-[580px] md:h-[680px] max-h-[80vh] flex items-center justify-center bg-black/90 rounded-xl overflow-hidden border border-white/5">
-                    <figure className="w-full h-full flex items-center justify-center">
-                        <FlipImageCard
-                            image={currentData}
-                            caption={currentItem.caption}
-                            enableFlip={currentItem.enableFlip}
-                            flipContentType={currentItem.flipContentType}
-                            flipTitle={currentItem.flipTitle}
-                            flipText={currentItem.flipText}
-                            flipImage={currentItem.flipImage}
-                            flipImageCaption={currentItem.flipImageCaption}
-                            fill={true}
-                            className="w-full h-full"
-                            aspectRatioClass="w-full h-full"
-                            imageFit="contain"
-                            imageClassName="object-contain p-2 sm:p-4"
-                        />
-                    </figure>
+            <>
+                <div className="relative my-12 clear-both max-w-4xl mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-black shadow-2xl">
+                    <div className="relative w-full h-[460px] sm:h-[580px] md:h-[680px] max-h-[80vh] flex items-center justify-center bg-black/90 rounded-xl overflow-hidden border border-white/5">
+                        <figure className="w-full h-full flex items-center justify-center">
+                            <FlipImageCard
+                                image={currentData}
+                                caption={currentItem.caption}
+                                enableFlip={currentItem.enableFlip}
+                                flipContentType={currentItem.flipContentType}
+                                flipTitle={currentItem.flipTitle}
+                                flipText={currentItem.flipText}
+                                flipImage={currentItem.flipImage}
+                                flipImageCaption={currentItem.flipImageCaption}
+                                fill={true}
+                                className="w-full h-full"
+                                aspectRatioClass="w-full h-full"
+                                imageFit="contain"
+                                imageClassName="object-contain p-2 sm:p-4"
+                                onZoomClick={() => openLightbox(carouselIndex)}
+                                onClick={() => openLightbox(carouselIndex)}
+                            />
+                        </figure>
 
-                    {images.length > 1 && (
-                        <>
-                            <button
-                                type="button"
-                                onClick={prevCarouselSlide}
-                                className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center bg-black/75 hover:bg-white text-white hover:text-black border border-white/20 rounded-full transition-all backdrop-blur-md z-20 shadow-xl"
-                                aria-label="Imagen anterior"
-                            >
-                                <ChevronLeft size={22} />
-                            </button>
-                            <button
-                                type="button"
-                                onClick={nextCarouselSlide}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center bg-black/75 hover:bg-white text-white hover:text-black border border-white/20 rounded-full transition-all backdrop-blur-md z-20 shadow-xl"
-                                aria-label="Siguiente imagen"
-                            >
-                                <ChevronRight size={22} />
-                            </button>
-                        </>
-                    )}
-                </div>
-
-                {/* Botón de enlace centrado */}
-                {currentItem.linkUrl && (
-                    <div className="mt-4 mb-2 flex justify-center">
-                        <a
-                            href={currentItem.linkUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-black hover:bg-[#b8ff00] hover:text-black font-mono text-xs font-bold uppercase tracking-widest transition-all hover:scale-105 shadow-xl"
-                        >
-                            <span>{currentItem.linkLabel || 'Ver enlace'}</span>
-                            <ExternalLink size={14} />
-                        </a>
+                        {images.length > 1 && (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={prevCarouselSlide}
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center bg-black/75 hover:bg-white text-white hover:text-black border border-white/20 rounded-full transition-all backdrop-blur-md z-20 shadow-xl"
+                                    aria-label="Imagen anterior"
+                                >
+                                    <ChevronLeft size={22} />
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={nextCarouselSlide}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center bg-black/75 hover:bg-white text-white hover:text-black border border-white/20 rounded-full transition-all backdrop-blur-md z-20 shadow-xl"
+                                    aria-label="Siguiente imagen"
+                                >
+                                    <ChevronRight size={22} />
+                                </button>
+                            </>
+                        )}
                     </div>
-                )}
 
-                {/* Metadata: Leyenda y Contador */}
-                <div className="mt-3 flex flex-col sm:flex-row items-center justify-between gap-3 px-1 pt-2 border-t border-white/10">
-                    <div className="flex-1 text-center sm:text-left">
-                        {currentItem.caption && (
-                            <p className="text-sm text-gray-300 font-googlesans">{currentItem.caption}</p>
+                    {currentItem.linkUrl && (
+                        <div className="mt-4 mb-2 flex justify-center">
+                            <a
+                                href={currentItem.linkUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-black hover:bg-[#b8ff00] hover:text-black font-mono text-xs font-bold uppercase tracking-widest transition-all hover:scale-105 shadow-xl"
+                            >
+                                <span>{currentItem.linkLabel || 'Ver enlace'}</span>
+                                <ExternalLink size={14} />
+                            </a>
+                        </div>
+                    )}
+
+                    <div className="mt-3 flex flex-col sm:flex-row items-center justify-between gap-3 px-1 pt-2 border-t border-white/10">
+                        <div className="flex-1 text-center sm:text-left">
+                            {currentItem.caption && (
+                                <p className="text-sm text-gray-300 font-googlesans">{currentItem.caption}</p>
+                            )}
+                        </div>
+
+                        {images.length > 1 && (
+                            <span className="font-mono text-xs text-white/60 tracking-wider bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                                {carouselIndex + 1} / {images.length}
+                            </span>
                         )}
                     </div>
 
                     {images.length > 1 && (
-                        <span className="font-mono text-xs text-white/60 tracking-wider bg-white/5 px-3 py-1 rounded-full border border-white/10">
-                            {carouselIndex + 1} / {images.length}
-                        </span>
+                        <div className="flex items-center justify-center gap-1.5 mt-3 pt-1">
+                            {images.map((_: any, idx: number) => (
+                                <button
+                                    key={idx}
+                                    type="button"
+                                    onClick={() => setCarouselIndex(idx)}
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                                        idx === carouselIndex ? 'w-6 bg-white opacity-100' : 'w-2 bg-white/30 hover:bg-white/60'
+                                    }`}
+                                    aria-label={`Ir a imagen ${idx + 1}`}
+                                />
+                            ))}
+                        </div>
                     )}
                 </div>
-
-                {images.length > 1 && (
-                    <div className="flex items-center justify-center gap-1.5 mt-3 pt-1">
-                        {images.map((_: any, idx: number) => (
-                            <button
-                                key={idx}
-                                type="button"
-                                onClick={() => setCarouselIndex(idx)}
-                                className={`h-1.5 rounded-full transition-all duration-300 ${
-                                    idx === carouselIndex ? 'w-6 bg-white opacity-100' : 'w-2 bg-white/30 hover:bg-white/60'
-                                }`}
-                                aria-label={`Ir a imagen ${idx + 1}`}
-                            />
-                        ))}
-                    </div>
-                )}
-            </div>
+                {lightbox}
+            </>
         );
     }
 
     if (isMasonry) {
         return (
-            <div className="columns-1 sm:columns-2 md:columns-3 gap-4 mb-10 [column-fill:_balance]">
+            <>
+                <div className="columns-1 sm:columns-2 md:columns-3 gap-4 mb-10 [column-fill:_balance]">
+                    {images.map((img: any, i: number) => {
+                        const imgData = img.image ?? img;
+                        return (
+                            <figure key={i} className="break-inside-avoid mb-4 flex flex-col">
+                                <FlipImageCard
+                                    image={imgData}
+                                    caption={img.caption}
+                                    enableFlip={img.enableFlip}
+                                    flipContentType={img.flipContentType}
+                                    flipTitle={img.flipTitle}
+                                    flipText={img.flipText}
+                                    flipImage={img.flipImage}
+                                    flipImageCaption={img.flipImageCaption}
+                                    fill={false}
+                                    width={imgData.width || 800}
+                                    height={imgData.height || 600}
+                                    imageClassName="rounded-xl w-full h-auto object-cover"
+                                    imageFit="cover"
+                                    onZoomClick={() => openLightbox(i)}
+                                    onClick={() => openLightbox(i)}
+                                />
+                                {img.caption && (
+                                    <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                        {img.caption}
+                                    </figcaption>
+                                )}
+                                {img.linkUrl && (
+                                    <div className="mt-2 flex justify-center">
+                                        <a
+                                            href={img.linkUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                                        >
+                                            <span>{img.linkLabel || 'Ver más'}</span>
+                                            <ExternalLink size={12} />
+                                        </a>
+                                    </div>
+                                )}
+                            </figure>
+                        );
+                    })}
+                </div>
+                {lightbox}
+            </>
+        );
+    }
+
+    return (
+        <>
+            <div className={`grid ${gridCols} gap-4 mb-10`}>
                 {images.map((img: any, i: number) => {
                     const imgData = img.image ?? img;
+
+                    if (isNatural) {
+                        return (
+                            <figure key={i} className="flex flex-col">
+                                <FlipImageCard
+                                    image={imgData}
+                                    caption={img.caption}
+                                    enableFlip={img.enableFlip}
+                                    flipContentType={img.flipContentType}
+                                    flipTitle={img.flipTitle}
+                                    flipText={img.flipText}
+                                    flipImage={img.flipImage}
+                                    flipImageCaption={img.flipImageCaption}
+                                    fill={false}
+                                    width={imgData.width || 800}
+                                    height={imgData.height || 600}
+                                    imageClassName="rounded-xl w-full h-auto object-cover"
+                                    imageFit="cover"
+                                    onZoomClick={() => openLightbox(i)}
+                                    onClick={() => openLightbox(i)}
+                                />
+                                {img.caption && (
+                                    <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                        {img.caption}
+                                    </figcaption>
+                                )}
+                                {img.linkUrl && (
+                                    <div className="mt-2 flex justify-center">
+                                        <a
+                                            href={img.linkUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                                        >
+                                            <span>{img.linkLabel || 'Ver más'}</span>
+                                            <ExternalLink size={12} />
+                                        </a>
+                                    </div>
+                                )}
+                            </figure>
+                        );
+                    }
+
                     return (
-                        <figure key={i} className="break-inside-avoid mb-4 flex flex-col">
-                            <FlipImageCard
-                                image={imgData}
-                                caption={img.caption}
-                                enableFlip={img.enableFlip}
-                                flipContentType={img.flipContentType}
-                                flipTitle={img.flipTitle}
-                                flipText={img.flipText}
-                                flipImage={img.flipImage}
-                                flipImageCaption={img.flipImageCaption}
-                                fill={false}
-                                width={imgData.width || 800}
-                                height={imgData.height || 600}
-                                imageClassName="rounded-xl w-full h-auto object-cover"
-                                imageFit="cover"
-                            />
+                        <figure key={i} className="flex flex-col">
+                            <div className={`relative ${aspectClass}`}>
+                                <FlipImageCard
+                                    image={imgData}
+                                    caption={img.caption}
+                                    enableFlip={img.enableFlip}
+                                    flipContentType={img.flipContentType}
+                                    flipTitle={img.flipTitle}
+                                    flipText={img.flipText}
+                                    flipImage={img.flipImage}
+                                    flipImageCaption={img.flipImageCaption}
+                                    fill={true}
+                                    aspectRatioClass={aspectClass}
+                                    imageFit={imageFit}
+                                    imageClassName="rounded-xl"
+                                    onZoomClick={() => openLightbox(i)}
+                                    onClick={() => openLightbox(i)}
+                                />
+                            </div>
                             {img.caption && (
                                 <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
                                     {img.caption}
@@ -424,98 +595,16 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                     );
                 })}
             </div>
-        );
-    }
-
-    return (
-        <div className={`grid ${gridCols} gap-4 mb-10`}>
-            {images.map((img: any, i: number) => {
-                const imgData = img.image ?? img;
-
-                if (isNatural) {
-                    return (
-                        <figure key={i} className="flex flex-col">
-                            <FlipImageCard
-                                image={imgData}
-                                caption={img.caption}
-                                enableFlip={img.enableFlip}
-                                flipContentType={img.flipContentType}
-                                flipTitle={img.flipTitle}
-                                flipText={img.flipText}
-                                flipImage={img.flipImage}
-                                flipImageCaption={img.flipImageCaption}
-                                fill={false}
-                                width={imgData.width || 800}
-                                height={imgData.height || 600}
-                                imageClassName="rounded-xl w-full h-auto object-cover"
-                                imageFit="cover"
-                            />
-                            {img.caption && (
-                                <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
-                                    {img.caption}
-                                </figcaption>
-                            )}
-                            {img.linkUrl && (
-                                <div className="mt-2 flex justify-center">
-                                    <a
-                                        href={img.linkUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
-                                    >
-                                        <span>{img.linkLabel || 'Ver más'}</span>
-                                        <ExternalLink size={12} />
-                                    </a>
-                                </div>
-                            )}
-                        </figure>
-                    );
-                }
-
-                return (
-                    <figure key={i} className="flex flex-col">
-                        <div className={`relative ${aspectClass}`}>
-                            <FlipImageCard
-                                image={imgData}
-                                caption={img.caption}
-                                enableFlip={img.enableFlip}
-                                flipContentType={img.flipContentType}
-                                flipTitle={img.flipTitle}
-                                flipText={img.flipText}
-                                flipImage={img.flipImage}
-                                flipImageCaption={img.flipImageCaption}
-                                fill={true}
-                                aspectRatioClass={aspectClass}
-                                imageFit={imageFit}
-                                imageClassName="rounded-xl"
-                            />
-                        </div>
-                        {img.caption && (
-                            <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
-                                {img.caption}
-                            </figcaption>
-                        )}
-                        {img.linkUrl && (
-                            <div className="mt-2 flex justify-center">
-                                <a
-                                    href={img.linkUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
-                                >
-                                    <span>{img.linkLabel || 'Ver más'}</span>
-                                    <ExternalLink size={12} />
-                                </a>
-                            </div>
-                        )}
-                    </figure>
-                );
-            })}
-        </div>
+            {lightbox}
+        </>
     );
 };
 
 const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
+    const [isZoomOpen, setIsZoomOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
     const imgRight = block.imagePosition === 'right';
     const ratioMap: Record<string, [string, string]> = {
         '50-50': ['md:w-1/2', 'md:w-1/2'],
@@ -523,6 +612,37 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
         '60-40': ['md:w-3/5', 'md:w-2/5'],
     };
     const [imgW, txtW] = ratioMap[block.columnRatio || '50-50'];
+
+    const lightbox = isZoomOpen && mounted && block.image?.url ? createPortal(
+        <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md"
+            onClick={() => setIsZoomOpen(false)}
+        >
+            <button
+                onClick={() => setIsZoomOpen(false)}
+                className="fixed top-4 right-4 z-[10000] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                aria-label="Cerrar"
+            >
+                <X size={24} />
+            </button>
+            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-12" onClick={e => e.stopPropagation()}>
+                <Image
+                    src={block.image.url}
+                    alt={block.imageCaption || block.image.filename || ''}
+                    width={1600}
+                    height={1200}
+                    className="object-contain max-h-[85vh] max-w-full w-auto h-auto rounded-xl shadow-2xl"
+                />
+            </div>
+            {block.imageCaption && (
+                <p className="fixed bottom-6 left-1/2 -translate-x-1/2 text-center text-sm text-white/70 z-[10000] bg-black/70 px-5 py-1.5 rounded-full border border-white/10">
+                    {block.imageCaption}
+                </p>
+            )}
+        </div>,
+        document.body
+    ) : null;
+
     return (
         <div className={`flex flex-col md:flex-row gap-6 my-10 clear-both items-start ${imgRight ? 'md:flex-row-reverse' : ''}`}>
             {block.image?.url && (
@@ -539,6 +659,8 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
                         width={block.image.width || 800}
                         height={block.image.height || 600}
                         imageClassName="rounded-xl object-cover w-full h-auto"
+                        onZoomClick={() => setIsZoomOpen(true)}
+                        onClick={() => setIsZoomOpen(true)}
                     />
                     {block.imageCaption && <figcaption className="text-center text-xs text-gray-500 mt-2">{block.imageCaption}</figcaption>}
                 </figure>
@@ -546,6 +668,7 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
             <div className={`${txtW} text-gray-300 leading-relaxed text-base md:text-lg whitespace-pre-line`}>
                 {block.text}
             </div>
+            {lightbox}
         </div>
     );
 };

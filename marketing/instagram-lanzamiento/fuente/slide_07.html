@@ -1,0 +1,49 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><style>
+@font-face{font-family:'Anton';src:url('assets/Anton-Regular.ttf')}
+@font-face{font-family:'Jack';src:url('assets/JackInput.woff2')}
+:root{--lime:#b8ff00;--orange:#fe5e00;--ink:#050505;--teal:#00a89e}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;background:var(--ink);overflow:hidden}
+body{position:relative;color:#fff;font-family:'Jack',monospace}
+.abs{position:absolute}
+.grain{position:absolute;inset:0;z-index:90;pointer-events:none;opacity:.20;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");background-size:300px}
+.dots{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:radial-gradient(circle,rgba(255,255,255,.09) 1.4px,transparent 1.7px);background-size:16px 16px}
+.logo{position:absolute;left:56px;top:50px;width:176px;z-index:60}
+.count{position:absolute;right:56px;top:62px;z-index:60;font-size:21px;letter-spacing:.22em;color:var(--lime)}
+.foot-l{position:absolute;left:56px;bottom:50px;z-index:60;font-size:19px;letter-spacing:.2em;color:rgba(255,255,255,.78);text-transform:uppercase}
+.foot-r{position:absolute;right:56px;bottom:50px;z-index:60;font-size:19px;letter-spacing:.2em;color:var(--lime);text-transform:uppercase}
+.reg{position:absolute;z-index:60;width:22px;height:22px}
+.reg:before,.reg:after{content:'';position:absolute;background:rgba(255,255,255,.55)}
+.reg:before{left:10px;top:0;width:2px;height:22px}
+.reg:after{top:10px;left:0;height:2px;width:22px}
+.d{font-family:'Anton',sans-serif;text-transform:uppercase;line-height:.9;letter-spacing:.005em}
+.lime{color:var(--lime)}
+.mono{font-family:'Jack',monospace;text-transform:uppercase;letter-spacing:.2em}
+.tape{position:absolute;background:var(--lime);color:#050505;z-index:30}
+.shadowblock{position:absolute;background:var(--lime)}
+.browser{position:absolute;background:#0a0a0a;border:3px solid #fff;overflow:hidden;z-index:20}
+.browser .bar{height:34px;background:#0a0a0a;border-bottom:3px solid #fff;display:flex;align-items:center;gap:9px;padding-left:14px}
+.browser .bar i{width:11px;height:11px;border-radius:50%;background:#fff;opacity:.85;display:block}
+.browser .bar span{margin-left:14px;font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.7)}
+.browser img{display:block;width:100%}
+.phone{position:absolute;background:#000;border:9px solid #fff;border-radius:46px;overflow:hidden;z-index:25}
+.phone img{display:block;width:100%}
+</style></head><body>
+<div class="abs" style="left:0;top:700px;width:1080px;height:650px;background:url('assets/hero.webp') no-repeat;background-size:auto 650px;background-position:-190px 0;z-index:2"></div>
+<div class="abs" style="left:0;top:700px;width:1080px;height:230px;z-index:3;background:linear-gradient(to bottom,#050505 0%,rgba(5,5,5,.9) 40%,rgba(5,5,5,0) 100%)"></div>
+<div class="abs" style="left:0;bottom:0;width:1080px;height:150px;z-index:3;background:linear-gradient(to top,#050505 0%,rgba(5,5,5,.7) 55%,rgba(5,5,5,0) 100%)"></div>
+<div class="abs mono" style="left:56px;top:158px;z-index:40;font-size:21px;color:var(--lime)">// 07 · Entra</div>
+<div class="abs d" style="left:52px;top:204px;z-index:40;font-size:196px;line-height:.86;white-space:nowrap">Y a resistir</div>
+<div class="abs d" style="left:52px;top:376px;z-index:40;font-size:100px;line-height:.9;white-space:nowrap">en estos lugares</div>
+<div class="abs d lime" style="left:50px;top:512px;z-index:40;font-size:184px;line-height:.86;white-space:nowrap">cibernéticos</div>
+<div class="tape" style="left:-50px;top:722px;width:1180px;height:176px;transform:rotate(-3deg);z-index:46;display:flex;align-items:center;padding-left:106px">
+  <div class="d" style="font-size:118px;color:#050505;white-space:nowrap;line-height:1">revistabifido.com</div>
+</div>
+<div class="foot-l" style="font-size:16px;letter-spacing:.15em;color:rgba(255,255,255,.92)">El Parche · Eventos · Mercado · Contáctanos</div>
+
+<img class="logo" src="assets/logo.png">
+<div class="count">07 / 07</div>
+
+<div class="foot-r">Link en la bio &#8599;</div>
+<div class="reg" style="left:30px;top:30px"></div><div class="reg" style="left:1028px;top:30px"></div><div class="reg" style="left:30px;top:1298px"></div><div class="reg" style="left:1028px;top:1298px"></div>
+<div class="dots"></div><div class="grain"></div></body></html>

@@ -41,7 +41,6 @@ export default function AnikaLanding() {
             <span className="cl-meta-badge">Reducción de daños</span>
             <span className="cl-meta-badge">28 años</span>
           </div>
-          <p className="cl-scroll-cta">Scroll para conocerla</p>
         </div>
         <div className="cl-hero-right" />
       </section>

@@ -35,7 +35,6 @@ export default function IncendiaLanding() {
             <span className="cl-meta-badge">Género &amp; Diversidad</span>
             <span className="cl-meta-badge">36 años</span>
           </div>
-          <p className="cl-scroll-cta">Scroll para conocerla</p>
         </div>
         <div className="cl-hero-right" />
       </section>

@@ -36,7 +36,6 @@ export default function PunkibriLanding() {
             <span className="cl-meta-badge">Medio Ambiente</span>
             <span className="cl-meta-badge">Vulnerable — IUCN</span>
           </div>
-          <p className="cl-scroll-cta">Scroll para conocerlo</p>
         </div>
         <div className="cl-hero-right" />
       </section>

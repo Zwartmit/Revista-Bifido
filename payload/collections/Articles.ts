@@ -191,40 +191,56 @@ export const Articles: CollectionConfig = {
                     relationTo: 'characters',
                     required: true,
                     filterOptions: ({ data, siblingData }: any) => {
-                        const excludedIds: any[] = [];
-                        const authorId = typeof data?.author === 'object' ? data.author?.id : data?.author;
-                        if (authorId) excludedIds.push(authorId);
+                        try {
+                            const toIntId = (v: any): number | null => {
+                                if (v === null || v === undefined) return null;
+                                const raw = typeof v === 'object' ? v.id : v;
+                                const num = typeof raw === 'number' ? raw : parseInt(String(raw), 10);
+                                return Number.isFinite(num) && num > 0 ? num : null;
+                            };
 
-                        if (Array.isArray(data?.characters)) {
-                            for (const item of data.characters) {
-                                const charId = typeof item?.character === 'object' ? item.character?.id : item?.character;
-                                const currentSiblingId = typeof siblingData?.character === 'object' ? siblingData.character?.id : siblingData?.character;
-                                if (charId && String(charId) !== String(currentSiblingId) && !excludedIds.includes(charId)) {
-                                    excludedIds.push(charId);
+                            const excludedIds: number[] = [];
+                            const authorId = toIntId(data?.author);
+                            if (authorId !== null) excludedIds.push(authorId);
+
+                            if (Array.isArray(data?.characters)) {
+                                const currentSiblingId = toIntId(siblingData?.character);
+                                for (const item of data.characters) {
+                                    const charId = toIntId(item?.character);
+                                    if (charId !== null && charId !== currentSiblingId && !excludedIds.includes(charId)) {
+                                        excludedIds.push(charId);
+                                    }
                                 }
                             }
-                        }
 
-                        if (excludedIds.length === 1) {
-                            return {
-                                id: {
-                                    not_equals: excludedIds[0],
-                                },
-                            };
-                        } else if (excludedIds.length > 1) {
-                            return {
-                                id: {
-                                    not_in: excludedIds,
-                                },
-                            };
+                            if (excludedIds.length === 1) {
+                                return {
+                                    id: {
+                                        not_equals: excludedIds[0],
+                                    },
+                                };
+                            } else if (excludedIds.length > 1) {
+                                return {
+                                    id: {
+                                        not_in: excludedIds,
+                                    },
+                                };
+                            }
+                            return true;
+                        } catch {
+                            return true;
                         }
-                        return true;
                     },
                     validate: (value: any, { data }: any) => {
-                        const authorId = typeof data?.author === 'object' ? data.author?.id : data?.author;
-                        const charId = typeof value === 'object' ? value?.id : value;
-                        if (authorId && charId && String(authorId) === String(charId)) {
-                            return 'No puedes seleccionar el mismo personaje que ya está como personaje principal.';
+                        try {
+                            const toStrId = (v: any) => (typeof v === 'object' ? String(v?.id || '') : String(v || ''));
+                            const authorId = toStrId(data?.author);
+                            const charId = toStrId(value);
+                            if (authorId && charId && authorId === charId) {
+                                return 'No puedes seleccionar el mismo personaje que ya está como personaje principal.';
+                            }
+                        } catch {
+                            // silencioso
                         }
                         return true;
                     },

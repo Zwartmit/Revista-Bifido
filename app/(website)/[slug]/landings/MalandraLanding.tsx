@@ -36,7 +36,6 @@ export default function MalandraLanding() {
             <span className="cl-meta-badge">Justicia &amp; Derechos</span>
             <span className="cl-meta-badge">35 años</span>
           </div>
-          <p className="cl-scroll-cta">Scroll para conocerla</p>
         </div>
         <div className="cl-hero-right" />
       </section>

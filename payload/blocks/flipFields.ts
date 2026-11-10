@@ -2,10 +2,10 @@ import type { Field } from 'payload';
 
 export const flipCardFields: Field = {
     type: 'collapsible',
-    label: 'Efecto 3D Flip (Volteo al pasar el cursor)',
+    label: 'Efecto 3D Flip (Giro interactivo)',
     admin: {
         initCollapsed: true,
-        description: 'Permite que la imagen gire en 3D al pasar el cursor (o pulsar en móvil) revelando texto u otra imagen al reverso.',
+        description: 'Permite girar la tarjeta en 3D mediante el botón "Girar ↺" revelando texto o imagen al reverso, permitiendo además ampliar la imagen con la lupa.',
     },
     fields: [
         {
@@ -41,7 +41,7 @@ export const flipCardFields: Field = {
             type: 'textarea',
             admin: {
                 condition: (_, siblingData) => Boolean(siblingData?.enableFlip && siblingData?.flipContentType === 'text'),
-                description: 'Texto que se leerá cuando el lector pase el ratón sobre la imagen.',
+                description: 'Texto que se leerá al girar la tarjeta.',
             },
         },
         {

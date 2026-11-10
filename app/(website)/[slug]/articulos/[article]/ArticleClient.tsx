@@ -191,7 +191,7 @@ const ImageBlockRenderer = ({ block }: { block: any }) => {
                     height={block.image.height || 800}
                     imageClassName="rounded-2xl object-cover w-full h-auto"
                     onZoomClick={() => setIsZoomOpen(true)}
-                    onClick={!hasFlip ? () => setIsZoomOpen(true) : undefined}
+                    onClick={() => setIsZoomOpen(true)}
                 />
                 {block.caption && <figcaption className="text-center text-sm text-gray-500 mt-3">{block.caption}</figcaption>}
                 {block.linkUrl && (
@@ -227,6 +227,10 @@ const VideoBlockRenderer = ({ block }: { block: any }) => {
 };
 
 const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
+    const [isZoomOpen, setIsZoomOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
     const imgRight = block.imagePosition === 'right';
     const ratioMap: Record<string, [string, string]> = {
         '50-50': ['md:w-1/2', 'md:w-1/2'],
@@ -234,6 +238,37 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
         '60-40': ['md:w-3/5', 'md:w-2/5'],
     };
     const [imgW, txtW] = ratioMap[block.columnRatio || '50-50'];
+
+    const lightbox = isZoomOpen && mounted ? createPortal(
+        <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md"
+            onClick={() => setIsZoomOpen(false)}
+        >
+            <button
+                onClick={() => setIsZoomOpen(false)}
+                className="fixed top-4 right-4 z-[10000] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                aria-label="Cerrar"
+            >
+                <X size={24} />
+            </button>
+            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-12" onClick={e => e.stopPropagation()}>
+                <Image
+                    src={block.image.url}
+                    alt={block.imageCaption || block.image.filename || ''}
+                    width={block.image.width || 1600}
+                    height={block.image.height || 1200}
+                    className="object-contain max-h-[85vh] max-w-full w-auto h-auto rounded-xl shadow-2xl"
+                />
+            </div>
+            {block.imageCaption && (
+                <p className="fixed bottom-6 left-1/2 -translate-x-1/2 text-center text-sm text-white/70 z-[10000] bg-black/70 px-5 py-1.5 rounded-full border border-white/10">
+                    {block.imageCaption}
+                </p>
+            )}
+        </div>,
+        document.body
+    ) : null;
+
     return (
         <div className={`flex flex-col md:flex-row gap-6 my-10 clear-both items-start ${imgRight ? 'md:flex-row-reverse' : ''}`}>
             {block.image?.url && (
@@ -250,6 +285,8 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
                         width={block.image.width || 800}
                         height={block.image.height || 600}
                         imageClassName="rounded-xl object-cover w-full h-auto"
+                        onZoomClick={() => setIsZoomOpen(true)}
+                        onClick={() => setIsZoomOpen(true)}
                     />
                     {block.imageCaption && <figcaption className="text-center text-xs text-gray-500 mt-2">{block.imageCaption}</figcaption>}
                 </figure>
@@ -257,6 +294,7 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
             <div className={`${txtW} text-gray-300 leading-relaxed text-base md:text-lg whitespace-pre-line`}>
                 {block.text}
             </div>
+            {lightbox}
         </div>
     );
 };
@@ -273,7 +311,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
 
     const isCarousel = block.layout === 'carousel';
     const isMasonry = block.layout === 'masonry';
-    const gridCols = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
+    const gridCols = block.layout === 'grid-3' ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2';
 
     // Proporciones disponibles para modo cuadrícula y carrusel
     const aspectMap: Record<string, string> = {
@@ -395,7 +433,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                 imageFit="contain"
                                 imageClassName="object-contain p-2 sm:p-4"
                                 onZoomClick={() => openLightbox(carouselIndex)}
-                                onClick={!hasFlip ? () => openLightbox(carouselIndex) : undefined}
+                                onClick={() => openLightbox(carouselIndex)}
                             />
                         </figure>
 
@@ -504,7 +542,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     imageClassName="rounded-xl w-full h-auto object-cover"
                                     imageFit="cover"
                                     onZoomClick={() => openLightbox(i)}
-                                    onClick={!hasFlip ? () => openLightbox(i) : undefined}
+                                    onClick={() => openLightbox(i)}
                                 />
                                 {item.caption && (
                                     <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
@@ -564,7 +602,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     imageClassName="rounded-xl w-full h-auto object-cover"
                                     imageFit="cover"
                                     onZoomClick={() => openLightbox(i)}
-                                    onClick={!hasFlip ? () => openLightbox(i) : undefined}
+                                    onClick={() => openLightbox(i)}
                                 />
                                 {item.caption && (
                                     <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
@@ -605,7 +643,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     imageFit={imageFit}
                                     imageClassName="rounded-xl"
                                     onZoomClick={() => openLightbox(i)}
-                                    onClick={!hasFlip ? () => openLightbox(i) : undefined}
+                                    onClick={() => openLightbox(i)}
                                 />
                             </div>
                             {item.caption && (
