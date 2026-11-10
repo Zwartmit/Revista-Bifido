@@ -46,6 +46,31 @@ export const ImageBlock: Block = {
                 { label: 'Completo (100%)', value: 'full' },
             ],
         },
+        {
+            type: 'row',
+            fields: [
+                {
+                    name: 'linkUrl',
+                    label: 'URL de redirección (opcional)',
+                    type: 'text',
+                    admin: {
+                        width: '70%',
+                        description: 'Si se indica, aparecerá un botón de enlace sobre la imagen.',
+                    },
+                },
+                {
+                    name: 'linkLabel',
+                    label: 'Texto del botón',
+                    type: 'text',
+                    defaultValue: 'Ver más',
+                    admin: {
+                        width: '30%',
+                        condition: (_, siblingData) => Boolean(siblingData?.linkUrl),
+                        description: 'Texto visible en el botón.',
+                    },
+                },
+            ],
+        },
         flipCardFields,
     ],
 };

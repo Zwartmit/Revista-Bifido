@@ -102,7 +102,7 @@ export default function FeaturedCarousel({ articles, section, primaryColor, dark
                             )}
                         </div>
                         <div className="flex items-center gap-2 mt-8 font-googlesans text-base font-medium" style={{ color: primaryColor }}>
-                            <span>Leer artículo</span>
+                            <span>Ver publicación</span>
                             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>

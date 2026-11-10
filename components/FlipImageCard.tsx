@@ -87,10 +87,13 @@ export default function FlipImageCard({
                         <button
                             type="button"
                             onClick={(e) => {
+                                e.preventDefault();
                                 e.stopPropagation();
                                 onZoomClick();
                             }}
-                            className="absolute top-3 left-3 bg-black/75 hover:bg-black/95 backdrop-blur-md p-1.5 rounded-full border border-white/20 text-white/90 hover:text-bifido-neon transition-all z-20"
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className="absolute top-3 left-3 bg-black/75 hover:bg-black/95 backdrop-blur-md p-1.5 rounded-full border border-white/20 text-white/90 hover:text-bifido-neon transition-all z-30 pointer-events-auto cursor-pointer shadow-lg"
                             aria-label="Ver imagen ampliada"
                             title="Ver en grande"
                         >
@@ -102,7 +105,7 @@ export default function FlipImageCard({
         }
         return (
             <div 
-                className={`relative ${className} ${onClick ? 'cursor-pointer' : ''}`}
+                className={`relative group ${className} ${onClick ? 'cursor-pointer' : ''}`}
                 onClick={onClick}
             >
                 <Image
@@ -112,6 +115,23 @@ export default function FlipImageCard({
                     height={height}
                     className={baseFitClass}
                 />
+                {onZoomClick && (
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onZoomClick();
+                        }}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        className="absolute top-3 left-3 bg-black/75 hover:bg-black/95 backdrop-blur-md p-1.5 rounded-full border border-white/20 text-white/90 hover:text-bifido-neon transition-all z-30 pointer-events-auto cursor-pointer shadow-lg"
+                        aria-label="Ver imagen ampliada"
+                        title="Ver en grande"
+                    >
+                        <ZoomIn size={16} />
+                    </button>
+                )}
             </div>
         );
     }
@@ -128,7 +148,7 @@ export default function FlipImageCard({
 
     return (
         <div
-            className={`bifido-flip-container relative select-none cursor-pointer ${className}`}
+            className={`bifido-flip-container relative select-none cursor-pointer ${fill ? 'w-full h-full' : ''} ${className}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
                 setIsHovered(false);
@@ -138,14 +158,14 @@ export default function FlipImageCard({
             title="Pasa el cursor o pulsa para voltear"
         >
             <div
-                className={`bifido-flip-inner relative w-full ${aspectRatioClass || ''} rounded-2xl ${isFlipped ? 'is-flipped' : ''}`}
+                className={`bifido-flip-inner relative w-full ${fill ? 'h-full' : ''} ${aspectRatioClass || ''} rounded-2xl ${isFlipped ? 'is-flipped' : ''}`}
                 style={{
                     transform: showBack ? 'rotateY(180deg)' : 'rotateY(0deg)',
                     WebkitTransform: showBack ? 'rotateY(180deg)' : 'rotateY(0deg)',
                 }}
             >
                 {/* ── Cara Frontal ── */}
-                <div className="bifido-flip-face relative w-full h-full rounded-2xl border border-white/10 hover:border-bifido-neon/50 transition-colors shadow-2xl bg-black overflow-hidden">
+                <div className={`bifido-flip-face relative w-full h-full rounded-2xl border border-white/10 hover:border-bifido-neon/50 transition-colors shadow-2xl bg-black overflow-hidden ${showBack ? 'pointer-events-none' : 'pointer-events-auto'}`}>
                     {fill ? (
                         <Image
                             src={imageUrl}
@@ -168,10 +188,13 @@ export default function FlipImageCard({
                         <button
                             type="button"
                             onClick={(e) => {
+                                e.preventDefault();
                                 e.stopPropagation();
                                 onZoomClick();
                             }}
-                            className="absolute top-3 left-3 bg-black/75 hover:bg-black/95 backdrop-blur-md p-1.5 rounded-full border border-white/20 text-white/90 hover:text-bifido-neon transition-all z-20"
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className="absolute top-3 left-3 bg-black/75 hover:bg-black/95 backdrop-blur-md p-1.5 rounded-full border border-white/20 text-white/90 hover:text-bifido-neon transition-all z-30 pointer-events-auto cursor-pointer shadow-lg"
                             aria-label="Ver imagen ampliada"
                             title="Ver en grande"
                         >
@@ -190,7 +213,7 @@ export default function FlipImageCard({
 
                 {/* ── Cara Trasera (Reverso 3D) ── */}
                 <div
-                    className="bifido-flip-back absolute inset-0 w-full h-full rounded-2xl border border-bifido-neon/40 bg-black flex flex-col justify-center items-center p-5 md:p-6 text-center z-20 shadow-2xl overflow-hidden"
+                    className={`bifido-flip-back absolute inset-0 w-full h-full rounded-2xl border border-bifido-neon/40 bg-black flex flex-col justify-center items-center p-5 md:p-6 text-center z-20 shadow-2xl overflow-hidden ${showBack ? 'pointer-events-auto' : 'pointer-events-none'}`}
                 >
                     {flipContentType === 'image' && backImageUrl ? (
                         <div className="relative w-full h-full flex flex-col items-center justify-center">
@@ -232,10 +255,13 @@ export default function FlipImageCard({
                         <button
                             type="button"
                             onClick={(e) => {
+                                e.preventDefault();
                                 e.stopPropagation();
                                 onZoomClick();
                             }}
-                            className="absolute top-3 left-3 bg-black/75 hover:bg-black/95 backdrop-blur-md p-1.5 rounded-full border border-white/20 text-white/90 hover:text-bifido-neon transition-all z-20"
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className="absolute top-3 left-3 bg-black/75 hover:bg-black/95 backdrop-blur-md p-1.5 rounded-full border border-white/20 text-white/90 hover:text-bifido-neon transition-all z-30 pointer-events-auto cursor-pointer shadow-lg"
                             aria-label="Ver imagen ampliada"
                             title="Ver en grande"
                         >

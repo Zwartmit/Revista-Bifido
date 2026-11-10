@@ -97,9 +97,21 @@ export const Events: CollectionConfig = {
                 },
                 {
                     name: 'isFeatured',
-                    label: '¿Destacar?',
+                    label: '¿Destacar en eventos?',
                     type: 'checkbox',
                     defaultValue: false,
+                    admin: {
+                        description: 'Aparece en el carrusel superior de /eventos.',
+                    },
+                },
+                {
+                    name: 'featuredHome',
+                    label: 'Destacar en home',
+                    type: 'checkbox',
+                    defaultValue: false,
+                    admin: {
+                        description: 'Aparece en la sección de eventos destacados de la página de inicio.',
+                    },
                 },
             ],
         },
@@ -228,6 +240,18 @@ export const Events: CollectionConfig = {
                         return value;
                     },
                 ],
+            },
+        },
+
+        // ── Personajes relacionados ──
+        {
+            name: 'characters',
+            label: 'Personajes relacionados',
+            type: 'relationship',
+            relationTo: 'characters',
+            hasMany: true,
+            admin: {
+                description: 'Asocia este evento a uno o varios personajes de la manada. El evento aparecerá en sus páginas de publicaciones.',
             },
         },
 

@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, MapPin, ArrowLeft, Video, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, ArrowLeft, ArrowRight, Video, X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { FaSpotify, FaYoutube, FaInstagram, FaVimeoV, FaGlobe, FaTiktok, FaSoundcloud, FaTwitter, FaFacebook, FaApple } from 'react-icons/fa';
 import gsap from 'gsap';
+import { getCharacterColors } from '@/lib/character-colors';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -19,16 +20,36 @@ const getEmbedUrl = (url: string): string | null => {
     return url;
 };
 
+const parseEventDate = (dateStr: string): Date => {
+    if (!dateStr) return new Date();
+    let normalized = dateStr;
+    if (typeof dateStr === 'string' && !dateStr.endsWith('Z') && !/[+-]\d{2}:\d{2}$/.test(dateStr)) {
+        normalized = `${dateStr}Z`;
+    }
+    return new Date(normalized);
+};
+
 const formatEventDate = (dateStr: string) => {
     if (!dateStr) return '';
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const d = parseEventDate(dateStr);
+    return d.toLocaleDateString('es-CO', {
+        timeZone: 'America/Bogota',
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
 };
 
 const formatEventTime = (dateStr: string) => {
     if (!dateStr) return '';
-    const d = new Date(dateStr);
-    return d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    const d = parseEventDate(dateStr);
+    return d.toLocaleTimeString('es-CO', {
+        timeZone: 'America/Bogota',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+    });
 };
 
 // ─── Lexical rich-text renderer ───────────────────────────────────────────────
@@ -118,28 +139,101 @@ import FlipImageCard from '@/components/FlipImageCard';
 
 const ImageBlockRenderer = ({ block }: { block: any }) => {
     const src = block.image?.url ?? block.image;
+    const [isZoomOpen, setIsZoomOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => { setMounted(true); }, []);
+
+    useEffect(() => {
+        if (!isZoomOpen) return;
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setIsZoomOpen(false);
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isZoomOpen]);
+
     if (!src) return null;
 
-    return (
-        <figure className="mb-10">
-            <FlipImageCard
-                image={src}
-                caption={block.caption}
-                enableFlip={block.enableFlip}
-                flipContentType={block.flipContentType}
-                flipTitle={block.flipTitle}
-                flipText={block.flipText}
-                flipImage={block.flipImage}
-                flipImageCaption={block.flipImageCaption}
-                fill={true}
-                aspectRatioClass="aspect-video"
-                imageClassName="object-cover rounded-2xl"
-                alt={block.caption ?? 'Imagen del evento'}
-            />
+    const hasFlip = Boolean(
+        block.enableFlip && (
+            (block.flipText && block.flipText.trim().length > 0) ||
+            (block.flipTitle && block.flipTitle.trim().length > 0) ||
+            block.flipImage?.url ||
+            (typeof block.flipImage === 'string' && block.flipImage.length > 0)
+        )
+    );
+
+    const lightbox = isZoomOpen && mounted ? createPortal(
+        <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md"
+            onClick={() => setIsZoomOpen(false)}
+        >
+            <button
+                onClick={() => setIsZoomOpen(false)}
+                className="fixed top-4 right-4 z-[10000] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                aria-label="Cerrar"
+            >
+                <X size={24} />
+            </button>
+
+            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-12" onClick={e => e.stopPropagation()}>
+                <Image
+                    src={src}
+                    alt={block.caption || 'Imagen del evento'}
+                    width={1600}
+                    height={1200}
+                    className="object-contain max-h-[85vh] max-w-full w-auto h-auto rounded-xl shadow-2xl"
+                />
+            </div>
+
             {block.caption && (
-                <figcaption className="text-center text-sm text-gray-500 mt-3 italic">{block.caption}</figcaption>
+                <p className="fixed bottom-6 left-1/2 -translate-x-1/2 text-center text-sm text-white/70 z-[10000] bg-black/70 px-5 py-1.5 rounded-full border border-white/10">
+                    {block.caption}
+                </p>
             )}
-        </figure>
+        </div>,
+        document.body
+    ) : null;
+
+    return (
+        <>
+            <figure className="mb-10">
+                <FlipImageCard
+                    image={src}
+                    caption={block.caption}
+                    enableFlip={block.enableFlip}
+                    flipContentType={block.flipContentType}
+                    flipTitle={block.flipTitle}
+                    flipText={block.flipText}
+                    flipImage={block.flipImage}
+                    flipImageCaption={block.flipImageCaption}
+                    fill={true}
+                    aspectRatioClass="aspect-video"
+                    imageClassName="object-cover rounded-2xl"
+                    alt={block.caption ?? 'Imagen del evento'}
+                    onZoomClick={() => setIsZoomOpen(true)}
+                    onClick={!hasFlip ? () => setIsZoomOpen(true) : undefined}
+                />
+                {block.caption && (
+                    <figcaption className="text-center text-sm text-gray-500 mt-3 italic">{block.caption}</figcaption>
+                )}
+                {block.linkUrl && (
+                    <div className="mt-3 flex justify-center">
+                        <a
+                            href={block.linkUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/30 text-xs font-mono uppercase tracking-widest transition-all hover:scale-105 shadow-md"
+                        >
+                            <span>{block.linkLabel || 'Ver enlace'}</span>
+                            <ExternalLink size={13} />
+                        </a>
+                    </div>
+                )}
+            </figure>
+            {lightbox}
+        </>
     );
 };
 
@@ -160,8 +254,10 @@ const VideoBlockRenderer = ({ block }: { block: any }) => {
 
 const GalleryBlockRenderer = ({ block }: { block: any }) => {
     const images: any[] = block.images ?? [];
+    const [carouselIndex, setCarouselIndex] = useState(0);
     if (!images.length) return null;
 
+    const isCarousel = block.layout === 'carousel';
     const isMasonry = block.layout === 'masonry';
     const gridCols = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
 
@@ -172,10 +268,117 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
         portrait: 'aspect-[3/4] w-full',
         natural: 'w-full h-auto',
     };
-    const aspectRatio = block.aspectRatio || 'square';
+    const aspectRatio = block.aspectRatio || (isCarousel ? 'landscape' : 'square');
     const isNatural = aspectRatio === 'natural';
-    const aspectClass = aspectMap[aspectRatio] || 'aspect-square w-full';
+    const aspectClass = aspectMap[aspectRatio] || 'aspect-video w-full';
     const imageFit = (block.imageFit || 'contain') as 'cover' | 'contain';
+
+    const prevCarouselSlide = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        setCarouselIndex((prev) => (prev - 1 + images.length) % images.length);
+    };
+
+    const nextCarouselSlide = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        setCarouselIndex((prev) => (prev + 1) % images.length);
+    };
+
+    if (isCarousel) {
+        const currentItem = images[carouselIndex] || images[0];
+        const currentData = currentItem?.image ?? currentItem;
+
+        return (
+            <div className="relative my-12 clear-both max-w-4xl mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-black shadow-2xl">
+                {/* Viewport: altura fija/adaptable con imagen 100% contenida sin recortes */}
+                <div className="relative w-full h-[460px] sm:h-[580px] md:h-[680px] max-h-[80vh] flex items-center justify-center bg-black/90 rounded-xl overflow-hidden border border-white/5">
+                    <figure className="w-full h-full flex items-center justify-center">
+                        <FlipImageCard
+                            image={currentData}
+                            caption={currentItem.caption}
+                            enableFlip={currentItem.enableFlip}
+                            flipContentType={currentItem.flipContentType}
+                            flipTitle={currentItem.flipTitle}
+                            flipText={currentItem.flipText}
+                            flipImage={currentItem.flipImage}
+                            flipImageCaption={currentItem.flipImageCaption}
+                            fill={true}
+                            className="w-full h-full"
+                            aspectRatioClass="w-full h-full"
+                            imageFit="contain"
+                            imageClassName="object-contain p-2 sm:p-4"
+                        />
+                    </figure>
+
+                    {images.length > 1 && (
+                        <>
+                            <button
+                                type="button"
+                                onClick={prevCarouselSlide}
+                                className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center bg-black/75 hover:bg-white text-white hover:text-black border border-white/20 rounded-full transition-all backdrop-blur-md z-20 shadow-xl"
+                                aria-label="Imagen anterior"
+                            >
+                                <ChevronLeft size={22} />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={nextCarouselSlide}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center bg-black/75 hover:bg-white text-white hover:text-black border border-white/20 rounded-full transition-all backdrop-blur-md z-20 shadow-xl"
+                                aria-label="Siguiente imagen"
+                            >
+                                <ChevronRight size={22} />
+                            </button>
+                        </>
+                    )}
+                </div>
+
+                {/* Botón de enlace centrado */}
+                {currentItem.linkUrl && (
+                    <div className="mt-4 mb-2 flex justify-center">
+                        <a
+                            href={currentItem.linkUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-black hover:bg-[#b8ff00] hover:text-black font-mono text-xs font-bold uppercase tracking-widest transition-all hover:scale-105 shadow-xl"
+                        >
+                            <span>{currentItem.linkLabel || 'Ver enlace'}</span>
+                            <ExternalLink size={14} />
+                        </a>
+                    </div>
+                )}
+
+                {/* Metadata: Leyenda y Contador */}
+                <div className="mt-3 flex flex-col sm:flex-row items-center justify-between gap-3 px-1 pt-2 border-t border-white/10">
+                    <div className="flex-1 text-center sm:text-left">
+                        {currentItem.caption && (
+                            <p className="text-sm text-gray-300 font-googlesans">{currentItem.caption}</p>
+                        )}
+                    </div>
+
+                    {images.length > 1 && (
+                        <span className="font-mono text-xs text-white/60 tracking-wider bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                            {carouselIndex + 1} / {images.length}
+                        </span>
+                    )}
+                </div>
+
+                {images.length > 1 && (
+                    <div className="flex items-center justify-center gap-1.5 mt-3 pt-1">
+                        {images.map((_: any, idx: number) => (
+                            <button
+                                key={idx}
+                                type="button"
+                                onClick={() => setCarouselIndex(idx)}
+                                className={`h-1.5 rounded-full transition-all duration-300 ${
+                                    idx === carouselIndex ? 'w-6 bg-white opacity-100' : 'w-2 bg-white/30 hover:bg-white/60'
+                                }`}
+                                aria-label={`Ir a imagen ${idx + 1}`}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    }
 
     if (isMasonry) {
         return (
@@ -203,6 +406,19 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                 <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
                                     {img.caption}
                                 </figcaption>
+                            )}
+                            {img.linkUrl && (
+                                <div className="mt-2 flex justify-center">
+                                    <a
+                                        href={img.linkUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                                    >
+                                        <span>{img.linkLabel || 'Ver más'}</span>
+                                        <ExternalLink size={12} />
+                                    </a>
+                                </div>
                             )}
                         </figure>
                     );
@@ -239,6 +455,19 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     {img.caption}
                                 </figcaption>
                             )}
+                            {img.linkUrl && (
+                                <div className="mt-2 flex justify-center">
+                                    <a
+                                        href={img.linkUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                                    >
+                                        <span>{img.linkLabel || 'Ver más'}</span>
+                                        <ExternalLink size={12} />
+                                    </a>
+                                </div>
+                            )}
                         </figure>
                     );
                 }
@@ -265,6 +494,19 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                             <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
                                 {img.caption}
                             </figcaption>
+                        )}
+                        {img.linkUrl && (
+                            <div className="mt-2 flex justify-center">
+                                <a
+                                    href={img.linkUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                                >
+                                    <span>{img.linkLabel || 'Ver más'}</span>
+                                    <ExternalLink size={12} />
+                                </a>
+                            </div>
                         )}
                     </figure>
                 );
@@ -521,6 +763,72 @@ export default function EventClient({ event }: EventClientProps) {
                 <div ref={contentRef} className="max-w-none">
                     {event.layout?.length ? renderBlocks(event.layout) : null}
                 </div>
+
+                {/* ── PERSONAJES ASOCIADOS AL EVENTO & CTA ── */}
+                {event.characters && event.characters.length > 0 && (
+                    <section className="mt-20 pt-12 border-t border-white/10 flex flex-col items-center">
+                        <div className="w-full flex flex-wrap justify-center gap-6">
+                            {event.characters.map((char: any) => {
+                                const colors = getCharacterColors(char.slug);
+                                return (
+                                    <div
+                                        key={char.id || char.slug}
+                                        className="relative w-full max-w-xl p-6 sm:p-8 rounded-2xl bg-zinc-950 border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between group overflow-hidden"
+                                    >
+                                        <div
+                                            className="absolute -top-16 -right-16 w-36 h-36 rounded-full blur-3xl opacity-20 pointer-events-none transition-opacity group-hover:opacity-40"
+                                            style={{ backgroundColor: colors.primary }}
+                                        />
+
+                                        <div>
+                                            <div className="flex items-center gap-4 mb-4">
+                                                {char.image && (
+                                                    <div
+                                                        className="relative w-16 h-16 rounded-full overflow-hidden border-2 flex-shrink-0 bg-black"
+                                                        style={{ borderColor: colors.primary }}
+                                                    >
+                                                        <Image
+                                                            src={char.image}
+                                                            alt={char.name}
+                                                            fill
+                                                            className="object-cover"
+                                                        />
+                                                    </div>
+                                                )}
+                                                <div>
+                                                    <span className="text-[11px] font-mono uppercase tracking-widest text-gray-400">
+                                                        La Manada Bífido
+                                                    </span>
+                                                    <h3 className="font-display text-2xl sm:text-3xl text-white uppercase tracking-wide">
+                                                        {char.name}
+                                                    </h3>
+                                                </div>
+                                            </div>
+
+                                            {char.description && (
+                                                <p className="text-gray-300 font-googlesans text-sm leading-relaxed mb-6 line-clamp-2 h-[2.75rem] overflow-hidden">
+                                                    {char.description}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        <Link
+                                            href={`/${char.slug}/articulos`}
+                                            className="self-center inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-widest transition-all hover:scale-[1.02] shadow-lg mt-3 w-fit max-w-full text-center"
+                                            style={{
+                                                backgroundColor: colors.primary,
+                                                color: '#000000',
+                                            }}
+                                        >
+                                            <span>Ver todas las publicaciones de {char.name}</span>
+                                            <ArrowRight size={14} />
+                                        </Link>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+                )}
             </div>
         </article>
     );

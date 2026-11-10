@@ -1,4 +1,4 @@
-import { getCharacterBySlug as getCharacterBySlugFromAPI, getCharacterById, getArticlesByCharacter, getCategories } from '@/lib/api';
+import { getCharacterBySlug as getCharacterBySlugFromAPI, getCharacterById, getArticlesByCharacter, getCategories, getEventsByCharacter } from '@/lib/api';
 import { getCharacterBySlug as getCharacterBySlugStatic } from '@/lib/characters';
 import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
@@ -26,10 +26,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const character = await getCharacterBySlugFromAPI(slug) || getCharacterBySlugStatic(slug);
     return pageMetadata({
-        title: character ? `Artículos de ${character.name}` : 'Artículos',
+        title: character ? `Publicaciones de ${character.name}` : 'Publicaciones',
         description: character?.description,
         path: `/${slug}/articulos`,
-        image: character ? ogCard('articulos', slug, `Artículos de ${character.name} en Revista Bífido`) : undefined,
+        image: character ? ogCard('articulos', slug, `Publicaciones de ${character.name} en Revista Bífido`) : undefined,
     });
 }
 
@@ -54,12 +54,13 @@ export default async function ArticlesFeedPage({
 
     // El servidor ahora descarga TODOS los artículos (hasta el límite permitido)
     // para que el cliente pueda filtrar en tiempo real sin recargar la página.
-    const [articles, categories] = await Promise.all([
+    const [articles, categories, events] = await Promise.all([
         getArticlesByCharacter(slug),
         getCategories(),
+        getEventsByCharacter(slug),
     ]);
 
     const PageComponent = CHARACTER_PAGES[character.id] || CHARACTER_PAGES[slug] || SectionClient;
 
-    return <PageComponent section={slug} character={character} articles={articles} categories={categories} />;
+    return <PageComponent section={slug} character={character} articles={articles} categories={categories} events={events} />;
 }

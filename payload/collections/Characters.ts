@@ -12,11 +12,25 @@ export const Characters: CollectionConfig = {
             async ({ req, id }) => {
                 const articles = await req.payload.find({
                     collection: 'articles',
-                    where: { author: { equals: id } },
+                    where: {
+                        or: [
+                            { author: { equals: id } },
+                            { 'characters.character': { equals: id } },
+                        ],
+                    },
                     limit: 1,
                 });
                 if (articles.totalDocs > 0) {
-                    throw new APIError(`No se puede eliminar: Este personaje es autor de artículos publicados (ej. "${articles.docs[0].title}")`, 400);
+                    throw new APIError(`No se puede eliminar: Este personaje está vinculado a artículos publicados (ej. "${articles.docs[0].title}")`, 400);
+                }
+
+                const events = await req.payload.find({
+                    collection: 'events',
+                    where: { characters: { contains: id } },
+                    limit: 1,
+                });
+                if (events.totalDocs > 0) {
+                    throw new APIError(`No se puede eliminar: Este personaje está asociado a eventos (ej. "${events.docs[0].name}")`, 400);
                 }
 
                 const sections = await req.payload.find({

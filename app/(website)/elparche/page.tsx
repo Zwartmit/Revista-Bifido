@@ -444,7 +444,7 @@ function ElParcheContent() {
                                         href={`/${activeCharacter.slug}/articulos`}
                                         className="bg-white text-black font-googlesans text-base sm:text-lg py-3 px-6 sm:px-8 rounded-3xl hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all text-center"
                                     >
-                                        Lee mis artículos
+                                        Ver publicaciones
                                     </Link>
                                     <Link
                                         href={`/${activeCharacter.slug}`}

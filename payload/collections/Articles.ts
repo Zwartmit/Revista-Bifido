@@ -153,10 +153,13 @@ export const Articles: CollectionConfig = {
                 },
                 {
                     name: 'author',
-                    label: 'Personaje',
+                    label: 'Personaje principal',
                     type: 'relationship',
                     relationTo: 'characters',
                     required: true,
+                    admin: {
+                        description: 'Personaje principal del artículo. Se usa para la URL y el encabezado.',
+                    },
                 },
                 {
                     name: 'categories',
@@ -164,6 +167,76 @@ export const Articles: CollectionConfig = {
                     type: 'relationship',
                     relationTo: 'categories',
                     hasMany: true,
+                },
+            ],
+        },
+
+        // ── Personajes adicionales (multi-personaje) ──
+        {
+            name: 'characters',
+            label: 'Personajes adicionales',
+            type: 'array',
+            admin: {
+                description: 'Relaciona este artículo con otros personajes (además del principal). Puedes destacarlo individualmente para cada uno.',
+            },
+            labels: {
+                singular: 'Personaje',
+                plural: 'Personajes',
+            },
+            fields: [
+                {
+                    name: 'character',
+                    label: 'Personaje',
+                    type: 'relationship',
+                    relationTo: 'characters',
+                    required: true,
+                    filterOptions: ({ data, siblingData }: any) => {
+                        const excludedIds: any[] = [];
+                        const authorId = typeof data?.author === 'object' ? data.author?.id : data?.author;
+                        if (authorId) excludedIds.push(authorId);
+
+                        if (Array.isArray(data?.characters)) {
+                            for (const item of data.characters) {
+                                const charId = typeof item?.character === 'object' ? item.character?.id : item?.character;
+                                const currentSiblingId = typeof siblingData?.character === 'object' ? siblingData.character?.id : siblingData?.character;
+                                if (charId && String(charId) !== String(currentSiblingId) && !excludedIds.includes(charId)) {
+                                    excludedIds.push(charId);
+                                }
+                            }
+                        }
+
+                        if (excludedIds.length === 1) {
+                            return {
+                                id: {
+                                    not_equals: excludedIds[0],
+                                },
+                            };
+                        } else if (excludedIds.length > 1) {
+                            return {
+                                id: {
+                                    not_in: excludedIds,
+                                },
+                            };
+                        }
+                        return true;
+                    },
+                    validate: (value: any, { data }: any) => {
+                        const authorId = typeof data?.author === 'object' ? data.author?.id : data?.author;
+                        const charId = typeof value === 'object' ? value?.id : value;
+                        if (authorId && charId && String(authorId) === String(charId)) {
+                            return 'No puedes seleccionar el mismo personaje que ya está como personaje principal.';
+                        }
+                        return true;
+                    },
+                },
+                {
+                    name: 'isFeatured',
+                    label: 'Destacar en este personaje',
+                    type: 'checkbox',
+                    defaultValue: false,
+                    admin: {
+                        description: 'Si está activo, este artículo aparecerá en el carrusel destacado de ese personaje.',
+                    },
                 },
             ],
         },
@@ -225,9 +298,12 @@ export const Articles: CollectionConfig = {
                 },
                 {
                     name: 'characterFeatured',
-                    label: 'Destacar en personaje',
+                    label: 'Destacar en personaje principal',
                     type: 'checkbox',
                     defaultValue: false,
+                    admin: {
+                        description: 'Destaca en el carrusel del personaje principal (campo "author"). Para otros personajes usa el campo de Personajes adicionales.',
+                    },
                 },
             ],
         },

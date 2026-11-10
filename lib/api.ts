@@ -1,6 +1,7 @@
 // API Service para integración con Payload CMS
 import qs from 'qs';
 import { SITE_URL } from './seo';
+import { characters as fallbackCharacters } from './characters';
 
 /**
  * Bases desde las que se consulta la API de Payload.
@@ -190,32 +191,41 @@ export async function getArticleBySlugForPreview(slug: string) {
  * Obtener artículos por personaje (author), opcionalmente filtrados
  */
 export async function getArticlesByCharacter(characterSlug: string, search?: string, categorySlug?: string) {
-  const where: any = {
-    'author.slug': {
-      equals: characterSlug,
-    },
-    status: {
-      equals: 'published',
-    },
+  const characterFilter = {
+    or: [
+      { 'author.slug': { equals: characterSlug } },
+      { 'characters.character.slug': { equals: characterSlug } },
+    ],
   };
 
+  const andConditions: any[] = [
+    characterFilter,
+    { status: { equals: 'published' } },
+  ];
+
   if (search) {
-    where.or = [
-      { title: { like: search } },
-      { excerpt: { like: search } },
-    ];
+    andConditions.push({
+      or: [
+        { title: { like: search } },
+        { excerpt: { like: search } },
+      ],
+    });
   }
 
   if (categorySlug) {
-    where['categories.slug'] = {
-      equals: categorySlug,
-    };
+    andConditions.push({
+      'categories.slug': {
+        equals: categorySlug,
+      },
+    });
   }
 
   const params = {
-    where,
+    where: {
+      and: andConditions,
+    },
     sort: '-publishedAt',
-    depth: 1,
+    depth: 2,
     limit: 100,
   };
   const data = await fetchPayload('articles', params);
@@ -356,28 +366,36 @@ export async function getFeaturedArticles() {
  * Artículo destacado principal del personaje (o el más reciente)
  */
 export async function getCharacterFeaturedArticle(characterSlug: string) {
-  // 1. Intentar buscar el que tenga el check 'characterFeatured' activado
+  // 1. Intentar buscar el que tenga el check destacado activado para este personaje
   const featuredParams = {
     where: {
       and: [
         {
-          'author.slug': {
-            equals: characterSlug,
-          },
+          or: [
+            {
+              and: [
+                { 'author.slug': { equals: characterSlug } },
+                { characterFeatured: { equals: true } },
+              ],
+            },
+            {
+              and: [
+                { 'characters.character.slug': { equals: characterSlug } },
+                { 'characters.isFeatured': { equals: true } },
+              ],
+            },
+          ],
         },
         {
-          characterFeatured: {
-            equals: true,
+          status: {
+            equals: 'published',
           },
         },
       ],
-      status: {
-        equals: 'published',
-      },
     },
     limit: 1,
     sort: '-publishedAt',
-    depth: 1,
+    depth: 2,
   };
   const featuredData = await fetchPayload('articles', featuredParams);
   if (featuredData.docs.length > 0) {
@@ -387,16 +405,23 @@ export async function getCharacterFeaturedArticle(characterSlug: string) {
   // 2. Si no hay ninguno marcado explícitamente, traer el más reciente publicado
   const recentParams = {
     where: {
-      'author.slug': {
-        equals: characterSlug,
-      },
-      status: {
-        equals: 'published',
-      },
+      and: [
+        {
+          or: [
+            { 'author.slug': { equals: characterSlug } },
+            { 'characters.character.slug': { equals: characterSlug } },
+          ],
+        },
+        {
+          status: {
+            equals: 'published',
+          },
+        },
+      ],
     },
     limit: 1,
     sort: '-publishedAt',
-    depth: 1,
+    depth: 2,
   };
   const recentData = await fetchPayload('articles', recentParams);
   return recentData.docs[0] ? transformPayloadArticle(recentData.docs[0]) : null;
@@ -406,26 +431,35 @@ export async function getCharacterFeaturedArticle(characterSlug: string) {
  * Artículos destacados para un personaje (excluyendo uno específico)
  */
 export async function getCharacterArticles(characterSlug: string, excludeSlug?: string, limit: number = 3) {
-  const where: any = {
-    'author.slug': {
-      equals: characterSlug,
+  const andConditions: any[] = [
+    {
+      or: [
+        { 'author.slug': { equals: characterSlug } },
+        { 'characters.character.slug': { equals: characterSlug } },
+      ],
     },
-    status: {
-      equals: 'published',
+    {
+      status: {
+        equals: 'published',
+      },
     },
-  };
+  ];
 
   if (excludeSlug) {
-    where.slug = {
-      not_equals: excludeSlug,
-    };
+    andConditions.push({
+      slug: {
+        not_equals: excludeSlug,
+      },
+    });
   }
 
   const params = {
-    where,
+    where: {
+      and: andConditions,
+    },
     limit,
     sort: '-publishedAt',
-    depth: 1,
+    depth: 2,
   };
   const data = await fetchPayload('articles', params);
   return data.docs.map(transformPayloadArticle);
@@ -438,7 +472,7 @@ export async function getRelatedArticles(currentSlug: string, characterSlug: str
   const params = {
     limit,
     sort: '-publishedAt',
-    depth: 1,
+    depth: 2,
     where: {
       and: [
         {
@@ -450,6 +484,11 @@ export async function getRelatedArticles(currentSlug: string, characterSlug: str
           or: [
             {
               'author.slug': {
+                equals: characterSlug,
+              },
+            },
+            {
+              'characters.character.slug': {
                 equals: characterSlug,
               },
             },
@@ -564,6 +603,31 @@ export async function getEvents() {
 }
 
 /**
+ * Obtener eventos destacados para el home
+ */
+export async function getFeaturedHomeEvents(limit = 4) {
+  try {
+    const params = {
+      where: {
+        featuredHome: {
+          equals: true,
+        },
+      },
+      sort: 'date',
+      limit,
+      depth: 1,
+    };
+    const data = await fetchPayload('events', params);
+    if (data?.docs?.length) {
+      return data.docs.map(transformPayloadEvent);
+    }
+  } catch (e) {
+    console.error('Error fetching featured home events:', e);
+  }
+  return [];
+}
+
+/**
  * Obtener un evento por su slug
  */
 export async function getEventBySlug(slug: string) {
@@ -578,6 +642,24 @@ export async function getEventBySlug(slug: string) {
   };
   const data = await fetchPayload('events', params);
   return data.docs[0] ? transformPayloadEvent(data.docs[0]) : null;
+}
+
+/**
+ * Obtener eventos asociados a un personaje por su slug
+ */
+export async function getEventsByCharacter(characterSlug: string) {
+  const params = {
+    where: {
+      'characters.slug': {
+        equals: characterSlug,
+      },
+    },
+    sort: 'date',
+    depth: 1,
+    limit: 50,
+  };
+  const data = await fetchPayload('events', params);
+  return data.docs.map(transformPayloadEvent);
 }
 
 /**
@@ -611,6 +693,24 @@ export function transformPayloadArticle(doc: any) {
     }
   }
 
+  // Personajes adicionales: array con { character, isFeatured }
+  const additionalCharacters: { slug: string; name: string; isFeatured: boolean }[] = (doc.characters || []).map((entry: any) => {
+    const char = typeof entry.character === 'object' ? entry.character : null;
+    const charId = char?.id ?? entry.character;
+    const known = charId ? KNOWN_CHARACTER_SLUGS[charId] : null;
+    return {
+      slug: char?.slug || known?.slug || String(charId),
+      name: char?.name || known?.name || String(charId),
+      isFeatured: entry.isFeatured || false,
+    };
+  });
+
+  // Lista completa de personajes (autor principal + adicionales), deduplicada
+  const allCharacters = [
+    { slug: authorSlug, name: authorName, isFeatured: doc.characterFeatured || false, isPrimary: true },
+    ...additionalCharacters.map(c => ({ ...c, isPrimary: false })),
+  ];
+
   return {
     id: doc.id,
     slug: doc.slug,
@@ -627,6 +727,8 @@ export function transformPayloadArticle(doc: any) {
     categories: doc.categories?.map((c: any) => ({ name: c.name, slug: c.slug })) || [],
     featured: doc.featured || false,
     characterFeatured: doc.characterFeatured || false,
+    // Multi-personaje
+    characters: allCharacters,
   };
 }
 
@@ -645,14 +747,44 @@ export function transformPayloadCharacter(doc: any) {
 }
 
 export function transformPayloadEvent(doc: any) {
+  // Personajes relacionados
+  const characters: { id: string | number; slug: string; name: string; description?: string; image?: string }[] = (doc.characters || []).map((c: any) => {
+    if (typeof c === 'object' && c !== null) {
+      let charImage = '';
+      if (c.image) {
+        if (typeof c.image === 'object' && c.image?.url) charImage = c.image.url;
+        else if (typeof c.image === 'string') charImage = c.image;
+      }
+      const staticChar = fallbackCharacters.find(ch => ch.slug === c.slug);
+      return {
+        id: c.id,
+        slug: c.slug || staticChar?.slug || '',
+        name: c.name || staticChar?.name || '',
+        description: c.description || staticChar?.description || '',
+        image: charImage || staticChar?.image || '/images/placeholder.webp',
+      };
+    }
+    const known = KNOWN_CHARACTER_SLUGS[c];
+    const slug = known ? known.slug : String(c);
+    const staticChar = fallbackCharacters.find(ch => ch.slug === slug);
+    return {
+      id: c,
+      slug: slug,
+      name: known ? known.name : (staticChar?.name || String(c)),
+      description: staticChar?.description || '',
+      image: staticChar?.image || '/images/placeholder.webp',
+    };
+  });
+
   return {
     id: doc.id,
     slug: doc.slug,
     name: doc.name,                    // nombre real del evento
     title: doc.name,                   // alias para compatibilidad
     isFeatured: doc.isFeatured || false,
+    featuredHome: doc.featuredHome || false,
     date: doc.date,
-    time: doc.date ? new Date(doc.date).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) : '',
+    time: doc.date ? new Intl.DateTimeFormat('es-CO', { timeZone: 'America/Bogota', hour: 'numeric', minute: '2-digit', hour12: true }).format(new Date(doc.date)) : '',
     category: typeof doc.category === 'object' ? doc.category?.name : (doc.category || 'other'),
     locationType: typeof doc.locationType === 'object' ? doc.locationType?.slug : doc.locationType,
     location: typeof doc.locationType === 'object' ? doc.locationType?.name : 'Presencial',
@@ -681,6 +813,8 @@ export function transformPayloadEvent(doc: any) {
       url: item.image?.url || '',
       alt: item.image?.alt || ''
     })) || [],
+    // Personajes relacionados
+    characters,
   };
 }
 

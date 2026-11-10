@@ -4,21 +4,23 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
 import ArticleFilters from '../ArticleFilters';
 import FeaturedCarousel from '../FeaturedCarousel';
 import SupportBanner from '../SupportBanner';
+import RasgadoEventCard from '@/components/RasgadoEventCard';
 
 interface Props {
     section: string;
     character: any;
     articles: any[];
     categories?: any[];
+    events?: any[];
 }
 
-export default function AnikaPage({ section, character, articles, categories = [] }: Props) {
+export default function AnikaPage({ section, character, articles, categories = [], events = [] }: Props) {
     const heroRef = useRef<HTMLDivElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +43,15 @@ export default function AnikaPage({ section, character, articles, categories = [
         return true;
     });
 
-    const featuredArticles = filteredArticles.filter((a: any) => a.characterFeatured);
+    // Un artículo es destacado para este personaje si:
+    // 1. Es el personaje principal (author) y tiene characterFeatured = true, O
+    // 2. Está en el array characters[] con isFeatured = true para este personaje
+    const isFeaturedForThisCharacter = (article: any) => {
+        if (article.characterFeatured && (article.section === section || article.characterId === section)) return true;
+        return article.characters?.some((c: any) => c.slug === section && c.isFeatured);
+    };
+
+    const featuredArticles = filteredArticles.filter(isFeaturedForThisCharacter);
     const featuredArticleIds = featuredArticles.map((a: any) => a.id);
     const regularArticles = filteredArticles.filter((a: any) => !featuredArticleIds.includes(a.id));
     const { primary, dark } = getCharacterColors(character.slug);
@@ -61,6 +71,11 @@ export default function AnikaPage({ section, character, articles, categories = [
             );
         }
     }, [character.id]);
+
+    const formatEventDate = (dateStr: string) => {
+        if (!dateStr) return '';
+        return new Date(dateStr).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -168,7 +183,7 @@ export default function AnikaPage({ section, character, articles, categories = [
                                                 {article.title}
                                             </h3>
                                             <div className="mt-auto flex items-center gap-2 font-googlesans text-sm font-medium" style={{ color: primary }}>
-                                                <span>Leer artículo</span>
+                                                <span>Ver publicación</span>
                                                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                                             </div>
                                         </div>
@@ -179,6 +194,22 @@ export default function AnikaPage({ section, character, articles, categories = [
                     </>
                 )}
             </div>
+
+            {/* ── EVENTOS ── */}
+            {events.length > 0 && (
+                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20 border-t border-[#1a1a1a]">
+                    <div className="flex items-center gap-4 mb-10">
+                        <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
+                        <span className="font-display text-3xl tracking-[0.25em] uppercase">Eventos</span>
+                        <div className="flex-1 h-px bg-white/10" />
+                    </div>
+                    <div className="flex flex-wrap justify-center sm:justify-start gap-x-12 gap-y-16 pt-4">
+                        {events.map((event: any, i: number) => (
+                            <RasgadoEventCard key={event.id || i} event={event} index={i} primaryColor={primary} />
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* ── SUPPORT BANNER ── */}
             <SupportBanner primaryColor={primary} />

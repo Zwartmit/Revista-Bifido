@@ -22,10 +22,11 @@ export const GalleryBlock: Block = {
                         { label: 'Cuadrícula (2 columnas)', value: 'grid' },
                         { label: 'Cuadrícula (3 columnas)', value: 'grid-3' },
                         { label: 'Mosaico (Flujo natural según tamaño de cada imagen)', value: 'masonry' },
+                        { label: 'Carrusel (Desplazamiento horizontal)', value: 'carousel' },
                     ],
                     admin: {
                         width: '34%',
-                        description: 'Elige si prefieres cuadrícula uniforme o mosaico tipo revista.',
+                        description: 'Elige si prefieres cuadrícula uniforme, mosaico tipo revista o carrusel horizontal.',
                     },
                 },
                 {
@@ -84,6 +85,31 @@ export const GalleryBlock: Block = {
                     name: 'caption',
                     label: 'Leyenda (opcional)',
                     type: 'text',
+                },
+                {
+                    type: 'row',
+                    fields: [
+                        {
+                            name: 'linkUrl',
+                            label: 'URL de redirección (opcional)',
+                            type: 'text',
+                            admin: {
+                                width: '70%',
+                                description: 'Si se indica, aparecerá un botón de enlace sobre la imagen.',
+                            },
+                        },
+                        {
+                            name: 'linkLabel',
+                            label: 'Texto del botón',
+                            type: 'text',
+                            defaultValue: 'Ver más',
+                            admin: {
+                                width: '30%',
+                                condition: (_, siblingData) => Boolean(siblingData?.linkUrl),
+                                description: 'Texto que se muestra en el botón.',
+                            },
+                        },
+                    ],
                 },
                 flipCardFields,
             ],

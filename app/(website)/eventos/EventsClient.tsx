@@ -238,20 +238,29 @@ export default function EventsClient({ events }: EventsClientProps) {
         }
     }, [selectedCategory, priceFilter, search]);
 
+    const parseEventDate = (dateStr: string): Date => {
+        if (!dateStr) return new Date();
+        let normalized = dateStr;
+        if (typeof dateStr === 'string' && !dateStr.endsWith('Z') && !/[+-]\d{2}:\d{2}$/.test(dateStr)) {
+            normalized = `${dateStr}Z`;
+        }
+        return new Date(normalized);
+    };
+
     const formatDate = (dateString: string) => {
         if (!dateString) return '';
-        const date = new Date(dateString);
+        const date = parseEventDate(dateString);
         if (isNaN(date.getTime())) return 'FECHA INVÁLIDA';
-        return date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        return date.toLocaleDateString('es-CO', { timeZone: 'America/Bogota', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     };
 
     const formatDayMonth = (dateString: string) => {
         if (!dateString) return { day: '00', month: '---' };
-        const date = new Date(dateString);
+        const date = parseEventDate(dateString);
         if (isNaN(date.getTime())) return { day: '00', month: '---' };
         return {
-            day: date.getDate().toString().padStart(2, '0'),
-            month: date.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase().replace('.', ''),
+            day: new Intl.DateTimeFormat('es-CO', { timeZone: 'America/Bogota', day: '2-digit' }).format(date),
+            month: new Intl.DateTimeFormat('es-CO', { timeZone: 'America/Bogota', month: 'short' }).format(date).toUpperCase().replace('.', ''),
         };
     };
 

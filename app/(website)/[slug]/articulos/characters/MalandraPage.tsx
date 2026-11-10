@@ -4,28 +4,40 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
 import ArticleFilters from '../ArticleFilters';
 import FeaturedCarousel from '../FeaturedCarousel';
 import SupportBanner from '../SupportBanner';
+import RasgadoEventCard from '@/components/RasgadoEventCard';
 
 interface Props {
     section: string;
     character: any;
     articles: any[];
     categories?: any[];
+    events?: any[];
 }
 
-export default function MalandraPage({ section, character, articles, categories = [] }: Props) {
+export default function MalandraPage({ section, character, articles, categories = [], events = [] }: Props) {
     const heroRef = useRef<HTMLDivElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
 
-    const featuredArticles = articles.filter((a: any) => a.characterFeatured);
+    const isFeaturedForThisCharacter = (article: any) => {
+        if (article.characterFeatured && (article.section === section || article.characterId === section)) return true;
+        return article.characters?.some((c: any) => c.slug === section && c.isFeatured);
+    };
+
+    const featuredArticles = articles.filter(isFeaturedForThisCharacter);
     const featuredArticleIds = featuredArticles.map((a: any) => a.id);
     const regularArticles = articles.filter((a: any) => !featuredArticleIds.includes(a.id));
     const { primary, dark } = getCharacterColors(character.slug);
+
+    const formatEventDate = (dateStr: string) => {
+        if (!dateStr) return '';
+        return new Date(dateStr).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
 
     useEffect(() => {
         gsap.fromTo(
@@ -130,7 +142,7 @@ export default function MalandraPage({ section, character, articles, categories 
                                                 {article.title}
                                             </h3>
                                             <div className="mt-auto flex items-center gap-2 font-googlesans text-sm font-medium" style={{ color: primary }}>
-                                                <span>Leer artículo</span>
+                                                <span>Ver publicación</span>
                                                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                                             </div>
                                         </div>
@@ -142,20 +154,35 @@ export default function MalandraPage({ section, character, articles, categories 
                 )}
             </div>
 
-            {/* ── EVENTOS Y LA MANADA ── */}
-            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 pb-20">
-                <div className="border border-[#1e1e1e] p-8 sm:p-12" style={{ borderTopColor: `${primary}30` }}>
-                    <span className="font-display text-xs tracking-[0.5em] uppercase mb-3 block" style={{ color: primary }}>
-                        La comunidad
-                    </span>
-                    <h2 className="font-display text-4xl sm:text-5xl text-white uppercase mb-6">
-                        Eventos & La Manada
-                    </h2>
-                    <p className="font-googlesans text-gray-400 text-base md:text-lg leading-relaxed max-w-2xl">
-                        Recaps, festivales, emprendimientos y la escena local que documenta Malandra. Próximamente.
-                    </p>
+            {/* ── EVENTOS ── */}
+            {events.length > 0 ? (
+                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20 border-t border-[#1a1a1a]">
+                    <div className="flex items-center gap-4 mb-10">
+                        <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
+                        <span className="font-display text-3xl tracking-[0.25em] uppercase">Eventos</span>
+                        <div className="flex-1 h-px bg-white/10" />
+                    </div>
+                    <div className="flex flex-wrap justify-center sm:justify-start gap-x-12 gap-y-16 pt-4">
+                        {events.map((event: any, i: number) => (
+                            <RasgadoEventCard key={event.id || i} event={event} index={i} primaryColor={primary} />
+                        ))}
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 pb-20">
+                    <div className="border border-[#1e1e1e] p-8 sm:p-12" style={{ borderTopColor: `${primary}30` }}>
+                        <span className="font-display text-xs tracking-[0.5em] uppercase mb-3 block" style={{ color: primary }}>
+                            La comunidad
+                        </span>
+                        <h2 className="font-display text-4xl sm:text-5xl text-white uppercase mb-6">
+                            Eventos & La Manada
+                        </h2>
+                        <p className="font-googlesans text-gray-400 text-base md:text-lg leading-relaxed max-w-2xl">
+                            Recaps, festivales, emprendimientos y la escena local que documenta Malandra. Próximamente.
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {/* ── SUPPORT BANNER ── */}
             <SupportBanner primaryColor={primary} />

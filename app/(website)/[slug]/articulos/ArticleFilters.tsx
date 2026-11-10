@@ -33,7 +33,7 @@ export default function ArticleFilters({ categories, primaryColor, currentCatego
                     type="text"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder="Buscar artículos..."
+                    placeholder="Buscar publicaciones..."
                     className="w-full bg-black border border-[#1e1e1e] rounded-full py-3 pl-12 pr-4 text-white focus:outline-none focus:border-white/40 transition-colors placeholder:text-gray-600"
                 />
             </form>

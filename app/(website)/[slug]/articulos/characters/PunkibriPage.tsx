@@ -5,25 +5,37 @@ import Image from 'next/image';
 import SupportBanner from '../SupportBanner';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
-import { ArrowRight, ArrowLeft, Music, Youtube } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Music, Youtube, Calendar, MapPin } from 'lucide-react';
 import gsap from 'gsap';
 import { getCharacterColors } from '@/lib/character-colors';
 import FeaturedCarousel from '../FeaturedCarousel';
+import RasgadoEventCard from '@/components/RasgadoEventCard';
 
 interface Props {
     section: string;
     character: any;
     articles: any[];
+    events?: any[];
 }
 
-export default function PunkibriPage({ section, character, articles }: Props) {
+export default function PunkibriPage({ section, character, articles, events = [] }: Props) {
     const heroRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
-    const featuredArticles = articles.filter((a: any) => a.characterFeatured);
+    const isFeaturedForThisCharacter = (article: any) => {
+        if (article.characterFeatured && (article.section === section || article.characterId === section)) return true;
+        return article.characters?.some((c: any) => c.slug === section && c.isFeatured);
+    };
+
+    const featuredArticles = articles.filter(isFeaturedForThisCharacter);
     const featuredArticleIds = featuredArticles.map((a: any) => a.id);
     const regularArticles = articles.filter((a: any) => !featuredArticleIds.includes(a.id));
     const { primary, dark } = getCharacterColors(character.slug);
+
+    const formatEventDate = (dateStr: string) => {
+        if (!dateStr) return '';
+        return new Date(dateStr).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
 
     useEffect(() => {
         gsap.fromTo(
@@ -149,7 +161,7 @@ export default function PunkibriPage({ section, character, articles }: Props) {
                                                 {article.title}
                                             </h3>
                                             <div className="flex items-center gap-2 text-sm font-googlesans font-medium mt-auto" style={{ color: primary }}>
-                                                <span>Leer</span>
+                                                <span>Ver publicación</span>
                                                 <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                                             </div>
                                         </div>
@@ -175,6 +187,22 @@ export default function PunkibriPage({ section, character, articles }: Props) {
                     </p>
                 </div>
             </div>
+
+            {/* ── EVENTOS ── */}
+            {events.length > 0 && (
+                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20 border-t border-[#1a1a1a]">
+                    <div className="flex items-center gap-4 mb-10">
+                        <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
+                        <span className="font-display text-3xl tracking-[0.25em] uppercase">Eventos</span>
+                        <div className="flex-1 h-px bg-white/10" />
+                    </div>
+                    <div className="flex flex-wrap justify-center sm:justify-start gap-x-12 gap-y-16 pt-4">
+                        {events.map((event: any, i: number) => (
+                            <RasgadoEventCard key={event.id || i} event={event} index={i} primaryColor={primary} />
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* ── SUPPORT BANNER ── */}
             <SupportBanner primaryColor={primary} />

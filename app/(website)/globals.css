@@ -135,6 +135,65 @@
     -webkit-transform: rotateY(180deg);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Rasgado Event Card (Formato collage papel rasgado de eventos)
+   ───────────────────────────────────────────────────────────── */
+.rasgado-card {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 3/4.2;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin: 0 auto;
+}
+.rasgado-card:hover {
+    transform: scale(1.08) rotate(2deg) !important;
+    z-index: 10;
+}
+.r-layer1 {
+    position: absolute;
+    inset: 0;
+    transition: all 0.3s;
+}
+.rasgado-card:hover .r-layer1 {
+    transform: translate(-8px, 8px);
+}
+.r-layer2 {
+    position: absolute;
+    inset: 6px;
+    background: #000000;
+    clip-path: polygon(0% 4%, 100% 0%, 96% 96%, 4% 100%);
+    transition: background 0.3s;
+}
+.rasgado-card:hover .r-layer2 {
+    background: #000000;
+}
+.r-layer3 {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    mix-blend-mode: luminosity;
+    opacity: 0.4;
+    clip-path: polygon(0% 18%, 100% 12%, 100% 82%, 0% 88%);
+    filter: contrast(1.2);
+    transition: opacity 0.3s;
+}
+.rasgado-card:hover .r-layer3 {
+    opacity: 0.7;
+}
+.r-content {
+    position: absolute;
+    inset: 0;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    filter: drop-shadow(3px 4px 0px rgba(0, 0, 0, 1));
+    pointer-events: none;
+}
+
 
 /* Accesibilidad: foco visible con el lime de la marca (especificidad 0: no pisa estilos propios) */
 :where(a, button, select, summary, [tabindex]):focus-visible {

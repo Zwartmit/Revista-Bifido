@@ -115,28 +115,101 @@ const RichTextBlockRenderer = ({ block, color }: { block: any; color: string }) 
 import FlipImageCard from '@/components/FlipImageCard';
 
 const ImageBlockRenderer = ({ block }: { block: any }) => {
+    const [isZoomOpen, setIsZoomOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => { setMounted(true); }, []);
+
+    useEffect(() => {
+        if (!isZoomOpen) return;
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setIsZoomOpen(false);
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isZoomOpen]);
+
     if (!block.image?.url) return null;
     const al = block.alignment || 'center';
     const sizeMap: Record<string, string> = { small: 'max-w-[40%]', medium: 'max-w-[60%]', large: 'max-w-[80%]', full: 'max-w-full' };
     const alignClass = al === 'full' ? 'w-full my-8' : al === 'left' ? `${sizeMap[block.size || 'medium']} float-left mr-6 mb-4 clear-left` : al === 'right' ? `${sizeMap[block.size || 'medium']} float-right ml-6 mb-4 clear-right` : `${sizeMap[block.size || 'medium']} mx-auto my-8 clear-both`;
 
+    const hasFlip = Boolean(
+        block.enableFlip && (
+            (block.flipText && block.flipText.trim().length > 0) ||
+            (block.flipTitle && block.flipTitle.trim().length > 0) ||
+            block.flipImage?.url ||
+            (typeof block.flipImage === 'string' && block.flipImage.length > 0)
+        )
+    );
+
+    const lightbox = isZoomOpen && mounted ? createPortal(
+        <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-md"
+            onClick={() => setIsZoomOpen(false)}
+        >
+            <button
+                onClick={() => setIsZoomOpen(false)}
+                className="fixed top-4 right-4 z-[10000] p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                aria-label="Cerrar"
+            >
+                <X size={24} />
+            </button>
+
+            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-12" onClick={e => e.stopPropagation()}>
+                <Image
+                    src={block.image.url}
+                    alt={block.caption || block.image.filename || ''}
+                    width={block.image.width || 1600}
+                    height={block.image.height || 1200}
+                    className="object-contain max-h-[85vh] max-w-full w-auto h-auto rounded-xl shadow-2xl"
+                />
+            </div>
+
+            {block.caption && (
+                <p className="fixed bottom-6 left-1/2 -translate-x-1/2 text-center text-sm text-white/70 z-[10000] bg-black/70 px-5 py-1.5 rounded-full border border-white/10">
+                    {block.caption}
+                </p>
+            )}
+        </div>,
+        document.body
+    ) : null;
+
     return (
-        <figure className={`${alignClass}`}>
-            <FlipImageCard
-                image={block.image}
-                caption={block.caption}
-                enableFlip={block.enableFlip}
-                flipContentType={block.flipContentType}
-                flipTitle={block.flipTitle}
-                flipText={block.flipText}
-                flipImage={block.flipImage}
-                flipImageCaption={block.flipImageCaption}
-                width={block.image.width || 1200}
-                height={block.image.height || 800}
-                imageClassName="rounded-2xl object-cover w-full h-auto"
-            />
-            {block.caption && <figcaption className="text-center text-sm text-gray-500 mt-3">{block.caption}</figcaption>}
-        </figure>
+        <>
+            <figure className={`${alignClass}`}>
+                <FlipImageCard
+                    image={block.image}
+                    caption={block.caption}
+                    enableFlip={block.enableFlip}
+                    flipContentType={block.flipContentType}
+                    flipTitle={block.flipTitle}
+                    flipText={block.flipText}
+                    flipImage={block.flipImage}
+                    flipImageCaption={block.flipImageCaption}
+                    width={block.image.width || 1200}
+                    height={block.image.height || 800}
+                    imageClassName="rounded-2xl object-cover w-full h-auto"
+                    onZoomClick={() => setIsZoomOpen(true)}
+                    onClick={!hasFlip ? () => setIsZoomOpen(true) : undefined}
+                />
+                {block.caption && <figcaption className="text-center text-sm text-gray-500 mt-3">{block.caption}</figcaption>}
+                {block.linkUrl && (
+                    <div className="mt-3 flex justify-center">
+                        <a
+                            href={block.linkUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/30 text-xs font-mono uppercase tracking-widest transition-all hover:scale-105 shadow-md"
+                        >
+                            <span>{block.linkLabel || 'Ver enlace'}</span>
+                            <ExternalLink size={13} />
+                        </a>
+                    </div>
+                )}
+            </figure>
+            {lightbox}
+        </>
     );
 };
 
@@ -190,6 +263,7 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
 
 const GalleryBlockRenderer = ({ block }: { block: any }) => {
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+    const [carouselIndex, setCarouselIndex] = useState(0);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => { setMounted(true); }, []);
@@ -197,10 +271,11 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
     if (!block.images?.length) return null;
     const images = block.images.filter((item: any) => item.image?.url);
 
+    const isCarousel = block.layout === 'carousel';
     const isMasonry = block.layout === 'masonry';
     const gridCols = block.layout === 'grid-3' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
 
-    // Proporciones disponibles para modo cuadrícula
+    // Proporciones disponibles para modo cuadrícula y carrusel
     const aspectMap: Record<string, string> = {
         square: 'aspect-square w-full',
         landscape: 'aspect-video w-full',
@@ -208,15 +283,25 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
         portrait: 'aspect-[3/4] w-full',
         natural: 'w-full h-auto',
     };
-    const aspectRatio = block.aspectRatio || 'square';
+    const aspectRatio = block.aspectRatio || (isCarousel ? 'landscape' : 'square');
     const isNatural = aspectRatio === 'natural';
-    const aspectClass = aspectMap[aspectRatio] || 'aspect-square w-full';
+    const aspectClass = aspectMap[aspectRatio] || 'aspect-video w-full';
     const imageFit = (block.imageFit || 'contain') as 'cover' | 'contain';
 
     const openLightbox = (i: number) => setLightboxIndex(i);
     const closeLightbox = () => setLightboxIndex(null);
     const goPrev = (e: React.MouseEvent) => { e.stopPropagation(); setLightboxIndex(i => i !== null ? (i - 1 + images.length) % images.length : null); };
     const goNext = (e: React.MouseEvent) => { e.stopPropagation(); setLightboxIndex(i => i !== null ? (i + 1) % images.length : null); };
+
+    const prevCarouselSlide = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        setCarouselIndex((prev) => (prev - 1 + images.length) % images.length);
+    };
+
+    const nextCarouselSlide = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        setCarouselIndex((prev) => (prev + 1) % images.length);
+    };
 
     const lightbox = lightboxIndex !== null && mounted ? createPortal(
         <div
@@ -278,6 +363,117 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
         document.body
     ) : null;
 
+    if (isCarousel) {
+        const currentItem = images[carouselIndex] || images[0];
+        const hasFlip = Boolean(
+            currentItem?.enableFlip && (
+                (currentItem.flipText && currentItem.flipText.trim().length > 0) ||
+                (currentItem.flipTitle && currentItem.flipTitle.trim().length > 0) ||
+                currentItem.flipImage?.url ||
+                (typeof currentItem.flipImage === 'string' && currentItem.flipImage.length > 0)
+            )
+        );
+
+        return (
+            <>
+                <div className="relative my-12 clear-both max-w-4xl mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-black shadow-2xl">
+                    {/* Viewport: altura fija/adaptable con imagen 100% contenida sin recortes */}
+                    <div className="relative w-full h-[460px] sm:h-[580px] md:h-[680px] max-h-[80vh] flex items-center justify-center bg-black/90 rounded-xl overflow-hidden border border-white/5">
+                        <figure className="w-full h-full flex items-center justify-center">
+                            <FlipImageCard
+                                image={currentItem.image}
+                                caption={currentItem.caption}
+                                enableFlip={currentItem.enableFlip}
+                                flipContentType={currentItem.flipContentType}
+                                flipTitle={currentItem.flipTitle}
+                                flipText={currentItem.flipText}
+                                flipImage={currentItem.flipImage}
+                                flipImageCaption={currentItem.flipImageCaption}
+                                fill={true}
+                                className="w-full h-full"
+                                aspectRatioClass="w-full h-full"
+                                imageFit="contain"
+                                imageClassName="object-contain p-2 sm:p-4"
+                                onZoomClick={() => openLightbox(carouselIndex)}
+                                onClick={!hasFlip ? () => openLightbox(carouselIndex) : undefined}
+                            />
+                        </figure>
+
+                        {/* Navigation Arrows */}
+                        {images.length > 1 && (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={prevCarouselSlide}
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center bg-black/75 hover:bg-white text-white hover:text-black border border-white/20 rounded-full transition-all backdrop-blur-md z-20 shadow-xl"
+                                    aria-label="Imagen anterior"
+                                >
+                                    <ChevronLeft size={22} />
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={nextCarouselSlide}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center bg-black/75 hover:bg-white text-white hover:text-black border border-white/20 rounded-full transition-all backdrop-blur-md z-20 shadow-xl"
+                                    aria-label="Siguiente imagen"
+                                >
+                                    <ChevronRight size={22} />
+                                </button>
+                            </>
+                        )}
+                    </div>
+
+                    {/* Botón de enlace centrado */}
+                    {currentItem.linkUrl && (
+                        <div className="mt-4 mb-2 flex justify-center">
+                            <a
+                                href={currentItem.linkUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-black hover:bg-[#b8ff00] hover:text-black font-mono text-xs font-bold uppercase tracking-widest transition-all hover:scale-105 shadow-xl"
+                            >
+                                <span>{currentItem.linkLabel || 'Ver enlace'}</span>
+                                <ExternalLink size={14} />
+                            </a>
+                        </div>
+                    )}
+
+                    {/* Metadata: Leyenda y Contador */}
+                    <div className="mt-3 flex flex-col sm:flex-row items-center justify-between gap-3 px-1 pt-2 border-t border-white/10">
+                        <div className="flex-1 text-center sm:text-left">
+                            {currentItem.caption && (
+                                <p className="text-sm text-gray-300 font-googlesans">{currentItem.caption}</p>
+                            )}
+                        </div>
+
+                        {images.length > 1 && (
+                            <span className="font-mono text-xs text-white/60 tracking-wider bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                                {carouselIndex + 1} / {images.length}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Indicator dots */}
+                    {images.length > 1 && (
+                        <div className="flex items-center justify-center gap-1.5 mt-3 pt-1">
+                            {images.map((_: any, idx: number) => (
+                                <button
+                                    key={idx}
+                                    type="button"
+                                    onClick={() => setCarouselIndex(idx)}
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                                        idx === carouselIndex ? 'w-6 bg-white opacity-100' : 'w-2 bg-white/30 hover:bg-white/60'
+                                    }`}
+                                    aria-label={`Ir a imagen ${idx + 1}`}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
+                {lightbox}
+            </>
+        );
+    }
+
     if (isMasonry) {
         return (
             <>
@@ -314,6 +510,19 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
                                         {item.caption}
                                     </figcaption>
+                                )}
+                                {item.linkUrl && (
+                                    <div className="mt-2 flex justify-center">
+                                        <a
+                                            href={item.linkUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                                        >
+                                            <span>{item.linkLabel || 'Ver más'}</span>
+                                            <ExternalLink size={12} />
+                                        </a>
+                                    </div>
                                 )}
                             </figure>
                         );
@@ -362,6 +571,19 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                         {item.caption}
                                     </figcaption>
                                 )}
+                                {item.linkUrl && (
+                                    <div className="mt-2 flex justify-center">
+                                        <a
+                                            href={item.linkUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                                        >
+                                            <span>{item.linkLabel || 'Ver más'}</span>
+                                            <ExternalLink size={12} />
+                                        </a>
+                                    </div>
+                                )}
                             </figure>
                         );
                     }
@@ -390,6 +612,19 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                 <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
                                     {item.caption}
                                 </figcaption>
+                            )}
+                            {item.linkUrl && (
+                                <div className="mt-2 flex justify-center">
+                                    <a
+                                        href={item.linkUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 text-xs font-mono uppercase tracking-wider transition-all"
+                                    >
+                                        <span>{item.linkLabel || 'Ver más'}</span>
+                                        <ExternalLink size={12} />
+                                    </a>
+                                </div>
                             )}
                         </figure>
                     );
