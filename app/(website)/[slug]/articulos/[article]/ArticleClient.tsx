@@ -88,7 +88,7 @@ const renderNode = (node: any, index: number, characterColor: string): React.Rea
             return (
                 <figure key={index} className={`${alignClass} max-w-[500px] w-full`}>
                     <Image src={value.url} alt={fields?.caption || value.filename || 'imagen'} width={value.width || 800} height={value.height || 600} className="rounded-lg object-cover w-full h-auto" />
-                    {fields?.caption && <figcaption className="text-center text-xs text-gray-500 mt-2">{fields.caption}</figcaption>}
+                    {fields?.caption && <figcaption className="text-center text-xs text-gray-400 mt-2">{fields.caption}</figcaption>}
                 </figure>
             );
         }
@@ -156,7 +156,7 @@ const ImageBlockRenderer = ({ block }: { block: any }) => {
                 <X size={24} />
             </button>
 
-            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-12" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-8 md:py-12" onClick={e => e.stopPropagation()}>
                 <Image
                     src={block.image.url}
                     alt={block.caption || block.image.filename || ''}
@@ -193,7 +193,7 @@ const ImageBlockRenderer = ({ block }: { block: any }) => {
                     onZoomClick={() => setIsZoomOpen(true)}
                     onClick={() => setIsZoomOpen(true)}
                 />
-                {block.caption && <figcaption className="text-center text-sm text-gray-500 mt-3">{block.caption}</figcaption>}
+                {block.caption && <figcaption className="text-center text-sm text-gray-400 mt-3">{block.caption}</figcaption>}
                 {block.linkUrl && (
                     <div className="mt-3 flex justify-center">
                         <a
@@ -221,7 +221,7 @@ const VideoBlockRenderer = ({ block }: { block: any }) => {
             <div className="relative pb-[56.25%] h-0 overflow-hidden rounded-xl bg-black shadow-2xl">
                 <iframe src={embedUrl} className="absolute top-0 left-0 w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title={block.caption || 'video'} />
             </div>
-            {block.caption && <figcaption className="text-center text-sm text-gray-500 mt-3">{block.caption}</figcaption>}
+            {block.caption && <figcaption className="text-center text-sm text-gray-400 mt-3">{block.caption}</figcaption>}
         </figure>
     );
 };
@@ -251,7 +251,7 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
             >
                 <X size={24} />
             </button>
-            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-12" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-8 md:py-12" onClick={e => e.stopPropagation()}>
                 <Image
                     src={block.image.url}
                     alt={block.imageCaption || block.image.filename || ''}
@@ -288,7 +288,7 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
                         onZoomClick={() => setIsZoomOpen(true)}
                         onClick={() => setIsZoomOpen(true)}
                     />
-                    {block.imageCaption && <figcaption className="text-center text-xs text-gray-500 mt-2">{block.imageCaption}</figcaption>}
+                    {block.imageCaption && <figcaption className="text-center text-xs text-gray-400 mt-2">{block.imageCaption}</figcaption>}
                 </figure>
             )}
             <div className={`${txtW} text-gray-300 leading-relaxed text-base md:text-lg whitespace-pre-line`}>
@@ -373,7 +373,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
             )}
 
             {/* Image */}
-            <div className="flex items-center justify-center w-full h-full px-16 py-12" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-center w-full h-full px-16 py-8 md:py-12" onClick={e => e.stopPropagation()}>
                 <Image
                     src={images[lightboxIndex].image.url}
                     alt={images[lightboxIndex].caption || images[lightboxIndex].image.filename || ''}
@@ -414,7 +414,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
 
         return (
             <>
-                <div className="relative my-12 clear-both max-w-4xl mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-black shadow-2xl">
+                <div className="relative my-8 md:my-12 clear-both max-w-4xl mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-black shadow-2xl">
                     {/* Viewport: altura fija/adaptable con imagen 100% contenida sin recortes */}
                     <div className="relative w-full h-[460px] sm:h-[580px] md:h-[680px] max-h-[80vh] flex items-center justify-center bg-black/90 rounded-xl overflow-hidden border border-white/5">
                         <figure className="w-full h-full flex items-center justify-center">
@@ -545,7 +545,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     onClick={() => openLightbox(i)}
                                 />
                                 {item.caption && (
-                                    <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                    <figcaption className="text-center text-xs text-gray-400 mt-2 pb-1">
                                         {item.caption}
                                     </figcaption>
                                 )}
@@ -605,7 +605,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     onClick={() => openLightbox(i)}
                                 />
                                 {item.caption && (
-                                    <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                    <figcaption className="text-center text-xs text-gray-400 mt-2 pb-1">
                                         {item.caption}
                                     </figcaption>
                                 )}
@@ -647,7 +647,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                 />
                             </div>
                             {item.caption && (
-                                <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                <figcaption className="text-center text-xs text-gray-400 mt-2 pb-1">
                                     {item.caption}
                                 </figcaption>
                             )}
@@ -674,7 +674,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
 };
 
 const PullQuoteBlockRenderer = ({ block, color }: { block: any; color: string }) => (
-    <div className="my-14 clear-both text-center px-4 md:px-16">
+    <div className="my-8 md:my-14 clear-both text-center px-4 md:px-16">
         <p className="font-display text-2xl md:text-4xl font-bold leading-tight mb-5" style={{ color }}>
             <span className="opacity-60 mr-1" style={{ color }}>“</span>
             {block.quote}
@@ -687,20 +687,20 @@ const PullQuoteBlockRenderer = ({ block, color }: { block: any; color: string })
 );
 
 const SeparatorBlockRenderer = ({ block }: { block: any }) => {
-    if (block.style === 'space') return <div className="my-14 clear-both" />;
+    if (block.style === 'space') return <div className="my-8 md:my-14 clear-both" />;
     if (block.style === 'dots')
-        return <div className="my-12 clear-both text-center text-white/50 text-2xl tracking-[1.5rem] select-none">···</div>;
+        return <div className="my-8 md:my-12 clear-both text-center text-white/50 text-2xl tracking-[1.5rem] select-none">···</div>;
     if (block.style === 'fade')
-        return <div className="my-12 clear-both h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />;
+        return <div className="my-8 md:my-12 clear-both h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />;
     // default: line
-    return <hr className="my-12 clear-both border-white/40" />;
+    return <hr className="my-8 md:my-12 clear-both border-white/40" />;
 };
 
 const ButtonLinksBlockRenderer = ({ block, color }: { block: any; color: string }) => {
     if (!block.buttons?.length) return null;
     
     return (
-        <div className="my-14 clear-both flex flex-wrap justify-center gap-4">
+        <div className="my-8 md:my-14 clear-both flex flex-wrap justify-center gap-4">
             {block.buttons.map((btn: any, i: number) => {
                 const btnColor = (!btn.color || btn.color === 'character') ? color : btn.color;
                 
@@ -747,7 +747,7 @@ const ButtonLinksBlockRenderer = ({ block, color }: { block: any; color: string 
 
 // ─── Main block router ────────────────────────────────────────────────────────
 const renderBlocks = (layout: any[], characterColor: string) => {
-    if (!layout?.length) return <p className="text-gray-500 italic">Sin contenido aún.</p>;
+    if (!layout?.length) return <p className="text-gray-400 italic">Sin contenido aún.</p>;
     return layout.map((block: any, i: number) => {
         switch (block.blockType) {
             case 'richTextBlock':   return <RichTextBlockRenderer   key={i} block={block} color={characterColor} />;
@@ -788,7 +788,7 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                 {/* Gradient that smoothly blends into the black background below */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 md:via-black/20 to-transparent z-20" />
                 
-                <div className="absolute bottom-0 left-0 right-0 py-8 md:py-16 text-white z-30">
+                <div className="absolute bottom-0 left-0 right-0 py-8 md:py-10 md:py-16 text-white z-30">
                     <div className="container mx-auto px-4">
                         <Link href={`/${character.slug}/articulos`} 
                             className="inline-flex items-center px-4 py-2 hover:bg-white hover:text-black transition-all text-xs font-mono font-bold tracking-widest uppercase mb-6 rounded-full"
@@ -802,7 +802,7 @@ export default function ArticleClient({ article, character }: ArticleClientProps
             </div>
 
             {/* Article Content */}
-            <div ref={contentRef} className="container mx-auto pb-20 mt-12 px-4">
+            <div ref={contentRef} className="container mx-auto pb-12 md:pb-20 mt-12 px-4">
                 {/* Meta */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12 pb-8 border-b border-white/10">
                     <div className="flex flex-col items-start gap-2">

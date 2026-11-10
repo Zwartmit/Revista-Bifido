@@ -64,7 +64,7 @@ const FeaturedEventsCarousel = ({ events, formatDate }: { events: Event[]; forma
 
     return (
         <div
-            className="mb-16 relative flex justify-center w-full"
+            className="mb-10 md:mb-16 relative flex justify-center w-full"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
@@ -279,7 +279,7 @@ export default function EventsClient({ events }: EventsClientProps) {
     ][index % 4];
 
     return (
-        <div className="min-h-screen bg-black pt-24 pb-20 relative flex flex-col">
+        <div className="min-h-screen bg-black pt-16 md:pt-24 pb-12 md:pb-20 relative flex flex-col">
             <style dangerouslySetInnerHTML={{ __html: `
                 .rasgado-card { width:100%; max-width:280px; aspect-ratio:3/4.2; position:relative; cursor:pointer; transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275); margin:0 auto; }
                 .rasgado-card:hover { transform:scale(1.08) rotate(2deg) !important; z-index:10; }
@@ -319,7 +319,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                             <div className="relative flex items-center bg-black border border-white/20 focus-within:border-white/50 transition-all">
                                 <Search
                                     size={15}
-                                    className={`ml-4 transition-colors ${search ? 'text-white' : 'text-gray-500 group-hover:text-gray-400'}`}
+                                    className={`ml-4 transition-colors ${search ? 'text-white' : 'text-gray-400 group-hover:text-gray-400'}`}
                                 />
                                 <input
                                     type="text"
@@ -331,7 +331,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                 {search && (
                                     <button
                                         onClick={() => setSearch('')}
-                                        className="absolute right-3 p-1 text-gray-500 hover:text-[#b8ff00] transition-colors"
+                                        className="absolute right-3 p-1 text-gray-400 hover:text-[#b8ff00] transition-colors"
                                         aria-label="Limpiar búsqueda"
                                         title="Limpiar búsqueda"
                                     >
@@ -345,7 +345,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                         <div className="flex items-center gap-1 border border-white/15 p-1 bg-black self-start md:self-auto">
                             <button
                                 onClick={() => setPriceFilter('all')}
-                                className={`px-3 py-1.5 font-mono text-[11px] tracking-widest uppercase transition-all ${
+                                className={`px-3 py-1.5 font-mono text-[12px] tracking-widest uppercase transition-all ${
                                     priceFilter === 'all'
                                         ? 'bg-[#b8ff00] text-black font-bold'
                                         : 'text-gray-400 hover:text-white'
@@ -355,7 +355,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                             </button>
                             <button
                                 onClick={() => setPriceFilter('free')}
-                                className={`px-3 py-1.5 font-mono text-[11px] tracking-widest uppercase transition-all ${
+                                className={`px-3 py-1.5 font-mono text-[12px] tracking-widest uppercase transition-all ${
                                     priceFilter === 'free'
                                         ? 'bg-[#b8ff00] text-black font-bold'
                                         : 'text-gray-400 hover:text-white'
@@ -365,7 +365,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                             </button>
                             <button
                                 onClick={() => setPriceFilter('paid')}
-                                className={`px-3 py-1.5 font-mono text-[11px] tracking-widest uppercase transition-all ${
+                                className={`px-3 py-1.5 font-mono text-[12px] tracking-widest uppercase transition-all ${
                                     priceFilter === 'paid'
                                         ? 'bg-[#b8ff00] text-black font-bold'
                                         : 'text-gray-400 hover:text-white'
@@ -393,7 +393,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                         }`}
                                     >
                                         <span>{cat.label}</span>
-                                        <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                                        <span className={`text-[12px] px-1.5 py-0.5 rounded ${
                                             isActive
                                                 ? 'bg-black text-[#b8ff00] font-bold'
                                                 : 'bg-white/10 text-gray-400'
@@ -407,7 +407,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                     )}
 
                     {/* Barra de estado con resumen y botón de reset */}
-                    <div className="flex items-center justify-between text-xs font-mono tracking-widest uppercase text-gray-500 min-h-[24px]">
+                    <div className="flex items-center justify-between text-xs font-mono tracking-widest uppercase text-gray-400 min-h-[24px]">
                         <span>
                             Mostrando{' '}
                             <strong className="text-white font-bold">{filteredEvents.length}</strong>{' '}
@@ -487,11 +487,11 @@ export default function EventsClient({ events }: EventsClientProps) {
 
                     {/* Empty State */}
                     {filteredEvents.length === 0 && (
-                        <div className="text-center py-24 border border-dashed border-white/20 max-w-2xl mx-auto px-6 bg-black">
+                        <div className="text-center py-14 md:py-24 border border-dashed border-white/20 max-w-2xl mx-auto px-6 bg-black">
                             <p className="text-white font-display text-3xl md:text-5xl opacity-75 mb-3">
                                 {hasActiveFilters ? 'NO HAY EVENTOS QUE COINCIDAN' : 'AÚN NO HAY PARCHES PROGRAMADOS'}
                             </p>
-                            <p className="font-mono text-xs md:text-sm text-gray-500 uppercase tracking-widest max-w-md mx-auto mb-6">
+                            <p className="font-mono text-xs md:text-sm text-gray-400 uppercase tracking-widest max-w-md mx-auto mb-6">
                                 {hasActiveFilters
                                     ? 'Prueba ajustando los términos de búsqueda o cambiando los filtros seleccionados.'
                                     : 'Pronto publicaremos nuevos encuentros, festivales y conversatorios.'}

@@ -28,7 +28,7 @@ export default function ArticleFilters({ categories, primaryColor, currentCatego
     return (
         <div className="flex flex-col md:flex-row gap-4 mb-12">
             <form onSubmit={handleSearch} className="relative flex-1">
-                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                     type="text"
                     value={searchValue}

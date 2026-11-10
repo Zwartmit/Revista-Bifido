@@ -79,8 +79,8 @@ export default function MordazLanding() {
                   <div className="cl-reveal mor-reveal">
                     <p className="cl-section-label">02 — Territorio y amenazas</p>
                     <h2 className="cl-section-title">Donde<br /><em>empieza el viento</em></h2>
-                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.74)', marginBottom: '8px' }}>Hace dos siglos su área de reproducción abarcaba desde el oeste de Venezuela hasta Tierra de Fuego. Hoy ese territorio se ha reducido drásticamente por la actividad humana.</p>
-                    <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: 'rgba(255,255,255,0.62)', marginBottom: '32px' }}><em>Sigo volando libre… pero cada vez tengo menos cielo que habitar.</em></p>
+                    <p style={{ fontSize: '1.05rem', lineHeight: '1.75', color: 'rgba(255,255,255,0.74)', marginBottom: '8px' }}>Hace dos siglos su área de reproducción abarcaba desde el oeste de Venezuela hasta Tierra de Fuego. Hoy ese territorio se ha reducido drásticamente por la actividad humana.</p>
+                    <p style={{ fontSize: '1.05rem', lineHeight: '1.75', color: 'rgba(255,255,255,0.62)', marginBottom: '32px' }}><em>Sigo volando libre… pero cada vez tengo menos cielo que habitar.</em></p>
                     <div className="cl-amenazas-lista">
                       <div className="cl-amenaza-item"><span className="cl-amenaza-num">01</span>Expansión agrícola y acuícola</div>
                       <div className="cl-amenaza-item"><span className="cl-amenaza-num">02</span>Deforestación y pérdida de hábitat</div>
@@ -121,7 +121,7 @@ export default function MordazLanding() {
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Opinión &amp; análisis de coyuntura</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Ironía. Humor negro. Argumentos.</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Rojo, Oro y Durazno</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Cóndor de los Andes<br /><span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>Vultur gryphus</span></div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Cóndor de los Andes<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.4)' }}>Vultur gryphus</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Escepticismo militante</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">42 años</div></div>
                   </div>

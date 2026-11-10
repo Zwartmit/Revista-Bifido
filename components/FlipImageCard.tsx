@@ -84,7 +84,7 @@ export default function FlipImageCard({
             onClick={handleZoomOrClick}
             onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
-            className="absolute top-2.5 left-2.5 bg-black/85 hover:bg-black backdrop-blur-md text-white/90 hover:text-bifido-neon border border-white/30 hover:border-bifido-neon/70 px-2.5 py-1 rounded-full font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.85)] transition-all duration-200 z-30 pointer-events-auto cursor-pointer hover:scale-105 active:scale-95 group/zoom"
+            className="absolute top-2.5 left-2.5 bg-black/85 hover:bg-black backdrop-blur-md text-white/90 hover:text-bifido-neon border border-white/30 hover:border-bifido-neon/70 px-2.5 py-1 rounded-full font-mono text-[12px] uppercase tracking-wider flex items-center gap-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.85)] transition-all duration-200 z-30 pointer-events-auto cursor-pointer hover:scale-105 active:scale-95 group/zoom"
             aria-label="Ver imagen ampliada"
             title="Ver imagen en tamaño completo"
         >
@@ -177,7 +177,7 @@ export default function FlipImageCard({
                         }}
                         onMouseDown={(e) => e.stopPropagation()}
                         onPointerDown={(e) => e.stopPropagation()}
-                        className="absolute bottom-2.5 right-2.5 bg-black/85 hover:bg-black backdrop-blur-md text-white/90 hover:text-bifido-neon border border-white/30 hover:border-bifido-neon/70 px-2.5 py-1 rounded-full font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.85)] pointer-events-auto cursor-pointer transition-all duration-200 z-30 hover:scale-105 active:scale-95 group/flip"
+                        className="absolute bottom-2.5 right-2.5 bg-black/85 hover:bg-black backdrop-blur-md text-white/90 hover:text-bifido-neon border border-white/30 hover:border-bifido-neon/70 px-2.5 py-1 rounded-full font-mono text-[12px] uppercase tracking-wider flex items-center gap-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.85)] pointer-events-auto cursor-pointer transition-all duration-200 z-30 hover:scale-105 active:scale-95 group/flip"
                         aria-label="Voltear tarjeta para ver reverso"
                         title="Girar para ver reverso"
                     >
@@ -202,7 +202,7 @@ export default function FlipImageCard({
                                 onClick={handleZoomOrClick}
                                 onMouseDown={(e) => e.stopPropagation()}
                                 onPointerDown={(e) => e.stopPropagation()}
-                                className="bg-black/85 hover:bg-black backdrop-blur-md text-white/90 hover:text-bifido-neon border border-white/30 hover:border-bifido-neon/70 px-2.5 py-1 rounded-full font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.85)] transition-all group/backzoom"
+                                className="bg-black/85 hover:bg-black backdrop-blur-md text-white/90 hover:text-bifido-neon border border-white/30 hover:border-bifido-neon/70 px-2.5 py-1 rounded-full font-mono text-[12px] uppercase tracking-wider flex items-center gap-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.85)] transition-all group/backzoom"
                                 aria-label="Ver reverso ampliado"
                                 title="Ver en grande"
                             >
@@ -213,7 +213,7 @@ export default function FlipImageCard({
                             <span />
                         )}
 
-                        <span className="bg-white/10 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/15 text-[10px] font-mono uppercase tracking-wider text-gray-300">
+                        <span className="bg-white/10 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/15 text-[12px] font-mono uppercase tracking-wider text-gray-300">
                             Reverso
                         </span>
                     </div>

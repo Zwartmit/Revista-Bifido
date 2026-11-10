@@ -149,13 +149,31 @@ export default function HomeClient({ articles, characters, featuredEvents = [] }
                 <div className="w-[90%] md:w-[70%] h-[1px] bg-gradient-to-r from-transparent via-bifido-neon/20 to-transparent blur-[0.5px]"></div>
             </div>
 
+            {/* Recent Articles Section */}
+            <section className="pt-8 pb-20 md:pt-16 bg-black relative z-10">
+                <div className="container mx-auto px-4">
+                    <div className="flex flex-row items-center gap-3 md:gap-4 mb-12 justify-center">
+                        <Clock className="text-[#b8ff00] flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />
+                        <h2 className="font-display text-[clamp(1.3rem,6vw,2.25rem)] text-white tracking-widest uppercase text-left whitespace-nowrap">Lo más fresquito</h2>
+                    </div>
+
+                    <div ref={recentRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {recentArticles.map((article: any) => renderArticleCard(article))}
+                    </div>
+
+                    {recentArticles.length === 0 && (
+                        <p className="text-center text-gray-500 mt-8">Pronto podrás informarte de lo más reciente.</p>
+                    )}
+                </div>
+            </section>
+
             {/* Featured Articles Section */}
             {featuredArticles.length > 0 && (
                 <section className="pt-12 pb-8 bg-black relative z-10">
                     <div className="container mx-auto px-4">
                         <div className="flex flex-row items-center gap-3 md:gap-4 mb-12 justify-center">
-                            <Star className="text-white flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />
-                            <h2 className="font-display text-[clamp(1.3rem,6vw,2.25rem)] text-white tracking-widest uppercase text-left whitespace-nowrap">Publicaciones destacadas</h2>
+                            <Star className="text-[#b8ff00] flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />
+                            <h2 className="font-display text-[clamp(1.3rem,6vw,2.25rem)] text-white tracking-widest uppercase text-left whitespace-nowrap">Artículos destacados</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -169,13 +187,20 @@ export default function HomeClient({ articles, characters, featuredEvents = [] }
             {featuredEvents.length > 0 && (
                 <section className="pt-12 pb-16 bg-black relative z-10 border-t border-white/10">
                     <div className="container mx-auto px-4 max-w-[1200px]">
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-14">
-                            <div className="flex items-center gap-3 md:gap-4">
-                                <Calendar className="text-[#b8ff00] flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />
-                                <h2 className="font-display text-[clamp(1.3rem,6vw,2.25rem)] text-white tracking-widest uppercase text-left whitespace-nowrap">
-                                    Eventos destacados
-                                </h2>
-                            </div>
+                        <div className="flex items-center justify-center gap-3 md:gap-4 mb-14 text-center">
+                            <Calendar className="text-[#b8ff00] flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />
+                            <h2 className="font-display text-[clamp(1.3rem,6vw,2.25rem)] text-white tracking-widest uppercase whitespace-nowrap">
+                                Eventos destacados
+                            </h2>
+                        </div>
+
+                        <div className="flex flex-wrap justify-center gap-x-12 gap-y-16 pt-4">
+                            {featuredEvents.map((event: any, i: number) => (
+                                <RasgadoEventCard key={event.id || i} event={event} index={i} />
+                            ))}
+                        </div>
+
+                        <div className="mt-14 flex justify-center">
                             <Link
                                 href="/eventos"
                                 className="font-mono text-xs md:text-sm text-gray-400 hover:text-[#b8ff00] uppercase tracking-widest flex items-center gap-2 group/link transition-colors"
@@ -184,33 +209,9 @@ export default function HomeClient({ articles, characters, featuredEvents = [] }
                                 <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                             </Link>
                         </div>
-
-                        <div className="flex flex-wrap justify-center gap-x-12 gap-y-16 pt-4">
-                            {featuredEvents.map((event: any, i: number) => (
-                                <RasgadoEventCard key={event.id || i} event={event} index={i} />
-                            ))}
-                        </div>
                     </div>
                 </section>
             )}
-
-            {/* Recent Articles Section */}
-            <section className="pt-8 pb-20 md:pt-16 bg-black relative z-10">
-                <div className="container mx-auto px-4">
-                    <div className="flex flex-row items-center gap-3 md:gap-4 mb-12 justify-center">
-                        <Clock className="text-white flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />
-                        <h2 className="font-display text-[clamp(1.3rem,6vw,2.25rem)] text-white tracking-widest uppercase text-left whitespace-nowrap">Lo más fresquito</h2>
-                    </div>
-
-                    <div ref={recentRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {recentArticles.map((article: any) => renderArticleCard(article))}
-                    </div>
-
-                    {recentArticles.length === 0 && (
-                        <p className="text-center text-gray-500 mt-8">Pronto podrás informarte de lo más reciente.</p>
-                    )}
-                </div>
-            </section>
 
             {/* Contact CTA Section */}
             <section className="pb-32 pt-24 relative overflow-hidden bg-black">

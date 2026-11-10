@@ -128,7 +128,7 @@ export default function ModelViewer({
             <div className="w-16 h-16 border border-dashed border-white/20 rounded-full flex items-center justify-center bg-white/5">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white/40"><path d="m2 2 20 20" /><path d="M10.41 10.41a2 2 0 1 1-2.83-2.83" /><line x1="13.5" x2="6" y1="13.5" y2="21" /><line x1="18" x2="21" y1="12" y2="15" /><path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.05-.22 1.41-.59" /><path d="M21 15V5a2 2 0 0 0-2-2H9" /></svg>
             </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/80">Recurso visual no disponible en este momento</div>
+            <div className="font-mono text-[12px] uppercase tracking-[0.2em] text-white/80">Recurso visual no disponible en este momento</div>
           </div>
         )}
       </div>
@@ -155,7 +155,7 @@ export default function ModelViewer({
         <div className="absolute inset-0 flex flex-col items-center justify-center text-bifido-neon font-display tracking-widest bg-black/90 z-10 p-4 border border-white/5 rounded-[30px] backdrop-blur-md">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-red-500/60 mb-4"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" /><line x1="12" x2="12" y1="9" y2="13" /><line x1="12" x2="12.01" y1="17" y2="17" /></svg>
           <p className="text-sm md:text-base mb-2 text-center text-white/80">ARCHIVO CORRUPTO</p>
-          <p className="text-[10px] text-center text-white/80 font-mono tracking-widest">El modelo 3D no pudo ser sintetizado en este momento.</p>
+          <p className="text-[12px] text-center text-white/80 font-mono tracking-widest">El modelo 3D no pudo ser sintetizado en este momento.</p>
         </div>
       }>
         <Canvas
@@ -200,7 +200,7 @@ export default function ModelViewer({
 
       {/* Indicador de Interactividad 3D */}
       <div
-        className={`absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center justify-center gap-2 pointer-events-none transition-all duration-700 ease-out font-mono text-[9px] sm:text-[10px] tracking-[0.2em] uppercase z-50 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-white shadow-2xl ${(!isLoaded || isHovered) ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}
+        className={`absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center justify-center gap-2 pointer-events-none transition-all duration-700 ease-out font-mono text-[12px] sm:text-[12px] tracking-[0.2em] uppercase z-50 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-white shadow-2xl ${(!isLoaded || isHovered) ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}
       >
         <span className="text-center whitespace-nowrap">Gira y haz zoom para interactuar</span>
       </div>

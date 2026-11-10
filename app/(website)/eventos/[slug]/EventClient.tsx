@@ -130,7 +130,7 @@ const RichTextBlockRenderer = ({ block }: { block: any }) => {
     const root = block.content?.root ?? block.content;
     return (
         <div className="mb-8 text-gray-200 leading-relaxed text-lg">
-            {root ? renderNode(root, 0) : <p className="text-gray-500 italic">Sin contenido.</p>}
+            {root ? renderNode(root, 0) : <p className="text-gray-400 italic">Sin contenido.</p>}
         </div>
     );
 };
@@ -177,7 +177,7 @@ const ImageBlockRenderer = ({ block }: { block: any }) => {
                 <X size={24} />
             </button>
 
-            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-12" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-8 md:py-12" onClick={e => e.stopPropagation()}>
                 <Image
                     src={src}
                     alt={block.caption || 'Imagen del evento'}
@@ -216,7 +216,7 @@ const ImageBlockRenderer = ({ block }: { block: any }) => {
                     onClick={() => setIsZoomOpen(true)}
                 />
                 {block.caption && (
-                    <figcaption className="text-center text-sm text-gray-500 mt-3 italic">{block.caption}</figcaption>
+                    <figcaption className="text-center text-sm text-gray-400 mt-3 italic">{block.caption}</figcaption>
                 )}
                 {block.linkUrl && (
                     <div className="mt-3 flex justify-center">
@@ -246,7 +246,7 @@ const VideoBlockRenderer = ({ block }: { block: any }) => {
                 <iframe src={embedUrl} title={block.caption ?? 'Video'} className="absolute inset-0 w-full h-full" allowFullScreen />
             </div>
             {block.caption && (
-                <p className="text-center text-sm text-gray-500 mt-3 italic">{block.caption}</p>
+                <p className="text-center text-sm text-gray-400 mt-3 italic">{block.caption}</p>
             )}
         </div>
     );
@@ -325,7 +325,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                 </button>
             )}
 
-            <div className="flex items-center justify-center w-full h-full px-16 py-12" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-center w-full h-full px-16 py-8 md:py-12" onClick={e => e.stopPropagation()}>
                 {currentLightboxSrc && (
                     <Image
                         src={currentLightboxSrc}
@@ -360,7 +360,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
 
         return (
             <>
-                <div className="relative my-12 clear-both max-w-4xl mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-black shadow-2xl">
+                <div className="relative my-8 md:my-12 clear-both max-w-4xl mx-auto border border-white/10 rounded-2xl p-4 sm:p-6 bg-black shadow-2xl">
                     <div className="relative w-full h-[460px] sm:h-[580px] md:h-[680px] max-h-[80vh] flex items-center justify-center bg-black/90 rounded-xl overflow-hidden border border-white/5">
                         <figure className="w-full h-full flex items-center justify-center">
                             <FlipImageCard
@@ -479,7 +479,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     onClick={() => openLightbox(i)}
                                 />
                                 {img.caption && (
-                                    <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                    <figcaption className="text-center text-xs text-gray-400 mt-2 pb-1">
                                         {img.caption}
                                     </figcaption>
                                 )}
@@ -532,7 +532,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                     onClick={() => openLightbox(i)}
                                 />
                                 {img.caption && (
-                                    <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                    <figcaption className="text-center text-xs text-gray-400 mt-2 pb-1">
                                         {img.caption}
                                     </figcaption>
                                 )}
@@ -574,7 +574,7 @@ const GalleryBlockRenderer = ({ block }: { block: any }) => {
                                 />
                             </div>
                             {img.caption && (
-                                <figcaption className="text-center text-xs text-gray-500 mt-2 pb-1">
+                                <figcaption className="text-center text-xs text-gray-400 mt-2 pb-1">
                                     {img.caption}
                                 </figcaption>
                             )}
@@ -625,7 +625,7 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
             >
                 <X size={24} />
             </button>
-            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-12" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-center w-full h-full px-6 sm:px-16 py-8 md:py-12" onClick={e => e.stopPropagation()}>
                 <Image
                     src={block.image.url}
                     alt={block.imageCaption || block.image.filename || ''}
@@ -662,7 +662,7 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
                         onZoomClick={() => setIsZoomOpen(true)}
                         onClick={() => setIsZoomOpen(true)}
                     />
-                    {block.imageCaption && <figcaption className="text-center text-xs text-gray-500 mt-2">{block.imageCaption}</figcaption>}
+                    {block.imageCaption && <figcaption className="text-center text-xs text-gray-400 mt-2">{block.imageCaption}</figcaption>}
                 </figure>
             )}
             <div className={`${txtW} text-gray-300 leading-relaxed text-base md:text-lg whitespace-pre-line`}>
@@ -674,7 +674,7 @@ const TwoColumnsBlockRenderer = ({ block }: { block: any }) => {
 };
 
 const PullQuoteBlockRenderer = ({ block }: { block: any }) => (
-    <div className="my-14 clear-both text-center px-4 md:px-16">
+    <div className="my-8 md:my-14 clear-both text-center px-4 md:px-16">
         <p className="font-display text-2xl md:text-4xl font-bold leading-tight mb-5 text-bifido-neon">
             <span className="opacity-60 mr-1">“</span>
             {block.quote}
@@ -687,19 +687,19 @@ const PullQuoteBlockRenderer = ({ block }: { block: any }) => (
 );
 
 const SeparatorBlockRenderer = ({ block }: { block: any }) => {
-    if (block.style === 'space') return <div className="my-14 clear-both" />;
+    if (block.style === 'space') return <div className="my-8 md:my-14 clear-both" />;
     if (block.style === 'dots')
-        return <div className="my-12 clear-both text-center text-white/50 text-2xl tracking-[1.5rem] select-none">···</div>;
+        return <div className="my-8 md:my-12 clear-both text-center text-white/50 text-2xl tracking-[1.5rem] select-none">···</div>;
     if (block.style === 'fade')
-        return <div className="my-12 clear-both h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />;
-    return <hr className="my-12 clear-both border-white/40" />;
+        return <div className="my-8 md:my-12 clear-both h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />;
+    return <hr className="my-8 md:my-12 clear-both border-white/40" />;
 };
 
 const ButtonLinksBlockRenderer = ({ block }: { block: any }) => {
     if (!block.buttons?.length) return null;
     
     return (
-        <div className="my-14 clear-both flex flex-wrap justify-center gap-4">
+        <div className="my-8 md:my-14 clear-both flex flex-wrap justify-center gap-4">
             {block.buttons.map((btn: any, i: number) => {
                 const btnColor = btn.color || '#CEFF00';
                 
@@ -745,7 +745,7 @@ const ButtonLinksBlockRenderer = ({ block }: { block: any }) => {
 };
 
 const renderBlocks = (layout: any[]) => {
-    if (!layout?.length) return <p className="text-gray-500 italic">Sin contenido aún.</p>;
+    if (!layout?.length) return <p className="text-gray-400 italic">Sin contenido aún.</p>;
     return layout.map((block: any, i: number) => {
         switch (block.blockType) {
             case 'richTextBlock':   return <RichTextBlockRenderer   key={i} block={block} />;
@@ -782,7 +782,7 @@ export default function EventClient({ event }: EventClientProps) {
     const price = event.priceAmount ?? event.price?.amount;
 
     return (
-        <article className="min-h-screen bg-black pb-20">
+        <article className="min-h-screen bg-black pb-12 md:pb-20">
             {/* Hero */}
             <div className="relative w-full h-[50vh] md:h-[70vh] min-h-[400px] bg-black">
                 {image && (
@@ -791,7 +791,7 @@ export default function EventClient({ event }: EventClientProps) {
                 {/* Gradient that smoothly blends into the black background below */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 md:via-black/20 to-transparent z-20" />
                 
-                <div className="absolute bottom-0 left-0 right-0 py-8 md:py-16 text-white z-30">
+                <div className="absolute bottom-0 left-0 right-0 py-8 md:py-10 md:py-16 text-white z-30">
                     <div className="container mx-auto px-4">
                         <Link
                             href="/eventos"
@@ -807,7 +807,7 @@ export default function EventClient({ event }: EventClientProps) {
 
             {/* Info Bar */}
             <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 py-12 border-t border-white/10 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 py-8 md:py-12 border-t border-white/10 mb-10 md:mb-16">
                     {/* Date */}
                     <div className="flex flex-col items-start gap-4">
                         <div className="flex items-center gap-3 text-bifido-neon">
@@ -889,7 +889,7 @@ export default function EventClient({ event }: EventClientProps) {
 
                 {/* ── PERSONAJES ASOCIADOS AL EVENTO & CTA ── */}
                 {event.characters && event.characters.length > 0 && (
-                    <section className="mt-20 pt-12 border-t border-white/10 flex flex-col items-center">
+                    <section className="mt-12 md:mt-20 pt-12 border-t border-white/10 flex flex-col items-center">
                         <div className="w-full flex flex-wrap justify-center gap-6">
                             {event.characters.map((char: any) => {
                                 const colors = getCharacterColors(char.slug);
@@ -919,7 +919,7 @@ export default function EventClient({ event }: EventClientProps) {
                                                     </div>
                                                 )}
                                                 <div>
-                                                    <span className="text-[11px] font-mono uppercase tracking-widest text-gray-400">
+                                                    <span className="text-[12px] font-mono uppercase tracking-widest text-gray-400">
                                                         La Manada Bífido
                                                     </span>
                                                     <h3 className="font-display text-2xl sm:text-3xl text-white uppercase tracking-wide">

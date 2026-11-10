@@ -124,7 +124,7 @@ export default function AnikaPage({ section, character, articles, categories = [
             </div>
 
             {/* ── PUBLICACIONES ── */}
-            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20">
+            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20">
                 <div className="flex items-center gap-4 mb-8">
                     <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
                     <span className="font-display text-3xl tracking-[0.25em] uppercase">Muda de Piel</span>
@@ -197,7 +197,7 @@ export default function AnikaPage({ section, character, articles, categories = [
 
             {/* ── EVENTOS ── */}
             {events.length > 0 && (
-                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20 border-t border-[#1a1a1a]">
+                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20 border-t border-[#1a1a1a]">
                     <div className="flex items-center gap-4 mb-10">
                         <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
                         <span className="font-display text-3xl tracking-[0.25em] uppercase">Eventos</span>

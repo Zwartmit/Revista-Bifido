@@ -173,7 +173,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                     {/* Rasgos */}
                                     {selectedMember.characteristics && selectedMember.characteristics.length > 0 && (
                                         <div className="flex flex-col gap-1.5">
-                                            <span className="text-[11px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
+                                            <span className="text-[12px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
                                                 Rasgos y gustos
                                             </span>
                                             <div className="font-mono text-xs md:text-sm text-bifido-neon tracking-wide uppercase font-medium">
@@ -184,7 +184,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                     {/* Base / Ubicación */}
                                     {selectedMember.location && (
                                         <div className="flex flex-col gap-1.5">
-                                            <span className="text-[11px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
+                                            <span className="text-[12px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
                                                 Base
                                             </span>
                                             <span className="font-mono text-xs md:text-sm text-gray-100 uppercase tracking-wide">
@@ -197,7 +197,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                 {/* Right: Redes */}
                                 {(selectedMember.socialMedia?.website || selectedMember.socialMedia?.instagram) && (
                                     <div className="flex flex-col gap-2.5 items-end">
-                                        <span className="text-[11px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
+                                        <span className="text-[12px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
                                             Contacto
                                         </span>
                                         <div className="flex flex-wrap justify-end gap-3 max-w-[76px]">

@@ -18,6 +18,14 @@ const config: Config = {
       },
     },
     extend: {
+      // Escala tipográfica más legible (mínimos: 13px / 15px / 17px en lugar de 12 / 14 / 16)
+      fontSize: {
+        xs: ['0.8125rem', { lineHeight: '1.25rem' }],
+        sm: ['0.9375rem', { lineHeight: '1.5rem' }],
+        base: ['1.0625rem', { lineHeight: '1.7rem' }],
+        lg: ['1.1875rem', { lineHeight: '1.85rem' }],
+        xl: ['1.375rem', { lineHeight: '1.9rem' }],
+      },
       colors: {
         // Colores de los personajes
         punkibri: {

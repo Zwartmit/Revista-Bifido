@@ -115,7 +115,7 @@ export default function IncendiaPage({ section, character, articles, events = []
             </div>
 
             {/* ── PUBLICACIONES ── */}
-            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20">
+            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20">
                 <div className="flex items-center gap-4 mb-12">
                     <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
                     <span className="font-display text-3xl tracking-[0.25em] uppercase">Fuegos Diversos</span>
@@ -190,7 +190,7 @@ export default function IncendiaPage({ section, character, articles, events = []
 
             {/* ── EVENTOS ── */}
             {events.length > 0 && (
-                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20 border-t border-[#1a1a1a]">
+                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20 border-t border-[#1a1a1a]">
                     <div className="flex items-center gap-4 mb-10">
                         <div className="w-6 h-[3px]" style={{ backgroundColor: primary }} />
                         <span className="font-display text-3xl tracking-[0.25em] uppercase">Eventos</span>

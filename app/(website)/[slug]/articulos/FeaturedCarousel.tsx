@@ -83,7 +83,7 @@ export default function FeaturedCarousel({ articles, section, primaryColor, dark
                                 <span className="font-display text-[8rem] opacity-10" style={{ color: primaryColor }}>{letter}</span>
                             </div>
                         )}
-                        <span className="absolute top-4 left-4 font-display text-[10px] tracking-[0.4em] px-3 py-1 uppercase z-10"
+                        <span className="absolute top-4 left-4 font-display text-[12px] tracking-[0.4em] px-3 py-1 uppercase z-10"
                             style={{ backgroundColor: primaryColor, color: '#000' }}>Destacado</span>
                     </div>
                     

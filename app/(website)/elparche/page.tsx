@@ -578,11 +578,11 @@ function ElParcheContent() {
 
                                 {/* Tagline */}
                                 <div ref={teamTaglineRef} className="pt-2 space-y-0.5 flex flex-col items-center lg:items-start text-center lg:text-left">
-                                    <p className="font-jack text-[10px] md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
+                                    <p className="font-jack text-[12px] md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
                                         {"//"} NO SOMOS UN EQUIPO, SOMOS UN{' '}
                                         <span className="underline underline-offset-4">ARCHIVO VIVO</span>
                                     </p>
-                                    <p className="font-jack text-[10px] md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
+                                    <p className="font-jack text-[12px] md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
                                         <span className="opacity-0 select-none">{"//"} </span>
                                         NARRAMOS, SEÑALAMOS, REGISTRAMOS...
                                     </p>
@@ -678,14 +678,14 @@ function ElParcheContent() {
 
                                                 {/* Profession */}
                                                 {member.profession && (
-                                                    <span className="font-mono text-[10px] leading-tight text-white uppercase tracking-widest mb-2 font-bold px-2">
+                                                    <span className="font-mono text-[12px] leading-tight text-white uppercase tracking-widest mb-2 font-bold px-2">
                                                         {member.profession}
                                                     </span>
                                                 )}
 
                                                 {/* Skill tags */}
                                                 {member.characteristics && member.characteristics.length > 0 && (
-                                                    <div className="font-mono text-[9px] text-bifido-neon uppercase tracking-widest mb-3">
+                                                    <div className="font-mono text-[12px] text-bifido-neon uppercase tracking-widest mb-3">
                                                         {member.characteristics.join(' · ')}
                                                     </div>
                                                 )}

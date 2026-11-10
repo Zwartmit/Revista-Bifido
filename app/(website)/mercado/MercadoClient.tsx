@@ -140,7 +140,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                         <div className="relative flex items-center bg-black border border-white/20 focus-within:border-white/50 transition-all">
                             <Search
                                 size={15}
-                                className={`ml-4 transition-colors ${search ? 'text-white' : 'text-gray-500 group-hover:text-gray-400'}`}
+                                className={`ml-4 transition-colors ${search ? 'text-white' : 'text-gray-400 group-hover:text-gray-400'}`}
                             />
                             <input
                                 type="text"
@@ -152,7 +152,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                             {search && (
                                 <button
                                     onClick={() => setSearch('')}
-                                    className="absolute right-3 p-1 text-gray-500 hover:text-[#b8ff00] transition-colors"
+                                    className="absolute right-3 p-1 text-gray-400 hover:text-[#b8ff00] transition-colors"
                                     aria-label="Limpiar búsqueda"
                                     title="Limpiar búsqueda"
                                 >
@@ -164,8 +164,8 @@ export default function MercadoClient({ products }: MercadoClientProps) {
 
                     {/* Selector de orden */}
                     <div className="flex items-center gap-2 border border-white/15 px-3 py-2 bg-black self-start md:self-auto">
-                        <ArrowUpDown size={13} className="text-gray-500" />
-                        <span className="font-mono text-[11px] tracking-widest uppercase text-gray-500 hidden sm:inline">
+                        <ArrowUpDown size={13} className="text-gray-400" />
+                        <span className="font-mono text-[12px] tracking-widest uppercase text-gray-400 hidden sm:inline">
                             ORDEN:
                         </span>
                         <select
@@ -194,7 +194,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                             }`}
                         >
                             <span>Todos</span>
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                            <span className={`text-[12px] px-1.5 py-0.5 rounded ${
                                 activeCategory === null
                                     ? 'bg-black text-[#b8ff00] font-bold'
                                     : 'bg-white/10 text-gray-400'
@@ -219,7 +219,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                                     }`}
                                 >
                                     <span>{label}</span>
-                                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                                    <span className={`text-[12px] px-1.5 py-0.5 rounded ${
                                         isActive
                                             ? 'bg-black text-[#b8ff00] font-bold'
                                             : 'bg-white/10 text-gray-400'
@@ -233,7 +233,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                 )}
 
                 {/* Barra de estado con resumen y botón de reset */}
-                <div className="flex items-center justify-between text-xs font-mono tracking-widest uppercase text-gray-500 min-h-[24px]">
+                <div className="flex items-center justify-between text-xs font-mono tracking-widest uppercase text-gray-400 min-h-[24px]">
                     <span>
                         Mostrando{' '}
                         <strong className="text-white font-bold">{filtered.length}</strong>{' '}
@@ -277,7 +277,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 className="object-cover group-hover:scale-105 transition-transform duration-500"
                             />
-                            <span className="absolute top-4 left-4 border border-[#b8ff00]/60 bg-black/90 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#b8ff00] z-10">
+                            <span className="absolute top-4 left-4 border border-[#b8ff00]/60 bg-black/90 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.2em] text-[#b8ff00] z-10">
                                 {product.categoryLabel}
                             </span>
                         </div>
@@ -289,7 +289,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                             </h3>
 
                             {product.seller?.name && (
-                                <p className="font-mono text-[10px] tracking-widest uppercase text-gray-500 mb-3">
+                                <p className="font-mono text-[12px] tracking-widest uppercase text-gray-400 mb-3">
                                     {product.seller.name}
                                 </p>
                             )}
@@ -313,7 +313,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                                         Comprar
                                     </a>
                                 ) : (
-                                    <span className="px-4 py-2 text-xs font-mono uppercase tracking-[0.15em] border border-white/20 text-gray-500">
+                                    <span className="px-4 py-2 text-xs font-mono uppercase tracking-[0.15em] border border-white/20 text-gray-400">
                                         Próximamente
                                     </span>
                                 )}
@@ -329,7 +329,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                     <p className="text-white font-display text-3xl md:text-5xl opacity-75 mb-3">
                         SIN RESULTADOS
                     </p>
-                    <p className="font-mono text-xs md:text-sm text-gray-500 uppercase tracking-widest max-w-md mx-auto mb-6">
+                    <p className="font-mono text-xs md:text-sm text-gray-400 uppercase tracking-widest max-w-md mx-auto mb-6">
                         No encontramos productos que coincidan con &ldquo;{search || activeCategory}&rdquo;.
                     </p>
                     <button

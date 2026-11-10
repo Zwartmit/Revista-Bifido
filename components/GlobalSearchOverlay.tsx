@@ -221,7 +221,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                           <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-300" />
                         </div>
                         <div className="flex flex-col justify-center flex-1">
-                          <span className="font-mono text-[10px] uppercase tracking-widest text-white/60 mb-1">{article.section}</span>
+                          <span className="font-mono text-[12px] uppercase tracking-widest text-white/60 mb-1">{article.section}</span>
                           <h4 className="font-display text-xl md:text-2xl text-white group-hover:text-white transition-colors leading-[1.1] mb-2 line-clamp-2">{article.title}</h4>
                           <p className="font-sans text-sm text-gray-400 line-clamp-1 hidden md:block">{article.excerpt}</p>
                         </div>
@@ -284,7 +284,7 @@ export default function GlobalSearchOverlay({ isOpen, onClose }: SearchOverlayPr
                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                           <div className="absolute bottom-3 left-3 right-3">
                             <p className="font-display text-lg uppercase leading-none drop-shadow-md text-white group-hover:text-[#E63946] transition-colors line-clamp-1">{member.name}</p>
-                            <p className="font-mono text-[10px] uppercase text-white/50 mt-1 truncate">{member.profession || 'Archivo Vivo'}</p>
+                            <p className="font-mono text-[12px] uppercase text-white/50 mt-1 truncate">{member.profession || 'Archivo Vivo'}</p>
                           </div>
                         </div>
                       </button>

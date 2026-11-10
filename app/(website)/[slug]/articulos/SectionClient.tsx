@@ -152,7 +152,7 @@ export default function SectionClient({ section, character, articles, categories
             </div>
 
             {/* ─── 2. ARTICLES ───────────────────────────────────────── */}
-            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20">
+            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20">
 
                 {/* Section header */}
                 <div className="flex items-center gap-4 mb-12">
@@ -253,7 +253,7 @@ export default function SectionClient({ section, character, articles, categories
 
             {/* ─── EVENTOS ────────────────────────────────────────── */}
             {events.length > 0 && (
-                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-20 border-t border-[#1a1a1a]">
+                <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20 border-t border-[#1a1a1a]">
                     <div className="flex items-center gap-4 mb-10">
                         <div className="w-6 h-[3px]" style={{ backgroundColor: primaryColor }} />
                         <span className="font-display text-3xl tracking-[0.25em] uppercase">Eventos</span>
