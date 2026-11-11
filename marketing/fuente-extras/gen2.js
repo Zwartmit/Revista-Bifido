@@ -29,7 +29,7 @@ const CH = [
   { id: 'incendia', name: 'Incendia', topic: 'Género', col: '#f97316', desc: 'Directa, combativa y afectiva. Convoca, denuncia y moviliza por la justicia social.', causa: 'Lucha activa por la equidad', age: 'Joven rebelde', color: 'Naranja' },
   { id: 'mordaz', name: 'Mordáz', topic: 'Opinión', col: '#ef4444', desc: 'Sarcástico, lúcido y provocador. Maestro de la ironía y el humor negro.', causa: 'La provocación como dialéctica', age: 'Desconocida', color: 'Rojo' },
   { id: 'punkibri', name: 'Punkibrí', topic: 'Ambiente', col: '#22c55e', desc: 'Rebelde, sensible y poético. Defiende el territorio y la soberanía alimentaria.', causa: 'Relación espiritual y política con la tierra', age: 'Agitador de alas', color: 'Verde' },
-  { id: 'anika', name: 'Ánika', topic: 'Reducción de riesgos y daños', sub: 'por consumo de sustancias', col: '#00a89e', desc: 'Clara, tranquila y firme. Genera confianza y calma en temas de salud comunitaria.', causa: 'El cuidado como acto político', age: 'Ancestral', color: 'Turquesa' },
+  { id: 'anika', name: 'Ánika', topic: 'Reducción de daños', sub: 'riesgos por consumo de sustancias', col: '#00a89e', desc: 'Clara, tranquila y firme. Genera confianza y calma en temas de salud comunitaria.', causa: 'El cuidado como acto político', age: 'Ancestral', color: 'Turquesa' },
 ];
 const TEAM = [
   ['alexandra', 'Alexandra Amado', 'Administradora y gestora de proyectos con enfoque interseccional', 'El futuro es hoy.'],
@@ -114,7 +114,7 @@ ${HUD()}`));
 <div class="abs" style="left:0;top:0;width:1080px;height:1350px;z-index:6;background:linear-gradient(to bottom,#050505 0%,rgba(5,5,5,0) 30%)"></div>
 <img class="abs" src="assets/${c.id}.webp" style="right:-90px;bottom:110px;height:860px;z-index:20;filter:drop-shadow(0 20px 28px rgba(0,0,0,.55))">
 ${D(c.name, 50, 178, nameSize)}
-<div class="tape" style="left:-30px;top:${178 + nameSize * .95 + 20}px;width:${c.topic.length > 12 ? 600 : 560}px;height:${c.topic.length > 12 ? 130 : 96}px;transform:rotate(-3deg);z-index:46;display:flex;align-items:center;padding-left:86px;background:${c.col}"><div class="d" style="font-size:${c.topic.length > 12 ? 44 : 58}px;color:#fff;line-height:1.05;white-space:normal;width:480px">${c.topic}</div></div>
+<div class="tape" style="left:-30px;top:${178 + nameSize * .95 + 20}px;width:${c.topic.length > 20 ? 600 : 560}px;height:${c.topic.length > 20 ? 130 : 96}px;transform:rotate(-3deg);z-index:46;display:flex;align-items:center;padding-left:86px;background:${c.col}"><div class="d" style="font-size:${c.topic.length > 20 ? 44 : 58}px;color:#fff;line-height:1.05;white-space:normal;width:480px">${c.topic}</div></div>
 <div class="abs p" style="left:56px;top:${178 + nameSize * .95 + (c.sub ? 190 : 170)}px;width:380px;z-index:45;font-size:25px;line-height:1.42;color:rgba(255,255,255,.92)">${c.sub ? `<span style="color:#5eead4">${c.sub[0].toUpperCase() + c.sub.slice(1)}.</span> ` : ''}${c.desc}</div>
 <div class="abs" style="left:56px;top:900px;width:360px;z-index:45">
   ${[['Su causa', c.causa], ['Edad', c.age], ['Color favorito', c.color]].map(([k, v]) => `<div style="border-top:3px solid ${c.col};padding:10px 0 12px"><div class="mono" style="font-size:12px;color:rgba(255,255,255,.6)">${k}</div><div class="p" style="font-size:20px;line-height:1.3;margin-top:5px;color:#fff">${v}</div></div>`).join('')}

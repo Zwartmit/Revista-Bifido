@@ -82,7 +82,7 @@ const chars = [
   ['incendia', 'Incendia', 'Género', '#f97316', 1],
   ['mordaz', 'Mordáz', 'Opinión', '#ef4444', 2],
   ['punkibri', 'Punkibrí', 'Ambiente', '#22c55e', 3],
-  ['anika', 'Ánika', 'Reducción de riesgos|y daños por consumo|de sustancias', '#00a89e', 4],
+  ['anika', 'Ánika', 'Reducción de daños', '#00a89e', 4],
 ];
 const CX = [150, 345, 540, 735, 930];
 const heights = [470, 490, 530, 490, 470];
