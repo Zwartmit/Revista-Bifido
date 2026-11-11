@@ -35,7 +35,7 @@ export default function CookieConsent() {
       <p className="font-display text-xl text-white mb-2">Cookies</p>
       <p className="text-sm text-gray-300 leading-relaxed mb-4">
         Usamos cookies de analítica (Google Analytics) para entender cómo se lee la revista y mejorarla.
-        Solo se activan si las aceptas, y no usamos cookies de publicidad.{' '}
+        Solo se guardan si las aceptas; si las rechazas, medimos solo lo básico, sin cookies. No usamos cookies de publicidad.{' '}
         <Link href="/privacidad" className="underline underline-offset-2 text-bifido-neon hover:text-white">
           Más información
         </Link>

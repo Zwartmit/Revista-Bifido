@@ -25,15 +25,21 @@ export default function PrivacidadPage() {
 
       <h2 className={H2}>Qué datos recogemos</h2>
       <p className={P}>
-        No tenemos cuentas de usuario ni formularios que pidan datos personales en el sitio. Lo único que medimos, y solo si
-        lo aceptas, es el uso general de la web mediante <strong>Google Analytics</strong>: páginas visitadas, tiempo de lectura,
-        tipo de dispositivo y navegador, y ubicación aproximada (ciudad o país). No usamos esa información para identificarte.
+        No tenemos cuentas de usuario ni formularios que pidan datos personales en el sitio. Lo único que medimos es el uso
+        general de la web mediante <strong>Google Analytics</strong>: páginas visitadas, tiempo de lectura, tipo de dispositivo y
+        navegador, y ubicación aproximada (ciudad o país). No usamos esa información para identificarte.
+      </p>
+      <p className={P}>
+        <strong>Si aceptas las cookies de analítica</strong>, Google Analytics guarda cookies en tu navegador para reconocer
+        visitas repetidas y medir mejor. <strong>Si las rechazas o no respondes</strong>, el sitio sigue enviando a Google Analytics
+        medidas básicas de la visita (por ejemplo, la página vista y datos generales del dispositivo y la ubicación aproximada), pero
+        <strong> sin guardar cookies ni identificadores</strong> en tu navegador.
       </p>
 
       <h2 className={H2}>Cookies que usamos</h2>
       <ul className="list-disc pl-6 space-y-2 mb-4">
         <li className={LI}><strong>Necesarias:</strong> guardan tu elección sobre las cookies (en el almacenamiento de tu navegador). Sin ellas no podríamos recordarla.</li>
-        <li className={LI}><strong>Analítica (Google Analytics, cookies <code>_ga</code> y <code>_ga_*</code>):</strong> solo se activan si pulsas «Aceptar». Sirven para entender qué se lee y mejorar la revista.</li>
+        <li className={LI}><strong>Analítica (Google Analytics, cookies <code>_ga</code> y <code>_ga_*</code>):</strong> estas cookies solo se guardan si pulsas «Aceptar». Sirven para entender qué se lee y mejorar la revista.</li>
         <li className={LI}><strong>Publicidad:</strong> no usamos cookies de publicidad ni de seguimiento entre sitios.</li>
       </ul>
       <p className={P}>
@@ -52,7 +58,8 @@ export default function PrivacidadPage() {
       <p className={P}>
         De acuerdo con la Ley 1581 de 2012 (protección de datos personales en Colombia) puedes conocer, actualizar, rectificar y
         solicitar la supresión de tus datos, así como revocar la autorización que nos hayas dado. Para ejercer estos derechos,
-        escríbenos desde la página de <Link href="/contactanos" className="underline underline-offset-2 text-bifido-neon hover:text-white">Contáctanos</Link>.
+        escríbenos a <a href="mailto:bifidomedio@gmail.com" className="underline underline-offset-2 text-bifido-neon hover:text-white">bifidomedio@gmail.com</a> o desde la
+        página de <Link href="/contactanos" className="underline underline-offset-2 text-bifido-neon hover:text-white">Contáctanos</Link>.
       </p>
 
       <h2 className={H2}>Cambios en esta política</h2>
