@@ -19,6 +19,12 @@ const nextConfig = {
   outputFileTracingIncludes: {
     '/og/[type]': ['./app/og/fonts/**/*', './app/og/art/**/*'],
   },
+  // Los navegadores piden /favicon.ico en la raíz; los iconos viven en /favicon
+  async rewrites() {
+    return {
+      beforeFiles: [{ source: '/favicon.ico', destination: '/favicon/favicon.ico' }],
+    }
+  },
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   experimental: {
     reactCompiler: false,

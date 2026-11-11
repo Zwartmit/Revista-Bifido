@@ -290,6 +290,9 @@ export async function getCharacterById(id: string | number) {
     if (char) return char;
   }
 
+  // Payload solo busca por ID numérico: cualquier otro valor (p. ej. «favicon.ico» o rutas inexistentes) provoca un error 500 en la API
+  if (!/^\d+$/.test(String(id))) return null;
+
   const path = `/api/characters/${encodeURIComponent(String(id))}?depth=1`;
   try {
     const res = await payloadFetch(path, {
