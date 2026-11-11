@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { characters } from '@/lib/characters';
 import { getCharacterColors } from '@/lib/character-colors';
+import { OPEN_CONSENT_EVENT } from '@/lib/analytics';
 import { RiFacebookFill, RiWhatsappFill, RiInstagramFill, RiYoutubeFill } from "react-icons/ri";
 
 export default function Footer() {
@@ -125,6 +126,11 @@ export default function Footer() {
         <div className="text-center">
           <p className="text-gray-400 text-xs font-jack tracking-[0.2em] font-semibold uppercase">
             © {new Date().getFullYear()} Revista Bífido. <br className="md:hidden" /> Todos los derechos reservados.
+          </p>
+          <p className="mt-3 flex items-center justify-center gap-4 text-gray-400 text-xs font-jack tracking-[0.15em] uppercase">
+            <Link href="/privacidad" className="hover:text-bifido-neon transition-colors">Privacidad</Link>
+            <span aria-hidden="true">·</span>
+            <button type="button" onClick={() => window.dispatchEvent(new Event(OPEN_CONSENT_EVENT))} className="uppercase hover:text-bifido-neon transition-colors">Cookies</button>
           </p>
         </div>
 

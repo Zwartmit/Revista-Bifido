@@ -8,6 +8,8 @@ import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import JsonLd from '@/components/JsonLd';
 import { GtmScript, GtmNoScript } from '@/components/GoogleTagManager';
+import CookieConsent from '@/components/CookieConsent';
+import AnalyticsEvents from '@/components/AnalyticsEvents';
 import { SITE_URL, SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION, SOCIAL_PROFILES, DEFAULT_OG_IMAGE } from '@/lib/seo';
 // import BackToHome from '@/components/BackToHome';
 
@@ -97,6 +99,8 @@ export default function RootLayout({
         </main>
         <Footer />
         <ScrollToTop />
+        <CookieConsent />
+        <AnalyticsEvents />
         {/* <BackToHome /> */}
       </body>
     </html>

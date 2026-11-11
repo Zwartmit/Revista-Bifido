@@ -862,6 +862,8 @@ export default function EventClient({ event }: EventClientProps) {
                             {event.ticketLink && (
                                 <a
                                     href={event.ticketLink}
+                                    data-track="ticket_click"
+                                    data-track-label={event.name}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="bg-white text-black font-mono text-xs font-bold px-8 py-3 uppercase tracking-widest hover:bg-bifido-neon transition-colors rounded-full"

@@ -817,6 +817,8 @@ export default function ArticleClient({ article, character }: ArticleClientProps
                             onClick={() => navigator.share?.({ title: article.title, text: article.excerpt, url: shareUrl })}
                             className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/10 font-mono text-xs font-bold uppercase tracking-widest"
                             aria-label="Compartir"
+                            data-track="share_click"
+                            data-track-label={article.title}
                         >
                             <Share2 size={16} />
                             Compartir

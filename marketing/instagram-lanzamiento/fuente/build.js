@@ -82,7 +82,7 @@ const chars = [
   ['incendia', 'Incendia', 'Género', '#f97316', 1],
   ['mordaz', 'Mordáz', 'Opinión', '#ef4444', 2],
   ['punkibri', 'Punkibrí', 'Ambiente', '#22c55e', 3],
-  ['anika', 'Ánika', 'Reducción de riesgos y daños por consumo de sustancias', '#00a89e', 4],
+  ['anika', 'Ánika', 'Reducción de riesgos|y daños por consumo|de sustancias', '#00a89e', 4],
 ];
 const CX = [150, 345, 540, 735, 930];
 const heights = [470, 490, 530, 490, 470];
@@ -92,14 +92,14 @@ slides[3] = page(`
 ${chars.map(([id, name, topic, col, i]) => {
   const h = heights[i], w = Math.round(h * .8);
   const cx = CX[i];
-  return `<img class="abs" src="assets/${id}.webp" style="left:${Math.round(cx - w / 2)}px;top:${1160 - h}px;height:${h}px;z-index:${i === 2 ? 30 : 20 + (i % 2)};filter:drop-shadow(0 18px 24px rgba(0,0,0,.6))">`;
+  return `<img class="abs" src="assets/${id}.webp" style="left:${Math.round(cx - w / 2)}px;top:${1136 - h}px;height:${h}px;z-index:${i === 2 ? 30 : 20 + (i % 2)};filter:drop-shadow(0 18px 24px rgba(0,0,0,.6))">`;
 }).join('')}
 ${chars.map(([id, name, topic, col, i]) => {
   const cx = CX[i];
-  return `<div class="abs" style="left:${Math.round(cx - 93)}px;top:1176px;width:186px;z-index:45;text-align:center">
+  return `<div class="abs" style="left:${Math.round(cx - 93)}px;top:1152px;width:186px;z-index:45;text-align:center">
     <div style="height:6px;background:${col};margin-bottom:11px"></div>
     <div class="d" style="font-size:30px;line-height:1">${name}</div>
-    <div class="mono" style="font-size:${topic.length > 14 ? 11 : 13}px;letter-spacing:${topic.length > 14 ? .04 : .16}em;line-height:1.35;color:rgba(255,255,255,.7);margin-top:5px">${topic}</div></div>`;
+    <div class="mono" style="font-size:${topic.includes('|') ? 12 : 13}px;letter-spacing:${topic.includes('|') ? .07 : .16}em;line-height:1.4;color:rgba(255,255,255,.7);margin-top:5px">${topic.split('|').join('<br>')}</div></div>`;
 }).join('')}
 ${HUD(3, { hideFoot: true })}`);
 
