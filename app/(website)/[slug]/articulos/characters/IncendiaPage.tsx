@@ -173,21 +173,6 @@ export default function IncendiaPage({ section, character, articles, events = []
                 )}
             </div>
 
-            {/* ── ESPECIAL 8M ── */}
-            <div className="px-6 sm:px-10 lg:px-16 xl:px-24 pb-20">
-                <div className="border border-[#1e1e1e] p-8 sm:p-12" style={{ borderTopColor: `${primary}40` }}>
-                    <span className="font-display text-xs tracking-[0.5em] uppercase mb-3 block" style={{ color: primary }}>
-                        Especial
-                    </span>
-                    <h2 className="font-display text-4xl sm:text-5xl text-white uppercase mb-4">
-                        Conmemoración 8M
-                    </h2>
-                    <p className="font-googlesans text-gray-400 text-base md:text-lg leading-relaxed max-w-xl">
-                        Cobertura especial del Día Internacional de la Mujer con podcast, galería y video documental. Próximamente.
-                    </p>
-                </div>
-            </div>
-
             {/* ── EVENTOS ── */}
             {events.length > 0 && (
                 <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-20 border-t border-[#1a1a1a]">
