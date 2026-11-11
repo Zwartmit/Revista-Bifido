@@ -154,7 +154,7 @@ export default function HomeClient({ articles, characters, featuredEvents = [] }
             </div>
 
             {/* Recent Articles Section */}
-            <section className="pt-8 pb-20 md:pt-16 bg-black relative z-10">
+            <section id="lo-mas-fresquito" className="pt-8 pb-20 md:pt-16 bg-black relative z-10 scroll-mt-32">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-row items-center gap-3 md:gap-4 mb-12 justify-center">
                         <Clock className="text-[#b8ff00] flex-shrink-0 w-7 h-7 md:w-8 md:h-8" />

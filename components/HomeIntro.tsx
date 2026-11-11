@@ -39,16 +39,16 @@ export default function HomeIntro() {
               <span className="sr-only"> Revista digital de periodismo crudo para sensibilidades frágiles</span>
             </h1>
 
-            <p className="font-googlesans text-lg md:text-xl text-gray-200 leading-relaxed mb-5">
+            <p className="font-googlesans text-lg md:text-xl text-gray-200 leading-relaxed mb-5 md:max-w-2xl lg:max-w-none">
               Bífido es una revista digital, cultural y alternativa hecha en Boyacá que cuenta lo que pasa en la calle: cultura, género, opinión,
               ambiente y reducción de riesgos y daños. Sin filtros ni moralina, con las voces de quienes lo viven.
             </p>
-            <p className="font-googlesans text-lg md:text-xl text-gray-300 leading-relaxed mb-8">
+            <p className="font-googlesans text-lg md:text-xl text-gray-300 leading-relaxed mb-8 md:max-w-2xl lg:max-w-none">
               Cada tema tiene su voz: cinco personajes, <strong className="text-white">la manada</strong>, que hablan y firman.
               Detrás hay personas reales, el <strong className="text-white">Archivo Vivo</strong>, que narran, señalan y registran.
             </p>
 
-            <dl className="grid grid-cols-3 gap-3 sm:gap-4 mb-9">
+            <dl className="grid grid-cols-3 gap-3 sm:gap-4 mb-9 md:max-w-2xl lg:max-w-none">
               {STATS.map((s) => (
                 <div key={s.label} className="border-l-2 border-bifido-neon pl-3 sm:pl-4">
                   <dt className="font-display text-4xl sm:text-5xl text-bifido-neon leading-none">{s.big}</dt>
@@ -59,10 +59,10 @@ export default function HomeIntro() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
-                href="/elparche"
+                href="#lo-mas-fresquito"
                 className="inline-flex items-center justify-center gap-3 px-7 py-3 rounded-full bg-bifido-neon text-black font-display text-xl tracking-wide hover:bg-white transition-colors"
               >
-                CONOCE A LA MANADA <ArrowRight size={22} />
+                LEE LO ÚLTIMO <ArrowRight size={22} className="rotate-90" />
               </Link>
               <Link
                 href="/eventos"
@@ -74,8 +74,8 @@ export default function HomeIntro() {
           </div>
 
           {/* Avatares del Archivo Vivo */}
-          <div className="w-full max-w-md mx-auto lg:max-w-none">
-            <ul className="grid grid-cols-4 gap-3 sm:gap-4">
+          <div className="w-full max-w-md md:max-w-xl mx-auto lg:max-w-none">
+            <ul className="grid grid-cols-4 gap-3 sm:gap-5 lg:gap-4">
               {TEAM.map((p, i) => {
                 const odd = i % 2 === 1;
                 return (
@@ -83,8 +83,8 @@ export default function HomeIntro() {
                     <div
                       className={`aspect-square rounded-full overflow-hidden bg-white p-[6%] border-[3px] ${
                         odd
-                          ? 'border-white rotate-[2.5deg] shadow-[5px_5px_0_#fe5e00]'
-                          : 'border-bifido-neon -rotate-[2.5deg] shadow-[5px_5px_0_rgba(184,255,0,0.35)]'
+                          ? 'border-white rotate-[2.5deg] shadow-[5px_5px_0_#fe5e00] md:shadow-[7px_7px_0_#fe5e00] lg:shadow-[5px_5px_0_#fe5e00]'
+                          : 'border-bifido-neon -rotate-[2.5deg] shadow-[5px_5px_0_rgba(184,255,0,0.35)] md:shadow-[7px_7px_0_rgba(184,255,0,0.35)] lg:shadow-[5px_5px_0_rgba(184,255,0,0.35)]'
                       }`}
                     >
                       <Image
@@ -92,7 +92,7 @@ export default function HomeIntro() {
                         alt={`Avatar de ${p.name}`}
                         width={240}
                         height={240}
-                        sizes="(min-width: 1024px) 130px, 22vw"
+                        sizes="(min-width: 1024px) 130px, (min-width: 768px) 140px, 22vw"
                         className="w-full h-full object-contain"
                       />
                     </div>
@@ -100,8 +100,10 @@ export default function HomeIntro() {
                 );
               })}
             </ul>
-            <p className="mt-6 text-center font-mono text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-400">
-              Archivo Vivo · las personas detrás de la revista
+            <p className="mt-6 text-center font-mono text-xs sm:text-sm uppercase tracking-[0.12em] text-gray-400 md:whitespace-nowrap lg:whitespace-normal xl:whitespace-nowrap">
+              <span className="block sm:inline">Archivo Vivo</span>
+              <span className="hidden sm:inline"> · </span>
+              <span className="block sm:inline">las personas detrás de la revista</span>
             </p>
           </div>
         </div>
