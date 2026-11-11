@@ -30,7 +30,7 @@ export default function AnalyticsEvents() {
 
       const tagged = target.closest<HTMLElement>('[data-track]');
       if (tagged) {
-        track(tagged.dataset.track as string, { label: tagged.dataset.trackLabel, page: location.pathname });
+        track(tagged.dataset.track as string, { label: tagged.dataset.trackLabel });
         return;
       }
 
@@ -38,16 +38,16 @@ export default function AnalyticsEvents() {
       if (!a) return;
       const href = a.getAttribute('href') || '';
 
-      if (href.startsWith('mailto:')) return track('contact_click', { method: 'email', page: location.pathname });
-      if (href.startsWith('tel:')) return track('contact_click', { method: 'phone', page: location.pathname });
+      if (href.startsWith('mailto:')) return track('contact_click', { method: 'email' });
+      if (href.startsWith('tel:')) return track('contact_click', { method: 'phone' });
 
       const social = SOCIAL.find(([re]) => re.test(href));
-      if (social) return track('social_click', { network: social[1], link_url: href, page: location.pathname });
+      if (social) return track('social_click', { network: social[1], link_url: href });
 
       // Enlaces internos a las landings / páginas de personaje
       const internal = href.startsWith('/') || a.host === location.host;
       const m = internal ? (href.startsWith('/') ? href : a.pathname).match(CHARACTER_PATH) : null;
-      if (m) track('character_click', { character: m[1], link_url: href, page: location.pathname });
+      if (m) track('character_click', { character: m[1], link_url: href });
     };
 
     document.addEventListener('click', onClick, { capture: true });

@@ -1,4 +1,4 @@
-/** Utilidades de analítica (Google Tag Manager / GA4 + Consent Mode v2). Todo es seguro en el servidor y sin GTM. */
+/** Utilidades de analítica (Google Analytics 4 con gtag.js + Consent Mode v2). Seguras en el servidor y sin GA cargado. */
 
 declare global {
   interface Window {
@@ -19,11 +19,9 @@ export function gtag(..._args: unknown[]): void {
   window.dataLayer.push(arguments);
 }
 
-/** Registra un evento personalizado en el dataLayer (GA4 lo recoge desde GTM). */
+/** Envía un evento personalizado a Google Analytics 4: gtag('event', nombre, parámetros). */
 export function track(event: string, params: Record<string, unknown> = {}): void {
-  if (typeof window === 'undefined') return;
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event, ...params });
+  gtag('event', event, params);
 }
 
 export function getStoredConsent(): ConsentChoice | null {

@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import JsonLd from '@/components/JsonLd';
-import { GtmScript, GtmNoScript } from '@/components/GoogleTagManager';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import CookieConsent from '@/components/CookieConsent';
 import AnalyticsEvents from '@/components/AnalyticsEvents';
 import { SITE_URL, SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION, SOCIAL_PROFILES, DEFAULT_OG_IMAGE } from '@/lib/seo';
@@ -84,8 +84,7 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning className={`${bebas.variable} ${jackInput.variable} ${anton.variable} ${outfit.variable}`}>
       <body suppressHydrationWarning className="bg-black text-white font-sans antialiased flex flex-col min-h-[100dvh]">
-        <GtmNoScript />
-        <GtmScript />
+        <GoogleAnalytics />
         <JsonLd data={{
           '@context': 'https://schema.org',
           '@graph': [
