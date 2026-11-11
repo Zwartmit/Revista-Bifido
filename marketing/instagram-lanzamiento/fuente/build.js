@@ -78,11 +78,11 @@ ${HUD(2)}`);
 
 // 03 — LA MANADA ---------------------------------------------------------------
 const chars = [
-  ['malandra', 'Malandra', 'Justicia', '#9333ea', 0],
+  ['malandra', 'Malandra', 'Cultura', '#9333ea', 0],
   ['incendia', 'Incendia', 'Género', '#f97316', 1],
-  ['mordaz', 'Mordáz', 'Cultura', '#ef4444', 2],
+  ['mordaz', 'Mordáz', 'Opinión', '#ef4444', 2],
   ['punkibri', 'Punkibrí', 'Ambiente', '#22c55e', 3],
-  ['anika', 'Ánika', 'Cuidado', '#00a89e', 4],
+  ['anika', 'Ánika', 'Reducción de riesgos y daños por consumo de sustancias', '#00a89e', 4],
 ];
 const CX = [150, 345, 540, 735, 930];
 const heights = [470, 490, 530, 490, 470];
@@ -99,7 +99,7 @@ ${chars.map(([id, name, topic, col, i]) => {
   return `<div class="abs" style="left:${Math.round(cx - 93)}px;top:1176px;width:186px;z-index:45;text-align:center">
     <div style="height:6px;background:${col};margin-bottom:11px"></div>
     <div class="d" style="font-size:30px;line-height:1">${name}</div>
-    <div class="mono" style="font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.7);margin-top:5px">${topic}</div></div>`;
+    <div class="mono" style="font-size:${topic.length > 14 ? 11 : 13}px;letter-spacing:${topic.length > 14 ? .04 : .16}em;line-height:1.35;color:rgba(255,255,255,.7);margin-top:5px">${topic}</div></div>`;
 }).join('')}
 ${HUD(3, { hideFoot: true })}`);
 
