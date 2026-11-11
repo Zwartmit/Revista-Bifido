@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import { ArrowRight, Newspaper, Calendar, Clock, Star } from 'lucide-react';
 import { getCharacterColors } from '@/lib/character-colors';
 import RasgadoEventCard from '@/components/RasgadoEventCard';
+import HomeIntro from '@/components/HomeIntro';
 
 // Interface for props
 interface HomeClientProps {
@@ -143,6 +144,9 @@ export default function HomeClient({ articles, characters, featuredEvents = [] }
                 {/* Shadow Gradient at the Bottom of Hero */}
                 <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
             </section>
+
+            {/* Introducción: qué es Bífido (h1 de la página) */}
+            <HomeIntro />
 
             {/* Separator */}
             <div className="w-full flex justify-center py-4 md:py-8 bg-black relative z-10">
