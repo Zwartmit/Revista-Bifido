@@ -2,6 +2,7 @@
 import qs from 'qs';
 import { SITE_URL } from './seo';
 import { characters as fallbackCharacters } from './characters';
+import { getCharacterFacts, formatAge } from './character-facts';
 
 /**
  * Bases desde las que se consulta la API de Payload.
@@ -736,14 +737,16 @@ export function transformPayloadArticle(doc: any) {
 }
 
 export function transformPayloadCharacter(doc: any) {
+  // Edad, religión y colores salen de lib/character-facts.ts para que sean idénticos en tarjeta y landings
+  const facts = getCharacterFacts(doc.slug);
   return {
     id: doc.slug,
     name: doc.name,
     slug: doc.slug,
     description: doc.description,
-    religion: doc.religion || '',
-    age: doc.age || '',
-    favoriteColor: doc.favoriteColor || '',
+    religion: facts?.religion ?? (doc.religion || ''),
+    age: facts ? formatAge(facts) : (doc.age || ''),
+    favoriteColor: facts?.colors ?? (doc.favoriteColor || ''),
     image: doc.image?.url || '/images/placeholder.webp',
     model3d: doc.model3d?.url || null,
   };

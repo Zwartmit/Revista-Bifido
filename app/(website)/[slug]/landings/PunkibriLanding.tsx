@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { getCharacterColors } from '@/lib/character-colors';
 import { useHorizontalLanding } from '@/lib/useHorizontalLanding';
+import { CHARACTER_FACTS } from '@/lib/character-facts';
 
 export default function PunkibriLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -109,7 +110,7 @@ export default function PunkibriLanding() {
                   </p>
                   <div className="cl-personaje-voz cl-reveal punk-reveal">
                     <p>En Bífido le llaman <strong>Punkibrí</strong>.</p>
-                    <p>Tiene <strong>127 años</strong> —en años de colibrí—. Suficiente tiempo para entender que lo que crece lento es lo que más vale.</p>
+                    <p>Tiene <strong>{CHARACTER_FACTS.punkibri.age}</strong> —{CHARACTER_FACTS.punkibri.ageNote}—. Suficiente tiempo para entender que lo que crece lento es lo que más vale.</p>
                     <p>Su religión es el <strong>animismo</strong>: todo lo que vive merece respeto. No habla desde el juicio. Habla desde lo que el territorio le enseñó.</p>
                     <p>No es neutral. Cree en el cuidado, en lo colectivo y en la tierra como algo que no nos pertenece.</p>
                     <p><em>Desde lo que crece lento, desde lo que resiste sin ruido, desde lo que muchos no ven.</em></p>
@@ -117,10 +118,10 @@ export default function PunkibriLanding() {
                   <div className="cl-datos-personaje cl-reveal punk-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Medio ambiente &amp; territorio</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Cuidado. Colectivo. Sin neutralidad.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Verde Páramo / Amarillo y Púrpura</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.punkibri.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Chivito del Ruiz<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>Oxypogon stubelii</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Animismo &amp; defensa del territorio</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">127 años<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>(en años de colibrí)</span></div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.punkibri.age}<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>({CHARACTER_FACTS.punkibri.ageNote})</span></div></div>
                   </div>
                 </div>
               </section>

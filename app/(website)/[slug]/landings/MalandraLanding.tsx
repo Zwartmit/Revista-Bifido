@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { getCharacterColors } from '@/lib/character-colors';
 import { useHorizontalLanding } from '@/lib/useHorizontalLanding';
+import { CHARACTER_FACTS } from '@/lib/character-facts';
 
 export default function MalandraLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,7 +35,7 @@ export default function MalandraLanding() {
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Didelphis marsupialis</span>
             <span className="cl-meta-badge">Justicia &amp; Derechos</span>
-            <span className="cl-meta-badge">35 años</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.malandra.age}</span>
           </div>
         </div>
         <div className="cl-hero-right" />
@@ -55,15 +56,15 @@ export default function MalandraLanding() {
                     <div className="cl-especie-stat"><div className="stat-val">60</div><div className="stat-label">Días de gestación</div></div>
                     <div className="cl-especie-stat"><div className="stat-val">LC</div><div className="stat-label">Estado IUCN — Sin riesgo</div></div>
                     <div className="cl-especie-stat"><div className="stat-val">100+</div><div className="stat-label">Millones de años evolutivos</div></div>
-                    <div className="cl-especie-stat"><div className="stat-val">Marsupial</div><div className="stat-label">Único en América</div></div>
+                    <div className="cl-especie-stat"><div className="stat-val">Marsupial</div><div className="stat-label">Varias especies en Colombia</div></div>
                   </div>
                   <div className="cl-alerta-box">
                     <div className="alerta-head">⚠ Dato clave</div>
-                    <p>La zarigüeya lleva más de <strong style={{ color: '#fff' }}>100 millones de años</strong> en la Tierra. Ha sobrevivido a todo: extinciones masivas, deforestación, urbanización. Adaptarse sin perder la esencia es su mayor hazaña.</p>
+                    <p>Las zarigüeyas llevan más de <strong style={{ color: '#fff' }}>100 millones de años</strong> en la Tierra. Han sobrevivido a todo: extinciones masivas, deforestación, urbanización. Adaptarse sin perder la esencia es su mayor hazaña.</p>
                   </div>
                 </div>
                 <div className="cl-especie-texto cl-reveal mal-reveal">
-                  <p>La <strong>Zarigüeya común</strong> (Didelphis marsupialis) es el único marsupial del continente americano fuera de Australia. Ha sobrevivido más de cien millones de años en la Tierra.</p>
+                  <p>Las <strong>zarigüeyas</strong> son los marsupiales más conocidos y extendidos de América, y en Colombia viven varias especies. La <strong>zarigüeya común</strong> (Didelphis marsupialis) es una de las más comunes y la que más solemos cruzarnos en ciudades, jardines y bordes de bosque.</p>
                   <p>Es adaptable, omnívora, nocturna y muy malentendida. La tildan de plaga porque aparece donde otros animales ya no pueden. No es señal de deterioro: es señal de que algo todavía funciona.</p>
                   <p>Las <strong>crías nacen diminutas</strong> —del tamaño de un frijol— y se desarrollan dentro de la bolsa marsupial de la madre durante meses. La zarigüeya no elige el lugar más cómodo para nacer; aprende a sobrevivir desde el primer momento.</p>
                   <p>En la ciudad o en el bosque, de noche y con cautela. Sin pedir permiso para estar.</p>
@@ -109,7 +110,7 @@ export default function MalandraLanding() {
                   </p>
                   <div className="cl-personaje-voz cl-reveal mal-reveal">
                     <p>En Bífido la llaman <strong>Malandra</strong>.</p>
-                    <p>Tiene <strong>35 años</strong> y desde los veinte aprendió que el sistema funciona distinto según desde dónde te lo miras.</p>
+                    <p>Tiene <strong>{CHARACTER_FACTS.malandra.age}</strong> y desde los veinte aprendió que el sistema funciona distinto según desde dónde te lo miras.</p>
                     <p>Escribe sobre <strong>justicia, derechos humanos y lo que pasa cuando el Estado falla</strong> o mira al lado. Sin eufemismos. Sin ahorrar palabras.</p>
                     <p>Su religión es <strong>el pragmatismo</strong>: no le interesa el ideal, le interesa lo que funciona para proteger a la gente real.</p>
                     <p><em>Sobrevivir también es una forma de resistir. Y resistir, a veces, se parece mucho a seguir aquí.</em></p>
@@ -117,10 +118,10 @@ export default function MalandraLanding() {
                   <div className="cl-datos-personaje cl-reveal mal-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Justicia &amp; derechos humanos</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Directo. Sin eufemismos. Justo.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Morado / Oro viejo y Coral</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.malandra.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Zarigüeya común<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>Didelphis marsupialis</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Pragmatismo &amp; protección real</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">35 años</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.malandra.age}</div></div>
                   </div>
                 </div>
               </section>

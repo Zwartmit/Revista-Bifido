@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { getCharacterColors } from '@/lib/character-colors';
 import { useHorizontalLanding } from '@/lib/useHorizontalLanding';
+import { CHARACTER_FACTS } from '@/lib/character-facts';
 
 export default function AnikaLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,7 +40,7 @@ export default function AnikaLanding() {
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Bothrops asper</span>
             <span className="cl-meta-badge">Reducción de daños</span>
-            <span className="cl-meta-badge">28 años</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.anika.age}</span>
           </div>
         </div>
         <div className="cl-hero-right" />
@@ -119,7 +120,7 @@ export default function AnikaLanding() {
                   </p>
                   <div className="cl-personaje-voz cl-reveal anika-reveal">
                     <p>En Bífido la llaman <strong>Ánika</strong>.</p>
-                    <p>Tiene <strong>28 años</strong>, y aprendió que el cuidado también es una forma de resistencia.</p>
+                    <p>Tiene <strong>{CHARACTER_FACTS.anika.age}</strong>, y aprendió que el cuidado también es una forma de resistencia.</p>
                     <p>Escribe sobre <strong>reducción de riesgos y daños</strong>. Habla de lo que muchos evitan nombrar: el consumo de sustancias, la autonomía del cuerpo, las decisiones que cada quien toma sobre su propia vida.</p>
                     <p>No se trata de prohibir. Se trata de <strong>cuidarse sin miedo</strong>. Porque la información también cuida, y entender lo que hacemos puede cambiar las decisiones.</p>
                     <p><em>Silenciosa. Esencial. Incluso cuando no la quieren cerca.</em></p>
@@ -127,10 +128,10 @@ export default function AnikaLanding() {
                   <div className="cl-datos-personaje cl-reveal anika-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Reducción de riesgos y daños</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Claro. Sin pánico. Sin moral.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Cian / Menta y Lavanda</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.anika.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Mapaná / Talla X<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>Bothrops asper</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">El cuidado como resistencia</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">28 años</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.anika.age}</div></div>
                   </div>
                 </div>
               </section>

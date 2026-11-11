@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { getCharacterColors } from '@/lib/character-colors';
 import { useHorizontalLanding } from '@/lib/useHorizontalLanding';
+import { CHARACTER_FACTS } from '@/lib/character-facts';
 
 export default function IncendiaLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,7 @@ export default function IncendiaLanding() {
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Cerdocyon thous</span>
             <span className="cl-meta-badge">Género &amp; Diversidad</span>
-            <span className="cl-meta-badge">36 años</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.incendia.age}</span>
           </div>
         </div>
         <div className="cl-hero-right" />
@@ -110,7 +111,7 @@ export default function IncendiaLanding() {
                   </p>
                   <div className="cl-personaje-voz cl-reveal inc-reveal">
                     <p>En Bífido la llaman <strong>Incendia</strong>.</p>
-                    <p>Tiene <strong>36 años</strong>, edad suficiente para saber que muchas desigualdades no son casualidad.</p>
+                    <p>Tiene <strong>{CHARACTER_FACTS.incendia.age}</strong>, edad suficiente para saber que muchas desigualdades no son casualidad.</p>
                     <p>Su territorio son las conversaciones incómodas: <strong>género, diversidad y equidad</strong>. No escribe para quedar bien. Escribe para señalar abusos, desarmar privilegios y meterle candela a lo que se nos vendió como normal.</p>
                     <p>Se pintó el pelo color fuego, en honor a sus <strong>ancestras cola de fuego</strong>: esas que aprendieron a sobrevivir en un mundo hecho a la medida de los machos.</p>
                     <p><em>Mi color es el fuego, porque pasar desapercibida también tiene un límite.</em></p>
@@ -118,10 +119,10 @@ export default function IncendiaLanding() {
                   <div className="cl-datos-personaje cl-reveal inc-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Género, diversidad &amp; equidad</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Fuego. Argumentos. Sin filtro.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Naranja Fuego / Malva y Terracota</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.incendia.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Zorra cangrejera<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>Cerdocyon thous</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Feminismo &amp; libertad de ser</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">36 años</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.incendia.age}</div></div>
                   </div>
                 </div>
               </section>

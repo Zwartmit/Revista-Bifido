@@ -57,7 +57,7 @@ export default function HomeIntro() {
               ))}
             </dl>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <div className="flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-3 sm:gap-4">
               <Link
                 href="#lo-mas-fresquito"
                 className="inline-flex items-center justify-center gap-3 px-7 py-3 rounded-full bg-bifido-neon text-black font-display text-xl tracking-wide hover:bg-white transition-colors"

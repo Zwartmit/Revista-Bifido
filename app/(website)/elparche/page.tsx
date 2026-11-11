@@ -292,204 +292,204 @@ function ElParcheContent() {
                     <>
                         {/* Left Sticky Grid - Other Characters */}
                         <div className="hidden md:block w-full md:w-[34%] lg:w-[28%] xl:w-[22%] flex-shrink-0 bg-transparent z-30">
-                    <div className="h-full flex flex-col overflow-hidden">
-                        <div ref={leftGridRef} className="relative flex-1 h-full overflow-hidden bg-transparent flex flex-col group min-h-[350px] md:min-h-[500px]">
-                            {/* Interactive Accordion Items */}
-                            {otherCharacters.map((m, i) => {
-                                const mColors = getCharacterColors(m.slug);
-                                return (
-                                    <div
-                                        key={m.id}
-                                        onClick={() => setActiveCharacterId(m.id)}
-                                        className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden transition-all duration-500 ease-out relative min-h-[90px]"
-                                        style={{ backgroundColor: 'transparent' }}
-                                    >
-                                        <div
-                                            className="absolute inset-0 opacity-20 group-hover/item:opacity-40 transition-opacity duration-500 pointer-events-none"
-                                            style={{
-                                                background: `radial-gradient(ellipse at 50% 20%, ${mColors.primary}80 0%, ${mColors.primary}00 70%)`
-                                            }}
-                                        ></div>
+                            <div className="h-full flex flex-col overflow-hidden">
+                                <div ref={leftGridRef} className="relative flex-1 h-full overflow-hidden bg-transparent flex flex-col group min-h-[350px] md:min-h-[500px]">
+                                    {/* Interactive Accordion Items */}
+                                    {otherCharacters.map((m, i) => {
+                                        const mColors = getCharacterColors(m.slug);
+                                        return (
+                                            <div
+                                                key={m.id}
+                                                onClick={() => setActiveCharacterId(m.id)}
+                                                className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden transition-all duration-500 ease-out relative min-h-[90px]"
+                                                style={{ backgroundColor: 'transparent' }}
+                                            >
+                                                <div
+                                                    className="absolute inset-0 opacity-20 group-hover/item:opacity-40 transition-opacity duration-500 pointer-events-none"
+                                                    style={{
+                                                        background: `radial-gradient(ellipse at 50% 20%, ${mColors.primary}80 0%, ${mColors.primary}00 70%)`
+                                                    }}
+                                                ></div>
 
-                                        {/* Character Image */}
-                                        {m.slug && (
-                                            <Image
-                                                src={`/icons/${m.slug}.webp`}
-                                                alt={m.name}
-                                                width={400}
-                                                height={500}
-                                                priority={true}
-                                                className="absolute right-0 md:right-4 lg:right-12 bottom-0 h-[85%] md:h-[95%] lg:h-[105%] lg:group-hover/item:h-[95%] w-auto object-contain object-bottom filter grayscale group-hover/item:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] opacity-60 group-hover:opacity-20 group-hover/item:!opacity-100 transform origin-bottom z-10"
-                                            />
-                                        )}
+                                                {/* Character Image */}
+                                                {m.slug && (
+                                                    <Image
+                                                        src={`/icons/${m.slug}.webp`}
+                                                        alt={m.name}
+                                                        width={400}
+                                                        height={500}
+                                                        priority={true}
+                                                        className="absolute right-0 md:right-4 lg:right-12 bottom-0 h-[85%] md:h-[95%] lg:h-[105%] lg:group-hover/item:h-[95%] w-auto object-contain object-bottom filter grayscale group-hover/item:grayscale-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] opacity-60 group-hover:opacity-20 group-hover/item:!opacity-100 transform origin-bottom z-10"
+                                                    />
+                                                )}
 
-                                        {/* Typography - Single Element with Dynamic Position Transition */}
-                                        <div
-                                            className="absolute transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] z-20 pointer-events-none 
+                                                {/* Typography - Single Element with Dynamic Position Transition */}
+                                                <div
+                                                    className="absolute transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] z-20 pointer-events-none 
                                         left-4 top-1/2 translate-x-0 -translate-y-1/2 
                                         md:left-6 
                                         group-hover/item:left-[100%] group-hover/item:top-[100%] 
                                         group-hover/item:translate-x-[calc(-100%-1rem)] group-hover/item:translate-y-[calc(-100%-1rem)] 
                                         md:group-hover/item:translate-x-[calc(-100%-1.5rem)] md:group-hover/item:translate-y-[calc(-100%-1.5rem)]"
-                                        >
-                                            <span
-                                                className="font-display text-xl lg:text-2xl xl:text-3xl lg:group-hover/item:text-6xl tracking-widest transition-all duration-700 opacity-80 group-hover:opacity-20 group-hover/item:!opacity-100 [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:group-hover:[writing-mode:horizontal-tb] md:rotate-180 md:group-hover:rotate-0 uppercase drop-shadow-4xl leading-none block origin-center text-right group-hover:scale-90 group-hover/item:scale-100"
-                                                style={{ color: mColors.primary, textShadow: '0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)' }}
+                                                >
+                                                    <span
+                                                        className="font-display text-xl lg:text-2xl xl:text-3xl lg:group-hover/item:text-6xl tracking-widest transition-all duration-700 opacity-80 group-hover:opacity-20 group-hover/item:!opacity-100 [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:group-hover:[writing-mode:horizontal-tb] md:rotate-180 md:group-hover:rotate-0 uppercase drop-shadow-4xl leading-none block origin-center text-right group-hover:scale-90 group-hover/item:scale-100"
+                                                        style={{ color: mColors.primary, textShadow: '0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4)' }}
+                                                    >
+                                                        {m.name}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right Content - Active Character Showcase */}
+                        <div ref={showcaseRef} className="grow bg-transparent relative md:min-h-[500px] flex flex-col">
+                            <div className="absolute inset-0 w-full h-full transition-colors duration-500 overflow-hidden">
+                                {/* Animated Smoky Background */}
+                                <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-transparent">
+                                    {/* Stronger Corner Smoke / Glow Vignette */}
+                                    <div
+                                        className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-700 opacity-60 md:opacity-40"
+                                        style={{
+                                            background: `radial-gradient(circle at 50% 40%, ${activeColors.primary}44 0%, ${activeColors.primary}11 50%, transparent 100%)`
+                                        }}
+                                    />
+
+                                    {/* Interactive WebGL Fluid Simulation */}
+                                    <FluidSimulation
+                                        color={activeColors.primary}
+                                        opacity={0.5}
+                                        className="absolute inset-0 z-0 pointer-events-none"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="relative w-full grow flex items-start lg:items-center justify-center">
+
+                                {/* Mobile Horizontal Avatar Carrousel (Hidden on Desktop) */}
+                                <div className="absolute top-0 left-0 w-full z-40 flex md:hidden justify-center items-start py-6 px-4 gap-2 sm:gap-6 bg-gradient-to-b from-black via-black/80 to-transparent">
+                                    {otherCharacters.map(m => {
+                                        const mColors = getCharacterColors(m.slug);
+                                        return (
+                                            <button
+                                                key={m.id}
+                                                onClick={() => setActiveCharacterId(m.id)}
+                                                className="flex-1 flex flex-col items-center gap-2 group max-w-[90px]"
                                             >
-                                                {m.name}
-                                            </span>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Content - Active Character Showcase */}
-                <div ref={showcaseRef} className="grow bg-transparent relative md:min-h-[500px] flex flex-col">
-                    <div className="absolute inset-0 w-full h-full transition-colors duration-500 overflow-hidden">
-                        {/* Animated Smoky Background */}
-                        <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-transparent">
-                            {/* Stronger Corner Smoke / Glow Vignette */}
-                            <div
-                                className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-700 opacity-60 md:opacity-40"
-                                style={{
-                                    background: `radial-gradient(circle at 50% 40%, ${activeColors.primary}44 0%, ${activeColors.primary}11 50%, transparent 100%)`
-                                }}
-                            />
-
-                            {/* Interactive WebGL Fluid Simulation */}
-                            <FluidSimulation
-                                color={activeColors.primary}
-                                opacity={0.5}
-                                className="absolute inset-0 z-0 pointer-events-none"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="relative w-full grow flex items-start lg:items-center justify-center">
-
-                        {/* Mobile Horizontal Avatar Carrousel (Hidden on Desktop) */}
-                        <div className="absolute top-0 left-0 w-full z-40 flex md:hidden justify-center items-start py-6 px-4 gap-2 sm:gap-6 bg-gradient-to-b from-black via-black/80 to-transparent">
-                            {otherCharacters.map(m => {
-                                const mColors = getCharacterColors(m.slug);
-                                return (
-                                    <button
-                                        key={m.id}
-                                        onClick={() => setActiveCharacterId(m.id)}
-                                        className="flex-1 flex flex-col items-center gap-2 group max-w-[90px]"
-                                    >
-                                        <div className="w-12 h-12 rounded-full overflow-hidden border-2 transition-transform group-hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
-                                            style={{ borderColor: mColors.primary }}>
-                                            <Image
-                                                src={`/icons/${m.slug}.webp`}
-                                                alt={m.name}
-                                                width={48}
-                                                height={48}
-                                                className="w-full h-full object-cover rounded-full"
-                                            />
-                                        </div>
-                                        <span className="text-[clamp(8px,2.8vw,12px)] font-display tracking-widest uppercase transition-colors leading-tight text-center"
-                                            style={{ color: mColors.primary || '#aaa' }}>
-                                            {m.name}
-                                        </span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-
-
-                        {/* Content Group (Centered Automatically via Flexbox) */}
-                        <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-20 xl:gap-32 px-4 pt-28 pb-10 lg:py-0">
-
-                            {/* 1. Center Layout: Character, Text, Arrows, Button */}
-                            <div className="flex flex-col items-center justify-center relative w-full lg:w-auto">
-
-                                <div className="relative z-10 h-[360px] sm:h-[400px] md:h-[410px] w-full sm:w-[400px] flex items-end justify-center mb-0 mx-auto">
-                                    {/* Left Arrow */}
-                                    <button onClick={handlePrev} className="absolute -left-3 sm:-left-8 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-30" aria-label="Personaje anterior">
-                                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
-                                    </button>
-
-                                    {/* Character 3D Model or Fallback Image */}
-                                    <div className="w-full h-full relative z-20 animate-float">
-                                        <ModelViewer
-                                            modelUrl={activeCharacter.model3d}
-                                            fallbackImage={`/icons/${activeCharacter.slug}.webp`}
-                                            transparent
-                                            primaryColor={activeColors.primary}
-                                            secondaryColor={activeColors.secondary}
-                                            cameraPosition={[0, 0, 6.4]}
-                                            cameraFov={16.5}
-                                        />
-                                    </div>
-
-                                    {/* Right Arrow */}
-                                    <button onClick={handleNext} className="absolute -right-3 sm:-right-8 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-30" aria-label="Siguiente personaje">
-                                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
-                                    </button>
+                                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 transition-transform group-hover:scale-110 flex-shrink-0 bg-bifido-gray flex items-center justify-center p-1"
+                                                    style={{ borderColor: mColors.primary }}>
+                                                    <Image
+                                                        src={`/icons/${m.slug}.webp`}
+                                                        alt={m.name}
+                                                        width={48}
+                                                        height={48}
+                                                        className="w-full h-full object-cover rounded-full"
+                                                    />
+                                                </div>
+                                                <span className="text-[clamp(8px,2.8vw,12px)] font-display tracking-widest uppercase transition-colors leading-tight text-center"
+                                                    style={{ color: mColors.primary || '#aaa' }}>
+                                                    {m.name}
+                                                </span>
+                                            </button>
+                                        );
+                                    })}
                                 </div>
 
-                                {/* Base concentric circles */}
-                                <div className="absolute z-0 top-[320px] sm:top-[360px] md:top-[370px] left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none opacity-40">
-                                    <div className="w-[200px] sm:w-[300px] h-[34px] sm:h-[50px] rounded-[100%] border border-white absolute"></div>
-                                    <div className="w-[140px] sm:w-[200px] h-[24px] sm:h-[34px] rounded-[100%] border border-white absolute"></div>
-                                    <div className="w-[70px] sm:w-[100px] h-[12px] sm:h-[16px] rounded-[100%] border border-white absolute"></div>
-                                </div>
 
-                                {/* CTA Buttons */}
-                                <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full sm:w-auto mt-8 sm:mt-10">
-                                    <Link
-                                        href={`/${activeCharacter.slug}/articulos`}
-                                        className="bg-white text-black font-googlesans text-base sm:text-lg py-3 px-6 sm:px-8 rounded-3xl hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all text-center"
-                                    >
-                                        Ver publicaciones
-                                    </Link>
-                                    <Link
-                                        href={`/${activeCharacter.slug}`}
-                                        className="bg-transparent border border-white text-white font-googlesans text-base sm:text-lg py-3 px-6 sm:px-8 rounded-3xl hover:bg-white/10 transition-all text-center"
-                                    >
-                                        Conóceme
-                                    </Link>
-                                </div>
-                            </div>
+                                {/* Content Group (Centered Automatically via Flexbox) */}
+                                <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-20 xl:gap-32 px-4 pt-28 pb-10 lg:py-0">
 
-                            {/* 2. Glassmorphism Bio Card */}
-                            <div id="bio-card" ref={bioCardRef} className="w-[85%] sm:w-[320px] md:w-[340px] lg:w-[340px] xl:w-[380px] flex-shrink-0">
-                                <div className="bg-black/20 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl relative z-10">
+                                    {/* 1. Center Layout: Character, Text, Arrows, Button */}
+                                    <div className="flex flex-col items-center justify-center relative w-full lg:w-auto">
 
-                                    <div className="flex flex-col items-center mb-4">
-                                        <h2 className="font-display text-2xl sm:text-3xl text-white mb-2 uppercase">
-                                            ¡Hola, soy {activeCharacter.name}!
-                                        </h2>
-                                        <div className="w-full h-[2px] mb-0" style={{ backgroundColor: activeColors.primary }}></div>
+                                        <div className="relative z-10 h-[360px] sm:h-[400px] md:h-[410px] w-full sm:w-[400px] flex items-end justify-center mb-0 mx-auto">
+                                            {/* Left Arrow */}
+                                            <button onClick={handlePrev} className="absolute -left-3 sm:-left-8 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-30" aria-label="Personaje anterior">
+                                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                                            </button>
+
+                                            {/* Character 3D Model or Fallback Image */}
+                                            <div className="w-full h-full relative z-20 animate-float">
+                                                <ModelViewer
+                                                    modelUrl={activeCharacter.model3d}
+                                                    fallbackImage={`/icons/${activeCharacter.slug}.webp`}
+                                                    transparent
+                                                    primaryColor={activeColors.primary}
+                                                    secondaryColor={activeColors.secondary}
+                                                    cameraPosition={[0, 0, 6.4]}
+                                                    cameraFov={16.5}
+                                                />
+                                            </div>
+
+                                            {/* Right Arrow */}
+                                            <button onClick={handleNext} className="absolute -right-3 sm:-right-8 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-30" aria-label="Siguiente personaje">
+                                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+                                            </button>
+                                        </div>
+
+                                        {/* Base concentric circles */}
+                                        <div className="absolute z-0 top-[320px] sm:top-[360px] md:top-[370px] left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none opacity-40">
+                                            <div className="w-[200px] sm:w-[300px] h-[34px] sm:h-[50px] rounded-[100%] border border-white absolute"></div>
+                                            <div className="w-[140px] sm:w-[200px] h-[24px] sm:h-[34px] rounded-[100%] border border-white absolute"></div>
+                                            <div className="w-[70px] sm:w-[100px] h-[12px] sm:h-[16px] rounded-[100%] border border-white absolute"></div>
+                                        </div>
+
+                                        {/* CTA Buttons */}
+                                        <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 w-full sm:w-auto mt-8 sm:mt-10">
+                                            <Link
+                                                href={`/${activeCharacter.slug}/articulos`}
+                                                className="bg-white text-black font-googlesans text-base sm:text-lg py-3 px-6 sm:px-8 rounded-3xl hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all text-center"
+                                            >
+                                                Ver publicaciones
+                                            </Link>
+                                            <Link
+                                                href={`/${activeCharacter.slug}`}
+                                                className="bg-transparent border border-white text-white font-googlesans text-base sm:text-lg py-3 px-6 sm:px-8 rounded-3xl hover:bg-white/10 transition-all text-center"
+                                            >
+                                                Conóceme
+                                            </Link>
+                                        </div>
                                     </div>
 
-                                    <p className="text-sm text-gray-200 mb-6 leading-relaxed text-center font-light">
-                                        {activeCharacter.description}
-                                    </p>
+                                    {/* 2. Glassmorphism Bio Card */}
+                                    <div id="bio-card" ref={bioCardRef} className="w-[85%] sm:w-[320px] md:w-[340px] lg:w-[340px] xl:w-[380px] flex-shrink-0">
+                                        <div className="bg-black/20 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl relative z-10">
 
-                                    <div className="flex flex-col gap-4 text-sm tracking-wide border-t border-white/10 pt-6">
-                                        <div className="flex flex-col items-center text-center gap-1">
-                                            <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Edad</span>
-                                            <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.age}</span>
-                                        </div>
-                                        <div className="flex flex-col items-center text-center gap-1">
-                                            <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Religión</span>
-                                            <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.religion}.</span>
-                                        </div>
-                                        <div className="flex flex-col items-center text-center gap-1">
-                                            <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Color favorito</span>
-                                            <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.favoriteColor}</span>
+                                            <div className="flex flex-col items-center mb-4">
+                                                <h2 className="font-display text-2xl sm:text-3xl text-white mb-2 uppercase">
+                                                    ¡Hola, soy {activeCharacter.name}!
+                                                </h2>
+                                                <div className="w-full h-[2px] mb-0" style={{ backgroundColor: activeColors.primary }}></div>
+                                            </div>
+
+                                            <p className="text-sm text-gray-200 mb-6 leading-relaxed text-center font-light">
+                                                {activeCharacter.description}
+                                            </p>
+
+                                            <div className="flex flex-col gap-4 text-sm tracking-wide border-t border-white/10 pt-6">
+                                                <div className="flex flex-col items-center text-center gap-1">
+                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Edad</span>
+                                                    <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.age}</span>
+                                                </div>
+                                                <div className="flex flex-col items-center text-center gap-1">
+                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Religión</span>
+                                                    <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.religion}.</span>
+                                                </div>
+                                                <div className="flex flex-col items-center text-center gap-1">
+                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Color favorito</span>
+                                                    <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.favoriteColor}</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                </>
+                    </>
                 )}
             </div>
 
@@ -609,7 +609,7 @@ function ElParcheContent() {
                                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-bifido-neon" />
                             </div>
                         ) : team.length > 0 ? (
-                            <div ref={teamRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 md:gap-2 lg:gap-12">
+                            <div ref={teamRef} className="grid grid-cols-1 xl:grid-cols-2 gap-x-10 gap-y-0">
                                 {team.map((member) => {
                                     const rawHandle = member.socialMedia?.instagram || '';
                                     const instagramHandle = rawHandle
@@ -621,14 +621,57 @@ function ElParcheContent() {
                                         ? (rawHandle.startsWith('http') ? rawHandle : `https://instagram.com/${rawHandle}`)
                                         : null;
                                     const memberSlug = member.slug || member.id;
+                                    const renderActions = (cls: string) => (
+                                        <div className={cls}>
+                                            {instagramHref && (
+                                                <a
+                                                    href={instagramHref}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="mt-2 relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
+                                                    title="Instagram"
+                                                >
+                                                    <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                        {Array.from({ length: 15 }).map((_, i) => (
+                                                            <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
+                                                                <RiInstagramFill size={16} />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="relative z-10 text-black flex items-center justify-center">
+                                                        <RiInstagramFill size={16} />
+                                                    </div>
+                                                </a>
+                                            )}
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedMember(member);
+                                                    setModalPhotoIndex(0);
+                                                }}
+                                                className="mt-2 relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
+                                                title="Ver expediente"
+                                            >
+                                                <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                    {Array.from({ length: 15 }).map((_, i) => (
+                                                        <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
+                                                            <FaUserSecret size={16} />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="relative z-10 text-black flex items-center justify-center">
+                                                    <FaUserSecret size={16} />
+                                                </div>
+                                            </button>
+                                        </div>
+                                    );
 
                                     return (
                                         <div
                                             key={member.id}
-                                            className="bg-transparent flex flex-col group w-full max-w-[320px] mx-auto mt-12 border-2 border-bifido-neon rounded-3xl shadow-2xl hover:shadow-bifido-neon/40 transition-all duration-300"
+                                            className="bg-transparent flex flex-col md:flex-row group w-full max-w-[320px] md:max-w-[560px] xl:max-w-none mx-auto mt-12 border-2 border-bifido-neon rounded-3xl shadow-2xl hover:shadow-bifido-neon/40 transition-all duration-300"
                                         >
                                             {/* Avatar (3D Flip con imagen identificador) */}
-                                            <div className="flex justify-center pt-7 pb-4 px-4 [perspective:1000px]">
+                                            <div className="flex justify-center md:flex-col md:items-center md:w-48 md:shrink-0 pt-7 pb-4 px-4 md:pt-10 md:pb-6 [perspective:1000px]">
                                                 <div className={`relative w-28 h-28 rounded-full border-[3px] border-white flex-shrink-0 bg-white flex items-center justify-center group-hover:border-bifido-neon transition-transform duration-700 [transform-style:preserve-3d] ${member.identifierImage ? 'group-hover:[transform:rotateY(180deg)]' : ''}`}>
                                                     {/* Foto de Perfil Base (Frente) */}
                                                     <div className="absolute inset-0 rounded-full overflow-hidden flex items-center justify-center [backface-visibility:hidden]">
@@ -664,78 +707,42 @@ function ElParcheContent() {
                                                         </div>
                                                     )}
                                                 </div>
+                                                {renderActions('hidden md:flex items-center justify-center gap-3 mt-1')}
                                             </div>
 
-                                            {/* Name bar – neon green (Original) */}
-                                            <div className="bg-white py-2 px-3 mb-4">
-                                                <h3 className="font-display text-black text-center uppercase tracking-[0.12em] text-2xl leading-tight truncate">
-                                                    {member.name}
-                                                </h3>
-                                            </div>
+                                            <div className="flex flex-col flex-1 min-w-0 md:pt-8">
+                                                {/* Name bar – neon green (Original) */}
+                                                <div className="bg-white py-2 px-3 mb-4 md:bg-transparent md:py-0 md:px-6 md:mb-3">
+                                                    <h3 className="font-display text-black text-center uppercase tracking-[0.12em] text-2xl leading-tight truncate md:text-white md:text-left md:text-[1.75rem] md:tracking-[0.1em] md:whitespace-normal md:overflow-visible md:group-hover:text-bifido-neon md:transition-colors">
+                                                        {member.name}
+                                                    </h3>
+                                                    <span aria-hidden="true" className="hidden md:block mt-2 h-[3px] w-14 bg-bifido-neon" />
+                                                </div>
 
-                                            {/* Card body (Estilo Opción 2) */}
-                                            <div className="px-2 pb-2 flex flex-col flex-1 items-center text-center">
+                                                {/* Card body (Estilo Opción 2) */}
+                                                <div className="px-2 pb-2 md:px-6 md:pb-3 flex flex-col flex-1 items-center text-center md:items-start md:text-left">
 
-                                                {/* Profession */}
-                                                {member.profession && (
-                                                    <span className="font-mono text-[12px] leading-tight text-white uppercase tracking-widest mb-2 font-bold px-2">
-                                                        {member.profession}
-                                                    </span>
-                                                )}
-
-                                                {/* Skill tags */}
-                                                {member.characteristics && member.characteristics.length > 0 && (
-                                                    <div className="font-mono text-[12px] text-bifido-neon uppercase tracking-widest mb-3">
-                                                        {member.characteristics.join(' · ')}
-                                                    </div>
-                                                )}
-
-                                                {/* Lema */}
-                                                <p className="font-sans text-xs text-gray-400 leading-relaxed line-clamp-3 mb-3 italic">
-                                                    {member.lema ? `"${member.lema}"` : 'Miembro del equipo de Revista Bífido.'}
-                                                </p>
-
-                                                {/* Actions */}
-                                                <div className="flex items-center gap-3 w-full justify-center border-t border-gray-800 pt-4 pb-2 mt-auto">
-                                                    {instagramHref && (
-                                                        <a
-                                                            href={instagramHref}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
-                                                            title="Instagram"
-                                                        >
-                                                            <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
-                                                                {Array.from({ length: 15 }).map((_, i) => (
-                                                                    <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
-                                                                        <RiInstagramFill size={16} />
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                            <div className="relative z-10 text-black flex items-center justify-center">
-                                                                <RiInstagramFill size={16} />
-                                                            </div>
-                                                        </a>
+                                                    {/* Profession */}
+                                                    {member.profession && (
+                                                        <span className="font-mono text-[12px] md:text-[13px] leading-tight text-white uppercase tracking-widest mb-2 font-bold px-2 md:px-0">
+                                                            {member.profession}
+                                                        </span>
                                                     )}
-                                                    <button
-                                                        onClick={() => {
-                                                            setSelectedMember(member);
-                                                            setModalPhotoIndex(0);
-                                                        }}
-                                                        className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
-                                                        title="Ver expediente"
-                                                    >
-                                                        <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
-                                                            {Array.from({ length: 15 }).map((_, i) => (
-                                                                <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
-                                                                    <FaUserSecret size={16} />
-                                                                </div>
-                                                            ))}
+
+                                                    {/* Skill tags */}
+                                                    {member.characteristics && member.characteristics.length > 0 && (
+                                                        <div className="font-mono text-[12px] md:text-[13px] text-bifido-neon uppercase tracking-widest mb-3">
+                                                            {member.characteristics.join(' · ')}
                                                         </div>
-                                                        <div className="relative z-10 text-black flex items-center justify-center">
-                                                            <FaUserSecret size={16} />
-                                                        </div>
-                                                    </button>
+                                                    )}
+
+                                                    {/* Lema */}
+                                                    <p className="font-sans text-sm md:text-base text-gray-300 leading-relaxed mb-4 italic">
+                                                        {member.lema ? `"${member.lema}"` : 'Miembro del equipo de Revista Bífido.'}
+                                                    </p>
+
+                                                    {/* Actions (móvil: al final de la tarjeta, como siempre) */}
+                                                    {renderActions('flex items-center gap-3 w-full justify-center border-t border-gray-800 pt-4 pb-2 mt-auto md:hidden')}
                                                 </div>
                                             </div>
                                         </div>

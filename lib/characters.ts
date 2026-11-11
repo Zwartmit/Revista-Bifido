@@ -1,4 +1,5 @@
 import { Character } from '@/types';
+import { CHARACTER_FACTS, formatAge } from '@/lib/character-facts';
 
 /**
  * Datos estáticos de personajes.
@@ -11,9 +12,9 @@ export const characters: Character[] = [
     name: 'Ánika',
     slug: 'anika',
     description: 'Defensora de la reducción de riesgos y daños. Ánika promueve el autocuidado, la información responsable y el respeto a las decisiones personales sin juicios morales.',
-    religion: 'Pragmatismo compasivo',
-    age: '28 años',
-    favoriteColor: 'Turquesa',
+    religion: CHARACTER_FACTS.anika.religion,
+    age: formatAge(CHARACTER_FACTS.anika),
+    favoriteColor: CHARACTER_FACTS.anika.colors,
     image: '/personajes/Anika.webp',
   },
   {
@@ -21,9 +22,9 @@ export const characters: Character[] = [
     name: 'Incendia',
     slug: 'incendia',
     description: 'Activista de género, diversidad y equidad. Incendia arde con la pasión de la justicia social y lucha por un mundo donde todas las identidades sean respetadas.',
-    religion: 'Interseccionalidad',
-    age: '31 años',
-    favoriteColor: 'Naranja fuego',
+    religion: CHARACTER_FACTS.incendia.religion,
+    age: formatAge(CHARACTER_FACTS.incendia),
+    favoriteColor: CHARACTER_FACTS.incendia.colors,
     image: '/personajes/Incendia.webp',
   },
   {
@@ -31,9 +32,9 @@ export const characters: Character[] = [
     name: 'Malandra',
     slug: 'malandra',
     description: 'Cronista de la cultura underground y las expresiones artísticas marginales. Malandra celebra lo que la sociedad rechaza y encuentra belleza en lo prohibido.',
-    religion: 'Culto a la creatividad',
-    age: '33 años',
-    favoriteColor: 'Púrpura oscuro',
+    religion: CHARACTER_FACTS.malandra.religion,
+    age: formatAge(CHARACTER_FACTS.malandra),
+    favoriteColor: CHARACTER_FACTS.malandra.colors,
     image: '/personajes/Malandra.webp',
   },
   {
@@ -41,9 +42,9 @@ export const characters: Character[] = [
     name: 'Mordáz',
     slug: 'mordaz',
     description: 'Crítico implacable y portavoz de las verdades incómodas. Mordáz no se muerde la lengua y expone las contradicciones del sistema con humor ácido.',
-    religion: 'Escepticismo militante',
-    age: '42 años',
-    favoriteColor: 'Rojo sangre',
+    religion: CHARACTER_FACTS.mordaz.religion,
+    age: formatAge(CHARACTER_FACTS.mordaz),
+    favoriteColor: CHARACTER_FACTS.mordaz.colors,
     image: '/personajes/Mordaz.webp',
   },
   {
@@ -51,9 +52,9 @@ export const characters: Character[] = [
     name: 'Punkibrí',
     slug: 'punkibri',
     description: 'Guardián de la naturaleza y activista ambiental. Punkibrí lucha por un mundo más verde y sostenible, denunciando la destrucción ecológica con su actitud rebelde.',
-    religion: 'Animismo',
-    age: '127 años (en años de colibrí)',
-    favoriteColor: 'Verde musgo',
+    religion: CHARACTER_FACTS.punkibri.religion,
+    age: formatAge(CHARACTER_FACTS.punkibri),
+    favoriteColor: CHARACTER_FACTS.punkibri.colors,
     image: '/personajes/Punkibri.webp',
   },
 ];

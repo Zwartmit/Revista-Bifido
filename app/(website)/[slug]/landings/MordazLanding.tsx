@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { getCharacterColors } from '@/lib/character-colors';
 import { useHorizontalLanding } from '@/lib/useHorizontalLanding';
+import { CHARACTER_FACTS } from '@/lib/character-facts';
 
 export default function MordazLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,7 +35,7 @@ export default function MordazLanding() {
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Vultur gryphus</span>
             <span className="cl-meta-badge">Opinión</span>
-            <span className="cl-meta-badge">42 años</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.mordaz.age}</span>
           </div>
         </div>
         <div className="cl-hero-right" />
@@ -113,17 +114,17 @@ export default function MordazLanding() {
                     <p><strong>Mucho gusto… o no tanto.</strong></p>
                     <p>En Bífido su a.k.a es Mordáz. Lo suyo es decir las cosas sin pelos en la lengua, y por eso no es de muchos amigos.</p>
                     <p>Le gusta opinar. De lo que sabe. Y de lo que le importa.</p>
-                    <p>Tiene <strong>42 años</strong>, suficiente tiempo para desconfiar de las verdades fáciles. Su religión —si así se le puede llamar— es el <strong>escepticismo militante</strong>.</p>
+                    <p>Tiene <strong>{CHARACTER_FACTS.mordaz.age}</strong>, suficiente tiempo para desconfiar de las verdades fáciles. Su religión —si así se le puede llamar— es el <strong>escepticismo militante</strong>.</p>
                     <p>Su color es <strong>rojo y oro</strong>, porque opinar sin incomodar es apenas decoración.</p>
                     <p>Observa contradicciones, discursos inflados y certezas que se desmoronan cuando se miran de cerca. No vino a buscar consenso. Vino a abrir debates incómodos.</p>
                   </div>
                   <div className="cl-datos-personaje cl-reveal mor-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Opinión &amp; análisis de coyuntura</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Ironía. Humor negro. Argumentos.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>Rojo, Oro y Durazno</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.mordaz.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Cóndor de los Andes<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.4)' }}>Vultur gryphus</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Escepticismo militante</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">42 años</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.mordaz.age}</div></div>
                   </div>
                 </div>
               </section>
