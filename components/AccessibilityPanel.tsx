@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { PersonStanding, X } from 'lucide-react';
 
@@ -190,9 +191,9 @@ export default function AccessibilityPanel() {
             <button type="button" onClick={() => update({ ...DEFAULTS })} className="text-sm underline underline-offset-4 hover:text-bifido-neon">
               Restablecer
             </button>
-            <a href="/accesibilidad" className="text-sm underline underline-offset-4 hover:text-bifido-neon">
+            <Link href="/accesibilidad" className="text-sm underline underline-offset-4 hover:text-bifido-neon">
               Declaración de accesibilidad
-            </a>
+            </Link>
           </div>
         </div>
       )}
