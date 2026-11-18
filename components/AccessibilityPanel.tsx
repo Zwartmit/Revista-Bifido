@@ -16,10 +16,9 @@ interface Prefs {
   contrast: boolean; // alto contraste
   motion: boolean; // reducir movimiento (animaciones, videos y fluido)
   links: boolean; // subrayar enlaces
-  focus: boolean; // foco reforzado
 }
 
-const DEFAULTS: Prefs = { text: 0, contrast: false, motion: false, links: false, focus: false };
+const DEFAULTS: Prefs = { text: 0, contrast: false, motion: false, links: false };
 
 function applyPrefs(p: Prefs) {
   const el = document.documentElement;
@@ -31,7 +30,6 @@ function applyPrefs(p: Prefs) {
   set('contrast', p.contrast);
   set('motion', p.motion);
   set('links', p.links);
-  set('focus', p.focus);
 
   // Los videos de fondo no los frena CSS: se pausan o se reanudan aquí.
   document.querySelectorAll('video').forEach((v) => {
@@ -96,15 +94,24 @@ export default function AccessibilityPanel() {
         triggerRef.current?.focus();
       }
     };
+    // Clic o toque fuera del panel (y fuera de su botón) lo cierra
+    const onPointerDown = (e: PointerEvent) => {
+      const t = e.target as Node;
+      if (panelRef.current?.contains(t) || triggerRef.current?.contains(t)) return;
+      setOpen(false);
+    };
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
   }, [open]);
 
   const toggles: Array<{ key: keyof Omit<Prefs, 'text'>; label: string; hint: string }> = [
     { key: 'contrast', label: 'Alto contraste', hint: 'Textos blancos y bordes más marcados' },
     { key: 'motion', label: 'Reducir movimiento', hint: 'Pausa animaciones, videos y efectos' },
     { key: 'links', label: 'Subrayar enlaces', hint: 'Los enlaces se distinguen sin depender del color' },
-    { key: 'focus', label: 'Foco reforzado', hint: 'Marco grueso al navegar con teclado' },
   ];
 
   return (

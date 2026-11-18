@@ -32,13 +32,11 @@ export default function AccesibilidadPage() {
         <li className={LI}>Alto contraste.</li>
         <li className={LI}>Reducir movimiento: pausa animaciones, videos y efectos. También respetamos la preferencia de tu sistema operativo.</li>
         <li className={LI}>Subrayar enlaces.</li>
-        <li className={LI}>Foco reforzado para quienes navegan con teclado.</li>
       </ul>
 
       <h2 className={H2}>Navegación con teclado</h2>
       <p className={P}>
-        Puedes recorrer todo el sitio con la tecla Tab. Al empezar, el enlace «Saltar al contenido» te lleva directo al contenido
-        principal. Los menús y el panel se cierran con Escape.
+        Puedes recorrer todo el sitio con la tecla Tab. Los menús y el panel se cierran con Escape.
       </p>
 
       <h2 className={H2}>Limitaciones conocidas</h2>

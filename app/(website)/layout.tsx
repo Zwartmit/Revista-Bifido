@@ -91,9 +91,8 @@ export default function RootLayout({
             { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, url: SITE_URL, name: SITE_NAME, description: SITE_DESCRIPTION, inLanguage: 'es', publisher: { '@id': `${SITE_URL}/#organization` } },
           ],
         }} />
-        <a href="#contenido" className="skip-link">Saltar al contenido</a>
         <Header />
-        <main id="contenido" tabIndex={-1} className="flex-1 w-full flex flex-col outline-none">
+        <main className="flex-1 w-full flex flex-col">
           {children}
         </main>
         <Footer />

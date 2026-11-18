@@ -288,15 +288,6 @@ textarea:focus, textarea:focus-visible {
    Preferencias del usuario como atributos data-a11y-* en <html>
    ───────────────────────────────────────────────────────────── */
 
-/* Enlace «Saltar al contenido»: visible solo al enfocarlo con teclado */
-.skip-link {
-    position: fixed; left: 1rem; top: 0.75rem; z-index: 10001;
-    padding: 0.6rem 1rem; border-radius: 0.5rem;
-    background: #b8ff00; color: #000; font-weight: 700;
-    transform: translateY(-200%); transition: transform 0.15s ease;
-}
-.skip-link:focus { transform: none; }
-
 /* Tamaño de texto: escala todo lo definido en rem */
 html[data-a11y-text="1"] { font-size: 112.5%; }
 html[data-a11y-text="2"] { font-size: 125%; }
@@ -320,12 +311,6 @@ html[data-a11y-contrast] .cl-especie-stat { border-color: rgba(255,255,255,0.7) 
 /* Subrayar enlaces */
 html[data-a11y-links] main a:not([class*="rounded-full"]):not(.cl-btn),
 html[data-a11y-links] footer a { text-decoration: underline !important; text-underline-offset: 3px; }
-
-/* Foco reforzado */
-html[data-a11y-focus] :focus-visible {
-    outline: 4px solid #b8ff00 !important; outline-offset: 4px !important;
-    box-shadow: 0 0 0 8px #000 !important;
-}
 
 /* Reducir movimiento: sin animaciones ni transiciones, sin fluido WebGL ni marquesina */
 html[data-a11y-motion] *, html[data-a11y-motion] *::before, html[data-a11y-motion] *::after {
