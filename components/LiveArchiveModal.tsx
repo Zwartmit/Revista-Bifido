@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { RiInstagramFill } from 'react-icons/ri';
@@ -14,20 +14,66 @@ interface LiveArchiveModalProps {
 
 export default function LiveArchiveModal({ selectedMember, setSelectedMember, team }: LiveArchiveModalProps) {
     const [modalPhotoIndex, setModalPhotoIndex] = useState(0);
+    const dialogRef = useRef<HTMLDivElement>(null);
+    const isOpen = !!selectedMember;
+
+    // Accesibilidad: foco dentro del diálogo, Escape para cerrar, Tab atrapado y foco devuelto al cerrar
+    useEffect(() => {
+        if (!isOpen) return;
+        const previouslyFocused = document.activeElement as HTMLElement | null;
+        dialogRef.current?.focus();
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setSelectedMember(null);
+                return;
+            }
+            if (e.key !== 'Tab' || !dialogRef.current) return;
+            const focusables = Array.from(
+                dialogRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+            ).filter((el) => el.offsetParent !== null);
+            if (focusables.length === 0) return;
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            if (e.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        };
+        document.addEventListener('keydown', onKey);
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.removeEventListener('keydown', onKey);
+            document.body.style.overflow = prevOverflow;
+            previouslyFocused?.focus?.();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen]);
 
     if (!selectedMember) return null;
 
     return (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 md:p-12 md:px-24 bg-black/95 backdrop-blur-sm">
+        <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Expediente de ${selectedMember.name}`}
+            tabIndex={-1}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 md:p-12 md:px-24 bg-black/95 backdrop-blur-sm outline-none"
+        >
             <div className="w-full max-w-5xl bg-black border border-gray-800 rounded-xl relative flex flex-col max-h-full overflow-hidden">
 
                 {/* Header/Close */}
                 <div className="absolute top-4 right-4 z-[110]">
                     <button
                         onClick={() => setSelectedMember(null)}
+                        aria-label="Cerrar expediente"
                         className="flex items-center gap-2 text-white hover:text-bifido-neon transition-colors font-mono text-sm tracking-widest"
                     >
-                        CERRAR <span className="text-xl font-bold text-orange-500">X</span>
+                        CERRAR <span aria-hidden="true" className="text-xl font-bold text-orange-500">X</span>
                     </button>
                 </div>
 
@@ -42,7 +88,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                             <div className="flex items-center gap-3 mb-2">
                                 <Image
                                     src="/icons/message.svg"
-                                    alt="Manifiesto"
+                                    alt=""
                                     width={24}
                                     height={24}
                                     className="flex-shrink-0"
@@ -71,9 +117,10 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                         }}
                                         className="pointer-events-auto group flex items-center transition-colors p-2"
                                         title="Anterior"
+                                        aria-label="Integrante anterior"
                                     >
                                         <div className="flex items-center rotate-180 group-hover:-translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
-                                            <Image src="/icons/arrow_o.svg" alt="Anterior" width={32} height={32} />
+                                            <Image src="/icons/arrow_o.svg" alt="" width={32} height={32} />
                                         </div>
                                     </button>
                                     <button
@@ -85,9 +132,10 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                         }}
                                         className="pointer-events-auto group flex items-center transition-colors p-2"
                                         title="Siguiente"
+                                        aria-label="Integrante siguiente"
                                     >
                                         <div className="flex items-center group-hover:translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
-                                            <Image src="/icons/arrow_o.svg" alt="Siguiente" width={32} height={32} />
+                                            <Image src="/icons/arrow_o.svg" alt="" width={32} height={32} />
                                         </div>
                                     </button>
                                 </div>
@@ -98,7 +146,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                 <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden bg-black">
                                     <Image
                                         src="/images/gradiente-verde.webp"
-                                        alt="Aura verde de fondo"
+                                        alt=""
                                         fill
                                         priority
                                         className="object-cover opacity-50 mix-blend-screen scale-110"
@@ -140,7 +188,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                 <div className="flex items-center gap-3 mb-4">
                                     <Image
                                         src="/icons/message.svg"
-                                        alt="Manifiesto"
+                                        alt=""
                                         width={28}
                                         height={28}
                                         className="flex-shrink-0 w-7 h-7"
@@ -153,14 +201,14 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
 
                                 {/* Profession */}
                                 {selectedMember.profession && (
-                                    <div className="font-mono text-[13px] text-bifido-neon uppercase tracking-widest mb-4 font-bold">
+                                    <div className="font-mono text-xs text-bifido-neon uppercase tracking-widest mb-4 font-bold">
                                         {selectedMember.profession}
                                     </div>
                                 )}
                             </div>
 
                             {/* Scrollable Content */}
-                            <div className="flex-1 min-h-0 md:overflow-y-auto md:pr-4 custom-scrollbar flex flex-col justify-start pt-2 pb-6 order-3 md:order-2">
+                            <div tabIndex={0} role="region" aria-label="Biografía" className="flex-1 min-h-0 md:overflow-y-auto md:pr-4 custom-scrollbar flex flex-col justify-start pt-2 pb-6 order-3 md:order-2">
                                 <div className="font-mono text-sm md:text-sm text-gray-300 leading-relaxed text-justify whitespace-pre-line">
                                     {selectedMember.biography || 'Miembro del equipo de Revista Bífido.'}
                                 </div>
@@ -173,7 +221,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                     {/* Rasgos */}
                                     {selectedMember.characteristics && selectedMember.characteristics.length > 0 && (
                                         <div className="flex flex-col gap-1.5">
-                                            <span className="text-[12px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
+                                            <span className="text-xs md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
                                                 Rasgos y gustos
                                             </span>
                                             <div className="font-mono text-xs md:text-sm text-bifido-neon tracking-wide uppercase font-medium">
@@ -184,7 +232,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                     {/* Base / Ubicación */}
                                     {selectedMember.location && (
                                         <div className="flex flex-col gap-1.5">
-                                            <span className="text-[12px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
+                                            <span className="text-xs md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
                                                 Base
                                             </span>
                                             <span className="font-mono text-xs md:text-sm text-gray-100 uppercase tracking-wide">
@@ -197,7 +245,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                 {/* Right: Redes */}
                                 {(selectedMember.socialMedia?.website || selectedMember.socialMedia?.instagram) && (
                                     <div className="flex flex-col gap-2.5 items-end">
-                                        <span className="text-[12px] md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
+                                        <span className="text-xs md:text-xs text-gray-200 font-mono font-bold tracking-widest uppercase">
                                             Contacto
                                         </span>
                                         <div className="flex flex-wrap justify-end gap-3 max-w-[76px]">
@@ -208,8 +256,9 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                                     rel="noopener noreferrer"
                                                     className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
                                                     title="Sitio Web"
+                                                    aria-label="Sitio web (se abre en una pestaña nueva)"
                                                 >
-                                                    <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                    <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
                                                         {Array.from({ length: 15 }).map((_, i) => (
                                                             <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
                                                                 <FaGlobe size={16} />
@@ -228,8 +277,9 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                                     rel="noopener noreferrer"
                                                     className="relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
                                                     title="Instagram"
+                                                    aria-label="Instagram (se abre en una pestaña nueva)"
                                                 >
-                                                    <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                    <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
                                                         {Array.from({ length: 15 }).map((_, i) => (
                                                             <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
                                                                 <RiInstagramFill size={16} />
@@ -259,7 +309,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                         className="group flex items-center gap-3 transition-colors"
                                     >
                                         <div className="flex items-center mt-[2px] rotate-180 group-hover:-translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
-                                            <Image src="/icons/arrow_o.svg" alt="Anterior" width={24} height={24} className="w-6 h-6 shrink-0" />
+                                            <Image src="/icons/arrow_o.svg" alt="" width={24} height={24} className="w-6 h-6 shrink-0" />
                                         </div>
                                         <span className="text-white mt-[2px] group-hover:text-orange-500 transition-colors">Anterior</span>
                                     </button>
@@ -275,7 +325,7 @@ export default function LiveArchiveModal({ selectedMember, setSelectedMember, te
                                     >
                                         <span className="text-white mt-[2px] group-hover:text-orange-500 transition-colors">Siguiente</span>
                                         <div className="flex items-center mt-[2px] group-hover:translate-x-1 group-hover:drop-shadow-[0_0_8px_rgba(255,102,0,0.8)] transition-all">
-                                            <Image src="/icons/arrow_o.svg" alt="Siguiente" width={24} height={24} className="w-6 h-6 shrink-0" />
+                                            <Image src="/icons/arrow_o.svg" alt="" width={24} height={24} className="w-6 h-6 shrink-0" />
                                         </div>
                                     </button>
                                 </div>

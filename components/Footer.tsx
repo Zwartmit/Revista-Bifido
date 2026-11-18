@@ -28,19 +28,20 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-3">
               {[
-                { Icon: RiFacebookFill, href: "https://www.facebook.com/revistabifido/" },
-                { Icon: RiWhatsappFill, href: "https://wa.me/" },
-                { Icon: RiInstagramFill, href: "https://www.instagram.com/revistabifido/" },
-                { Icon: RiYoutubeFill, href: "https://www.youtube.com/@revistabifido" },
-              ].map(({ Icon, href }, idx) => (
+                { Icon: RiFacebookFill, href: "https://www.facebook.com/revistabifido/", label: "Facebook de Revista Bífido" },
+                { Icon: RiWhatsappFill, href: "https://wa.me/", label: "WhatsApp de Revista Bífido" },
+                { Icon: RiInstagramFill, href: "https://www.instagram.com/revistabifido/", label: "Instagram de Revista Bífido" },
+                { Icon: RiYoutubeFill, href: "https://www.youtube.com/@revistabifido", label: "YouTube de Revista Bífido" },
+              ].map(({ Icon, href, label }, idx) => (
                 <a
                   key={idx}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${label} (se abre en una pestaña nueva)`}
                   className="relative overflow-hidden w-9 h-9 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
                 >
-                  <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                  <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
                     {Array.from({ length: 15 }).map((_, i) => (
                       <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
                         <Icon size={20} />
@@ -86,7 +87,7 @@ export default function Footer() {
                       key={character.id}
                       href={`/${character.slug}`}
                       className="font-googlesans text-base transition-colors text-center lg:text-left group flex items-center justify-center"
-                      style={{ color: cColors.primary }}
+                      style={{ color: cColors.text }}
                     >
                       {/* Desktop text */}
                       <span className="hidden lg:inline-block hover:brightness-125 transition-all">
@@ -129,6 +130,8 @@ export default function Footer() {
           </p>
           <p className="mt-3 flex items-center justify-center gap-4 text-gray-400 text-xs font-jack tracking-[0.15em] uppercase">
             <Link href="/privacidad" className="hover:text-bifido-neon transition-colors">Privacidad</Link>
+            <span aria-hidden="true">·</span>
+            <Link href="/accesibilidad" className="hover:text-bifido-neon transition-colors">Accesibilidad</Link>
             <span aria-hidden="true">·</span>
             <button type="button" onClick={() => window.dispatchEvent(new Event(OPEN_CONSENT_EVENT))} className="uppercase hover:text-bifido-neon transition-colors">Cookies</button>
           </p>

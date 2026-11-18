@@ -299,7 +299,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                 {/* Header — altura y estructura uniforme, igual a /mercado */}
                 <div className="mb-12">
                     <h1
-                        className="font-display text-[clamp(3.5rem,8vw,6.5rem)] leading-[0.85] text-[#f5f5f5] tracking-wide glitch-title uppercase"
+                        className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.85] text-[#f5f5f5] tracking-wide glitch-title uppercase"
                         data-text="EVENTOS"
                     >
                         EVENTOS
@@ -345,7 +345,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                         <div className="flex items-center gap-1 border border-white/15 p-1 bg-black self-start md:self-auto">
                             <button
                                 onClick={() => setPriceFilter('all')}
-                                className={`px-3 py-1.5 font-mono text-[12px] tracking-widest uppercase transition-all ${
+                                className={`px-3 py-1.5 font-mono text-xs tracking-widest uppercase transition-all ${
                                     priceFilter === 'all'
                                         ? 'bg-[#b8ff00] text-black font-bold'
                                         : 'text-gray-400 hover:text-white'
@@ -355,7 +355,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                             </button>
                             <button
                                 onClick={() => setPriceFilter('free')}
-                                className={`px-3 py-1.5 font-mono text-[12px] tracking-widest uppercase transition-all ${
+                                className={`px-3 py-1.5 font-mono text-xs tracking-widest uppercase transition-all ${
                                     priceFilter === 'free'
                                         ? 'bg-[#b8ff00] text-black font-bold'
                                         : 'text-gray-400 hover:text-white'
@@ -365,7 +365,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                             </button>
                             <button
                                 onClick={() => setPriceFilter('paid')}
-                                className={`px-3 py-1.5 font-mono text-[12px] tracking-widest uppercase transition-all ${
+                                className={`px-3 py-1.5 font-mono text-xs tracking-widest uppercase transition-all ${
                                     priceFilter === 'paid'
                                         ? 'bg-[#b8ff00] text-black font-bold'
                                         : 'text-gray-400 hover:text-white'
@@ -393,7 +393,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                                         }`}
                                     >
                                         <span>{cat.label}</span>
-                                        <span className={`text-[12px] px-1.5 py-0.5 rounded ${
+                                        <span className={`text-xs px-1.5 py-0.5 rounded ${
                                             isActive
                                                 ? 'bg-black text-[#b8ff00] font-bold'
                                                 : 'bg-white/10 text-gray-400'

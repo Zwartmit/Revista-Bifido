@@ -10,7 +10,7 @@ export default function NotFound() {
         {/* Desktop Image */}
         <Image 
           src="/backgrounds/404desk.webp" 
-          alt="404 Background Desktop" 
+          alt="" 
           fill
           className="object-cover hidden sm:block"
           priority
@@ -19,7 +19,7 @@ export default function NotFound() {
         {/* Mobile Image */}
         <Image 
           src="/backgrounds/404movil.webp" 
-          alt="404 Background Mobile" 
+          alt="" 
           fill
           className="object-cover sm:hidden"
           priority

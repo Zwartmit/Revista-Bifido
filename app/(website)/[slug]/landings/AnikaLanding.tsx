@@ -17,7 +17,7 @@ export default function AnikaLanding() {
   return (
     <div
       className="cl-wrap"
-      style={{ '--cl-p1': getCharacterColors('anika').primary, '--cl-p2': getCharacterColors('anika').secondary } as React.CSSProperties}
+      style={{ '--cl-p1': getCharacterColors('anika').primary, '--cl-p1t': getCharacterColors('anika').text, '--cl-on': getCharacterColors('anika').on, '--cl-p2': getCharacterColors('anika').secondary } as React.CSSProperties}
     >
       {/* ─── SLIDE DOTS ─── */}
 
@@ -39,7 +39,7 @@ export default function AnikaLanding() {
           </p>
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Bothrops asper</span>
-            <span className="cl-meta-badge">Reducción de daños</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.anika.eje}</span>
             <span className="cl-meta-badge">{CHARACTER_FACTS.anika.age}</span>
           </div>
         </div>
@@ -128,7 +128,7 @@ export default function AnikaLanding() {
                   <div className="cl-datos-personaje cl-reveal anika-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Reducción de riesgos y daños</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Claro. Sin pánico. Sin moral.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.anika.colors}</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identitario</div><div className="dato-val" style={{ color: 'var(--cl-p1t)' }}>{CHARACTER_FACTS.anika.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Mapaná / Talla X<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>Bothrops asper</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">El cuidado como resistencia</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.anika.age}</div></div>
@@ -176,17 +176,17 @@ export default function AnikaLanding() {
         <h2 className="cl-section-title cl-reveal anika-reveal">Sus territorios<br /><em>editoriales</em></h2>
         <div className="cl-temas-grid">
           <div className="cl-tema-card cl-reveal anika-reveal">
-            <div className="cl-tema-num">01</div>
+            <div className="cl-tema-num" aria-hidden="true">01</div>
             <div className="cl-tema-title">Reducción de riesgos</div>
             <div className="cl-tema-desc">Información honesta sobre el consumo de sustancias psicoactivas: qué son, cómo actúan, cómo cuidarse. Sin estigma, sin catastrofismo, sin mentiras.</div>
           </div>
           <div className="cl-tema-card cl-reveal anika-reveal">
-            <div className="cl-tema-num">02</div>
+            <div className="cl-tema-num" aria-hidden="true">02</div>
             <div className="cl-tema-title">Autonomía del cuerpo</div>
             <div className="cl-tema-desc">El derecho a decidir sobre la propia vida sin que la moral ajena dicte las consecuencias. El cuidado no puede depender del juicio de otros.</div>
           </div>
           <div className="cl-tema-card cl-reveal anika-reveal">
-            <div className="cl-tema-num">03</div>
+            <div className="cl-tema-num" aria-hidden="true">03</div>
             <div className="cl-tema-title">Lo que el miedo silencia</div>
             <div className="cl-tema-desc">Todo lo que la desinformación convierte en tabú: las decisiones que se toman igual, con o sin información. Ánika prefiere que sea con ella.</div>
           </div>

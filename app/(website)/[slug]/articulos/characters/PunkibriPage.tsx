@@ -157,9 +157,9 @@ export default function PunkibriPage({ section, character, articles, events = []
                                             <span className="font-googlesans text-xs text-white/55 tracking-wider mb-2 block">
                                                 {formatDate(article.publishedAt)}
                                             </span>
-                                            <h3 className="font-display text-2xl text-white uppercase leading-[1.1] pt-1 mb-3 flex-1 group-hover:text-white/70 transition-colors">
+                                            <h2 className="font-display text-2xl text-white uppercase leading-[1.1] pt-1 mb-3 flex-1 group-hover:text-white/70 transition-colors">
                                                 {article.title}
-                                            </h3>
+                                            </h2>
                                             <div className="flex items-center gap-2 text-sm font-googlesans font-medium mt-auto" style={{ color: primary }}>
                                                 <span>Ver publicación</span>
                                                 <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />

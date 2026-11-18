@@ -15,7 +15,7 @@ export default function IncendiaLanding() {
   useHorizontalLanding({ containerRef, trackRef, fillRef });
 
   return (
-    <div className="cl-wrap" style={{ '--cl-p1': getCharacterColors('incendia').primary, '--cl-p2': getCharacterColors('incendia').secondary } as React.CSSProperties}>
+    <div className="cl-wrap" style={{ '--cl-p1': getCharacterColors('incendia').primary, '--cl-p1t': getCharacterColors('incendia').text, '--cl-on': getCharacterColors('incendia').on, '--cl-p2': getCharacterColors('incendia').secondary } as React.CSSProperties}>
 
       <section className="cl-hero">
         <div className="cl-hero-bg-wrap">
@@ -33,7 +33,7 @@ export default function IncendiaLanding() {
           </p>
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Cerdocyon thous</span>
-            <span className="cl-meta-badge">Género &amp; Diversidad</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.incendia.eje}</span>
             <span className="cl-meta-badge">{CHARACTER_FACTS.incendia.age}</span>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function IncendiaLanding() {
                   <div className="cl-datos-personaje cl-reveal inc-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Género, diversidad &amp; equidad</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Fuego. Argumentos. Sin filtro.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.incendia.colors}</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identitario</div><div className="dato-val" style={{ color: 'var(--cl-p1t)' }}>{CHARACTER_FACTS.incendia.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Zorra cangrejera<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>Cerdocyon thous</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Feminismo &amp; libertad de ser</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.incendia.age}</div></div>
@@ -164,17 +164,17 @@ export default function IncendiaLanding() {
         <h2 className="cl-section-title cl-reveal inc-reveal">Sus territorios<br /><em>editoriales</em></h2>
         <div className="cl-temas-grid">
           <div className="cl-tema-card cl-reveal inc-reveal">
-            <div className="cl-tema-num">01</div>
+            <div className="cl-tema-num" aria-hidden="true">01</div>
             <div className="cl-tema-title">Feminidad sin molde</div>
             <div className="cl-tema-desc">Conversaciones sobre lo que significa ser mujer hoy: los cuerpos, los roles, las expectativas. Todo lo que el sistema llama normal y merece revisarse.</div>
           </div>
           <div className="cl-tema-card cl-reveal inc-reveal">
-            <div className="cl-tema-num">02</div>
+            <div className="cl-tema-num" aria-hidden="true">02</div>
             <div className="cl-tema-title">Diversidad &amp; libertad de ser</div>
             <div className="cl-tema-desc">Identidades que el mainstream ignora o caricaturiza. Incendia da espacio a lo que existe aunque incomode, con argumentos y sin condescendencia.</div>
           </div>
           <div className="cl-tema-card cl-reveal inc-reveal">
-            <div className="cl-tema-num">03</div>
+            <div className="cl-tema-num" aria-hidden="true">03</div>
             <div className="cl-tema-title">Desarmar privilegios</div>
             <div className="cl-tema-desc">Señalar abusos que se normalizaron. Meterle candela a lo que se nos vendió como inevitable. No para escandalizar, sino para que el debate empiece.</div>
           </div>

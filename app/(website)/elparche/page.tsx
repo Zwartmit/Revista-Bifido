@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { characters } from '@/lib/characters';
 import { getCharacterColors } from '@/lib/character-colors';
@@ -31,6 +32,7 @@ function ElParcheContent() {
     const bioCardRef = useRef<HTMLDivElement>(null);
     const bridgeRef = useRef<HTMLDivElement>(null);
     const bridgeTextRef = useRef<HTMLDivElement>(null);
+    const criollosRef = useRef<HTMLElement>(null);
     const heroTitleRef = useRef<HTMLHeadingElement>(null);
     const teamLabelRef = useRef<HTMLDivElement>(null);
     const teamTaglineRef = useRef<HTMLDivElement>(null);
@@ -196,6 +198,20 @@ function ElParcheContent() {
                 }
             }
 
+            // 4b. CRIOLLOS: entrada de la sección
+            if (criollosRef.current) {
+                const root = criollosRef.current;
+                const bgText = root.querySelector('.criollos-bg-text');
+                const items = root.querySelectorAll('.criollos-item');
+
+                const tlCriollos = gsap.timeline({
+                    scrollTrigger: { trigger: root, start: 'top 75%', once: true },
+                });
+                if (bgText) tlCriollos.fromTo(bgText, { opacity: 0, scale: 1.1 }, { opacity: 0.04, scale: 1, duration: 2, ease: 'power2.out' }, 0);
+                tlCriollos.fromTo(items, { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.18, duration: 0.9, ease: 'power3.out' }, 0.35);
+
+            }
+
             // 5. HERO HEADER: timeline for label, title, tagline, badge
             if (heroTitleRef.current) {
                 const tlHero = gsap.timeline({
@@ -236,6 +252,13 @@ function ElParcheContent() {
                     },
                 }
             );
+        }
+
+        // La página crece cuando llegan los datos: recalcula los disparadores del scroll
+        // (puentes de Criollos y Archivo Vivo) con las posiciones finales.
+        if (!loading) {
+            const raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+            return () => cancelAnimationFrame(raf);
         }
     }, [loading, team]);
 
@@ -301,6 +324,10 @@ function ElParcheContent() {
                                             <div
                                                 key={m.id}
                                                 onClick={() => setActiveCharacterId(m.id)}
+                                                role="button"
+                                                tabIndex={0}
+                                                aria-label={`Ver a ${m.name}`}
+                                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveCharacterId(m.id); } }}
                                                 className="flex-[1] hover:flex-[4] group/item flex flex-col cursor-pointer overflow-hidden transition-all duration-500 ease-out relative min-h-[90px]"
                                                 style={{ backgroundColor: 'transparent' }}
                                             >
@@ -315,7 +342,7 @@ function ElParcheContent() {
                                                 {m.slug && (
                                                     <Image
                                                         src={`/icons/${m.slug}.webp`}
-                                                        alt={m.name}
+                                                        alt=""
                                                         width={400}
                                                         height={500}
                                                         priority={true}
@@ -347,7 +374,7 @@ function ElParcheContent() {
                         </div>
 
                         {/* Right Content - Active Character Showcase */}
-                        <div ref={showcaseRef} className="grow bg-transparent relative md:min-h-[500px] flex flex-col">
+                        <div ref={showcaseRef} className="grow min-w-0 bg-transparent relative md:min-h-[500px] flex flex-col">
                             <div className="absolute inset-0 w-full h-full transition-colors duration-500 overflow-hidden">
                                 {/* Animated Smoky Background */}
                                 <div className="absolute inset-0 flex items-center justify-center transition-all duration-700 bg-transparent">
@@ -390,7 +417,7 @@ function ElParcheContent() {
                                                         className="w-full h-full object-cover rounded-full"
                                                     />
                                                 </div>
-                                                <span className="text-[clamp(8px,2.8vw,12px)] font-display tracking-widest uppercase transition-colors leading-tight text-center"
+                                                <span className="text-[clamp(10px,2.8vw,13px)] font-display tracking-widest uppercase transition-colors leading-tight text-center"
                                                     style={{ color: mColors.primary || '#aaa' }}>
                                                     {m.name}
                                                 </span>
@@ -401,12 +428,12 @@ function ElParcheContent() {
 
 
                                 {/* Content Group (Centered Automatically via Flexbox) */}
-                                <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-20 xl:gap-32 px-4 pt-28 pb-10 lg:py-0">
+                                <div className="relative z-20 w-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-10 xl:gap-20 2xl:gap-32 px-4 pt-28 pb-10 lg:py-0">
 
                                     {/* 1. Center Layout: Character, Text, Arrows, Button */}
                                     <div className="flex flex-col items-center justify-center relative w-full lg:w-auto">
 
-                                        <div className="relative z-10 h-[360px] sm:h-[400px] md:h-[410px] w-full sm:w-[400px] flex items-end justify-center mb-0 mx-auto">
+                                        <div className="relative z-10 h-[360px] sm:h-[400px] md:h-[410px] w-full sm:w-[400px] lg:w-[320px] xl:w-[400px] flex items-end justify-center mb-0 mx-auto">
                                             {/* Left Arrow */}
                                             <button onClick={handlePrev} className="absolute -left-3 sm:-left-8 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all z-30" aria-label="Personaje anterior">
                                                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
@@ -456,7 +483,7 @@ function ElParcheContent() {
                                     </div>
 
                                     {/* 2. Glassmorphism Bio Card */}
-                                    <div id="bio-card" ref={bioCardRef} className="w-[85%] sm:w-[320px] md:w-[340px] lg:w-[340px] xl:w-[380px] flex-shrink-0">
+                                    <div id="bio-card" ref={bioCardRef} className="w-[85%] sm:w-[320px] md:w-[340px] lg:w-[320px] xl:w-[380px] flex-shrink-0">
                                         <div className="bg-black/20 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-3xl shadow-2xl relative z-10">
 
                                             <div className="flex flex-col items-center mb-4">
@@ -472,15 +499,23 @@ function ElParcheContent() {
 
                                             <div className="flex flex-col gap-4 text-sm tracking-wide border-t border-white/10 pt-6">
                                                 <div className="flex flex-col items-center text-center gap-1">
-                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Edad</span>
+                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.text }}>Eje</span>
+                                                    <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.eje}</span>
+                                                </div>
+                                                <div className="flex flex-col items-center text-center gap-1">
+                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.text }}>Animal</span>
+                                                    <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.animal}</span>
+                                                </div>
+                                                <div className="flex flex-col items-center text-center gap-1">
+                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.text }}>Edad</span>
                                                     <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.age}</span>
                                                 </div>
                                                 <div className="flex flex-col items-center text-center gap-1">
-                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Religión</span>
+                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.text }}>Religión simbólica</span>
                                                     <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.religion}.</span>
                                                 </div>
                                                 <div className="flex flex-col items-center text-center gap-1">
-                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.primary }}>Color favorito</span>
+                                                    <span className="font-mono uppercase tracking-[0.15em] font-bold" style={{ color: activeColors.text }}>Color identitario</span>
                                                     <span className="text-gray-200 font-light leading-relaxed">{activeCharacter.favoriteColor}</span>
                                                 </div>
                                             </div>
@@ -492,6 +527,51 @@ function ElParcheContent() {
                     </>
                 )}
             </div>
+
+            {/* ── LOS CRIOLLOS: La Manada también adopta (puente hacia Nuestro Parche) ── */}
+            <section ref={criollosRef} className="w-full bg-black relative overflow-hidden pt-16 md:pt-24 pb-10 md:pb-14">
+                {/* Texto gigante de fondo */}
+                <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none" aria-hidden="true">
+                    <span className="criollos-bg-text font-anton text-[20vw] text-white opacity-[0.04] uppercase leading-none whitespace-nowrap">
+                        CRIOLLOS
+                    </span>
+                </div>
+                {/* Luz amarilla que sale de la imagen (no del texto) */}
+                <div
+                    className="absolute inset-x-0 bottom-0 h-[70%] z-0 pointer-events-none"
+                    aria-hidden="true"
+                    style={{ background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255,217,59,0.16) 0%, transparent 75%)' }}
+                />
+
+                <div className="max-w-[85rem] mx-auto px-6 md:px-12 lg:px-16 flex flex-col items-center relative z-10">
+                    <div className="flex flex-col items-center text-center">
+                        <h2 className="font-anton text-4xl md:text-6xl text-white uppercase leading-[1.1] md:leading-[0.9] tracking-tight">
+                            Y... también están Los Criollos
+                        </h2>
+                    </div>
+
+                    {/* Perro y gato: comparten lienzo; el borde inferior se funde con el fondo */}
+                    <div
+                        className="criollos-item relative w-full max-w-[34rem] md:max-w-[50rem] aspect-[4/3] mt-6 md:mt-8 [mask-image:linear-gradient(to_bottom,#000_45%,transparent_98%)] [-webkit-mask-image:linear-gradient(to_bottom,#000_45%,transparent_98%)]"
+                    >
+                        <Image src="/personajes/dog%20adopcion.webp" alt="Criollo: el perro, adoptado por La Manada" fill sizes="(min-width: 768px) 800px, 90vw" className="object-cover object-bottom" />
+                        <Image src="/personajes/cat%20adopcion.webp" alt="Criollo: el gato, adoptado por La Manada" fill sizes="(min-width: 768px) 800px, 90vw" className="object-cover object-bottom" />
+                    </div>
+
+                    <div className="flex flex-col items-center text-center max-w-2xl -mt-10 md:-mt-16 relative z-20">
+                        <p className="criollos-item font-googlesans text-lg md:text-xl text-gray-100 leading-relaxed mb-8">
+                            Un perro y un gato que llegaron desde el abandono y hoy son parte de La Manada. La memoria viva de la calle: adopción, refugios y bienestar animal contados con <strong className="text-white">dignidad, no con lástima</strong>.
+                        </p>
+                        <Link
+                            href="/criollos"
+                            className="criollos-item inline-flex items-center gap-3 px-8 py-3 rounded-full text-black font-display text-xl tracking-wide hover:bg-white transition-colors"
+                            style={{ background: '#FFD93B' }}
+                        >
+                            CONOCE A LOS CRIOLLOS <ArrowRight size={22} />
+                        </Link>
+                    </div>
+                </div>
+            </section>
 
             {/* ── BRIDGE: TRANSICIÓN PERSONAJES → EQUIPO ── */}
             <div ref={bridgeRef} className="w-full bg-black py-24 md:py-32 relative overflow-hidden">
@@ -529,7 +609,7 @@ function ElParcheContent() {
                         <div className="lg:hidden mt-10 animate-bounce">
                             <Image
                                 src="/icons/arrow_g.webp"
-                                alt="Flecha"
+                                alt=""
                                 width={26}
                                 height={62}
                                 className="w-10 h-10 object-contain rotate-90 opacity-30"
@@ -566,7 +646,7 @@ function ElParcheContent() {
                                         height={30}
                                         className="flex-shrink-0 w-[30px] h-[30px]"
                                     />
-                                    <span className="font-anton text-lg md:text-3xl tracking-normal text-[#fe5e00] uppercase leading-none">
+                                    <span className="font-anton text-lg md:text-3xl tracking-normal text-[#FF5600] uppercase leading-none">
                                         DESDE ADENTRO
                                     </span>
                                 </div>
@@ -578,11 +658,11 @@ function ElParcheContent() {
 
                                 {/* Tagline */}
                                 <div ref={teamTaglineRef} className="pt-2 space-y-0.5 flex flex-col items-center lg:items-start text-center lg:text-left">
-                                    <p className="font-jack text-[12px] md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
+                                    <p className="font-jack text-xs md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
                                         {"//"} NO SOMOS UN EQUIPO, SOMOS UN{' '}
                                         <span className="underline underline-offset-4">ARCHIVO VIVO</span>
                                     </p>
-                                    <p className="font-jack text-[12px] md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
+                                    <p className="font-jack text-xs md:text-lg text-white uppercase tracking-tight [word-spacing:-0.05em]">
                                         <span className="opacity-0 select-none">{"//"} </span>
                                         NARRAMOS, SEÑALAMOS, REGISTRAMOS...
                                     </p>
@@ -630,8 +710,9 @@ function ElParcheContent() {
                                                     rel="noopener noreferrer"
                                                     className="mt-2 relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
                                                     title="Instagram"
+                                                    aria-label={`Instagram de ${member.name}`}
                                                 >
-                                                    <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                    <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
                                                         {Array.from({ length: 15 }).map((_, i) => (
                                                             <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
                                                                 <RiInstagramFill size={16} />
@@ -650,8 +731,9 @@ function ElParcheContent() {
                                                 }}
                                                 className="mt-2 relative overflow-hidden w-8 h-8 rounded-full bg-bifido-neon flex items-center justify-center hover:scale-110 transition-transform group"
                                                 title="Ver expediente"
+                                                aria-label={`Ver expediente de ${member.name}`}
                                             >
-                                                <div className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
+                                                <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center text-black opacity-20 pointer-events-none">
                                                     {Array.from({ length: 15 }).map((_, i) => (
                                                         <div key={i} className="absolute" style={{ transform: `translate(${i + 1}px, ${i + 1}px)` }}>
                                                             <FaUserSecret size={16} />
@@ -686,7 +768,7 @@ function ElParcheContent() {
                                                         <div className="absolute w-px h-px overflow-hidden opacity-0 pointer-events-none">
                                                             <Image
                                                                 src={member.profileImage}
-                                                                alt={`${member.name} preload`}
+                                                                alt=""
                                                                 fill
                                                                 sizes="(max-width: 768px) 100vw, 50vw"
                                                                 priority={true}
@@ -724,14 +806,14 @@ function ElParcheContent() {
 
                                                     {/* Profession */}
                                                     {member.profession && (
-                                                        <span className="font-mono text-[12px] md:text-[13px] leading-tight text-white uppercase tracking-widest mb-2 font-bold px-2 md:px-0">
+                                                        <span className="font-mono text-xs md:text-xs leading-tight text-white uppercase tracking-widest mb-2 font-bold px-2 md:px-0">
                                                             {member.profession}
                                                         </span>
                                                     )}
 
                                                     {/* Skill tags */}
                                                     {member.characteristics && member.characteristics.length > 0 && (
-                                                        <div className="font-mono text-[12px] md:text-[13px] text-bifido-neon uppercase tracking-widest mb-3">
+                                                        <div className="font-mono text-xs md:text-xs text-bifido-neon uppercase tracking-widest mb-3">
                                                             {member.characteristics.join(' · ')}
                                                         </div>
                                                     )}

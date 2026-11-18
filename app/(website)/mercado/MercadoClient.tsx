@@ -165,7 +165,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                     {/* Selector de orden */}
                     <div className="flex items-center gap-2 border border-white/15 px-3 py-2 bg-black self-start md:self-auto">
                         <ArrowUpDown size={13} className="text-gray-400" />
-                        <span className="font-mono text-[12px] tracking-widest uppercase text-gray-400 hidden sm:inline">
+                        <span className="font-mono text-xs tracking-widest uppercase text-gray-400 hidden sm:inline">
                             ORDEN:
                         </span>
                         <select
@@ -194,7 +194,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                             }`}
                         >
                             <span>Todos</span>
-                            <span className={`text-[12px] px-1.5 py-0.5 rounded ${
+                            <span className={`text-xs px-1.5 py-0.5 rounded ${
                                 activeCategory === null
                                     ? 'bg-black text-[#b8ff00] font-bold'
                                     : 'bg-white/10 text-gray-400'
@@ -219,7 +219,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                                     }`}
                                 >
                                     <span>{label}</span>
-                                    <span className={`text-[12px] px-1.5 py-0.5 rounded ${
+                                    <span className={`text-xs px-1.5 py-0.5 rounded ${
                                         isActive
                                             ? 'bg-black text-[#b8ff00] font-bold'
                                             : 'bg-white/10 text-gray-400'
@@ -277,7 +277,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 className="object-cover group-hover:scale-105 transition-transform duration-500"
                             />
-                            <span className="absolute top-4 left-4 border border-[#b8ff00]/60 bg-black/90 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.2em] text-[#b8ff00] z-10">
+                            <span className="absolute top-4 left-4 border border-[#b8ff00]/60 bg-black/90 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-[#b8ff00] z-10">
                                 {product.categoryLabel}
                             </span>
                         </div>
@@ -289,7 +289,7 @@ export default function MercadoClient({ products }: MercadoClientProps) {
                             </h3>
 
                             {product.seller?.name && (
-                                <p className="font-mono text-[12px] tracking-widest uppercase text-gray-400 mb-3">
+                                <p className="font-mono text-xs tracking-widest uppercase text-gray-400 mb-3">
                                     {product.seller.name}
                                 </p>
                             )}

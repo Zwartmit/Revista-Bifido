@@ -21,7 +21,7 @@ export default async function MercadoPage() {
                 {/* Header — altura y estructura uniforme */}
                 <div className="mb-12">
                     <h1
-                        className="font-display text-[clamp(3.5rem,8vw,6.5rem)] leading-[0.85] text-[#f5f5f5] tracking-wide glitch-title uppercase"
+                        className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.85] text-[#f5f5f5] tracking-wide glitch-title uppercase"
                         data-text="MERCADO"
                     >
                         MERCADO

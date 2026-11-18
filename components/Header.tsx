@@ -7,7 +7,11 @@ import Image from 'next/image';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { characters } from '@/lib/characters';
 import { getCharacterColors } from '@/lib/character-colors';
+
 import GlobalSearchOverlay from './GlobalSearchOverlay';
+
+/** Los Criollos: sección (no es un personaje principal) que se enlaza al final del menú de La Manada. */
+const CRIOLLOS = { id: 'criollos', slug: 'criollos', name: 'Los Criollos' } as unknown as (typeof characters)[0];
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -162,6 +166,9 @@ export default function Header() {
                                             <CharacterNavLink character={character} />
                                         </div>
                                     ))}
+                                    <div className="w-full mt-2 pt-2 border-t border-white/15" onClick={() => setIsCharacterMenuOpen(false)}>
+                                        <CharacterNavLink character={CRIOLLOS} />
+                                    </div>
                                 </div>
                             </div>
 
@@ -220,7 +227,7 @@ export default function Header() {
                                 </button>
 
                                 <div className={`overflow-hidden transition-all duration-500 w-full flex flex-col items-start ${isCharacterMenuOpen ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                                    {characters.map((character) => {
+                                    {[...characters, CRIOLLOS].map((character) => {
                                         const mColors = getCharacterColors(character.slug);
                                         const isActive = pathname === `/${character.slug}`;
                                         return (
@@ -230,6 +237,7 @@ export default function Header() {
                                             </Link>
                                         );
                                     })}
+
                                 </div>
                             </div>
 
@@ -249,7 +257,7 @@ export default function Header() {
                 </nav>
 
                 {/* Scrolling Marquee Tape */}
-                <div aria-hidden={isCompact} className={`w-full bg-bifido-neon overflow-hidden flex transition-[max-height] duration-300 ${isCompact ? 'max-h-0' : 'max-h-12'}`}>
+                <div aria-hidden="true" className={`w-full bg-bifido-neon overflow-hidden flex transition-[max-height] duration-300 ${isCompact ? 'max-h-0' : 'max-h-12'}`}>
                     <div className="whitespace-nowrap animate-marquee flex w-max py-[6px]">
                         {/* First exact half */}
                         <div className="flex items-center justify-around flex-shrink-0">
@@ -258,7 +266,7 @@ export default function Header() {
                                     <span style={{ fontFamily: 'var(--font-jack, "JackInput", monospace)' }} className="text-black text-sm md:text-base tracking-[0.25em] px-8 pt-[2px]">
                                         PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES
                                     </span>
-                                    <Image src="/icons/arrow.svg" alt="separator" width={14} height={14} className="w-[14px] h-[14px] object-contain opacity-90 shrink-0 mx-4" />
+                                    <Image src="/icons/arrow.svg" alt="" width={14} height={14} className="w-[14px] h-[14px] object-contain opacity-90 shrink-0 mx-4" />
                                 </div>
                             ))}
                         </div>
@@ -269,7 +277,7 @@ export default function Header() {
                                     <span style={{ fontFamily: 'var(--font-jack, "JackInput", monospace)' }} className="text-black text-sm md:text-base tracking-[0.25em] px-8 pt-[2px]">
                                         PERIODISMO CRUDO PARA SENSIBILIDADES FRÁGILES
                                     </span>
-                                    <Image src="/icons/arrow.svg" alt="separator" width={14} height={14} className="w-5 h-5 object-contain opacity-90" />
+                                    <Image src="/icons/arrow.svg" alt="" width={14} height={14} className="w-5 h-5 object-contain opacity-90" />
                                 </div>
                             ))}
                         </div>
@@ -289,7 +297,7 @@ function CharacterNavLink({ character, isMobile, onClick }: { character: typeof 
     const cColors = getCharacterColors(character.slug);
 
     // Check if we're on any section page
-    const isOnSectionPage = characters.some(m => pathname === `/${m.slug}`);
+    const isOnSectionPage = characters.some(m => pathname === `/${m.slug}`) || pathname === '/criollos';
 
     // Determine text color based on state and context
     let textColor;

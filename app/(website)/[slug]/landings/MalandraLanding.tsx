@@ -15,7 +15,7 @@ export default function MalandraLanding() {
   useHorizontalLanding({ containerRef, trackRef, fillRef });
 
   return (
-    <div className="cl-wrap" style={{ '--cl-p1': getCharacterColors('malandra').primary, '--cl-p2': getCharacterColors('malandra').secondary } as React.CSSProperties}>
+    <div className="cl-wrap" style={{ '--cl-p1': getCharacterColors('malandra').primary, '--cl-p1t': getCharacterColors('malandra').text, '--cl-on': getCharacterColors('malandra').on, '--cl-p2': getCharacterColors('malandra').secondary } as React.CSSProperties}>
 
       <section className="cl-hero">
         <div className="cl-hero-bg-wrap">
@@ -28,13 +28,13 @@ export default function MalandraLanding() {
           <p className="cl-label-revista"><span className="cl-dot-live" />Revista Bífido — Personajes</p>
           <h1 className="cl-hero-nombre">MAL<span className="acento">AN</span>DRA</h1>
           <p className="cl-hero-tagline">
-            No negocia con el miedo.<br />
-            Escribe sobre justicia sin rodeos.<br />
-            <strong>Sobrevivir es también una forma de resistir.</strong>
+            Cronista de lo marginal.<br />
+            Donde otros ven desorden, ve belleza.<br />
+            <strong>La cultura no se observa desde lejos: se habita.</strong>
           </p>
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Didelphis marsupialis</span>
-            <span className="cl-meta-badge">Justicia &amp; Derechos</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.malandra.eje}</span>
             <span className="cl-meta-badge">{CHARACTER_FACTS.malandra.age}</span>
           </div>
         </div>
@@ -105,22 +105,22 @@ export default function MalandraLanding() {
                 <div className="cl-personaje-inner">
                   <p className="cl-section-label cl-reveal mal-reveal">03 — El personaje</p>
                   <p className="cl-personaje-intro cl-reveal mal-reveal">
-                    Aquí empieza <em>la supervivencia</em>.<br />
-                    No negocia con el miedo.<br />Tampoco con la impunidad.
+                    Aquí empieza <em>la escena</em>.<br />
+                    Donde otros ven desorden,<br />ve belleza, potencia y verdad.
                   </p>
                   <div className="cl-personaje-voz cl-reveal mal-reveal">
                     <p>En Bífido la llaman <strong>Malandra</strong>.</p>
-                    <p>Tiene <strong>{CHARACTER_FACTS.malandra.age}</strong> y desde los veinte aprendió que el sistema funciona distinto según desde dónde te lo miras.</p>
-                    <p>Escribe sobre <strong>justicia, derechos humanos y lo que pasa cuando el Estado falla</strong> o mira al lado. Sin eufemismos. Sin ahorrar palabras.</p>
-                    <p>Su religión es <strong>el pragmatismo</strong>: no le interesa el ideal, le interesa lo que funciona para proteger a la gente real.</p>
-                    <p><em>Sobrevivir también es una forma de resistir. Y resistir, a veces, se parece mucho a seguir aquí.</em></p>
+                    <p>Tiene <strong>{CHARACTER_FACTS.malandra.age}</strong> y se mueve entre escenas underground, procesos autogestionados, expresiones artísticas ignoradas y estéticas que no buscan validación.</p>
+                    <p>Escribe sobre <strong>cultura, creatividad y lo que la escena alternativa construye</strong> sin pedir permiso. No idealiza la cultura: la documenta tal como es, con sus luces y sus sombras.</p>
+                    <p>Su religión es <strong>el culto a la creatividad</strong>: celebra lo prohibido, lo raro, lo incómodo y lo experimental, y cree en la creatividad como acto político y forma de resistencia.</p>
+                    <p><em>Es la memoria viva de la escena cultural alternativa. Y resistir, a veces, se parece mucho a seguir creando.</em></p>
                   </div>
                   <div className="cl-datos-personaje cl-reveal mal-reveal">
-                    <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Justicia &amp; derechos humanos</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Directo. Sin eufemismos. Justo.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.malandra.colors}</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Cultura &amp; escena alternativa</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Observadora. Cómplice. Irónica.</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identitario</div><div className="dato-val" style={{ color: 'var(--cl-p1t)' }}>{CHARACTER_FACTS.malandra.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Zarigüeya común<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>Didelphis marsupialis</span></div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Pragmatismo &amp; protección real</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">La creatividad como acto político</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.malandra.age}</div></div>
                   </div>
                 </div>
@@ -149,8 +149,8 @@ export default function MalandraLanding() {
         <div className="cl-manifiesto-wrap cl-reveal mal-reveal">
           <p className="cl-manifiesto-sub">Manifiesto</p>
           <p className="cl-manifiesto-quote">
-            Llevan millones de años<br />intentando desaparecernos.
-            <span className="highlight">Seguimos aquí.<br />Eso también es justicia.</span>
+            Donde otros ven desorden,<br />yo veo belleza, potencia y verdad.
+            <span className="highlight">La cultura se habita.<br />Se defiende. Se cuenta.</span>
           </p>
           <p className="cl-manifiesto-author">— Malandra, Revista Bífido</p>
         </div>
@@ -163,19 +163,19 @@ export default function MalandraLanding() {
         <h2 className="cl-section-title cl-reveal mal-reveal">Sus territorios<br /><em>editoriales</em></h2>
         <div className="cl-temas-grid">
           <div className="cl-tema-card cl-reveal mal-reveal">
-            <div className="cl-tema-num">01</div>
-            <div className="cl-tema-title">Justicia sin filtros</div>
-            <div className="cl-tema-desc">Los procesos que nadie sigue porque son largos y confusos. Las sentencias que cambian vidas. Lo que el sistema de justicia hace —y lo que evita hacer.</div>
+            <div className="cl-tema-num" aria-hidden="true">01</div>
+            <div className="cl-tema-title">Escena sin filtros</div>
+            <div className="cl-tema-desc">Escenas underground, procesos autogestionados y espacios alternativos reales. La cultura contada desde adentro, en acción y no en vitrina.</div>
           </div>
           <div className="cl-tema-card cl-reveal mal-reveal">
-            <div className="cl-tema-num">02</div>
-            <div className="cl-tema-title">Derechos humanos</div>
-            <div className="cl-tema-desc">Cuando el Estado falla, cuando las instituciones miran para otro lado y cuando la gente real paga el precio de las abstracciones jurídicas.</div>
+            <div className="cl-tema-num" aria-hidden="true">02</div>
+            <div className="cl-tema-title">Creatividad como resistencia</div>
+            <div className="cl-tema-desc">Artistas, colectivos y estéticas que no buscan validación. Lo prohibido, lo raro, lo incómodo y lo experimental, documentado tal como es.</div>
           </div>
           <div className="cl-tema-card cl-reveal mal-reveal">
-            <div className="cl-tema-num">03</div>
-            <div className="cl-tema-title">Supervivencia organizada</div>
-            <div className="cl-tema-desc">Comunidades, organizaciones y personas que construyen alternativas cuando el sistema no llega. No heroísmo —estrategia.</div>
+            <div className="cl-tema-num" aria-hidden="true">03</div>
+            <div className="cl-tema-title">Memoria de la escena</div>
+            <div className="cl-tema-desc">La memoria viva de la cultura alternativa: quién estuvo, qué se construyó y por qué importa que no se pierda.</div>
           </div>
         </div>
       </section>
@@ -183,7 +183,7 @@ export default function MalandraLanding() {
       <section className="cl-section-cta">
         <div className="cl-cta-left cl-reveal mal-reveal">
           <h2 className="cl-cta-title">¿Lista para<br />escuchar a<br /><span>Malandra</span>?</h2>
-          <p className="cl-cta-sub">Las ediciones de Bífido ya están disponibles. Malandra habla de lo que el sistema preferiría que no nombráramos. Sin filtros. Sin complacencia.</p>
+          <p className="cl-cta-sub">Las ediciones de Bífido ya están disponibles. Malandra habla de lo que la escena construye y casi nadie cuenta. Sin filtros. Sin complacencia.</p>
         </div>
         <div className="cl-cta-btns cl-reveal mal-reveal">
           <Link href="/malandra/articulos" className="cl-btn cl-btn-primary">Ver publicaciones <span className="cl-btn-arrow">→</span></Link>

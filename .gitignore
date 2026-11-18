@@ -45,3 +45,9 @@ public/media/*
 .agents/
 .claude/
 skills-lock.json
+
+# Documentos pesados (el Manual de Identidad pesa >100 MB; GitHub no los acepta)
+public/MANUAL DE IDENTIDAD*.pdf
+
+# Material de marketing: vive fuera del repositorio
+marketing/

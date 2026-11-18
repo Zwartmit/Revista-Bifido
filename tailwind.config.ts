@@ -24,7 +24,7 @@ const config: Config = {
         sm: ['0.9375rem', { lineHeight: '1.5rem' }],
         base: ['1.0625rem', { lineHeight: '1.7rem' }],
         lg: ['1.1875rem', { lineHeight: '1.85rem' }],
-        xl: ['1.375rem', { lineHeight: '1.9rem' }],
+        xl: ['1.3125rem', { lineHeight: '1.9rem' }],
       },
       colors: {
         // Colores de los personajes
@@ -58,14 +58,15 @@ const config: Config = {
           gray: '#2a2a2a',
           lightgray: '#e0e0e0',
           neon: '#b8ff00',
-          orange: '#fe5e00',
+          orange: '#FF5600',
           teal: '#1da3a3',
-          olive: '#344844',
+          olive: '#5C6843',
+          cream: '#F0EFEB',
         }
       },
       fontFamily: {
         sans: ['var(--font-googlesans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-bebas)', 'sans-serif'],
+        display: ['var(--font-anton)', 'sans-serif'],
         jack: ['var(--font-jack)', 'monospace'],
         anton: ['var(--font-anton)', 'sans-serif'],
         googlesans: ['var(--font-googlesans)', 'sans-serif'],

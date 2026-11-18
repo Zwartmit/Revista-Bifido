@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Calendar, MapPin, ArrowLeft, ArrowRight, Video, X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { FaSpotify, FaYoutube, FaInstagram, FaVimeoV, FaGlobe, FaTiktok, FaSoundcloud, FaTwitter, FaFacebook, FaApple } from 'react-icons/fa';
 import gsap from 'gsap';
-import { getCharacterColors } from '@/lib/character-colors';
+import { getCharacterColors, readableOn } from '@/lib/character-colors';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -921,12 +921,12 @@ export default function EventClient({ event }: EventClientProps) {
                                                     </div>
                                                 )}
                                                 <div>
-                                                    <span className="text-[12px] font-mono uppercase tracking-widest text-gray-400">
+                                                    <span className="text-xs font-mono uppercase tracking-widest text-gray-400">
                                                         La Manada Bífido
                                                     </span>
-                                                    <h3 className="font-display text-2xl sm:text-3xl text-white uppercase tracking-wide">
+                                                    <h2 className="font-display text-2xl sm:text-3xl text-white uppercase tracking-wide">
                                                         {char.name}
-                                                    </h3>
+                                                    </h2>
                                                 </div>
                                             </div>
 
@@ -942,7 +942,7 @@ export default function EventClient({ event }: EventClientProps) {
                                             className="self-center inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full font-mono text-xs font-bold uppercase tracking-widest transition-all hover:scale-[1.02] shadow-lg mt-3 w-fit max-w-full text-center"
                                             style={{
                                                 backgroundColor: colors.primary,
-                                                color: '#000000',
+                                                color: readableOn(colors.primary),
                                             }}
                                         >
                                             <span>Ver todas las publicaciones de {char.name}</span>

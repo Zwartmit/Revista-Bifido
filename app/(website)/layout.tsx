@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Bebas_Neue, Anton, Outfit } from 'next/font/google';
+import { Anton, Roboto } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
 import './character-landings.css';
@@ -10,14 +10,9 @@ import JsonLd from '@/components/JsonLd';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import CookieConsent from '@/components/CookieConsent';
 import AnalyticsEvents from '@/components/AnalyticsEvents';
+import AccessibilityPanel from '@/components/AccessibilityPanel';
 import { SITE_URL, SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION, SOCIAL_PROFILES, DEFAULT_OG_IMAGE } from '@/lib/seo';
 // import BackToHome from '@/components/BackToHome';
-
-const bebas = Bebas_Neue({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-bebas',
-});
 
 const anton = Anton({
   weight: '400',
@@ -25,9 +20,13 @@ const anton = Anton({
   variable: '--font-anton',
 });
 
-const outfit = Outfit({
+// Manual de Identidad: Anton (títulos) y Roboto (cuerpo de texto)
+const roboto = Roboto({
+  weight: ['300', '400', '500', '700'],
+  style: ['normal', 'italic'],
   subsets: ['latin'],
   variable: '--font-googlesans',
+  display: 'swap',
 });
 
 const jackInput = localFont({
@@ -82,7 +81,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" suppressHydrationWarning className={`${bebas.variable} ${jackInput.variable} ${anton.variable} ${outfit.variable}`}>
+    <html lang="es" suppressHydrationWarning className={`${jackInput.variable} ${anton.variable} ${roboto.variable}`}>
       <body suppressHydrationWarning className="bg-black text-white font-sans antialiased flex flex-col min-h-[100dvh]">
         <GoogleAnalytics />
         <JsonLd data={{
@@ -92,13 +91,15 @@ export default function RootLayout({
             { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, url: SITE_URL, name: SITE_NAME, description: SITE_DESCRIPTION, inLanguage: 'es', publisher: { '@id': `${SITE_URL}/#organization` } },
           ],
         }} />
+        <a href="#contenido" className="skip-link">Saltar al contenido</a>
         <Header />
-        <main className="flex-1 w-full flex flex-col">
+        <main id="contenido" tabIndex={-1} className="flex-1 w-full flex flex-col outline-none">
           {children}
         </main>
         <Footer />
         <ScrollToTop />
         <CookieConsent />
+        <AccessibilityPanel />
         <AnalyticsEvents />
         {/* <BackToHome /> */}
       </body>

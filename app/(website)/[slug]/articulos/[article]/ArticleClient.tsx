@@ -64,7 +64,7 @@ const renderNode = (node: any, index: number, characterColor: string): React.Rea
         }
         case 'quote':
             return (
-                <blockquote key={index} className="border-l-4 pl-5 py-1 italic my-6 text-gray-400 bg-white/5 rounded-r-lg" style={{ borderColor: characterColor }}>
+                <blockquote key={index} className="border-l-4 pl-5 py-1 italic my-6 text-gray-300 bg-white/5 rounded-r-lg" style={{ borderColor: characterColor }}>
                     {node.children?.map((c: any, i: number) => renderNode(c, i, characterColor))}
                 </blockquote>
             );

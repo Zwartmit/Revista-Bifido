@@ -1,5 +1,7 @@
 'use client';
 
+import { readableOn } from '@/lib/character-colors';
+
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -83,8 +85,8 @@ export default function FeaturedCarousel({ articles, section, primaryColor, dark
                                 <span className="font-display text-[8rem] opacity-10" style={{ color: primaryColor }}>{letter}</span>
                             </div>
                         )}
-                        <span className="absolute top-4 left-4 font-display text-[12px] tracking-[0.4em] px-3 py-1 uppercase z-10"
-                            style={{ backgroundColor: primaryColor, color: '#000' }}>Destacado</span>
+                        <span className="absolute top-4 left-4 font-display text-xs tracking-[0.4em] px-3 py-1 uppercase z-10"
+                            style={{ backgroundColor: primaryColor, color: readableOn(primaryColor) }}>Destacado</span>
                     </div>
                     
                     <div className="flex flex-col justify-between p-8 lg:p-10 bg-black flex-1 z-10">

@@ -1,5 +1,7 @@
 'use client';
 
+import { readableOn } from '@/lib/character-colors';
+
 import { useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { Search } from 'lucide-react';
@@ -46,7 +48,7 @@ export default function ArticleFilters({ categories, primaryColor, currentCatego
                             ? 'bg-white text-black border-white'
                             : 'bg-transparent border-[#1e1e1e] text-gray-400 hover:border-white/30 hover:text-white'
                     }`}
-                    style={!currentCategory ? { backgroundColor: primaryColor, borderColor: primaryColor, color: '#000' } : {}}
+                    style={!currentCategory ? { backgroundColor: primaryColor, borderColor: primaryColor, color: readableOn(primaryColor) } : {}}
                 >
                     Todos
                 </button>
@@ -59,7 +61,7 @@ export default function ArticleFilters({ categories, primaryColor, currentCatego
                                 ? 'bg-white text-black border-white'
                                 : 'bg-transparent border-[#1e1e1e] text-gray-400 hover:border-white/30 hover:text-white'
                         }`}
-                        style={currentCategory === cat.slug ? { backgroundColor: primaryColor, borderColor: primaryColor, color: '#000' } : {}}
+                        style={currentCategory === cat.slug ? { backgroundColor: primaryColor, borderColor: primaryColor, color: readableOn(primaryColor) } : {}}
                     >
                         {cat.name}
                     </button>

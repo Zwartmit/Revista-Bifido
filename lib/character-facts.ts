@@ -2,48 +2,66 @@
  * Datos de los personajes que deben verse IGUAL en todo el sitio:
  * la tarjeta «¡Hola, soy…!» de El Parche, las landings y el respaldo estático.
  *
- * Es la fuente de verdad de edad, religión y colores. Si el equipo cambia algo,
- * se edita aquí y se actualiza en todas partes (el CMS ya no manda sobre estos tres campos).
+ * Fuente de verdad: Manual de Identidad de Bífido (sección «La Manada»).
+ * Si el equipo cambia algo, se edita aquí y se actualiza en todas partes
+ * (el CMS ya no manda sobre estos campos).
  */
 export type CharacterSlug = 'anika' | 'incendia' | 'malandra' | 'mordaz' | 'punkibri';
 
 export interface CharacterFacts {
+  /** Eje temático de la revista (manual: «Eje») */
+  eje: string;
+  /** Animal (manual: «Animal») */
+  animal: string;
   /** Edad del personaje, p. ej. «33 años» */
   age: string;
   /** Aclaración opcional de la edad, p. ej. «en años de colibrí» */
   ageNote?: string;
-  /** «Religión» simbólica */
+  /** Religión simbólica (manual: «Religión simbólica») */
   religion: string;
-  /** Colores del personaje (se muestra como «Color favorito» / «Color identidad») */
+  /** Color identitario (manual: «Color identitario») */
   colors: string;
+  /** Frase corta de carácter/voz, tomada del manual (opcional: reemplaza la descripción del CMS) */
+  description?: string;
 }
 
 export const CHARACTER_FACTS: Record<CharacterSlug, CharacterFacts> = {
   malandra: {
+    eje: 'Cultura',
+    animal: 'Zarigüeya',
     age: '33 años',
     religion: 'Culto a la creatividad',
-    colors: 'Morado / Oro viejo y Coral',
+    colors: 'Púrpura oscuro',
   },
   incendia: {
-    age: '27 años',
-    religion: 'El patriarcado lo tenemos que tumbar',
-    colors: 'Morado y naranja',
+    eje: 'Género y Diversidad',
+    animal: 'Zorra',
+    age: '31 años',
+    religion: 'Interseccionalidad',
+    colors: 'Naranja fuego',
   },
   mordaz: {
+    eje: 'Opinión',
+    animal: 'Cóndor',
     age: '42 años',
     religion: 'Escepticismo militante',
-    colors: 'Rojo, Oro y Durazno',
+    colors: 'Rojo sangre',
   },
   punkibri: {
+    eje: 'Medio Ambiente',
+    animal: 'Colibrí',
     age: '127 años',
     ageNote: 'en años de colibrí',
-    religion: 'Relación espiritual y política con la tierra',
-    colors: 'Verde Páramo / Amarillo y Púrpura',
+    religion: 'Animismo',
+    colors: 'Verde musgo',
+    description: 'Rebelde, sensible y poético cuando quiere, feroz cuando toca. Habla desde el «nosotrxs» del territorio.',
   },
   anika: {
-    age: '30 años',
-    religion: 'Los prejuicios no van conmigo',
-    colors: 'Cian / Menta y Lavanda',
+    eje: 'Reducción de Riesgos y Daños',
+    animal: 'Serpiente',
+    age: '28 años',
+    religion: 'Pragmatismo compasivo',
+    colors: 'Turquesa',
   },
 };
 

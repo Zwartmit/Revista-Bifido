@@ -15,7 +15,7 @@ export default function PunkibriLanding() {
   useHorizontalLanding({ containerRef, trackRef, fillRef });
 
   return (
-    <div className="cl-wrap" style={{ '--cl-p1': getCharacterColors('punkibri').primary, '--cl-p2': getCharacterColors('punkibri').secondary } as React.CSSProperties}>
+    <div className="cl-wrap" style={{ '--cl-p1': getCharacterColors('punkibri').primary, '--cl-p1t': getCharacterColors('punkibri').text, '--cl-on': getCharacterColors('punkibri').on, '--cl-p2': getCharacterColors('punkibri').secondary } as React.CSSProperties}>
 
       <section className="cl-hero">
         <div className="cl-hero-bg-wrap">
@@ -34,7 +34,7 @@ export default function PunkibriLanding() {
           </p>
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Oxypogon stubelii</span>
-            <span className="cl-meta-badge">Medio Ambiente</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.punkibri.eje}</span>
             <span className="cl-meta-badge">Vulnerable — IUCN</span>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function PunkibriLanding() {
                   <div className="cl-datos-personaje cl-reveal punk-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Medio ambiente &amp; territorio</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Cuidado. Colectivo. Sin neutralidad.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.punkibri.colors}</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identitario</div><div className="dato-val" style={{ color: 'var(--cl-p1t)' }}>{CHARACTER_FACTS.punkibri.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Chivito del Ruiz<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>Oxypogon stubelii</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Animismo &amp; defensa del territorio</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.punkibri.age}<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.62)' }}>({CHARACTER_FACTS.punkibri.ageNote})</span></div></div>
@@ -163,17 +163,17 @@ export default function PunkibriLanding() {
         <h2 className="cl-section-title cl-reveal punk-reveal">Sus territorios<br /><em>editoriales</em></h2>
         <div className="cl-temas-grid">
           <div className="cl-tema-card cl-reveal punk-reveal">
-            <div className="cl-tema-num">01</div>
+            <div className="cl-tema-num" aria-hidden="true">01</div>
             <div className="cl-tema-title">Defensa del territorio</div>
             <div className="cl-tema-desc">Crónicas desde el páramo y otros ecosistemas amenazados. Lo que el territorio dice cuando alguien se toma el tiempo de escucharlo.</div>
           </div>
           <div className="cl-tema-card cl-reveal punk-reveal">
-            <div className="cl-tema-num">02</div>
+            <div className="cl-tema-num" aria-hidden="true">02</div>
             <div className="cl-tema-title">Ambientalismo sin poses</div>
             <div className="cl-tema-desc">Sin greenwashing, sin discursos vacíos. La crisis ambiental contada desde lo concreto: incendios, quemas, expansión agrícola, silencio institucional.</div>
           </div>
           <div className="cl-tema-card cl-reveal punk-reveal">
-            <div className="cl-tema-num">03</div>
+            <div className="cl-tema-num" aria-hidden="true">03</div>
             <div className="cl-tema-title">Lo que resiste sin ruido</div>
             <div className="cl-tema-desc">Historias de comunidades, ecosistemas y especies que sostienen el mundo desde la marginalidad. Lo frágil como forma de resistencia.</div>
           </div>

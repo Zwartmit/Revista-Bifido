@@ -27,8 +27,8 @@ const STATS = [
 export default function HomeIntro() {
   return (
     <section aria-labelledby="que-es-bifido" className="bg-black relative z-10 pt-10 pb-14 md:pt-16 md:pb-20">
-      <div className="container mx-auto px-5 sm:px-8 lg:px-12 max-w-[1200px]">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-12 lg:gap-16 items-center">
+      <div className="container mx-auto px-5 sm:px-8 lg:px-12 max-w-[1600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-12 lg:gap-20 items-center">
           {/* Texto */}
           <div>
             <h1
@@ -83,7 +83,7 @@ export default function HomeIntro() {
                     <div
                       className={`aspect-square rounded-full overflow-hidden bg-white p-[6%] border-[3px] ${
                         odd
-                          ? 'border-white rotate-[2.5deg] shadow-[5px_5px_0_#fe5e00] md:shadow-[7px_7px_0_#fe5e00] lg:shadow-[5px_5px_0_#fe5e00]'
+                          ? 'border-white rotate-[2.5deg] shadow-[5px_5px_0_#FF5600] md:shadow-[7px_7px_0_#FF5600] lg:shadow-[5px_5px_0_#FF5600]'
                           : 'border-bifido-neon -rotate-[2.5deg] shadow-[5px_5px_0_rgba(184,255,0,0.35)] md:shadow-[7px_7px_0_rgba(184,255,0,0.35)] lg:shadow-[5px_5px_0_rgba(184,255,0,0.35)]'
                       }`}
                     >

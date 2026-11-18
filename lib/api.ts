@@ -743,10 +743,12 @@ export function transformPayloadCharacter(doc: any) {
     id: doc.slug,
     name: doc.name,
     slug: doc.slug,
-    description: doc.description,
+    description: facts?.description ?? doc.description,
     religion: facts?.religion ?? (doc.religion || ''),
     age: facts ? formatAge(facts) : (doc.age || ''),
     favoriteColor: facts?.colors ?? (doc.favoriteColor || ''),
+    eje: facts?.eje,
+    animal: facts?.animal,
     image: doc.image?.url || '/images/placeholder.webp',
     model3d: doc.model3d?.url || null,
   };

@@ -15,6 +15,8 @@ export const characters: Character[] = [
     religion: CHARACTER_FACTS.anika.religion,
     age: formatAge(CHARACTER_FACTS.anika),
     favoriteColor: CHARACTER_FACTS.anika.colors,
+    eje: CHARACTER_FACTS.anika.eje,
+    animal: CHARACTER_FACTS.anika.animal,
     image: '/personajes/Anika.webp',
   },
   {
@@ -25,6 +27,8 @@ export const characters: Character[] = [
     religion: CHARACTER_FACTS.incendia.religion,
     age: formatAge(CHARACTER_FACTS.incendia),
     favoriteColor: CHARACTER_FACTS.incendia.colors,
+    eje: CHARACTER_FACTS.incendia.eje,
+    animal: CHARACTER_FACTS.incendia.animal,
     image: '/personajes/Incendia.webp',
   },
   {
@@ -35,6 +39,8 @@ export const characters: Character[] = [
     religion: CHARACTER_FACTS.malandra.religion,
     age: formatAge(CHARACTER_FACTS.malandra),
     favoriteColor: CHARACTER_FACTS.malandra.colors,
+    eje: CHARACTER_FACTS.malandra.eje,
+    animal: CHARACTER_FACTS.malandra.animal,
     image: '/personajes/Malandra.webp',
   },
   {
@@ -45,6 +51,8 @@ export const characters: Character[] = [
     religion: CHARACTER_FACTS.mordaz.religion,
     age: formatAge(CHARACTER_FACTS.mordaz),
     favoriteColor: CHARACTER_FACTS.mordaz.colors,
+    eje: CHARACTER_FACTS.mordaz.eje,
+    animal: CHARACTER_FACTS.mordaz.animal,
     image: '/personajes/Mordaz.webp',
   },
   {
@@ -55,6 +63,8 @@ export const characters: Character[] = [
     religion: CHARACTER_FACTS.punkibri.religion,
     age: formatAge(CHARACTER_FACTS.punkibri),
     favoriteColor: CHARACTER_FACTS.punkibri.colors,
+    eje: CHARACTER_FACTS.punkibri.eje,
+    animal: CHARACTER_FACTS.punkibri.animal,
     image: '/personajes/Punkibri.webp',
   },
 ];

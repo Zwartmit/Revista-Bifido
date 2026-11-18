@@ -128,7 +128,7 @@ export default function HomeClient({ articles, characters, featuredEvents = [] }
                 <div className="absolute bottom-4 md:bottom-6 lg:bottom-2 left-1/2 -translate-x-1/2 z-20 w-fit">
                     <Link href="/elparche" className="group/btn relative inline-block">
                         <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover/btn:opacity-100 transition duration-1000 group-hover/btn:duration-200"></div>
-                        <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#fe5e00] rounded-full font-display text-xl md:text-3xl text-white transition-all duration-300 group-hover/btn:border-[#fe5e00] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
+                        <div className="relative flex items-center gap-3 md:gap-6 px-6 md:px-8 py-2 md:py-3 bg-black/40 backdrop-blur-sm border-2 border-[#FF5600] rounded-full font-display text-xl md:text-3xl text-white transition-all duration-300 group-hover/btn:border-[#FF5600] group-hover/btn:scale-105 active:scale-95 group-hover/btn:bg-black/60 whitespace-nowrap">
                             CONOCE EL PARCHE
                             <Image
                                 src="/icons/arrow_o.svg"

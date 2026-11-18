@@ -117,7 +117,7 @@ export default function AnikaPage({ section, character, articles, categories = [
 
             {/* ── MANIFESTO STRIP ── */}
             <div className="px-6 sm:px-10 lg:px-16 xl:px-24 py-10 border-b border-[#1a1a1a]">
-                <blockquote className="font-display text-2xl sm:text-3xl text-white/20 uppercase leading-snug max-w-2xl"
+                <blockquote className="font-display text-2xl sm:text-3xl text-white/70 uppercase leading-snug max-w-2xl"
                     style={{ borderLeft: `4px solid ${primary}`, paddingLeft: '1.5rem' }}>
                     Reducción de riesgos. Información sin juicio. Cuidado colectivo.
                 </blockquote>

@@ -15,7 +15,7 @@ export default function MordazLanding() {
   useHorizontalLanding({ containerRef, trackRef, fillRef });
 
   return (
-    <div className="cl-wrap" style={{ '--cl-p1': getCharacterColors('mordaz').primary, '--cl-p2': getCharacterColors('mordaz').secondary } as React.CSSProperties}>
+    <div className="cl-wrap" style={{ '--cl-p1': getCharacterColors('mordaz').primary, '--cl-p1t': getCharacterColors('mordaz').text, '--cl-on': getCharacterColors('mordaz').on, '--cl-p2': getCharacterColors('mordaz').secondary } as React.CSSProperties}>
 
       <section className="cl-hero">
         <div className="cl-hero-bg-wrap">
@@ -34,7 +34,7 @@ export default function MordazLanding() {
           </p>
           <div className="cl-hero-meta">
             <span className="cl-meta-badge">Vultur gryphus</span>
-            <span className="cl-meta-badge">Opinión</span>
+            <span className="cl-meta-badge">{CHARACTER_FACTS.mordaz.eje}</span>
             <span className="cl-meta-badge">{CHARACTER_FACTS.mordaz.age}</span>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function MordazLanding() {
                   <div className="cl-datos-personaje cl-reveal mor-reveal">
                     <div className="cl-dato-card"><div className="dato-key">Rol en la revista</div><div className="dato-val">Opinión &amp; análisis de coyuntura</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Tono</div><div className="dato-val">Ironía. Humor negro. Argumentos.</div></div>
-                    <div className="cl-dato-card"><div className="dato-key">Color identidad</div><div className="dato-val" style={{ color: 'var(--cl-p1)' }}>{CHARACTER_FACTS.mordaz.colors}</div></div>
+                    <div className="cl-dato-card"><div className="dato-key">Color identitario</div><div className="dato-val" style={{ color: 'var(--cl-p1t)' }}>{CHARACTER_FACTS.mordaz.colors}</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Inspiración animal</div><div className="dato-val">Cóndor de los Andes<br /><span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.4)' }}>Vultur gryphus</span></div></div>
                     <div className="cl-dato-card"><div className="dato-key">Filosofía</div><div className="dato-val">Escepticismo militante</div></div>
                     <div className="cl-dato-card"><div className="dato-key">Edad</div><div className="dato-val">{CHARACTER_FACTS.mordaz.age}</div></div>
@@ -166,17 +166,17 @@ export default function MordazLanding() {
         <h2 className="cl-section-title cl-reveal mor-reveal">Sus territorios<br /><em>editoriales</em></h2>
         <div className="cl-temas-grid">
           <div className="cl-tema-card cl-reveal mor-reveal">
-            <div className="cl-tema-num">01</div>
+            <div className="cl-tema-num" aria-hidden="true">01</div>
             <div className="cl-tema-title">Opinión sin filtro</div>
             <div className="cl-tema-desc">Columnas que incomodan. Análisis que no buscan aplausos sino conversaciones que la gente evita en los almuerzos familiares.</div>
           </div>
           <div className="cl-tema-card cl-reveal mor-reveal">
-            <div className="cl-tema-num">02</div>
+            <div className="cl-tema-num" aria-hidden="true">02</div>
             <div className="cl-tema-title">Realidad que nos rodea</div>
             <div className="cl-tema-desc">Lo que pasa en el país y en el mundo, visto desde las alturas donde los eufemismos no alcanzan. Sin discursos inflados.</div>
           </div>
           <div className="cl-tema-card cl-reveal mor-reveal">
-            <div className="cl-tema-num">03</div>
+            <div className="cl-tema-num" aria-hidden="true">03</div>
             <div className="cl-tema-title">Debates incómodos</div>
             <div className="cl-tema-desc">Certezas que se desmoronan cuando se miran de cerca. Contradicciones que el sistema preferiría que no señaláramos.</div>
           </div>

@@ -233,7 +233,7 @@ textarea:focus, textarea:focus-visible {
     clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
 }
 .glitch-title::after {
-    color: #fe5e00;
+    color: #FF5600;
     animation: bifido-glitch-2 2.2s infinite linear;
     clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
 }
@@ -282,3 +282,58 @@ textarea:focus, textarea:focus-visible {
     .glitch-title::before, .glitch-title::after { animation: none !important; opacity: 0 !important; }
     html { scroll-behavior: auto !important; }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Panel de accesibilidad (components/AccessibilityPanel.tsx)
+   Preferencias del usuario como atributos data-a11y-* en <html>
+   ───────────────────────────────────────────────────────────── */
+
+/* Enlace «Saltar al contenido»: visible solo al enfocarlo con teclado */
+.skip-link {
+    position: fixed; left: 1rem; top: 0.75rem; z-index: 10001;
+    padding: 0.6rem 1rem; border-radius: 0.5rem;
+    background: #b8ff00; color: #000; font-weight: 700;
+    transform: translateY(-200%); transition: transform 0.15s ease;
+}
+.skip-link:focus { transform: none; }
+
+/* Tamaño de texto: escala todo lo definido en rem */
+html[data-a11y-text="1"] { font-size: 112.5%; }
+html[data-a11y-text="2"] { font-size: 125%; }
+
+/* Alto contraste */
+html[data-a11y-contrast] body { background: #000; color: #fff; }
+html[data-a11y-contrast] [class*="text-gray-"],
+html[data-a11y-contrast] [class*="text-white/"],
+html[data-a11y-contrast] [class*="text-neutral-"],
+html[data-a11y-contrast] [class*="text-zinc-"] { color: #fff !important; }
+html[data-a11y-contrast] [class*="border-white/"] { border-color: rgba(255,255,255,0.7) !important; }
+html[data-a11y-contrast] .cl-wrap,
+html[data-a11y-contrast] .cl-wrap p,
+html[data-a11y-contrast] .cl-wrap li,
+html[data-a11y-contrast] .cl-wrap .dato-val,
+html[data-a11y-contrast] .cl-wrap .cl-tema-desc { color: #fff !important; }
+html[data-a11y-contrast] .cl-dato-card,
+html[data-a11y-contrast] .cl-tema-card,
+html[data-a11y-contrast] .cl-especie-stat { border-color: rgba(255,255,255,0.7) !important; }
+
+/* Subrayar enlaces */
+html[data-a11y-links] main a:not([class*="rounded-full"]):not(.cl-btn),
+html[data-a11y-links] footer a { text-decoration: underline !important; text-underline-offset: 3px; }
+
+/* Foco reforzado */
+html[data-a11y-focus] :focus-visible {
+    outline: 4px solid #b8ff00 !important; outline-offset: 4px !important;
+    box-shadow: 0 0 0 8px #000 !important;
+}
+
+/* Reducir movimiento: sin animaciones ni transiciones, sin fluido WebGL ni marquesina */
+html[data-a11y-motion] *, html[data-a11y-motion] *::before, html[data-a11y-motion] *::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+}
+html[data-a11y-motion] .animate-marquee { animation: none !important; }
+html[data-a11y-motion] canvas.pointer-events-none { display: none !important; }
+html[data-a11y-motion] .glitch-title::before, html[data-a11y-motion] .glitch-title::after { display: none !important; }
+html[data-a11y-motion] .cl-hero-nombre, html[data-a11y-motion] .cl-hero-tagline, html[data-a11y-motion] .cl-label-revista,
+html[data-a11y-motion] .cl-hero-meta, html[data-a11y-motion] .cr-hero-art { opacity: 1 !important; }

@@ -6,6 +6,9 @@ export interface Character {
   religion: string;
   age: string;
   favoriteColor: string;
+  /** Eje temático y animal (Manual de Identidad) */
+  eje?: string;
+  animal?: string;
   image: string;
   biography?: string;
 }

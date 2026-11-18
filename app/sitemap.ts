@@ -35,7 +35,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: `${SITE_URL}/eventos`, changeFrequency: 'weekly', priority: 0.8 },
         { url: `${SITE_URL}/mercado`, changeFrequency: 'monthly', priority: 0.5 },
         { url: `${SITE_URL}/contactanos`, changeFrequency: 'yearly', priority: 0.4 },
+        { url: `${SITE_URL}/criollos`, changeFrequency: 'monthly', priority: 0.6 },
         { url: `${SITE_URL}/privacidad`, changeFrequency: 'yearly', priority: 0.2 },
+        { url: `${SITE_URL}/accesibilidad`, changeFrequency: 'yearly', priority: 0.3 },
     ];
 
     const characterPages: Entry[] = characters.flatMap((c) => [
